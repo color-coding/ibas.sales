@@ -1,0 +1,9 @@
+[
+  {
+    "Id": "bc24810f-da83-4e99-9252-d22bc28b614c",
+    "Name": "Sales",
+    "Category": "",
+    "Address": ".../",
+    "Repository": "http://localhost:8080/sales/services/rest/data"
+  }
+]
