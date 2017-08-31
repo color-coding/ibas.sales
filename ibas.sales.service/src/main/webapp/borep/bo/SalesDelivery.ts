@@ -20,6 +20,8 @@ import {
     BOSimple,
     BOSimpleLine,
     config,
+    strings,
+    objects
 } from "ibas/index";
 import {
     ISalesDelivery,
@@ -653,6 +655,49 @@ export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, Sales
         this.add(item);
         return item;
     }
+
+    /** 监听父项属性改变 */
+    protected onParentPropertyChanged(name: string): void {
+        super.onParentPropertyChanged(name);
+        if (strings.equalsIgnoreCase(name, SalesDelivery.PROPERTY_DOCUMENTSTATUS_NAME)) {
+            for (let salesDeliveryItem of this.filterDeleted()) {
+                salesDeliveryItem.lineStatus = this.parent.documentStatus;
+            }
+        }
+    }
+    /** 监听子项属性改变 */
+    protected onChildPropertyChanged(item: SalesDeliveryItem, name: string): void {
+        super.onChildPropertyChanged(item, name);
+        if (strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_LINETOTAL_NAME)) {
+            let total: number = 0;
+            let discount: number = 0;
+            for (let salesDeliveryItem of this.filterDeleted()) {
+                if (objects.isNull(salesDeliveryItem.lineTotal)) {
+                    salesDeliveryItem.lineTotal = 0;
+                }
+                // total += salesDeliveryItem.lineTotal;
+                total = Number(total) + Number(salesDeliveryItem.lineTotal);
+                discount = Number(discount) + Number(salesDeliveryItem.price * salesDeliveryItem.quantity - salesDeliveryItem.lineTotal);
+            }
+            this.parent.documentTotal = total;
+            this.parent.discountTotal = discount;
+        }
+        if (strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_DISCOUNT_NAME)) {
+            let count: number = 0;
+            for (let salesDeliveryItem of this.filterDeleted()) {
+                if (objects.isNull(salesDeliveryItem.discount) || isNaN(salesDeliveryItem.discount)) {
+                    salesDeliveryItem.discount = 0;
+                }
+                count = Number(count) + Number(salesDeliveryItem.price * salesDeliveryItem.quantity - salesDeliveryItem.lineTotal);
+            }
+            this.parent.discountTotal = count;
+        }
+        // 折扣总计为NaN时显示为0
+        if (isNaN(this.parent.discountTotal)) {
+            this.parent.discountTotal = 0;
+        }
+    }
+
 }
 
 /** 销售交货-行 */
@@ -662,6 +707,21 @@ export class SalesDeliveryItem extends BODocumentLine<SalesDeliveryItem> impleme
     constructor() {
         super();
     }
+
+    /** 监听行属性改变 */
+    protected onPropertyChanged(name: string): void {
+        super.onPropertyChanged(name);
+        if (strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_QUANTITY_NAME) ||
+            strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_PRICE_NAME) ||
+            strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_DISCOUNT_NAME)) {
+            this.lineTotal = this.quantity * this.price * (1 - this.discount / 100);
+        }
+        // 行总计为NaN时显示为0
+        if (isNaN(this.lineTotal)) {
+            this.lineTotal = 0;
+        }
+    }
+
     /** 映射的属性名称-编码 */
     static PROPERTY_DOCENTRY_NAME: string = "DocEntry";
     /** 获取-编码 */
@@ -1337,6 +1397,7 @@ export class SalesDeliveryItem extends BODocumentLine<SalesDeliveryItem> impleme
 
     /** 初始化数据 */
     protected init(): void {
+        //
     }
 }
 

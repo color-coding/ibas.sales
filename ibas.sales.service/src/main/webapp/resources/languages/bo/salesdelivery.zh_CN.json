@@ -96,7 +96,7 @@
   "bo_salesdeliveryitem_linetotal": "行总计",
   "bo_salesdeliveryitem_deliverydate": "行交货日期",
   "bo_salesdeliveryitem_openquantity": "剩余未清数量",
-  "bo_salesdeliveryitem_discount": "行折扣",
+  "bo_salesdeliveryitem_discount": "行折扣(%)",
   "bo_salesdeliveryitem_openamount": "未清金额",
   "bo_salesdeliveryitem_treetype": "产品类型",
   "bo_salesdeliveryitem_basisquantity": "基础数量",

@@ -7,7 +7,8 @@
  */
 
 // 模块索引文件，此文件集中导出类
-export * from "./ProductSuit.d";
-export * from "./SalesDelivery.d";
-export * from "./SalesOrder.d";
-export * from "./SalesReturn.d";
+export * from "./BusinessPartnerBalanceJournal.d";
+export * from "./BusinessPartnerGroup.d";
+export * from "./ContactPerson.d";
+export * from "./Customer.d";
+export * from "./Supplier.d";
