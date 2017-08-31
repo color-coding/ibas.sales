@@ -10,6 +10,7 @@ import * as ibas from "ibas/index";
 import { utils } from "openui5/typings/ibas.utils";
 import * as bo from "../../../borep/bo/index";
 import { ISalesOrderListView } from "../../../bsapp/salesorder/index";
+import { BO_CODE_CUSTOMER } from "../../../3rdparty/businesspartner/index";
 
 /**
  * 列表视图-销售订单
@@ -33,7 +34,71 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
             visibleRowCountMode: sap.ui.table.VisibleRowCountMode.Interactive,
             rows: "{/rows}",
             columns: [
-            ]
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_docentry"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "docEntry"
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_customercode"),
+                    template: new sap.m.Link("", {
+                        wrapping: false,
+                        press(event: any): void {
+                            ibas.servicesManager.runLinkService({
+                                boCode: BO_CODE_CUSTOMER,
+                                linkValue: event.getSource().getText()
+                            });
+                        }
+                    }).bindProperty("text", {
+                        path: "customerCode"
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_customername"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "customerName"
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_documenttotal"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "documentTotal"
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_documentstatus"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "documentStatus",
+                        formatter(data: any): any {
+                            return ibas.enums.describe(ibas.emDocumentStatus, data);
+                        }
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_canceled"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "canceled",
+                        formatter(data: any): any {
+                            return ibas.enums.describe(ibas.emYesNo, data);
+                        }
+                    })
+                })
+            ],
+            // tslint:disable-next-line:typedef
+            rowSelectionChange: function (oEvent) {
+                this.setSelectedIndex(this.getSelectedIndex());
+            }
         });
         this.form.addContent(this.table);
         this.page = new sap.m.Page("", {
@@ -150,10 +215,10 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
         let model: sap.ui.model.Model = this.table.getModel(undefined);
         if (!ibas.objects.isNull(model)) {
             // 已存在绑定数据，添加新的
-            let hDatas: any = (<any>model).getData();
-            if (!ibas.objects.isNull(hDatas) && hDatas.rows instanceof Array) {
+            let hDatas: bo.SalesOrder[] = (<any>model).getData();
+            if (!ibas.objects.isNull(hDatas) && hDatas instanceof Array) {
                 for (let item of datas) {
-                    hDatas.rows.push(item);
+                    hDatas.push(item);
                 }
                 model.refresh(false);
                 done = true;
@@ -161,7 +226,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
         }
         if (!done) {
             // 没有显示数据
-            this.table.setModel(new sap.ui.model.json.JSONModel({rows: datas}));
+            this.table.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
         }
         this.table.setBusy(false);
     }
@@ -171,11 +236,9 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
         super.query(criteria);
         this.lastCriteria = criteria;
         // 清除历史数据
-        if (this.isDisplayed) {
-            this.table.setBusy(true);
-            this.table.setFirstVisibleRow(0);
-            this.table.setModel(null);
-        }
+        this.table.setBusy(true);
+        this.table.setFirstVisibleRow(0);
+        this.table.setModel(null);
     }
     /** 获取选择的数据 */
     getSelecteds(): bo.SalesOrder[] {

@@ -9,6 +9,7 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
+import { DataConverter4sl } from "../../borep/DataConverters";
 import { SalesDeliveryEditApp } from "./SalesDeliveryEditApp";
 
 /** 查看应用-销售交货 */
@@ -37,6 +38,13 @@ export class SalesDeliveryViewApp extends ibas.BOViewService<ISalesDeliveryViewV
     /** 视图显示后 */
     protected viewShowed(): void {
         // 视图加载完成
+        if (ibas.objects.isNull(this.viewData)) {
+            // 创建编辑对象实例
+            this.viewData = new bo.SalesDelivery();
+            this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("sys_shell_data_created_new"));
+        }
+        this.view.showSalesDelivery(this.viewData);
+        this.view.showSalesDeliveryItems(this.viewData.salesDeliveryItems.filterDeleted());
     }
     /** 编辑数据，参数：目标数据 */
     protected editData(): void {
@@ -88,7 +96,8 @@ export class SalesDeliveryViewApp extends ibas.BOViewService<ISalesDeliveryViewV
 }
 /** 视图-销售交货 */
 export interface ISalesDeliveryViewView extends ibas.IBOViewView {
-
+    showSalesDelivery(viewData: bo.SalesDelivery): void;
+    showSalesDeliveryItems(salesOrderItems: bo.SalesDeliveryItem[]): void;
 }
 /** 销售交货连接服务映射 */
 export class SalesDeliveryLinkServiceMapping extends ibas.BOLinkServiceMapping {

@@ -37,6 +37,13 @@ export class SalesReturnViewApp extends ibas.BOViewService<ISalesReturnViewView>
     /** 视图显示后 */
     protected viewShowed(): void {
         // 视图加载完成
+        if (ibas.objects.isNull(this.viewData)) {
+            // 创建编辑对象实例
+            this.viewData = new bo.SalesReturn();
+            this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("sys_shell_data_created_new"));
+        }
+        this.view.showSalesReturn(this.viewData);
+        this.view.showSalesReturnItems(this.viewData.salesReturnItems.filterDeleted());
     }
     /** 编辑数据，参数：目标数据 */
     protected editData(): void {
@@ -88,7 +95,8 @@ export class SalesReturnViewApp extends ibas.BOViewService<ISalesReturnViewView>
 }
 /** 视图-销售退货 */
 export interface ISalesReturnViewView extends ibas.IBOViewView {
-
+    showSalesReturn(viewData: bo.SalesReturn): void;
+    showSalesReturnItems(salesOrderItems: bo.SalesReturnItem[]): void;
 }
 /** 销售退货连接服务映射 */
 export class SalesReturnLinkServiceMapping extends ibas.BOLinkServiceMapping {

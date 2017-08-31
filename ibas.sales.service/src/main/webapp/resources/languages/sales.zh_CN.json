@@ -1,6 +1,12 @@
 {
   "sales": "销售管理",
   "sales_icon": "sap-icon://compare",
+  "sales_order_status": "单据状态",
+  "sales_order_time": "单据时间",
+  "sales_order_detailed_information": "单据详细",
+  "sales_order_amount": "单据金额",
+  "sales_basis_information": "基础信息",
+  "sales_distribution_information": "配送信息",
   "sales_func_productsuit": "产品套装",
   "sales_app_productsuit_list": "产品套装列表",
   "sales_app_productsuit_choose": "产品套装选择",
