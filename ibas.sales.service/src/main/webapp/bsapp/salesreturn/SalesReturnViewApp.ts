@@ -69,7 +69,6 @@ export class SalesReturnViewApp extends ibas.BOViewService<ISalesReturnViewView>
         if (typeof criteria === "string") {
             criteria = new ibas.Criteria();
             // 添加查询条件
-
         }
         let boRepository: BORepositorySales = new BORepositorySales();
         boRepository.fetchSalesReturn({

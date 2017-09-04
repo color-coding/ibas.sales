@@ -9,6 +9,9 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
+import { BO_CODE_CUSTOMER, ICustomer } from "../../3rdparty/businesspartner/index";
+import { BO_CODE_MATERIAL, IMaterial } from "../../3rdparty/materials/index";
+
 
 /** 编辑应用-销售交货 */
 export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryEditView, bo.SalesDelivery> {
@@ -35,6 +38,8 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         this.view.createDataEvent = this.createData;
         this.view.addSalesDeliveryItemEvent = this.addSalesDeliveryItem;
         this.view.removeSalesDeliveryItemEvent = this.removeSalesDeliveryItem;
+        this.view.chooseSalesDeliveryCustomerEvent = this.chooseSalesDeliveryCustomer;
+        this.view.chooseSalesDeliveryItemEvent = this.chooseSalesDeliveryItem;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -87,6 +92,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
     }
     /** 待编辑的数据 */
     protected editData: bo.SalesDelivery;
+    protected lineEditData: bo.SalesDeliveryItem;
     /** 保存数据 */
     protected saveData(): void {
         let that: this = this;
@@ -168,6 +174,35 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
             createData();
         }
     }
+    /** 选择销售交货客户事件 */
+    private chooseSalesDeliveryCustomer(): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<ICustomer>({
+            boCode: BO_CODE_CUSTOMER,
+            criteria: [
+                new ibas.Condition(BO_CODE_CUSTOMER,
+                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.customerCode)),
+            ],
+            onCompleted(selecteds: ibas.List<ICustomer>): void {
+                that.editData.customerCode = selecteds.firstOrDefault().code;
+                that.editData.customerName = selecteds.firstOrDefault().name;
+            }
+        });
+    }
+    /** 选择销售交货物料事件 */
+    private chooseSalesDeliveryItem(): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<IMaterial>({
+            boCode: BO_CODE_MATERIAL,
+            criteria: [
+                new ibas.Condition(BO_CODE_MATERIAL,
+                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.docEntry)),
+            ],
+            onCompleted(selecteds: ibas.List<IMaterial>): void {
+                that.lineEditData.itemCode = selecteds.firstOrDefault().code;
+            }
+        });
+    }
     /** 添加销售交货-行事件 */
     addSalesDeliveryItem(): void {
         this.editData.salesDeliveryItems.create();
@@ -214,4 +249,9 @@ export interface ISalesDeliveryEditView extends ibas.IBOEditView {
     removeSalesDeliveryItemEvent: Function;
     /** 显示数据 */
     showSalesDeliveryItems(datas: bo.SalesDeliveryItem[]): void;
+    /** 选择销售交货客户事件 */
+    chooseSalesDeliveryCustomerEvent: Function;
+    /** 选择销售交货物料事件 */
+    chooseSalesDeliveryItemEvent: Function;
+
 }

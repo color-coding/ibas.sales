@@ -30,8 +30,10 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
     addSalesReturnItemEvent: Function;
     /** 删除销售退货-行事件 */
     removeSalesReturnItemEvent: Function;
-    /** 选择销售订单客户事件 */
+    /** 选择销售退货客户事件 */
     chooseSalesReturnCustomerEvent: Function;
+    /** 选择销售退货行物料事件 */
+    chooseSalesReturnItemMaterialEvent: Function;
 
     /** 绘制视图 */
     darw(): any {
@@ -62,9 +64,9 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                     path: "customerCode",
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_customername") }),
-                new sap.m.Input("", {
+                new sap.m.Text("", {
                     type: sap.m.InputType.Text,
-                }).bindProperty("value", {
+                }).bindProperty("text", {
                     path: "customerName",
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_status") }),
@@ -200,10 +202,10 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                         width: "100%",
                         showValueHelp: true,
                         valueHelpRequest: function (): void {
-                            // that.fireViewEvents(that.,
-                            // 获取当前对象
-                            //   this.getBindingContext().getObject()
-                            // );
+                            that.fireViewEvents(that.chooseSalesReturnItemMaterialEvent,
+                                // 获取当前对象
+                                this.getBindingContext().getObject()
+                            );
                         }
                     }).bindProperty("value", {
                         path: "itemCode",
