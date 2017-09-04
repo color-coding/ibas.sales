@@ -64,9 +64,9 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                     path: "customerCode",
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_customername") }),
-                new sap.m.Input("", {
+                new sap.m.Text("", {
                     type: sap.m.InputType.Text,
-                }).bindProperty("value", {
+                }).bindProperty("text", {
                     path: "customerName",
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_status") }),

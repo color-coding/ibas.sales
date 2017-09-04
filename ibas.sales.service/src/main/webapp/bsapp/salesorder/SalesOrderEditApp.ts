@@ -184,6 +184,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
             ],
             onCompleted(selecteds: ibas.List<ICustomer>): void {
                 that.editData.customerCode = selecteds.firstOrDefault().code;
+                that.editData.customerName = selecteds.firstOrDefault().name;
             }
         });
     }
