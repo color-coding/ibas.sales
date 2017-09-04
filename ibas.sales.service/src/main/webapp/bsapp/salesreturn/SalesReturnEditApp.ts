@@ -9,6 +9,8 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
+import { BO_CODE_CUSTOMER, ICustomer } from "../../3rdparty/businesspartner/index";
+import { BO_CODE_MATERIAL, IMaterial } from "../../3rdparty/materials/index";
 
 /** 编辑应用-销售退货 */
 export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditView, bo.SalesReturn> {
@@ -35,6 +37,8 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         this.view.createDataEvent = this.createData;
         this.view.addSalesReturnItemEvent = this.addSalesReturnItem;
         this.view.removeSalesReturnItemEvent = this.removeSalesReturnItem;
+        this.view.chooseSalesReturnCustomerEvent = this.chooseSalesReturnCustomer;
+        this.view.chooseSalesReturnItemMaterialEvent = this.chooseSalesReturnItem;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -87,6 +91,7 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
     }
     /** 待编辑的数据 */
     protected editData: bo.SalesReturn;
+    protected lineEditData: bo.SalesDeliveryItem;
     /** 保存数据 */
     protected saveData(): void {
         let that: this = this;
@@ -168,6 +173,34 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
             createData();
         }
     }
+    /** 选择销售退货客户事件 */
+    private chooseSalesReturnCustomer(): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<ICustomer>({
+            boCode: BO_CODE_CUSTOMER,
+            criteria: [
+                new ibas.Condition(BO_CODE_CUSTOMER,
+                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.customerCode)),
+            ],
+            onCompleted(selecteds: ibas.List<ICustomer>): void {
+                that.editData.customerCode = selecteds.firstOrDefault().code;
+            }
+        });
+    }
+    /** 选择销售退货物料事件 */
+    private chooseSalesReturnItem(): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<IMaterial>({
+            boCode: BO_CODE_MATERIAL,
+            criteria: [
+                new ibas.Condition(BO_CODE_MATERIAL,
+                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.docEntry)),
+            ],
+            onCompleted(selecteds: ibas.List<IMaterial>): void {
+                that.lineEditData.itemCode = selecteds.firstOrDefault().code;
+            }
+        });
+    }
     /** 添加销售退货-行事件 */
     addSalesReturnItem(): void {
         this.editData.salesReturnItems.create();
@@ -214,4 +247,8 @@ export interface ISalesReturnEditView extends ibas.IBOEditView {
     removeSalesReturnItemEvent: Function;
     /** 显示数据 */
     showSalesReturnItems(datas: bo.SalesReturnItem[]): void;
+    /** 选择销售交货客户事件 */
+    chooseSalesReturnCustomerEvent: Function;
+    /** 选择销售交货物料事件 */
+    chooseSalesReturnItemMaterialEvent: Function;
 }

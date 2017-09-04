@@ -9,6 +9,8 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
+import { BO_CODE_CUSTOMER, ICustomer } from "../../3rdparty/businesspartner/index";
+import { BO_CODE_MATERIAL, IMaterial } from "../../3rdparty/materials/index";
 
 /** 编辑应用-销售订单 */
 export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditView, bo.SalesOrder> {
@@ -35,6 +37,8 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         this.view.createDataEvent = this.createData;
         this.view.addSalesOrderItemEvent = this.addSalesOrderItem;
         this.view.removeSalesOrderItemEvent = this.removeSalesOrderItem;
+        this.view.chooseSalesOrderItemMaterialEvent = this.chooseSalesOrderItem;
+        this.view.chooseSalesOrderCustomerEvent = this.chooseSalesOrderCustomer;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -87,6 +91,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
     }
     /** 待编辑的数据 */
     protected editData: bo.SalesOrder;
+    protected lineEditData: bo.SalesDeliveryItem;
     /** 保存数据 */
     protected saveData(): void {
         let that: this = this;
@@ -168,6 +173,34 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
             createData();
         }
     }
+    /** 选择销售订单客户事件 */
+    private chooseSalesOrderCustomer(): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<ICustomer>({
+            boCode: BO_CODE_CUSTOMER,
+            criteria: [
+                new ibas.Condition(BO_CODE_CUSTOMER,
+                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.customerCode)),
+            ],
+            onCompleted(selecteds: ibas.List<ICustomer>): void {
+                that.editData.customerCode = selecteds.firstOrDefault().code;
+            }
+        });
+    }
+    /** 选择销售订单物料事件 */
+    private chooseSalesOrderItem(): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<IMaterial>({
+            boCode: BO_CODE_MATERIAL,
+            criteria: [
+                new ibas.Condition(BO_CODE_MATERIAL,
+                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.docEntry)),
+            ],
+            onCompleted(selecteds: ibas.List<IMaterial>): void {
+                that.lineEditData.itemCode = selecteds.firstOrDefault().code;
+            }
+        });
+    }
     /** 添加销售订单-行事件 */
     addSalesOrderItem(): void {
         this.editData.salesOrderItems.create();
@@ -214,4 +247,8 @@ export interface ISalesOrderEditView extends ibas.IBOEditView {
     removeSalesOrderItemEvent: Function;
     /** 显示数据 */
     showSalesOrderItems(datas: bo.SalesOrderItem[]): void;
+    /** 选择销售订单客户事件 */
+    chooseSalesOrderCustomerEvent: Function;
+    /** 选择销售订单行物料事件 */
+    chooseSalesOrderItemMaterialEvent: Function;
 }
