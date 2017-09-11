@@ -26,10 +26,10 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
     darw(): any {
         let that: this = this;
         this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
-            editable: true,
+            editable: false,
             layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
             singleContainerFullSize: false,
-            adjustLabelSpan: false,
+            adjustLabelSpan: true,
             labelSpanL: 2,
             labelSpanM: 2,
             labelSpanS: 12,
@@ -82,15 +82,17 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
                         pattern: "yyyy-MM-dd",
                         strictParsing: true,
                     }),
+                    formatOptions: {
+                        style: "short",
+                    }
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_postingdate") }),
                 new sap.m.Text("", {
                 }).bindProperty("text", {
                     path: "postingDate",
-                    type: new sap.ui.model.type.Date({
-                        pattern: "yyyy-MM-dd",
-                        strictParsing: true,
-                    }),
+                    formatter(data: Date, format: string): any {
+                        return data;
+                    }
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_deliverydate") }),
                 new sap.m.Text("", {
@@ -100,11 +102,19 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
                         pattern: "yyyy-MM-dd",
                         strictParsing: true,
                     }),
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_deliverydate") }),
+                new sap.m.Text("", {
+                }).bindProperty("text", {
+                    path: "deliveryDate",
+                    formatter(data: any): any {
+                        return ibas.dates.toString(data);
+                    }
                 })
             ]
         });
         this.viewBottomForm = new sap.ui.layout.form.SimpleForm("", {
-            editable: true,
+            editable: false,
             layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
             labelSpanL: 2,
             labelSpanM: 2,

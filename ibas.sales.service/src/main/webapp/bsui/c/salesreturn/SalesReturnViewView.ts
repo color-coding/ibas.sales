@@ -26,7 +26,7 @@ export class SalesReturnViewView extends ibas.BOViewView implements ISalesReturn
     darw(): any {
         let that: this = this;
         this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
-            editable: true,
+            editable: false,
             layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
             singleContainerFullSize: false,
             adjustLabelSpan: false,
@@ -104,7 +104,7 @@ export class SalesReturnViewView extends ibas.BOViewView implements ISalesReturn
             ]
         });
         this.viewBottomForm = new sap.ui.layout.form.SimpleForm("", {
-            editable: true,
+            editable: false,
             layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
             labelSpanL: 2,
             labelSpanM: 2,

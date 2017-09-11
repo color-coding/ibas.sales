@@ -47,24 +47,42 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
             columnsL: 2,
             columnsM: 1,
             columnsS: 1,
-            content: [new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_basis_information") }),
-            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_customercode") }),
-            new sap.m.Input("", {
-                placeholder: ibas.i18n.prop("bo_salesorder_customercode"),
-                tooltip: ibas.i18n.prop("bo_salesorder_customercode"),
-                showValueHelp: true,
-                valueHelpRequest: function (): void {
-                    that.fireViewEvents(that.chooseSalesOrderCustomerEvent);
-                }
-            }).bindProperty("value", {
-                path: "customerCode",
-            }),
-            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_customername") }),
-            new sap.m.Text("", {
-                type: sap.m.InputType.Text,
-            }).bindProperty("text", {
-                path: "customerName",
-            })
+            content: [
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_basis_information") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_customercode") }),
+                new sap.m.Input("", {
+                    placeholder: ibas.i18n.prop("bo_salesorder_customercode"),
+                    tooltip: ibas.i18n.prop("bo_salesorder_customercode"),
+                    showValueHelp: true,
+                    valueHelpRequest: function (): void {
+                        that.fireViewEvents(that.chooseSalesOrderCustomerEvent);
+                    }
+                }).bindProperty("value", {
+                    path: "customerCode",
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_customername") }),
+                new sap.m.Text("", {
+                    type: sap.m.InputType.Text,
+                }).bindProperty("text", {
+                    path: "customerName",
+                }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_status") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentstatus") }),
+                new sap.m.Select("", {
+                    showSecondaryValues: true,
+                    items: utils.createComboBoxItems(ibas.emDocumentStatus),
+                }).bindProperty("selectedKey", {
+                    path: "documentStatus",
+                    type: "sap.ui.model.type.Integer",
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_canceled") }),
+                new sap.m.Select("", {
+                    showSecondaryValues: true,
+                    items: utils.createComboBoxItems(ibas.emYesNo),
+                }).bindProperty("selectedKey", {
+                    path: "canceled",
+                    type: "sap.ui.model.type.Integer",
+                })
             ]
         });
         this.viewBottomForm = new sap.ui.layout.form.SimpleForm("", {
@@ -84,49 +102,41 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 }).bindProperty("value", {
                     path: "/remarks"
                 }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_salesorder_documenttotal") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_amount") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documenttotal") }),
                 new sap.m.Input("", {
                     width: "100px",
-                    type: sap.m.InputType.Number
+                    type: sap.m.InputType.Number,
                 }).bindProperty("value", {
-                    path: "/DocumentTotal"
+                    path: "/DocumentTotal",
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_discounttotal") }),
+                new sap.m.Input("", {
+                    width: "100px",
+                    type: sap.m.InputType.Number,
+                    description: "RMB"
+                }).bindProperty("value", {
+                    path: "/DiscountTotal",
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_time") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentdate") }),
                 new sap.m.DatePicker("", {
                     valueFormat: "yyyy-MM-dd",
-                }).bindProperty("dateValue", {
+                }).bindProperty("text", {
                     path: "documentDate",
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_postingdate") }),
                 new sap.m.DatePicker("", {
                     valueFormat: "yyyy-MM-dd",
-                }).bindProperty("dateValue", {
+                }).bindProperty("text", {
                     path: "postingDate",
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_deliverydate") }),
                 new sap.m.DatePicker("", {
                     valueFormat: "yyyy-MM-dd",
-                }).bindProperty("dateValue", {
+                }).bindProperty("text", {
                     path: "deliveryDate",
-                }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_status") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentstatus") }),
-                new sap.m.Select("", {
-                    showSecondaryValues: true,
-                    items: utils.createComboBoxItems(ibas.emDocumentStatus),
-                }).bindProperty("selectedKey", {
-                    path: "documentStatus",
-                    type: "sap.ui.model.type.Integer",
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_canceled") }),
-                new sap.m.Select("", {
-                    showSecondaryValues: true,
-                    items: utils.createComboBoxItems(ibas.emYesNo),
-                }).bindProperty("selectedKey", {
-                    path: "canceled",
-                    type: "sap.ui.model.type.Integer",
-                }),
+                })
             ]
         });
         // 子对象列表

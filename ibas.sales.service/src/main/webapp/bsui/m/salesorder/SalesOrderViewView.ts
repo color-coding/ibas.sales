@@ -21,7 +21,6 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
     private viewTopForm: sap.ui.layout.form.SimpleForm;
     private viewBottomForm: sap.ui.layout.form.SimpleForm;
     private tableSalesOrderItem: sap.m.List;
-    private childEditForm: sap.ui.layout.form.SimpleForm;
 
     /** 绘制视图 */
     darw(): any {
@@ -73,10 +72,16 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
                 }).bindProperty("text", {
                     path: "remarks"
                 }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_salesorder_documenttotal") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_amount") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documenttotal") }),
                 new sap.m.Text("", {
                 }).bindProperty("text", {
                     path: "DocumentTotal"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_discounttotal") }),
+                new sap.m.Text("", {
+                }).bindProperty("text", {
+                    path: "DiscountTotal"
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_time") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentdate") }),
@@ -140,9 +145,9 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
                     new sap.m.Title("", {
                         text: "单据行",
                         level: "H2"
-                    }),
+                    })
                 ]
-            }),
+            })
         });
         let list_child_customer: sap.m.ObjectListItem = new sap.m.ObjectListItem("", {
             title: "{itemCode}",
@@ -159,16 +164,15 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
             type: sap.ui.model.type.Currency,
             formatOptions: { showMeasure: false }
         });
-
         that.tableSalesOrderItem.bindItems({
             path: "/rows",
-            template: list_child_customer,
+            template: list_child_customer
         });
         this.mainLayout = new sap.ui.layout.VerticalLayout("", {
             content: [
                 this.viewTopForm,
                 this.tableSalesOrderItem,
-                this.viewBottomForm,
+                this.viewBottomForm
             ]
         });
         this.page = new sap.m.Page("", {

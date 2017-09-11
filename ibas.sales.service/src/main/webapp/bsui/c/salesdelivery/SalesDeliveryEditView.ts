@@ -21,6 +21,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
     private viewTopForm: sap.ui.layout.form.SimpleForm;
     private viewBottomForm: sap.ui.layout.form.SimpleForm;
     private tableSalesDeliveryItem: sap.ui.table.Table;
+    private objPagelayout: sap.uxap.ObjectPageLayout;
 
     /** 删除数据事件 */
     deleteDataEvent: Function;
@@ -33,12 +34,12 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
     /** 选择销售交货客户事件 */
     chooseSalesDeliveryCustomerEvent: Function;
     /** 选择销售交货物料事件 */
-    chooseSalesDeliveryItemEvent: Function;
+    chooseSalesDeliveryItemMaterialEvent: Function;
 
     /** 绘制视图 */
     darw(): any {
         let that: this = this;
-        this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
+        /* this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
             layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
             singleContainerFullSize: false,
@@ -51,62 +52,31 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
             columnsM: 1,
             columnsS: 1,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_basis_information") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_customercode") }),
-                new sap.m.Input("", {
-                    placeholder: ibas.i18n.prop("bo_salesdelivery_customercode"),
-                    tooltip: ibas.i18n.prop("bo_salesdelivery_customercode"),
-                    showValueHelp: true,
-                    valueHelpRequest: function (): void {
-                        that.fireViewEvents(that.chooseSalesDeliveryCustomerEvent);
-                    }
-                }).bindProperty("value", {
-                    path: "customerCode",
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_customername") }),
-                new sap.m.Text("", {
-                    type: sap.m.InputType.Text,
-                }).bindProperty("text", {
-                    path: "customerName",
-                }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_status") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documentstatus") }),
-                new sap.m.Select("", {
-                    showSecondaryValues: true,
-                    items: utils.createComboBoxItems(ibas.emDocumentStatus),
-                }).bindProperty("selectedKey", {
-                    path: "documentStatus",
-                    type: "sap.ui.model.type.Integer",
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_canceled") }),
-                new sap.m.Select("", {
-                    showSecondaryValues: true,
-                    items: utils.createComboBoxItems(ibas.emYesNo),
-                }).bindProperty("selectedKey", {
-                    path: "canceled",
-                    type: "sap.ui.model.type.Integer",
-                }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_time") }),
+                new sap.ui.core.Title("", {}),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documentdate") }),
                 new sap.m.DatePicker("", {
-                    valueFormat: "yyyy-MM-dd",
+                    valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                    displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                 }).bindProperty("dateValue", {
-                    path: "documentDate",
+                    path: "/documentDate"
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_postingdate") }),
                 new sap.m.DatePicker("", {
-                    valueFormat: "yyyy-MM-dd",
+                    valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                    displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                 }).bindProperty("dateValue", {
                     path: "postingDate",
                 }),
+                new sap.ui.core.Title("", {}),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_deliverydate") }),
                 new sap.m.DatePicker("", {
-                    valueFormat: "yyyy-MM-dd",
+                    valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                    displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                 }).bindProperty("dateValue", {
                     path: "deliveryDate",
                 })
             ],
-        });
+        }); */
         this.viewBottomForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
             layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
@@ -118,6 +88,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
             columnsM: 1,
             columnsS: 1,
             content: [
+                new sap.ui.core.Title("", {}),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_salesdelivery_remarks") }),
                 new sap.m.TextArea("", {
                     rows: 5,
@@ -136,26 +107,9 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                 new sap.m.Input("", {
                     width: "100px",
                     type: sap.m.InputType.Number,
+                    description: "RMB"
                 }).bindProperty("value", {
                     path: "/DiscountTotal",
-                }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_distribution_information") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_contactperson") }),
-                new sap.m.Input("", {
-                    type: sap.m.InputType.Number,
-                }).bindProperty("value", {
-                    path: "contactPerson",
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_phone") }),
-                new sap.m.Input("", {
-                    type: sap.m.InputType.Number,
-                }).bindProperty("value", {
-                    path: "phone",
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_address") }),
-                new sap.m.Input("", {
-                }).bindProperty("value", {
-                    path: "address",
                 })
             ],
         });
@@ -203,7 +157,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                         width: "100%",
                         showValueHelp: true,
                         valueHelpRequest: function (): void {
-                            that.fireViewEvents(that.chooseSalesDeliveryItemEvent,
+                            that.fireViewEvents(that.chooseSalesDeliveryItemMaterialEvent,
                                 // 获取当前对象
                                 this.getBindingContext().getObject()
                             );
@@ -250,12 +204,204 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                 })
             ]
         });
-        this.mainLayout = new sap.ui.layout.VerticalLayout("", {
+        /* this.mainLayout = new sap.ui.layout.VerticalLayout("", {
             content: [
                 this.viewTopForm,
                 this.tableSalesDeliveryItem,
                 this.viewBottomForm,
+                this.objPagelayout
             ],
+        }); */
+        this.objPagelayout = new sap.uxap.ObjectPageLayout("", {
+            sections: [
+                new sap.uxap.ObjectPageSection("", {
+                    title: ibas.i18n.prop("sales_basis_information"),
+                    subSections: [
+                        new sap.uxap.ObjectPageSubSection("", {
+                            blocks: [
+                                new sap.ui.layout.form.SimpleForm("", {
+                                    editable: true,
+                                    layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
+                                    singleContainerFullSize: false,
+                                    adjustLabelSpan: false,
+                                    labelSpanL: 2,
+                                    labelSpanM: 2,
+                                    labelSpanS: 12,
+                                    columnsXL: 2,
+                                    columnsL: 2,
+                                    columnsM: 1,
+                                    columnsS: 1,
+                                    content: [
+                                        new sap.ui.core.Title("", {}),
+                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_customercode") }),
+                                        new sap.m.Input("", {
+                                            placeholder: ibas.i18n.prop("bo_salesdelivery_customercode"),
+                                            tooltip: ibas.i18n.prop("bo_salesdelivery_customercode"),
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseSalesDeliveryCustomerEvent);
+                                            }
+                                        }).bindProperty("value", {
+                                            path: "customerCode",
+                                        }),
+                                        new sap.ui.core.Title("", {}),
+                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_customername") }),
+                                        new sap.m.Input("", {
+                                            type: sap.m.InputType.Text,
+                                            editable: false
+                                        }).bindProperty("value", {
+                                            path: "customerName",
+                                        }),
+                                    ]
+                                })
+                            ]
+                        })
+                    ]
+                }),
+                new sap.uxap.ObjectPageSection("", {
+                    title: ibas.i18n.prop("bo_salesdelivery_salesdeliveryitems"),
+                    subSections: [
+                        new sap.uxap.ObjectPageSubSection("", {
+                            blocks: [
+                                this.tableSalesDeliveryItem,
+                                this.viewBottomForm
+                            ]
+                        })
+                    ]
+                }),
+                new sap.uxap.ObjectPageSection("", {
+                    title: ibas.i18n.prop("bo_salesdelivery_documentstatus"),
+                    subSections: [
+                        new sap.uxap.ObjectPageSubSection("", {
+                            blocks: [
+                                new sap.ui.layout.form.SimpleForm("", {
+                                    editable: true,
+                                    layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
+                                    singleContainerFullSize: false,
+                                    adjustLabelSpan: false,
+                                    labelSpanL: 2,
+                                    labelSpanM: 2,
+                                    labelSpanS: 12,
+                                    columnsXL: 2,
+                                    columnsL: 2,
+                                    columnsM: 1,
+                                    columnsS: 1,
+                                    content: [
+                                        new sap.ui.core.Title("", {}),
+                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documentstatus") }),
+                                        new sap.m.Select("", {
+                                            showSecondaryValues: false,
+                                            items: utils.createComboBoxItems(ibas.emDocumentStatus),
+                                        }).bindProperty("selectedKey", {
+                                            path: "documentStatus",
+                                            type: "sap.ui.model.type.Integer",
+                                        }),
+                                        new sap.ui.core.Title("", {}),
+                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_canceled") }),
+                                        new sap.m.Select("", {
+                                            showSecondaryValues: false,
+                                            items: utils.createComboBoxItems(ibas.emYesNo),
+                                        }).bindProperty("selectedKey", {
+                                            path: "canceled",
+                                            type: "sap.ui.model.type.Integer",
+                                        })
+                                    ]
+                                })
+                            ]
+                        })
+                    ]
+                }),
+                new sap.uxap.ObjectPageSection("", {
+                    title: ibas.i18n.prop("sales_distribution_information"),
+                    subSections: [
+                        new sap.uxap.ObjectPageSubSection("", {
+                            blocks: [
+                                new sap.ui.layout.form.SimpleForm("", {
+                                    editable: true,
+                                    layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
+                                    singleContainerFullSize: false,
+                                    adjustLabelSpan: false,
+                                    labelSpanL: 2,
+                                    labelSpanM: 2,
+                                    labelSpanS: 12,
+                                    columnsXL: 2,
+                                    columnsL: 2,
+                                    columnsM: 1,
+                                    columnsS: 1,
+                                    content: [
+                                        new sap.ui.core.Title("", {}),
+                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_contactperson") }),
+                                        new sap.m.Input("", {
+                                            type: sap.m.InputType.Number,
+                                        }).bindProperty("value", {
+                                            path: "contactPerson",
+                                        }),
+                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_phone") }),
+                                        new sap.m.Input("", {
+                                            type: sap.m.InputType.Number,
+                                        }).bindProperty("value", {
+                                            path: "phone",
+                                        }),
+                                        new sap.ui.core.Title("", {}),
+                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_address") }),
+                                        new sap.m.Input("", {
+                                        }).bindProperty("value", {
+                                            path: "address",
+                                        })
+                                    ]
+                                })
+                            ]
+                        })
+                    ]
+                }),
+                new sap.uxap.ObjectPageSection("", {
+                    title: ibas.i18n.prop("sales_order_time"),
+                    subSections: [
+                        new sap.uxap.ObjectPageSubSection("", {
+                            blocks: [
+                                new sap.ui.layout.form.SimpleForm("", {
+                                    editable: true,
+                                    layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
+                                    singleContainerFullSize: false,
+                                    adjustLabelSpan: false,
+                                    labelSpanL: 2,
+                                    labelSpanM: 2,
+                                    labelSpanS: 12,
+                                    columnsXL: 2,
+                                    columnsL: 2,
+                                    columnsM: 1,
+                                    columnsS: 1,
+                                    content: [
+                                        new sap.ui.core.Title("", {}),
+                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documentdate") }),
+                                        new sap.m.DatePicker("", {
+                                            valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                            displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                        }).bindProperty("dateValue", {
+                                            path: "/documentDate"
+                                        }),
+                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_postingdate") }),
+                                        new sap.m.DatePicker("", {
+                                            valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                            displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                        }).bindProperty("dateValue", {
+                                            path: "postingDate",
+                                        }),
+                                        new sap.ui.core.Title("", {}),
+                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_deliverydate") }),
+                                        new sap.m.DatePicker("", {
+                                            valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                            displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                        }).bindProperty("dateValue", {
+                                            path: "deliveryDate",
+                                        })
+                                    ]
+                                })
+                            ]
+                        })
+                    ]
+                })
+            ]
         });
         this.page = new sap.m.Page("", {
             showHeader: false,
@@ -314,7 +460,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                     }),
                 ],
             }),
-            content: [this.mainLayout],
+            content: [this.objPagelayout],
         });
         this.id = this.page.getId();
         return this.page;
@@ -344,8 +490,8 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
 
     /** 显示数据 */
     showSalesDelivery(data: bo.SalesDelivery): void {
-        this.mainLayout.setModel(new sap.ui.model.json.JSONModel(data));
-        this.mainLayout.bindObject("/");
+        this.objPagelayout.setModel(new sap.ui.model.json.JSONModel(data));
+        this.objPagelayout.bindObject("/");
         // 监听属性改变，并更新控件
         utils.refreshModelChanged(this.mainLayout, data);
         // 改变视图状态
@@ -353,8 +499,8 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
     }
     /** 显示数据 */
     showSalesDeliveryItems(datas: bo.SalesDeliveryItem[]): void {
-        this.tableSalesDeliveryItem.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
+        this.objPagelayout.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
         // 监听属性改变，并更新控件
-        utils.refreshModelChanged(this.tableSalesDeliveryItem, datas);
+        utils.refreshModelChanged(this.objPagelayout, datas);
     }
 }
