@@ -26,10 +26,10 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
     darw(): any {
         let that: this = this;
         this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
-            editable: true,
+            editable: false,
             layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
             singleContainerFullSize: false,
-            adjustLabelSpan: false,
+            adjustLabelSpan: true,
             labelSpanL: 2,
             labelSpanM: 2,
             labelSpanS: 12,
@@ -81,7 +81,7 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
                     type: new sap.ui.model.type.Date({
                         pattern: "yyyy-MM-dd",
                         strictParsing: true,
-                    }),
+                    })
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_postingdate") }),
                 new sap.m.Text("", {
@@ -90,21 +90,20 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
                     type: new sap.ui.model.type.Date({
                         pattern: "yyyy-MM-dd",
                         strictParsing: true,
-                    }),
+                    })
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_deliverydate") }),
                 new sap.m.Text("", {
                 }).bindProperty("text", {
-                    path: "deliveryDate",
                     type: new sap.ui.model.type.Date({
                         pattern: "yyyy-MM-dd",
                         strictParsing: true,
-                    }),
+                    })
                 })
             ]
         });
         this.viewBottomForm = new sap.ui.layout.form.SimpleForm("", {
-            editable: true,
+            editable: false,
             layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
             labelSpanL: 2,
             labelSpanM: 2,

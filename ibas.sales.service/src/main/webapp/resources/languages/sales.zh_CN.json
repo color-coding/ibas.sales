@@ -7,6 +7,8 @@
   "sales_order_amount": "单据金额",
   "sales_basis_information": "基础信息",
   "sales_distribution_information": "配送信息",
+  "sales_order_cancle": "取消",
+  "sales_order_finish": "完成",
   "sales_func_productsuit": "产品套装",
   "sales_app_productsuit_list": "产品套装列表",
   "sales_app_productsuit_choose": "产品套装选择",

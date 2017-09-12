@@ -70,7 +70,6 @@ export class SalesOrderViewApp extends ibas.BOViewService<ISalesOrderViewView> {
         if (typeof criteria === "string") {
             criteria = new ibas.Criteria();
             // 添加查询条件
-
         }
         let boRepository: BORepositorySales = new BORepositorySales();
         boRepository.fetchSalesOrder({

@@ -39,7 +39,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         this.view.addSalesDeliveryItemEvent = this.addSalesDeliveryItem;
         this.view.removeSalesDeliveryItemEvent = this.removeSalesDeliveryItem;
         this.view.chooseSalesDeliveryCustomerEvent = this.chooseSalesDeliveryCustomer;
-        this.view.chooseSalesDeliveryItemEvent = this.chooseSalesDeliveryItem;
+        this.view.chooseSalesDeliveryItemMaterialEvent = this.chooseSalesDeliveryItemMaterial;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -190,7 +190,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         });
     }
     /** 选择销售交货物料事件 */
-    private chooseSalesDeliveryItem(): void {
+    private chooseSalesDeliveryItemMaterial(): void {
         let that: this = this;
         ibas.servicesManager.runChooseService<IMaterial>({
             boCode: BO_CODE_MATERIAL,
@@ -252,6 +252,6 @@ export interface ISalesDeliveryEditView extends ibas.IBOEditView {
     /** 选择销售交货客户事件 */
     chooseSalesDeliveryCustomerEvent: Function;
     /** 选择销售交货物料事件 */
-    chooseSalesDeliveryItemEvent: Function;
+    chooseSalesDeliveryItemMaterialEvent: Function;
 
 }
