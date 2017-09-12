@@ -81,35 +81,24 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
                     type: new sap.ui.model.type.Date({
                         pattern: "yyyy-MM-dd",
                         strictParsing: true,
-                    }),
-                    formatOptions: {
-                        style: "short",
-                    }
+                    })
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_postingdate") }),
                 new sap.m.Text("", {
                 }).bindProperty("text", {
                     path: "postingDate",
-                    formatter(data: Date, format: string): any {
-                        return data;
-                    }
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_deliverydate") }),
-                new sap.m.Text("", {
-                }).bindProperty("text", {
-                    path: "deliveryDate",
                     type: new sap.ui.model.type.Date({
                         pattern: "yyyy-MM-dd",
                         strictParsing: true,
-                    }),
+                    })
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_deliverydate") }),
                 new sap.m.Text("", {
                 }).bindProperty("text", {
-                    path: "deliveryDate",
-                    formatter(data: any): any {
-                        return ibas.dates.toString(data);
-                    }
+                    type: new sap.ui.model.type.Date({
+                        pattern: "yyyy-MM-dd",
+                        strictParsing: true,
+                    })
                 })
             ]
         });
