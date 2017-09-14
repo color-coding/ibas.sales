@@ -10,7 +10,6 @@ import * as ibas from "ibas/index";
 import { utils } from "openui5/typings/ibas.utils";
 import * as bo from "../../../borep/bo/index";
 import { ISalesOrderListView } from "../../../bsapp/salesorder/index";
-import { SalesOrderListView as cSalesOrderListView } from "../../c/salesorder/index";
 
 /**
  * 视图-SalesOrder
@@ -176,22 +175,6 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
             content: [this.table]
         });
         this.id = this.page.getId();
-        // 添加列表自动查询事件
-        // utils.triggerNextResults({
-        //     listener: this.table,
-        //     next(data: any): void {
-        //         if (ibas.objects.isNull(that.lastCriteria)) {
-        //             return;
-        //         }
-        //         let criteria: ibas.ICriteria = that.lastCriteria.next(data);
-        //         if (ibas.objects.isNull(criteria)) {
-        //             return;
-        //         }
-        //         ibas.logger.log(ibas.emMessageLevel.DEBUG, "result: {0}", criteria.toString());
-        //         that.fireViewEvents(that.fetchDataEvent, criteria);
-        //     }
-        // });
-
         return this.page;
     }
     /** 嵌入查询面板 */
