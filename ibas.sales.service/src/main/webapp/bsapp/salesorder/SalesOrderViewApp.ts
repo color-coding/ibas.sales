@@ -55,12 +55,41 @@ export class SalesOrderViewApp extends ibas.BOViewService<ISalesOrderViewView> {
     }
     /** 运行,覆盖原方法 */
     run(...args: any[]): void {
-        if (arguments[0] instanceof bo.SalesOrder) {
-            this.viewData = arguments[0];
-            this.show();
-        } else {
-            super.run();
+        let that: this = this;
+        if (ibas.objects.instanceOf(arguments[0], bo.SalesOrder)) {
+            // 尝试重新查询编辑对象
+            let criteria: ibas.ICriteria = arguments[0].criteria();
+            if (!ibas.objects.isNull(criteria) && criteria.conditions.length > 0) {
+                // 有效的查询对象查询
+                let boRepository: BORepositorySales = new BORepositorySales();
+                boRepository.fetchSalesOrder({
+                    criteria: criteria,
+                    onCompleted(opRslt: ibas.IOperationResult<bo.SalesOrder>): void {
+                        let data: bo.SalesOrder;
+                        if (opRslt.resultCode === 0) {
+                            data = opRslt.resultObjects.firstOrDefault();
+                        }
+                        if (ibas.objects.instanceOf(data, bo.SalesOrder)) {
+                            // 查询到了有效数据
+                            that.viewData = data;
+                            that.show();
+                        } else {
+                            // 数据重新检索无效
+                            that.messages({
+                                type: ibas.emMessageType.WARNING,
+                                message: ibas.i18n.prop("sys_shell_data_deleted_and_created"),
+                                onCompleted(): void {
+                                    that.show();
+                                }
+                            });
+                        }
+                    }
+                });
+                // 开始查询数据
+                return;
+            }
         }
+        super.run();
     }
     private viewData: bo.SalesOrder;
     /** 查询数据 */
