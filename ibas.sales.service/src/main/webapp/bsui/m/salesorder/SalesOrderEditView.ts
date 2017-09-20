@@ -130,6 +130,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 new sap.m.DatePicker("", {
                     valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                     displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+
                 }).bindProperty("dateValue", {
                     path: "postingDate",
                 }),
@@ -137,8 +138,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 new sap.m.DatePicker("", {
                     valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                     displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                }).bindProperty("dateValue", {
-                    path: "deliveryDate",
+                }).bindProperty("dateValue", {: "deliveryDate",
                 })
             ]
         });
