@@ -14,8 +14,9 @@ import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.materials.MyConfiguration;
 import org.colorcoding.ibas.materials.data.emItemType;
-import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.MyConsts;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
 
 /**
@@ -23,7 +24,7 @@ import org.colorcoding.ibas.sales.data.emProductTreeType;
  * 
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = SalesReturnItem.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
+@XmlType(name = SalesReturnItem.BUSINESS_OBJECT_NAME, namespace = MyConsts.NAMESPACE_BO)
 public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements ISalesReturnItem {
 
 	/**
