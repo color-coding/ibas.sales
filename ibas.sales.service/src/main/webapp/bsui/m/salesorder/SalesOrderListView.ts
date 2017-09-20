@@ -27,7 +27,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
     /** 绘制视图 */
     darw(): any {
         let that: this = this;
-        this.table = new sap.m.List("", {
+        this.list = new sap.m.List("", {
             inset: false,
             growing: true,
             growingThreshold: ibas.config.get(utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 15),
@@ -122,7 +122,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
             type: sap.ui.model.type.Currency,
             formatOptions: { showMeasure: false }
         });
-        this.table.bindItems({
+        this.list.bindItems({
             path: "/rows",
             template: list_item_object,
         });
@@ -173,25 +173,23 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                 ],
 
             }),
-            content: [this.table]
+            content: [this.list]
         });
         this.id = this.page.getId();
-        // 添加列表自动查询事件
-        // utils.triggerNextResults({
-        //     listener: this.table,
-        //     next(data: any): void {
-        //         if (ibas.objects.isNull(that.lastCriteria)) {
-        //             return;
-        //         }
-        //         let criteria: ibas.ICriteria = that.lastCriteria.next(data);
-        //         if (ibas.objects.isNull(criteria)) {
-        //             return;
-        //         }
-        //         ibas.logger.log(ibas.emMessageLevel.DEBUG, "result: {0}", criteria.toString());
-        //         that.fireViewEvents(that.fetchDataEvent, criteria);
-        //     }
-        // });
-
+        utils.triggerNextResults({
+            listener: this.list,
+            next(data: any): void {
+                if (ibas.objects.isNull(that.lastCriteria)) {
+                    return;
+                }
+                let criteria: ibas.ICriteria = that.lastCriteria.next(data);
+                if (ibas.objects.isNull(criteria)) {
+                    return;
+                }
+                ibas.logger.log(ibas.emMessageLevel.DEBUG, "result: {0}", criteria.toString());
+                that.fireViewEvents(that.fetchDataEvent, criteria);
+            }
+        });
         return this.page;
     }
     /** 嵌入查询面板 */
@@ -201,17 +199,17 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
     }
     private page: sap.m.Page;
     private form: sap.ui.layout.VerticalLayout;
-    private table: sap.m.List;
+    private list: sap.m.List;
     /** 显示数据 */
     showData(datas: bo.SalesOrder[]): void {
         let done: boolean = false;
-        let model: sap.ui.model.Model = this.table.getModel(undefined);
+        let model: sap.ui.model.Model = this.list.getModel(undefined);
         if (!ibas.objects.isNull(model)) {
             // 已存在绑定数据，添加新的
-            let hDatas: bo.SalesOrder[] = (<any>model).getData();
-            if (!ibas.objects.isNull(hDatas) && hDatas instanceof Array) {
+            let hDatas: any= (<any>model).getData();
+            if (!ibas.objects.isNull(hDatas) && hDatas.rows instanceof Array) {
                 for (let item of datas) {
-                    hDatas.push(item);
+                     hDatas.rows.push(item);
                 }
                 model.refresh(false);
                 done = true;
@@ -219,9 +217,9 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
         }
         if (!done) {
             // 没有显示数据
-            this.table.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
+            this.list.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
         }
-        this.table.setBusy(false);
+        this.list.setBusy(false);
     }
     private lastCriteria: ibas.ICriteria;
     /** 记录上次查询条件，表格滚动时自动触发 */
@@ -229,9 +227,9 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
         super.query(criteria);
         this.lastCriteria = criteria;
         // 清除历史数据
-        this.table.setBusy(true);
-        this.table.setSelectedItemById("0", true);
-        this.table.setModel(null);
+        this.list.setBusy(true);
+        this.list.setSelectedItemById("0", true);
+        this.list.setModel(null);
     }
     /** 获取选择的数据 */
     getSelecteds(): bo.SalesOrder[] {
