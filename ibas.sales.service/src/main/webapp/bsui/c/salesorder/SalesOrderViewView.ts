@@ -95,6 +95,7 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_deliverydate") }),
                 new sap.m.Text("", {
                 }).bindProperty("text", {
+                    path: "deliveryDate",
                     type: new sap.ui.model.type.Date({
                         pattern: "yyyy-MM-dd",
                         strictParsing: true,
