@@ -11,15 +11,14 @@ import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
-import org.colorcoding.ibas.materials.MyConfiguration;
-import org.colorcoding.ibas.sales.MyConsts;
+import org.colorcoding.ibas.sales.MyConfiguration;
 
 /**
  * 获取-产品套装-项目
  * 
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = ProductSuitItem.BUSINESS_OBJECT_NAME, namespace = MyConsts.NAMESPACE_BO)
+@XmlType(name = ProductSuitItem.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements IProductSuitItem {
 
 	/**

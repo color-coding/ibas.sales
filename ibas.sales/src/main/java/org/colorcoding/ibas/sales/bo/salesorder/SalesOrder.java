@@ -18,16 +18,15 @@ import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.BOCode;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
-import org.colorcoding.ibas.materials.MyConfiguration;
-import org.colorcoding.ibas.sales.MyConsts;
+import org.colorcoding.ibas.sales.MyConfiguration;
 
 /**
  * 获取-销售订单
  * 
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = SalesOrder.BUSINESS_OBJECT_NAME, namespace = MyConsts.NAMESPACE_BO)
-@XmlRootElement(name = SalesOrder.BUSINESS_OBJECT_NAME, namespace = MyConsts.NAMESPACE_BO)
+@XmlType(name = SalesOrder.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
+@XmlRootElement(name = SalesOrder.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BOCode(SalesOrder.BUSINESS_OBJECT_CODE)
 public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrder {
 
