@@ -139,7 +139,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                     valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                     displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                 }).bindProperty("dateValue", {
-                    path: "deliveryDate",
+                    path: "deliveryDate"
                 })
             ]
         });
