@@ -121,6 +121,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                 new sap.m.Input("", {
                     width: "100px",
                     type: sap.m.InputType.Number,
+                    description: "RMB"
                 }).bindProperty("value", {
                     path: "/DiscountTotal",
                 })
