@@ -8,6 +8,15 @@
 
 import * as ibas from "ibas/index";
 
+import * as productsuitApps from "../../bsapp/productsuit/index";
+import * as salesdeliveryApps from "../../bsapp/salesdelivery/index";
+import * as salesorderApps from "../../bsapp/salesorder/index";
+import * as salesreturnApps from "../../bsapp/salesreturn/index";
+import * as productsuitViews from "./productsuit/index";
+import * as salesdeliveryViews from "./salesdelivery/index";
+import * as salesorderViews from "./salesorder/index";
+import * as salesreturnViews from "./salesreturn/index";
+
 /**
  * 视图导航
  */
@@ -20,6 +29,33 @@ export default class Navigation extends ibas.ViewNavigation {
     protected newView(id: string): ibas.IView {
         let view: ibas.IView = null;
         switch (id) {
+            case salesorderApps.SalesOrderListApp.APPLICATION_ID:
+                view = new salesorderViews.SalesOrderListView();
+                break;
+            case salesorderApps.SalesOrderEditApp.APPLICATION_ID:
+                view = new salesorderViews.SalesOrderEditView();
+                break;
+            case salesorderApps.SalesOrderViewApp.APPLICATION_ID:
+                view = new salesorderViews.SalesOrderViewView();
+                break;
+            case salesdeliveryApps.SalesDeliveryListApp.APPLICATION_ID:
+                view = new salesdeliveryViews.SalesDeliveryListView();
+                break;
+            case salesdeliveryApps.SalesDeliveryEditApp.APPLICATION_ID:
+                view = new salesdeliveryViews.SalesDeliveryEditView();
+                break;
+            case salesdeliveryApps.SalesDeliveryViewApp.APPLICATION_ID:
+                view = new salesdeliveryViews.SalesDeliveryViewView();
+                break;
+            case salesreturnApps.SalesReturnListApp.APPLICATION_ID:
+                view = new salesreturnViews.SalesReturnListView();
+                break;
+            case salesreturnApps.SalesReturnEditApp.APPLICATION_ID:
+                view = new salesreturnViews.SalesReturnEditView();
+                break;
+            case salesreturnApps.SalesReturnViewApp.APPLICATION_ID:
+                view = new salesreturnViews.SalesReturnViewView();
+                break;
             default:
                 break;
         }

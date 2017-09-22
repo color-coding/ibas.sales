@@ -63,15 +63,16 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                     path: "customerCode",
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_customername") }),
-                new sap.m.Text("", {
+                new sap.m.Input("", {
                     type: sap.m.InputType.Text,
-                }).bindProperty("text", {
+                    editable: false
+                }).bindProperty("value", {
                     path: "customerName",
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_status") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentstatus") }),
                 new sap.m.Select("", {
-                    showSecondaryValues: true,
+                    showSecondaryValues: false,
                     items: utils.createComboBoxItems(ibas.emDocumentStatus),
                 }).bindProperty("selectedKey", {
                     path: "documentStatus",
@@ -79,7 +80,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_canceled") }),
                 new sap.m.Select("", {
-                    showSecondaryValues: true,
+                    showSecondaryValues: false,
                     items: utils.createComboBoxItems(ibas.emYesNo),
                 }).bindProperty("selectedKey", {
                     path: "canceled",
@@ -88,19 +89,22 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_time") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentdate") }),
                 new sap.m.DatePicker("", {
-                    valueFormat: "yyyy-MM-dd",
+                    valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                    displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                 }).bindProperty("dateValue", {
                     path: "documentDate",
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_postingdate") }),
                 new sap.m.DatePicker("", {
-                    valueFormat: "yyyy-MM-dd",
+                    valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                    displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                 }).bindProperty("dateValue", {
                     path: "postingDate",
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_deliverydate") }),
                 new sap.m.DatePicker("", {
-                    valueFormat: "yyyy-MM-dd",
+                    valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                    displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                 }).bindProperty("dateValue", {
                     path: "deliveryDate",
                 })
@@ -141,7 +145,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_distribution_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_consignee") }),
                 new sap.m.Input("", {
-                    type: sap.m.InputType.Number,
+                    type: sap.m.InputType.Text,
                 }).bindProperty("value", {
                     path: "consignee",
                 }),
@@ -153,7 +157,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_address") }),
                 new sap.m.Input("", {
-                    type: sap.m.InputType.Number,
+                    type: sap.m.InputType.Text,
                 }).bindProperty("value", {
                     path: "address",
                 })
