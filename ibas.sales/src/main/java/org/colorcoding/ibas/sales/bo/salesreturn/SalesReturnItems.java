@@ -4,12 +4,12 @@ import java.beans.PropertyChangeEvent;
 import javax.xml.bind.annotation.*;
 import org.colorcoding.ibas.bobas.common.*;
 import org.colorcoding.ibas.bobas.bo.*;
-import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.MyConsts;
 
 /**
 * 销售退货-行 集合
 */
-@XmlType(name = SalesReturnItems.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
+@XmlType(name = SalesReturnItems.BUSINESS_OBJECT_NAME, namespace = MyConsts.NAMESPACE_BO)
 @XmlSeeAlso({ SalesReturnItem.class })
 public class SalesReturnItems extends BusinessObjects<ISalesReturnItem, ISalesReturn> implements ISalesReturnItems {
 
