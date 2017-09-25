@@ -686,6 +686,17 @@ export class SalesOrderItems extends BusinessObjects<SalesOrderItem, SalesOrder>
             this.parent.discountTotal = 0;
         }
     }
+    /** 移除行后重新计算相关字段值 */
+    protected afterRemove(item: SalesOrderItem): void {
+        super.afterRemove(item);
+        if (this.parent.salesOrderItems.length === 0) {
+            this.parent.documentTotal = 0;
+            this.parent.discountTotal = 0;
+        } else {
+            this.parent.documentTotal -= item.lineTotal;
+            this.parent.discountTotal -= (item.quantity * item.price - item.lineTotal);
+        }
+    }
 }
 
 /** 销售订单-行 */

@@ -692,17 +692,11 @@ export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, Sales
     protected afterRemove(item: SalesDeliveryItem): void {
         super.afterRemove(item);
         if (this.parent.salesDeliveryItems.length === 0) {
-            this.parent.taxTotal = 0;
             this.parent.documentTotal = 0;
-            this.parent.taxRate = 0;
             this.parent.discountTotal = 0;
-            this.parent.discount = 0;
         } else {
             this.parent.documentTotal -= item.lineTotal;
             this.parent.discountTotal -= (item.quantity * item.price - item.lineTotal);
-            this.parent.taxTotal -= item.taxTotal;
-            this.parent.taxRate = this.parent.taxTotal / (this.parent.documentTotal + this.parent.discountTotal);
-            this.parent.discount = this.parent.discountTotal / (this.parent.documentTotal + this.parent.discountTotal);
         }
     }
 }
