@@ -120,8 +120,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_discounttotal") }),
                 new sap.m.Input("", {
                     width: "100px",
-                    type: sap.m.InputType.Number,
-                    description: "RMB"
+                    type: sap.m.InputType.Number
                 }).bindProperty("value", {
                     path: "/DiscountTotal",
                 })

@@ -668,6 +668,7 @@ export class SalesReturnItems extends BusinessObjects<SalesReturnItem, SalesRetu
     /** 监听子项属性改变 */
     protected onChildPropertyChanged(item: SalesReturnItem, name: string): void {
         super.onChildPropertyChanged(item, name);
+        /** 当行总计发生变化，改变单据总计及折扣总计的值 */
         if (strings.equalsIgnoreCase(name, SalesReturnItem.PROPERTY_LINETOTAL_NAME)) {
             let total: number = 0;
             let discount: number = 0;
@@ -682,20 +683,26 @@ export class SalesReturnItems extends BusinessObjects<SalesReturnItem, SalesRetu
             this.parent.documentTotal = total;
             this.parent.discountTotal = discount;
         }
-        if (strings.equalsIgnoreCase(name, SalesReturnItem.PROPERTY_DISCOUNT_NAME)) {
-            let count: number = 0;
-            for (let salesReturnItem of this.filterDeleted()) {
-                if (objects.isNull(salesReturnItem.discount) || salesReturnItem.discount === NaN) {
-                    salesReturnItem.discount = 0;
-                }
-                // count += salesReturnItem.discount;
-                count = Number(count) + Number(salesReturnItem.discount);
-            }
-            this.parent.discountTotal = count;
-        }
         // 折扣总计为NaN时显示为0
         if (isNaN(this.parent.discountTotal)) {
             this.parent.discountTotal = 0;
+        }
+    }
+    /** 移除行后重新计算相关字段值 */
+    protected afterRemove(item: SalesReturnItem): void {
+        super.afterRemove(item);
+        if (this.parent.salesReturnItems.length === 0) {
+            this.parent.taxTotal = 0;
+            this.parent.documentTotal = 0;
+            this.parent.taxRate = 0;
+            this.parent.discountTotal = 0;
+            this.parent.discount = 0;
+        } else {
+            this.parent.documentTotal -= item.lineTotal;
+            this.parent.discountTotal -= (item.quantity * item.price - item.lineTotal);
+            this.parent.taxTotal -= item.taxTotal;
+            this.parent.taxRate = this.parent.taxTotal / (this.parent.documentTotal + this.parent.discountTotal);
+            this.parent.discount = this.parent.discountTotal / (this.parent.documentTotal + this.parent.discountTotal);
         }
     }
 }
