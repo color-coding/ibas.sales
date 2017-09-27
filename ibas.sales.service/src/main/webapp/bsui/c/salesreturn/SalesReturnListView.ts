@@ -94,11 +94,7 @@ export class SalesReturnListView extends ibas.BOListView implements ISalesReturn
                         }
                     })
                 })
-            ],
-            // tslint:disable-next-line:typedef
-            rowSelectionChange: function (oEvent) {
-                this.setSelectedIndex(this.getSelectedIndex());
-            }
+            ]
         });
         this.form.addContent(this.table);
         this.page = new sap.m.Page("", {

@@ -94,11 +94,12 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                         }
                     })
                 })
-            ],
+            ]
+            /** 单选 */
             // tslint:disable-next-line:typedef
-            rowSelectionChange: function (oEvent) {
+            /* rowSelectionChange: function (oEvent) {
                 this.setSelectedIndex(this.getSelectedIndex());
-            }
+            } */
         });
         this.form.addContent(this.table);
         this.page = new sap.m.Page("", {

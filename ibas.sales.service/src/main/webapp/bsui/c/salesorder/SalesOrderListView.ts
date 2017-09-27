@@ -94,11 +94,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                         }
                     })
                 })
-            ],
-            // tslint:disable-next-line:typedef
-            rowSelectionChange: function (oEvent) {
-                this.setSelectedIndex(this.getSelectedIndex());
-            }
+            ]
         });
         this.form.addContent(this.table);
         this.page = new sap.m.Page("", {
@@ -215,7 +211,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
         let model: sap.ui.model.Model = this.table.getModel(undefined);
         if (!ibas.objects.isNull(model)) {
             // 已存在绑定数据，添加新的
-            let hDatas: any  = (<any>model).getData();
+            let hDatas: any = (<any>model).getData();
             if (!ibas.objects.isNull(hDatas) && hDatas.rows instanceof Array) {
                 for (let item of datas) {
                     hDatas.rows.push(item);
