@@ -91,7 +91,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
     }
     /** 待编辑的数据 */
     protected editData: bo.SalesOrder;
-    protected lineEditData: bo.SalesDeliveryItem;
+    protected lineEditData: bo.SalesOrderItem;
     /** 保存数据 */
     protected saveData(): void {
         let that: this = this;
