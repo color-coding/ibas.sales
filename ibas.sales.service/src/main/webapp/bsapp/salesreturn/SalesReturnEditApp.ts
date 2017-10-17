@@ -189,16 +189,24 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         });
     }
     /** 选择销售退货物料事件 */
-    private chooseSalesReturnItem(): void {
+    private chooseSalesReturnItem(caller: bo.SalesReturnItem): void {
         let that: this = this;
         ibas.servicesManager.runChooseService<IMaterial>({
+            caller: caller,
             boCode: BO_CODE_MATERIAL,
             criteria: [
                 new ibas.Condition(BO_CODE_MATERIAL,
-                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.docEntry)),
+                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.salesReturnItems[0].itemCode)),
             ],
             onCompleted(selecteds: ibas.List<IMaterial>): void {
-                that.lineEditData.itemCode = selecteds.firstOrDefault().code;
+                let index: number = that.editData.salesReturnItems.indexOf(caller);
+                let item: bo.SalesReturnItem = that.editData.salesReturnItems[index];
+
+                // tslint:disable-next-line:typedef
+                let selected = selecteds.firstOrDefault();
+                if (!ibas.objects.isNull(item) && !ibas.objects.isNull(selected)) {
+                    item.itemCode = selected.code;
+                }
             }
         });
     }

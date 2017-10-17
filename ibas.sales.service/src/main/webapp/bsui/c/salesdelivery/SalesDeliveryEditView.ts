@@ -412,6 +412,6 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
     showSalesDeliveryItems(datas: bo.SalesDeliveryItem[]): void {
         this.tableLineDetailedTab.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
         // 监听属性改变，并更新控件
-        utils.refreshModelChanged(this.iconTabBar, datas);
+        utils.refreshModelChanged(this.tableLineDetailedTab, datas);
     }
 }

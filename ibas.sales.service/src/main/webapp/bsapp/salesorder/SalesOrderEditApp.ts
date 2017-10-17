@@ -37,7 +37,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         this.view.createDataEvent = this.createData;
         this.view.addSalesOrderItemEvent = this.addSalesOrderItem;
         this.view.removeSalesOrderItemEvent = this.removeSalesOrderItem;
-        this.view.chooseSalesOrderItemMaterialEvent = this.chooseSalesOrderItem;
+        this.view.chooseSalesOrderItemMaterialEvent = this.chooseSalesOrderItemMaterial;
         this.view.chooseSalesOrderCustomerEvent = this.chooseSalesOrderCustomer;
     }
     /** 视图显示后 */
@@ -91,7 +91,6 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
     }
     /** 待编辑的数据 */
     protected editData: bo.SalesOrder;
-    protected lineEditData: bo.SalesOrderItem;
     /** 保存数据 */
     protected saveData(): void {
         let that: this = this;
@@ -188,17 +187,25 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
             }
         });
     }
-    /** 选择销售订单物料事件 */
-    private chooseSalesOrderItem(): void {
+    /** 选择销售订单行物料事件 */
+    private chooseSalesOrderItemMaterial(caller: bo.SalesOrderItem): void {
         let that: this = this;
         ibas.servicesManager.runChooseService<IMaterial>({
+            caller: caller,
             boCode: BO_CODE_MATERIAL,
             criteria: [
                 new ibas.Condition(BO_CODE_MATERIAL,
-                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.docEntry)),
+                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.salesOrderItems[0].itemCode)),
             ],
             onCompleted(selecteds: ibas.List<IMaterial>): void {
-                that.lineEditData.itemCode = selecteds.firstOrDefault().code;
+                let index: number = that.editData.salesOrderItems.indexOf(caller);
+                let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];
+
+                // tslint:disable-next-line:typedef
+                let selected = selecteds.firstOrDefault();
+                if (!ibas.objects.isNull(item) && !ibas.objects.isNull(selected)) {
+                    item.itemCode = selected.code;
+                }
             }
         });
     }

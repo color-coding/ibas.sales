@@ -190,16 +190,24 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         });
     }
     /** 选择销售交货物料事件 */
-    private chooseSalesDeliveryItemMaterial(): void {
+    private chooseSalesDeliveryItemMaterial(caller: bo.SalesDeliveryItem): void {
         let that: this = this;
         ibas.servicesManager.runChooseService<IMaterial>({
+            caller: caller,
             boCode: BO_CODE_MATERIAL,
             criteria: [
                 new ibas.Condition(BO_CODE_MATERIAL,
-                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.docEntry)),
+                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.salesDeliveryItems[0].itemCode)),
             ],
             onCompleted(selecteds: ibas.List<IMaterial>): void {
-                that.lineEditData.itemCode = selecteds.firstOrDefault().code;
+                let index: number = that.editData.salesDeliveryItems.indexOf(caller);
+                let item: bo.SalesDeliveryItem = that.editData.salesDeliveryItems[index];
+
+                // tslint:disable-next-line:typedef
+                let selected = selecteds.firstOrDefault();
+                if (!ibas.objects.isNull(item) && !ibas.objects.isNull(selected)) {
+                    caller.itemCode = selected.code;
+                }
             }
         });
     }
