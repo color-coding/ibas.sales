@@ -62,6 +62,10 @@ public class SalesOrderItems extends BusinessObjects<ISalesOrderItem, ISalesOrde
     protected void afterAddItem(ISalesOrderItem item) {
         super.afterAddItem(item);
         // TODO 设置关联值
+        SalesOrderItem myItem=(SalesOrderItem)item;
+        if(myItem!=null){
+            myItem.setMyParent(this.getParent());
+        }
     }
 
     @Override

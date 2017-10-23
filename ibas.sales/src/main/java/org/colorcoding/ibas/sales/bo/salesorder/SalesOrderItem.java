@@ -12,9 +12,12 @@ import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.bobas.logics.IBusinessLogicContract;
+import org.colorcoding.ibas.bobas.logics.IBusinessLogicsHost;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.materials.data.emItemType;
+import org.colorcoding.ibas.materials.logic.IMaterialPriceListContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
 
@@ -24,7 +27,7 @@ import org.colorcoding.ibas.sales.data.emProductTreeType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = SalesOrderItem.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-public class SalesOrderItem extends BusinessObject<SalesOrderItem> implements ISalesOrderItem {
+public class SalesOrderItem extends BusinessObject<SalesOrderItem> implements ISalesOrderItem,IBusinessLogicsHost {
 
 	/**
 	 * 序列化版本标记
@@ -2424,13 +2427,61 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem> implements IS
 	}
 
 	/**
+	 * 自定义父对象
+	 */
+	private ISalesOrder myParent;
+	public  ISalesOrder getMyParent() {
+		return myParent;
+	}
+
+	public  void setMyParent(ISalesOrder myParent) {
+		this.myParent=myParent;
+	}
+
+	/**
 	 * 初始化数据
 	 */
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
-
 	}
 
+	@Override
+	public IBusinessLogicContract[] getContracts() {
+		return new IBusinessLogicContract[]{
+
+				new IMaterialPriceListContract() {
+					@Override
+					public Integer getPriceList() {
+						return SalesOrderItem.this.getMyParent().getGrossProfitPriceList();
+					}
+
+					@Override
+					public String getName() {
+						return "销售价格";
+					}
+
+					@Override
+					public String getCurrency() {
+						return SalesOrderItem.this.getCurrency();
+					}
+
+					@Override
+					public String getItemCode() {
+						return SalesOrderItem.this.getItemCode();
+					}
+
+					@Override
+					public Decimal getPrice() {
+						return SalesOrderItem.this.getPrice();
+					}
+
+					@Override
+					public String getIdentifiers() {
+						return SalesOrderItem.this.getIdentifiers();
+					}
+				}
+		};
+	}
 }

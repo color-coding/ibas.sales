@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 import org.colorcoding.ibas.bobas.data.*;
 import org.colorcoding.ibas.bobas.common.*;
 import org.colorcoding.ibas.bobas.repository.*;
+import org.colorcoding.ibas.materials.bo.materialpricelist.IMaterialPriceItem;
+import org.colorcoding.ibas.materials.bo.materialpricelist.MaterialPriceList;
 import org.colorcoding.ibas.sales.data.*;
 import org.colorcoding.ibas.sales.bo.salesorder.*;
 import org.colorcoding.ibas.sales.repository.*;
@@ -17,7 +19,7 @@ public class testSalesOrder extends TestCase {
      * 获取连接口令
     */
     String getToken() {
-        return "";
+        return "68fc6bac014d06ad94c5734116487cff";
     }
     
     /**
@@ -25,13 +27,19 @@ public class testSalesOrder extends TestCase {
      * @throws Exception 
     */
     public void testBasicItems() throws Exception {
+        //创建一个销售订单
         SalesOrder bo = new SalesOrder();
         // 测试属性赋值
-
+        bo.setCustomerCode("C0001");
+        bo.setCustomerName("奥维奥");
+        bo.setGrossProfitPriceList(1);//毛利价格清单
         // 测试销售订单-行
         ISalesOrderItem salesorderitem = bo.getSalesOrderItems().create();
         // 测试属性赋值
-        
+        salesorderitem.setItemCode("I0001");
+        salesorderitem.setItemDescription("CPU");
+        salesorderitem.setPrice(1800);
+        salesorderitem.setQuantity(1);
 
 
         // 测试对象的保存和查询
@@ -46,6 +54,15 @@ public class testSalesOrder extends TestCase {
         assertEquals(operationResult.getMessage(), operationResult.getResultCode(), 0);
         SalesOrder boSaved = (SalesOrder)operationResult.getResultObjects().firstOrDefault();
 
+        //测试修改
+        salesorderitem.setItemCode("I0002");
+        salesorderitem.setItemDescription("内存条");
+        salesorderitem.setPrice(2800);
+        salesorderitem.setQuantity(1);
+
+        operationResult = boRepository.saveSalesOrder(bo);
+        assertEquals(operationResult.getMessage(), operationResult.getResultCode(), 0);
+        boSaved = (SalesOrder)operationResult.getResultObjects().firstOrDefault();
 
         // 测试查询
         criteria = boSaved.getCriteria();
