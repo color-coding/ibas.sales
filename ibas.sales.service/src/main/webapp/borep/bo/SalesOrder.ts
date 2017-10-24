@@ -713,7 +713,11 @@ export class SalesOrderItem extends BODocumentLine<SalesOrderItem> implements IS
         if (strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_QUANTITY_NAME) ||
             strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_PRICE_NAME) ||
             strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_DISCOUNT_NAME)) {
-            this.lineTotal = this.quantity * this.price * (1 - this.discount / 100);
+            if (this.discount == null) {
+                this.discount = 0;
+            } else {
+                this.lineTotal = this.quantity * this.price * (1 - this.discount / 100);
+            }
         }
         // 行总计为NaN时显示为0
         if (isNaN(this.lineTotal)) {
