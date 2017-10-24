@@ -37,7 +37,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         this.view.createDataEvent = this.createData;
         this.view.addSalesOrderItemEvent = this.addSalesOrderItem;
         this.view.removeSalesOrderItemEvent = this.removeSalesOrderItem;
-        this.view.chooseSalesOrderItemMaterialEvent = this.chooseSalesOrderItemMaterial;
+        this.view.chooseSalesOrderItemMaterialEvent = this.chooseSalesOrderItem;
         this.view.chooseSalesOrderCustomerEvent = this.chooseSalesOrderCustomer;
     }
     /** 视图显示后 */
@@ -91,6 +91,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
     }
     /** 待编辑的数据 */
     protected editData: bo.SalesOrder;
+    protected lineEditData: bo.SalesOrderItem;
     /** 保存数据 */
     protected saveData(): void {
         let that: this = this;
@@ -187,17 +188,18 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
             }
         });
     }
-    /** 选择销售订单行物料事件 */
-    private chooseSalesOrderItemMaterial(caller: bo.SalesOrderItem): void {
+    /** 选择销售订单物料事件 */
+    private chooseSalesOrderItem(caller: bo.SalesOrderItem): void {
         let that: this = this;
         ibas.servicesManager.runChooseService<IMaterial>({
             caller: caller,
             boCode: BO_CODE_MATERIAL,
             criteria: [
                 new ibas.Condition(BO_CODE_MATERIAL,
-                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.salesOrderItems[0].itemCode)),
+                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.docEntry)),
             ],
             onCompleted(selecteds: ibas.List<IMaterial>): void {
+                // 获取触发的对象
                 let index: number = that.editData.salesOrderItems.indexOf(caller);
                 let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];
 

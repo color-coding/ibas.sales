@@ -2066,6 +2066,7 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 		this.setDocumentDate(DateTime.getToday());
 		this.setDeliveryDate(DateTime.getToday());
 		this.setDocumentStatus(emDocumentStatus.RELEASED);
+		this.setGrossProfitPriceList(1);//测试物料价格清单 测试结束后要去掉
 
 	}
 

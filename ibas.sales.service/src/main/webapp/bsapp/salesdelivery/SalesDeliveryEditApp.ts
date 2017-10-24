@@ -197,7 +197,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
             boCode: BO_CODE_MATERIAL,
             criteria: [
                 new ibas.Condition(BO_CODE_MATERIAL,
-                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.salesDeliveryItems[0].itemCode)),
+                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.docEntry)),
             ],
             onCompleted(selecteds: ibas.List<IMaterial>): void {
                 let index: number = that.editData.salesDeliveryItems.indexOf(caller);

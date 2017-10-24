@@ -196,7 +196,7 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
             boCode: BO_CODE_MATERIAL,
             criteria: [
                 new ibas.Condition(BO_CODE_MATERIAL,
-                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.salesReturnItems[0].itemCode)),
+                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.docEntry)),
             ],
             onCompleted(selecteds: ibas.List<IMaterial>): void {
                 let index: number = that.editData.salesReturnItems.indexOf(caller);
