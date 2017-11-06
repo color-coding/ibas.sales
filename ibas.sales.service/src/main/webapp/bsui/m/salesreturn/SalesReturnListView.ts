@@ -223,11 +223,11 @@ export class SalesReturnListView extends ibas.BOListView implements ISalesReturn
         }
         this.table.setBusy(false);
     }
-    private lastCriteria: ibas.ICriteria;
+
     /** 记录上次查询条件，表格滚动时自动触发 */
     query(criteria: ibas.ICriteria): void {
         super.query(criteria);
-        this.lastCriteria = criteria;
+
         // 清除历史数据
         this.table.setBusy(true);
         this.table.setSelectedItemById("0", true);
