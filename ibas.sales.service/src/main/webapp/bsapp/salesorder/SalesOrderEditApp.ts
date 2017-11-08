@@ -10,7 +10,7 @@ import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
 import { BO_CODE_CUSTOMER, ICustomer } from "../../3rdparty/businesspartner/index";
-import { BO_CODE_MATERIAL, IMaterial } from "../../3rdparty/materials/index";
+import { BO_CODE_MATERIAL, IMaterial } from "../../3rdparty/materials/api/index";
 
 /** 编辑应用-销售订单 */
 export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditView, bo.SalesOrder> {

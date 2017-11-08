@@ -1,9 +1,6 @@
 package org.colorcoding.ibas.sales.bo.salesdelivery;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
@@ -14,6 +11,8 @@ import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchJournal;
+import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialJournal;
 import org.colorcoding.ibas.materials.data.emItemType;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
@@ -2424,11 +2423,78 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 	}
 
 	/**
+	 * 属性名称-销售交货-物料批次
+	 */
+	private static final String PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME = "SalesDeliveryMaterialBatchJournals";
+
+	/**
+	 * 销售交货-物料批次的集合属性
+	 *
+	 */
+	public static final IPropertyInfo<ISalesDeliveryMaterialBatchJournals> PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS = registerProperty(
+			PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME, ISalesDeliveryMaterialBatchJournals.class, MY_CLASS);
+
+	/**
+	 * 获取-销售交货-物料批次集合
+	 *
+	 * @return 值
+	 */
+	@XmlElementWrapper(name = PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME)
+	@XmlElement(name = MaterialBatchJournal.BUSINESS_OBJECT_NAME, type = MaterialBatchJournal.class)
+	public final ISalesDeliveryMaterialBatchJournals getSalesDeliveryMaterialBatchJournals() {
+		return this.getProperty(PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS);
+	}
+
+	/**
+	 * 设置-销售交货-物料批次集合
+	 *
+	 * @param value
+	 *            值
+	 */
+	public final void setSalesDeliveryMaterialBatchJournals(ISalesDeliveryMaterialBatchJournals value) {
+		this.setProperty(PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS, value);
+	}
+
+	/**
+	 * 属性名称-销售交货-物料序列
+	 */
+	private static final String PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME = "SalesDeliveryMaterialSerialJournals";
+
+	/**
+	 * 销售交货-物料序列的集合属性
+	 *
+	 */
+	public static final IPropertyInfo<ISalesDeliveryMaterialSerialJournals> PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS = registerProperty(
+			PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME, ISalesDeliveryMaterialSerialJournals.class, MY_CLASS);
+
+	/**
+	 * 获取-销售交货-物料序列集合
+	 *
+	 * @return 值
+	 */
+	@XmlElementWrapper(name = PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME)
+	@XmlElement(name = MaterialSerialJournal.BUSINESS_OBJECT_NAME, type = MaterialSerialJournal.class)
+	public final ISalesDeliveryMaterialSerialJournals getSalesDeliveryMaterialSerialJournals() {
+		return this.getProperty(PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS);
+	}
+
+	/**
+	 * 设置-销售交货-物料序列集合
+	 *
+	 * @param value
+	 *            值
+	 */
+	public final void setSalesDeliveryMaterialSerialJournals(ISalesDeliveryMaterialSerialJournals value) {
+		this.setProperty(PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS, value);
+	}
+	/**
 	 * 初始化数据
 	 */
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
+		this.setSalesDeliveryMaterialBatchJournals(new SalesDeliveryMaterialBatchJournals(this));
+		this.setSalesDeliveryMaterialSerialJournals(new SalesDeliveryMaterialSerialJournals(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 	}
 

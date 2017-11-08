@@ -34,6 +34,10 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
     chooseSalesReturnCustomerEvent: Function;
     /** 选择销售退货行物料事件 */
     chooseSalesReturnItemMaterialEvent: Function;
+    /** 新建销售退货单行物料序列事件 */
+    createSalesReturnItemMaterialSerialEvent: Function;
+    /** 新建销售退货单行物料批次事件 */
+    createSalesReturnItemMaterialBatchEvent: Function;
 
     /** 绘制视图 */
     darw(): any {
@@ -183,6 +187,27 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                                 utils.getTableSelecteds<bo.SalesDeliveryItem>(that.tableSalesReturnItem)
                             );
                         }
+                    }),
+                    new sap.m.MenuButton("",{
+                        text: ibas.i18n.prop("materials_data_batch_serial"),
+                        menu:[
+                            new sap.m.Menu("",{
+                                items: [
+                                    new sap.m.MenuItem("",{
+                                        text: ibas.i18n.prop("materials_app_materialbatchreceipt"),
+                                        press: function(): void {
+                                            that.fireViewEvents(that.createSalesReturnItemMaterialBatchEvent);
+                                        }
+                                    }),
+                                    new sap.m.MenuItem("", {
+                                        text: ibas.i18n.prop("materials_app_materialserialhissue"),
+                                        press: function (): void {
+                                            that.fireViewEvents(that.createSalesReturnItemMaterialSerialEvent);
+                                        }
+                                    }),
+                                ]
+                            })
+                        ]
                     })
                 ]
             }),

@@ -27,13 +27,18 @@ import {
     ISalesReturn,
     ISalesReturnItems,
     ISalesReturnItem,
+    ISalesReturnMaterialBatchJournals,
+    ISalesReturnMaterialSerialJournals,
     BO_CODE_SALESRETURN,
     emProductTreeType,
 } from "../../api/index";
 import {
     emItemType
-} from "../../3rdparty/materials/index";
-
+} from "../../3rdparty/materials/api/index";
+import {
+    MaterialBatchJournal,
+    MaterialSerialJournal
+} from "../../3rdparty/materials/borep/bo/index";
 /** 销售退货 */
 export class SalesReturn extends BODocument<SalesReturn> implements ISalesReturn {
 
@@ -297,14 +302,14 @@ export class SalesReturn extends BODocument<SalesReturn> implements ISalesReturn
     }
 
     /** 映射的属性名称-到期日 */
-    static PROPERTY_DELIVERYDATE_NAME: string = "DeliveryDate";
+    static PROPERTY_RETURNDATE_NAME: string = "ReturnDate";
     /** 获取-到期日 */
     get deliveryDate(): Date {
-        return this.getProperty<Date>(SalesReturn.PROPERTY_DELIVERYDATE_NAME);
+        return this.getProperty<Date>(SalesReturn.PROPERTY_RETURNDATE_NAME);
     }
     /** 设置-到期日 */
     set deliveryDate(value: Date) {
-        this.setProperty(SalesReturn.PROPERTY_DELIVERYDATE_NAME, value);
+        this.setProperty(SalesReturn.PROPERTY_RETURNDATE_NAME, value);
     }
 
     /** 映射的属性名称-凭证日期 */
@@ -697,6 +702,27 @@ export class SalesReturnItems extends BusinessObjects<SalesReturnItem, SalesRetu
         if (isNaN(this.parent.discountTotal)) {
             this.parent.discountTotal = 0;
         }
+    }
+}
+
+/** 销售退货-批次日记账 集合 */
+export class SalesReturnMaterialBatchJournals extends BusinessObjects<MaterialBatchJournal, SalesReturnItem>
+    implements ISalesReturnMaterialBatchJournals {
+    /** 创建并添加子项 */
+    create(): MaterialBatchJournal {
+        let item: MaterialBatchJournal = new MaterialBatchJournal();
+        this.add(item);
+        return item;
+    }
+}
+/** 销售退货-序列日记账 集合 */
+export class SalesReturnMaterialSerialJournals extends BusinessObjects<MaterialSerialJournal, SalesReturnItem>
+    implements ISalesReturnMaterialSerialJournals {
+    /** 创建并添加子项 */
+    create(): MaterialSerialJournal {
+        let item: MaterialSerialJournal = new MaterialSerialJournal();
+        this.add(item);
+        return item;
     }
 }
 
@@ -1152,14 +1178,14 @@ export class SalesReturnItem extends BODocumentLine<SalesReturnItem> implements 
     }
 
     /** 映射的属性名称-行交货日期 */
-    static PROPERTY_DELIVERYDATE_NAME: string = "DeliveryDate";
+    static PROPERTY_RETURNDATE_NAME: string = "ReturnDate";
     /** 获取-行交货日期 */
     get deliveryDate(): Date {
-        return this.getProperty<Date>(SalesReturnItem.PROPERTY_DELIVERYDATE_NAME);
+        return this.getProperty<Date>(SalesReturnItem.PROPERTY_RETURNDATE_NAME);
     }
     /** 设置-行交货日期 */
     set deliveryDate(value: Date) {
-        this.setProperty(SalesReturnItem.PROPERTY_DELIVERYDATE_NAME, value);
+        this.setProperty(SalesReturnItem.PROPERTY_RETURNDATE_NAME, value);
     }
 
     /** 映射的属性名称-剩余未清数量 */
@@ -1393,11 +1419,32 @@ export class SalesReturnItem extends BODocumentLine<SalesReturnItem> implements 
         this.setProperty(SalesReturnItem.PROPERTY_DISTRIBUTIONRULE5_NAME, value);
     }
 
-
+    /** 映射的属性名称-销售交货-行-序列号集合 */
+    static PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME: string = "SalesReturnMaterialSerialJournals";
+    /** 获取-销售交货-行-序列号集合 */
+    get salesReturnMaterialSerialJournals(): SalesReturnMaterialSerialJournals {
+        return this.getProperty<SalesReturnMaterialSerialJournals>(SalesReturnItem.PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME);
+    }
+    /** 设置-销售交货-行-序列号集合 */
+    set salesReturnMaterialSerialJournals(value: SalesReturnMaterialSerialJournals) {
+        this.setProperty(SalesReturnItem.PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME, value);
+    }
+    /** 映射的属性名称-销售交货-行-批次集合 */
+    static PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME: string = "SalesReturnMaterialBatchJournals";
+    /** 获取-销售交货-行-序列号集合 */
+    get salesReturnMaterialBatchJournals(): SalesReturnMaterialBatchJournals {
+        return this.getProperty<SalesReturnMaterialBatchJournals>(SalesReturnItem.PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME);
+    }
+    /** 设置-销售交货-行-序列号集合 */
+    set salesReturnMaterialBatchJournals(value: SalesReturnMaterialBatchJournals) {
+        this.setProperty(SalesReturnItem.PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME, value);
+    }
 
     /** 初始化数据 */
     protected init(): void {
         //
+        this.salesReturnMaterialBatchJournals = new SalesReturnMaterialBatchJournals(this);
+        this.salesReturnMaterialSerialJournals = new SalesReturnMaterialSerialJournals(this);
     }
 }
 

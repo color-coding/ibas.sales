@@ -27,13 +27,18 @@ import {
     ISalesDelivery,
     ISalesDeliveryItems,
     ISalesDeliveryItem,
+    ISalesDeliveryMaterialBatchJournals,
+    ISalesDeliveryMaterialSerialJournals,
     BO_CODE_SALESDELIVERY,
     emProductTreeType,
 } from "../../api/index";
 import {
     emItemType
-} from "../../3rdparty/materials/index";
-
+} from "../../3rdparty/materials/api/index";
+import{
+    MaterialBatchJournal,
+    MaterialSerialJournal
+} from "../../3rdparty/materials/borep/bo/index";
 /** 销售交货 */
 export class SalesDelivery extends BODocument<SalesDelivery> implements ISalesDelivery {
 
@@ -698,6 +703,27 @@ export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, Sales
         }
     }
 
+}
+
+/** 销售交货-批次日记账 集合 */
+export class SalesDeliveryMaterialBatchJournals extends BusinessObjects<MaterialBatchJournal, SalesDeliveryItem>
+    implements ISalesDeliveryMaterialBatchJournals {
+    /** 创建并添加子项 */
+    create(): MaterialBatchJournal {
+        let item: MaterialBatchJournal = new MaterialBatchJournal();
+        this.add(item);
+        return item;
+    }
+}
+/** 销售交货-序列日记账 集合 */
+export class SalesDeliveryMaterialSerialJournals extends BusinessObjects<MaterialSerialJournal, SalesDeliveryItem>
+    implements ISalesDeliveryMaterialSerialJournals {
+    /** 创建并添加子项 */
+    create(): MaterialSerialJournal {
+        let item: MaterialSerialJournal = new MaterialSerialJournal();
+        this.add(item);
+        return item;
+    }
 }
 
 /** 销售交货-行 */
@@ -1392,12 +1418,33 @@ export class SalesDeliveryItem extends BODocumentLine<SalesDeliveryItem> impleme
     set distributionRule5(value: string) {
         this.setProperty(SalesDeliveryItem.PROPERTY_DISTRIBUTIONRULE5_NAME, value);
     }
-
+    /** 映射的属性名称-销售交货-行-序列号集合 */
+    static PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME: string = "SalesDeliveryMaterialSerialJournals";
+    /** 获取-销售交货-行-序列号集合 */
+    get salesDeliveryMaterialSerialJournals(): SalesDeliveryMaterialSerialJournals {
+        return this.getProperty<SalesDeliveryMaterialSerialJournals>(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME);
+    }
+    /** 设置-销售交货-行-序列号集合 */
+    set salesDeliveryMaterialSerialJournals(value: SalesDeliveryMaterialSerialJournals) {
+        this.setProperty(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME, value);
+    }
+    /** 映射的属性名称-销售交货-行-批次集合 */
+    static PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME: string = "SalesDeliveryMaterialBatchJournals";
+    /** 获取-销售交货-行-序列号集合 */
+    get salesDeliveryMaterialBatchJournals(): SalesDeliveryMaterialBatchJournals {
+        return this.getProperty<SalesDeliveryMaterialBatchJournals>(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME);
+    }
+    /** 设置-销售交货-行-序列号集合 */
+    set salesDeliveryMaterialBatchJournals(value: SalesDeliveryMaterialBatchJournals) {
+        this.setProperty(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME, value);
+    }
 
 
     /** 初始化数据 */
     protected init(): void {
         //
+        this.salesDeliveryMaterialBatchJournals = new SalesDeliveryMaterialBatchJournals(this);
+        this.salesDeliveryMaterialSerialJournals = new SalesDeliveryMaterialSerialJournals(this);
     }
 }
 

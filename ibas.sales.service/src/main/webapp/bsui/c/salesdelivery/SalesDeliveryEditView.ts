@@ -37,6 +37,10 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
     chooseSalesDeliveryCustomerEvent: Function;
     /** 选择销售交货物料事件 */
     chooseSalesDeliveryItemMaterialEvent: Function;
+    /** 选择销售交货单行物料批次事件 */
+    chooseSalesDeliveryItemMaterialBatchEvent: Function;
+    /** 选择销售交货行物料序列号事件 */
+    chooseSalesDeliveryItemMaterialSerialEvent: Function;
 
     /** 绘制视图 */
     darw(): any {
@@ -148,6 +152,27 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                                 utils.getTableSelecteds<bo.SalesDeliveryItem>(that.tableLineDetailedTab)
                             );
                         }
+                    }),
+                    new sap.m.MenuButton("",{
+                        text: ibas.i18n.prop("materials_data_batch_serial"),
+                        menu:[
+                            new sap.m.Menu("",{
+                                items: [
+                                    new sap.m.MenuItem("",{
+                                        text: ibas.i18n.prop("materials_app_materialbatchreceipt"),
+                                        press: function(): void {
+                                            that.fireViewEvents(that.chooseSalesDeliveryItemMaterialBatchEvent);
+                                        }
+                                    }),
+                                    new sap.m.MenuItem("", {
+                                        text: ibas.i18n.prop("materials_app_materialserialhissue"),
+                                        press: function (): void {
+                                            that.fireViewEvents(that.chooseSalesDeliveryItemMaterialSerialEvent);
+                                        }
+                                    }),
+                                ]
+                            })
+                        ]
                     })
                 ]
             }),
