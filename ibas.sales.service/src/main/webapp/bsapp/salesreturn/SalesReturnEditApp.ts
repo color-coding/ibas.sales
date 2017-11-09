@@ -11,15 +11,17 @@ import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
 import { BO_CODE_CUSTOMER, ICustomer } from "../../3rdparty/businesspartner/index";
 import {
+    IMaterialEx,
     IMaterialSerialJournal,
     IMaterialBatchJournal,
     IMaterialBatchSerialInOutData,
     IMaterialBatchSerialInOutDataBatchJournals,
     IMaterialBatchSerialInOutDataSerialJournals,
-    BO_CODE_MATERIAL, BO_CODE_RECEIPT_MATERIALSERIAL,
-    BO_CODE_RECEIPT_MATERIALBATCH,IMaterial,
+    BO_CODE_MATERIALEX, BO_CODE_RECEIPT_MATERIALSERIAL,
+    BO_CODE_RECEIPT_MATERIALBATCH, IMaterial,
 } from "../../3rdparty/materials/api/index";
 import {
+    Material,
     MaterialBatchSerialInOutData,
 } from "../../3rdparty/materials/borep/bo/index";
 /** 编辑应用-销售退货 */
@@ -199,16 +201,37 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         });
     }
     /** 选择销售退货物料事件 */
-    private chooseSalesReturnItem(): void {
+    private chooseSalesReturnItem(caller: bo.SalesReturnItem): void {
         let that: this = this;
-        ibas.servicesManager.runChooseService<IMaterial>({
-            boCode: BO_CODE_MATERIAL,
+        ibas.servicesManager.runChooseService<IMaterialEx>({
+            caller: caller,
+            boCode: BO_CODE_MATERIALEX,
             criteria: [
-                new ibas.Condition(BO_CODE_MATERIAL,
-                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.docEntry)),
+                new ibas.Condition(Material.PROPERTY_DELETED_NAME, ibas.emConditionOperation.EQUAL, "N")
             ],
-            onCompleted(selecteds: ibas.List<IMaterial>): void {
-                that.lineEditData.itemCode = selecteds.firstOrDefault().code;
+            onCompleted(selecteds: ibas.List<IMaterialEx>): void {
+                // 获取触发的对象
+                let index: number = that.editData.salesReturnItems.indexOf(caller);
+                let item: bo.SalesReturnItem = that.editData.salesReturnItems[index];
+                // 选择返回数量多余触发数量时,自动创建新的项目
+                let created: boolean = false;
+                for (let selected of selecteds) {
+                    if (ibas.objects.isNull(item)) {
+                        item = that.editData.salesReturnItems.create();
+                        created = true;
+                    }
+                    if (item.itemCode !== selected.code || item.warehouse !== selected.warehouseCode) {
+                        item.salesReturnMaterialBatchJournals.clear();
+                        item.salesReturnMaterialSerialJournals.clear();
+                    }
+                    item.itemCode = selected.code;
+                    item.warehouse = selected.warehouseCode;
+                    item = null;
+                }
+                if (created) {
+                    // 创建了新的行项目
+                    that.view.showSalesReturnItems(that.editData.salesReturnItems.filterDeleted());
+                }
             }
         });
     }
@@ -323,7 +346,7 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
     /** 获取行-批次信息 */
     getBatchData(): IMaterialBatchSerialInOutData[] {
         // 获取行数据
-        let goodReceiptLines: bo.SalesReturnItem[] = this.editData.salesReturnItems;
+        let goodReceiptLines: bo.SalesReturnItem[] = this.editData.salesReturnItems.filterDeleted();
         let inputData: IMaterialBatchSerialInOutData[] = new Array<IMaterialBatchSerialInOutData>();
         for (let line of goodReceiptLines) {
             if (!ibas.objects.isNull(line.batchManagement) &&
@@ -359,7 +382,7 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
     /** 获取行-序列信息 */
     getSerialData(): IMaterialBatchSerialInOutData[] {
         // 获取行数据
-        let goodReceiptLines: bo.SalesReturnItem[] = this.editData.salesReturnItems;
+        let goodReceiptLines: bo.SalesReturnItem[] = this.editData.salesReturnItems.filterDeleted();
         let inputData: IMaterialBatchSerialInOutData[] = new Array<MaterialBatchSerialInOutData>();
         for (let line of goodReceiptLines) {
             if (!ibas.objects.isNull(line.serialManagement) &&

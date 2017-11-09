@@ -11,13 +11,14 @@ import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
 import { BO_CODE_CUSTOMER, ICustomer } from "../../3rdparty/businesspartner/index";
 import {
+    IMaterialEx,
     IMaterialSerialJournal,
     IMaterialBatchJournal,
     IMaterialBatchSerialInOutData,
     IMaterialBatchSerialInOutDataBatchJournals,
     IMaterialBatchSerialInOutDataSerialJournals,
-    BO_CODE_MATERIAL, BO_CODE_ISSUE_MATERIALSERIAL,
-    BO_CODE_ISSUE_MATERIALBATCH,IMaterial,
+    BO_CODE_MATERIALEX, BO_CODE_ISSUE_MATERIALSERIAL,
+    BO_CODE_ISSUE_MATERIALBATCH, IMaterial,
 } from "../../3rdparty/materials/api/index";
 import {
     MaterialBatchSerialInOutData,
@@ -205,16 +206,40 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         });
     }
     /** 选择销售交货物料事件 */
-    private chooseSalesDeliveryItemMaterial(): void {
+    private chooseSalesDeliveryItemMaterial(caller: bo.SalesDeliveryItem): void {
         let that: this = this;
-        ibas.servicesManager.runChooseService<IMaterial>({
-            boCode: BO_CODE_MATERIAL,
+        ibas.servicesManager.runChooseService<IMaterialEx>({
+            boCode: BO_CODE_MATERIALEX,
+            caller: caller,
             criteria: [
-                new ibas.Condition(BO_CODE_MATERIAL,
-                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.docEntry)),
             ],
-            onCompleted(selecteds: ibas.List<IMaterial>): void {
-                that.lineEditData.itemCode = selecteds.firstOrDefault().code;
+            onCompleted(selecteds: ibas.List<IMaterialEx>): void {
+                let index: number = that.editData.salesDeliveryItems.indexOf(caller);
+                let item: bo.SalesDeliveryItem = that.editData.salesDeliveryItems[index];
+                // 选择返回数量多余触发数量时,自动创建新的项目
+                let created: boolean = false;
+                for (let selected of selecteds) {
+                    if (ibas.objects.isNull(item)) {
+                        item = that.editData.salesDeliveryItems.create();
+                        created = true;
+                    }
+                    if (item.itemCode !== selected.code || item.warehouse !== selected.warehouseCode) {
+                        item.salesDeliveryMaterialBatchJournals.clear();
+                        item.salesDeliveryMaterialSerialJournals.clear();
+                    }
+                    item.itemCode = selected.code;
+                    item.itemDescription = selected.name;
+                    item.warehouse = selected.warehouseCode;
+                    item.serialManagement = selected.serialManagement;
+                    item.batchManagement = selected.batchManagement;
+                    item.price = selected.price;
+                    item.quantity = 1;
+                    item = null;
+                }
+                if (created) {
+                    // 创建了新的行项目
+                    that.view.showSalesDeliveryItems(that.editData.salesDeliveryItems.filterDeleted());
+                }
             }
         });
     }
@@ -327,7 +352,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
     /** 获取行-批次序列信息 */
     getBatchData(): IMaterialBatchSerialInOutData[] {
         // 获取行数据
-        let salesDeliveryLines: bo.SalesDeliveryItem[] = this.editData.salesDeliveryItems;
+        let salesDeliveryLines: bo.SalesDeliveryItem[] = this.editData.salesDeliveryItems.filterDeleted();
         // let batchJournal: bo.Material
         let inputData: IMaterialBatchSerialInOutData[] = new Array<IMaterialBatchSerialInOutData>();
         for (let line of salesDeliveryLines) {
@@ -361,7 +386,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
     /** 获取行-序列信息 */
     getSerialData(): IMaterialBatchSerialInOutData[] {
         // 获取行数据
-        let salesDeliveryLines: bo.SalesDeliveryItem[] = this.editData.salesDeliveryItems;
+        let salesDeliveryLines: bo.SalesDeliveryItem[] = this.editData.salesDeliveryItems.filterDeleted();
         let inputData: IMaterialBatchSerialInOutData[] = new Array<IMaterialBatchSerialInOutData>();
         for (let line of salesDeliveryLines) {
             if (!ibas.objects.isNull(line.serialManagement) &&
