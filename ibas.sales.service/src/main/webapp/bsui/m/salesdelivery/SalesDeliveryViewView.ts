@@ -7,7 +7,7 @@
  */
 
 import * as ibas from "ibas/index";
-import { utils } from "openui5/typings/ibas.utils";
+import * as openui5 from "openui5/index";
 import * as bo from "../../../borep/bo/index";
 import { ISalesDeliveryViewView } from "../../../bsapp/salesdelivery/index";
 
@@ -143,7 +143,7 @@ export class SalesDeliveryViewView extends ibas.BOViewView implements ISalesDeli
         this.tableSalesDeliveryItem = new sap.m.List("", {
             inset: false,
             growing: true,
-            growingThreshold: ibas.config.get(utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 5),
+            growingThreshold: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 5),
             growingScrollToLoad: true,
             visibleRowCountMode: sap.ui.table.VisibleRowCountMode.Auto,
             mode: sap.m.ListMode.None,
@@ -217,7 +217,7 @@ export class SalesDeliveryViewView extends ibas.BOViewView implements ISalesDeli
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdeliveryitem_linestatus") }),
                 new sap.m.Text("", {
                     width: "100%",
-                    items: utils.createComboBoxItems(ibas.emDocumentStatus)
+                    items: openui5.utils.createComboBoxItems(ibas.emDocumentStatus)
                 }).bindProperty("text", {
                     path: "lineStatus",
                     type: "sap.ui.model.type.Integer"
@@ -275,7 +275,7 @@ export class SalesDeliveryViewView extends ibas.BOViewView implements ISalesDeli
         // 新建时：禁用删除，
         if (data.isNew) {
             if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
+                openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
             }
         }
         // 不可编辑：已批准，
@@ -283,10 +283,10 @@ export class SalesDeliveryViewView extends ibas.BOViewView implements ISalesDeli
             || data.documentStatus === ibas.emDocumentStatus.CLOSED
             || data.canceled === ibas.emYesNo.YES) {
             if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
+                openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
+                openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
             }
-            utils.changeFormEditable(this.mainLayout, false);
+            openui5.utils.changeFormEditable(this.mainLayout, false);
         }
     }
     /** 显示数据 */
@@ -294,7 +294,7 @@ export class SalesDeliveryViewView extends ibas.BOViewView implements ISalesDeli
         this.mainLayout.setModel(new sap.ui.model.json.JSONModel(data));
         this.mainLayout.bindObject("/");
         // 监听属性改变，并更新控件
-        utils.refreshModelChanged(this.mainLayout, data);
+        openui5.utils.refreshModelChanged(this.mainLayout, data);
         // 改变视图状态
         this.changeViewStatus(data);
     }
@@ -302,7 +302,7 @@ export class SalesDeliveryViewView extends ibas.BOViewView implements ISalesDeli
     showSalesDeliveryItems(datas: bo.SalesDeliveryItem[]): void {
         this.tableSalesDeliveryItem.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
         // 监听属性改变，并更新控件
-        utils.refreshModelChanged(this.tableSalesDeliveryItem, datas);
+        openui5.utils.refreshModelChanged(this.tableSalesDeliveryItem, datas);
     }
 
 }

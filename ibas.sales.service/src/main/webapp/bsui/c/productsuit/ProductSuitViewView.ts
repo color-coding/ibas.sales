@@ -7,7 +7,7 @@
  */
 
 import * as ibas from "ibas/index";
-import { utils } from "openui5/typings/ibas.utils";
+import * as openui5 from "openui5/index";
 import * as bo from "../../../borep/bo/index";
 import { IProductSuitViewView } from "../../../bsapp/productsuit/index";
 
@@ -26,7 +26,7 @@ export class ProductSuitViewView extends ibas.BOViewView implements IProductSuit
         this.form.addContent(new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_productsuititem") }));
         this.tableProductSuitItem = new sap.ui.table.Table("", {
             enableSelectAll: false,
-            visibleRowCount: ibas.config.get(utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
+            visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
             rows: "{/rows}",
             columns: [
             ]
