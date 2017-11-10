@@ -19,6 +19,7 @@ import {
     BODocumentLine,
     BOSimple,
     BOSimpleLine,
+    boFactory,
     config,
     strings,
     objects
@@ -34,11 +35,13 @@ import {
 } from "../../api/index";
 import {
     emItemType
-} from "../../3rdparty/materials/api/index";
+} from "../../3rdparty/materials/index";
 import {
-    MaterialBatchJournal,
-    MaterialSerialJournal
-} from "../../3rdparty/materials/borep/bo/index";
+    IMaterialBatchJournal,
+    IMaterialSerialJournal,
+    BO_CODE_MATERIALBATCH,
+    BO_CODE_MATERIALSERIAL,
+} from "../../3rdparty/materials/index";
 /** 销售退货 */
 export class SalesReturn extends BODocument<SalesReturn> implements ISalesReturn {
 
@@ -706,21 +709,21 @@ export class SalesReturnItems extends BusinessObjects<SalesReturnItem, SalesRetu
 }
 
 /** 销售退货-批次日记账 集合 */
-export class SalesReturnMaterialBatchJournals extends BusinessObjects<MaterialBatchJournal, SalesReturnItem>
+export class SalesReturnMaterialBatchJournals extends BusinessObjects<IMaterialBatchJournal, SalesReturnItem>
     implements ISalesReturnMaterialBatchJournals {
     /** 创建并添加子项 */
-    create(): MaterialBatchJournal {
-        let item: MaterialBatchJournal = new MaterialBatchJournal();
+    create(): IMaterialBatchJournal {
+        let item: IMaterialBatchJournal = boFactory.create(BO_CODE_MATERIALBATCH);
         this.add(item);
         return item;
     }
 }
 /** 销售退货-序列日记账 集合 */
-export class SalesReturnMaterialSerialJournals extends BusinessObjects<MaterialSerialJournal, SalesReturnItem>
+export class SalesReturnMaterialSerialJournals extends BusinessObjects<IMaterialSerialJournal, SalesReturnItem>
     implements ISalesReturnMaterialSerialJournals {
     /** 创建并添加子项 */
-    create(): MaterialSerialJournal {
-        let item: MaterialSerialJournal = new MaterialSerialJournal();
+    create(): IMaterialSerialJournal {
+        let item: IMaterialSerialJournal = boFactory.create(BO_CODE_MATERIALSERIAL);
         this.add(item);
         return item;
     }

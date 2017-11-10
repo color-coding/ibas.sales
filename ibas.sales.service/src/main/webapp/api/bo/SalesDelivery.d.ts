@@ -24,7 +24,7 @@ import {
     IMaterialBatchJournal,
     IMaterialSerialJournal,
     emItemType
-} from "../../3rdparty/materials/api/index";
+} from "../../3rdparty/materials/index";
 import {
     emProductTreeType
 } from "../Datas";

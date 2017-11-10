@@ -18,13 +18,9 @@ import {
     IMaterialBatchSerialInOutDataBatchJournals,
     IMaterialBatchSerialInOutDataSerialJournals,
     BO_CODE_MATERIALEX, BO_CODE_ISSUE_MATERIALSERIAL,
+    BO_CODE_MATERIALBATCHSERIALDATA,
     BO_CODE_ISSUE_MATERIALBATCH, IMaterial,
-} from "../../3rdparty/materials/api/index";
-import {
-    MaterialBatchSerialInOutData,
-    MaterialBatchSerialInOutDataBatchJournals,
-    MaterialBatchSerialInOutDataSerialJournals,
-} from "../../3rdparty/materials/borep/bo/index";
+} from "../../3rdparty/materials/index";
 
 
 /** 编辑应用-销售交货 */
@@ -291,9 +287,10 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                 // 获取触发的对象
                 for (let line of callbackData) {
                     let item: bo.SalesDeliveryItem = that.editData.salesDeliveryItems[line.index];
-                    for (let batchLine of item.salesDeliveryMaterialBatchJournals) {
-                        batchLine.delete();
-                    }
+                    item.salesDeliveryMaterialBatchJournals.clear();
+                    // for (let batchLine of item.salesDeliveryMaterialBatchJournals) {
+                    //     batchLine.delete();
+                    // }
                     for (let batchJournal of line.materialBatchSerialInOutDataBatchJournals.filterDeleted()) {
                         // 如果批次号为空 不处理
                         if (ibas.objects.isNull(batchJournal.batchCode)) {
@@ -332,9 +329,10 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                 // 获取触发的对象
                 for (let line of callbackData) {
                     let item: bo.SalesDeliveryItem = that.editData.salesDeliveryItems[line.index];
-                    for (let serialLine of item.salesDeliveryMaterialSerialJournals) {
-                        serialLine.delete();
-                    }
+                    item.salesDeliveryMaterialSerialJournals.clear();
+                    // for (let serialLine of item.salesDeliveryMaterialSerialJournals) {
+                    //     serialLine.delete();
+                    // }
                     for (let serial of line.materialBatchSerialInOutDataSerialJournals.filterDeleted()) {
                         let serialLine: IMaterialSerialJournal = item.salesDeliveryMaterialSerialJournals.create();
                         serialLine.serialCode = serial.serialCode;
@@ -360,7 +358,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                 line.batchManagement.toString() === ibas.enums.toString(ibas.emYesNo, ibas.emYesNo.NO)) {
                 continue;
             }
-            let input: IMaterialBatchSerialInOutData = new MaterialBatchSerialInOutData();
+            let input: IMaterialBatchSerialInOutData = ibas.boFactory.create(BO_CODE_MATERIALBATCHSERIALDATA);
             input.index = salesDeliveryLines.indexOf(line);
             input.itemCode = line.itemCode;
             input.quantity = line.quantity;
@@ -393,7 +391,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                 line.serialManagement.toString() === ibas.enums.toString(ibas.emYesNo, ibas.emYesNo.NO)) {
                 continue;
             }
-            let input: IMaterialBatchSerialInOutData = new MaterialBatchSerialInOutData();
+            let input: IMaterialBatchSerialInOutData = ibas.boFactory.create(BO_CODE_MATERIALBATCHSERIALDATA);
             input.index = salesDeliveryLines.indexOf(line);
             input.itemCode = line.itemCode;
             input.quantity = line.quantity;
