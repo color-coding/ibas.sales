@@ -21,8 +21,10 @@ import {
     IBOSimpleLine
 } from "ibas/index";
 import {
+    IMaterialBatchJournal,
+    IMaterialSerialJournal,
     emItemType
-} from "../../3rdparty/materials/index";
+} from "../../3rdparty/materials/api/index";
 import {
     emProductTreeType
 } from "../Datas";
@@ -201,6 +203,17 @@ export interface ISalesDeliveryItems extends IBusinessObjects<ISalesDeliveryItem
 
     /** 创建并添加子项 */
     create(): ISalesDeliveryItem;
+}
+
+/** 销售交货-批次日记账 集合 */
+export interface ISalesDeliveryMaterialBatchJournals extends IBusinessObjects<IMaterialBatchJournal, ISalesDeliveryItem> {
+    /** 创建并添加子项 */
+    create(): IMaterialBatchJournal;
+}
+/**  销售交货-序列号日记账  */
+export interface ISalesDeliveryMaterialSerialJournals extends IBusinessObjects<IMaterialSerialJournal, ISalesDeliveryItem> {
+    /** 创建并添加子项 */
+    create(): IMaterialSerialJournal;
 }
 
 /** 销售交货-行 */

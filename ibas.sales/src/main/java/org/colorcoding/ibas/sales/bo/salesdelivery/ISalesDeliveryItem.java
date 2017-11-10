@@ -9,6 +9,8 @@ import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.materials.data.emItemType;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
 
+
+
 /**
  * 销售交货-行 接口
  * 
@@ -1266,4 +1268,31 @@ public interface ISalesDeliveryItem extends IBODocumentLine {
 	 */
 	void setDistributionRule5(String value);
 
+	/**
+	 * 获取-销售交货-物料批次集合
+	 *
+	 * @return 值
+	 */
+	ISalesDeliveryMaterialBatchJournals getSalesDeliveryMaterialBatchJournals();
+
+	/**
+	 * 设置-销售交货-物料批次集合
+	 *
+	 * @param value 值
+	 */
+	void setSalesDeliveryMaterialBatchJournals(ISalesDeliveryMaterialBatchJournals value);
+
+	/**
+	 * 获取-销售交货-物料序列集合
+	 *
+	 * @return 值
+	 */
+	ISalesDeliveryMaterialSerialJournals getSalesDeliveryMaterialSerialJournals();
+
+	/**
+	 * 设置-销售交货-物料序列集合
+	 *
+	 * @param value 值
+	 */
+	void setSalesDeliveryMaterialSerialJournals(ISalesDeliveryMaterialSerialJournals value);
 }
