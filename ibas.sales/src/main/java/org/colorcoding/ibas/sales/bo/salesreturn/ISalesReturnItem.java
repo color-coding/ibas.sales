@@ -1265,5 +1265,31 @@ public interface ISalesReturnItem extends IBODocumentLine {
 	 *            值
 	 */
 	void setDistributionRule5(String value);
+	/**
+	 * 获取-销售退货-物料批次集合
+	 *
+	 * @return 值
+	 */
+	ISalesReturnMaterialBatchJournals getSalesReturnMaterialBatchJournals();
 
+	/**
+	 * 设置-销售退货-物料批次集合
+	 *
+	 * @param value 值
+	 */
+	void setSalesReturnMaterialBatchJournals(ISalesReturnMaterialBatchJournals value);
+
+	/**
+	 * 获取-销售退货-物料序列集合
+	 *
+	 * @return 值
+	 */
+	ISalesReturnMaterialSerialJournals getSalesReturnMaterialSerialJournals();
+
+	/**
+	 * 设置-销售退货-物料序列集合
+	 *
+	 * @param value 值
+	 */
+	void setSalesReturnMaterialSerialJournals(ISalesReturnMaterialSerialJournals value);
 }

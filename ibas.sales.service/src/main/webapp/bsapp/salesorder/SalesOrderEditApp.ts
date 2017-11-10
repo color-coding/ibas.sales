@@ -10,7 +10,7 @@ import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
 import { BO_CODE_CUSTOMER, ICustomer } from "../../3rdparty/businesspartner/index";
-import { BO_CODE_MATERIAL, IMaterial } from "../../3rdparty/materials/index";
+import { BO_CODE_MATERIALEX, IMaterial, IMaterialEx } from "../../3rdparty/materials/api/index";
 
 /** 编辑应用-销售订单 */
 export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditView, bo.SalesOrder> {
@@ -191,21 +191,29 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
     /** 选择销售订单物料事件 */
     private chooseSalesOrderItem(caller: bo.SalesOrderItem): void {
         let that: this = this;
-        ibas.servicesManager.runChooseService<IMaterial>({
+        ibas.servicesManager.runChooseService<IMaterialEx>({
             caller: caller,
-            boCode: BO_CODE_MATERIAL,
+            boCode: BO_CODE_MATERIALEX,
             criteria: [
-                new ibas.Condition(BO_CODE_MATERIAL,
-                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.docEntry)),
             ],
-            onCompleted(selecteds: ibas.List<IMaterial>): void {
+            onCompleted(selecteds: ibas.List<IMaterialEx>): void {
                 // 获取触发的对象
                 let index: number = that.editData.salesOrderItems.indexOf(caller);
                 let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];
-
-                let selected = selecteds.firstOrDefault();
-                if (!ibas.objects.isNull(item) && !ibas.objects.isNull(selected)) {
+                // 选择返回数量多余触发数量时,自动创建新的项目
+                let created: boolean = false;
+                for (let selected of selecteds) {
+                    if (ibas.objects.isNull(item)) {
+                        item = that.editData.salesOrderItems.create();
+                        created = true;
+                    }
                     item.itemCode = selected.code;
+                    item.warehouse = selected.warehouseCode;
+                    item = null;
+                }
+                if (created) {
+                    // 创建了新的行项目
+                    that.view.showSalesOrderItems(that.editData.salesOrderItems.filterDeleted());
                 }
             }
         });

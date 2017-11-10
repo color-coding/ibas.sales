@@ -21,11 +21,14 @@ import {
     IBOSimpleLine
 } from "ibas/index";
 import {
+    IMaterialBatchJournal,
+    IMaterialSerialJournal,
     emItemType
-} from "../../3rdparty/materials/index";
+} from "../../3rdparty/materials/api/index";
 import {
     emProductTreeType
 } from "../Datas";
+
 
 /** 销售退货 */
 export interface ISalesReturn extends IBODocument {
@@ -201,6 +204,17 @@ export interface ISalesReturnItems extends IBusinessObjects<ISalesReturnItem, IS
 
     /** 创建并添加子项 */
     create(): ISalesReturnItem;
+}
+
+/** 销售退货-批次日记账 集合 */
+export interface ISalesReturnMaterialBatchJournals extends IBusinessObjects<IMaterialBatchJournal, ISalesReturnItem> {
+    /** 创建并添加子项 */
+    create(): IMaterialBatchJournal;
+}
+/**  销售退货-序列号日记账  */
+export interface ISalesReturnMaterialSerialJournals extends IBusinessObjects<IMaterialSerialJournal, ISalesReturnItem> {
+    /** 创建并添加子项 */
+    create(): IMaterialSerialJournal;
 }
 
 /** 销售退货-行 */
