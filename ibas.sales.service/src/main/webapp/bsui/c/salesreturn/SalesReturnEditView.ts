@@ -34,6 +34,8 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
     chooseSalesReturnCustomerEvent: Function;
     /** 选择销售退货行物料事件 */
     chooseSalesReturnItemMaterialEvent: Function;
+    /** 选择销售退货仓库事件 */
+    chooseSalesReturnItemWarehouseEvent: Function;
     /** 新建销售退货单行物料序列事件 */
     createSalesReturnItemMaterialSerialEvent: Function;
     /** 新建销售退货单行物料批次事件 */
@@ -216,7 +218,7 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
             rows: "{/rows}",
             columns: [
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesdeliveryitem_linestatus"),
+                    label: ibas.i18n.prop("bo_salesreturnitem_linestatus"),
                     template: new sap.m.Select("", {
                         width: "100%",
                         items: openui5.utils.createComboBoxItems(ibas.emDocumentStatus),
@@ -226,7 +228,7 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                     }),
                 }),
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesdeliveryitem_itemcode"),
+                    label: ibas.i18n.prop("bo_salesreturnitem_itemcode"),
                     template: new sap.m.Input("", {
                         width: "100%",
                         showValueHelp: true,
@@ -241,7 +243,22 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                     })
                 }),
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesdeliveryitem_price"),
+                    label: ibas.i18n.prop("bo_salesreturnitem_warehouse"),
+                    template: new sap.m.Input("", {
+                        width: "100%",
+                        showValueHelp: true,
+                        valueHelpRequest: function (): void {
+                            that.fireViewEvents(that.chooseSalesReturnItemWarehouseEvent,
+                                // 获取当前对象
+                                this.getBindingContext().getObject()
+                            );
+                        }
+                    }).bindProperty("value", {
+                        path: "warehouse",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesreturnitem_price"),
                     template: new sap.m.Input("", {
                         width: "100%",
                         type: sap.m.InputType.Number,
@@ -250,7 +267,7 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                     }),
                 }),
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesdeliveryitem_quantity"),
+                    label: ibas.i18n.prop("bo_salesreturnitem_quantity"),
                     template: new sap.m.Input("", {
                         width: "100%",
                         type: sap.m.InputType.Number,
@@ -259,7 +276,7 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                     }),
                 }),
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesdeliveryitem_discount"),
+                    label: ibas.i18n.prop("bo_salesreturnitem_discount"),
                     template: new sap.m.Input("", {
                         width: "100%",
                         type: sap.m.InputType.Number,
@@ -268,7 +285,7 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                     }),
                 }),
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesdeliveryitem_linetotal"),
+                    label: ibas.i18n.prop("bo_salesreturnitem_linetotal"),
                     template: new sap.m.Input("", {
                         width: "100%",
                         type: sap.m.InputType.Number,

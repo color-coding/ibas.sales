@@ -10,7 +10,7 @@ import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
 import { BO_CODE_CUSTOMER, ICustomer } from "../../3rdparty/businesspartner/index";
-import { BO_CODE_MATERIALEX, IMaterial, IMaterialEx } from "../../3rdparty/materials/index";
+import { BO_CODE_PRODUCT, IMaterial, IProduct, IWarehouse, BO_CODE_WAREHOUSE, } from "../../3rdparty/materials/index";
 
 /** 编辑应用-销售订单 */
 export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditView, bo.SalesOrder> {
@@ -191,12 +191,12 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
     /** 选择销售订单物料事件 */
     private chooseSalesOrderItem(caller: bo.SalesOrderItem): void {
         let that: this = this;
-        ibas.servicesManager.runChooseService<IMaterialEx>({
+        ibas.servicesManager.runChooseService<IProduct>({
             caller: caller,
-            boCode: BO_CODE_MATERIALEX,
+            boCode: BO_CODE_PRODUCT,
             criteria: [
             ],
-            onCompleted(selecteds: ibas.List<IMaterialEx>): void {
+            onCompleted(selecteds: ibas.List<IProduct>): void {
                 // 获取触发的对象
                 let index: number = that.editData.salesOrderItems.indexOf(caller);
                 let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];
@@ -208,7 +208,6 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
                         created = true;
                     }
                     item.itemCode = selected.code;
-                    item.warehouse = selected.warehouseCode;
                     item = null;
                 }
                 if (created) {
@@ -248,6 +247,34 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         // 仅显示没有标记删除的
         this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
     }
+    /** 选择销售交货行仓库事件 */
+    private chooseSalesOrderItemWarehouse(caller: bo.SalesOrderItem): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<IWarehouse>({
+            boCode: BO_CODE_WAREHOUSE,
+            caller: caller,
+            criteria: [
+            ],
+            onCompleted(selecteds: ibas.List<IWarehouse>): void {
+                let index: number = that.editData.salesOrderItems.indexOf(caller);
+                let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];
+                // 选择返回数量多余触发数量时,自动创建新的项目
+                let created: boolean = false;
+                for (let selected of selecteds) {
+                    if (ibas.objects.isNull(item)) {
+                        item = that.editData.salesOrderItems.create();
+                        created = true;
+                    }
+                    item.warehouse = selected.code;
+                    item = null;
+                }
+                if (created) {
+                    // 创建了新的行项目
+                    that.view.showSalesOrderItems(that.editData.salesOrderItems.filterDeleted());
+                }
+            }
+        });
+    }
 
 }
 /** 视图-销售订单 */
@@ -268,4 +295,6 @@ export interface ISalesOrderEditView extends ibas.IBOEditView {
     chooseSalesOrderCustomerEvent: Function;
     /** 选择销售订单行物料事件 */
     chooseSalesOrderItemMaterialEvent: Function;
+    /** 选择销售订单仓库事件 */
+    chooseSalesOrderItemWarehouseEvent: Function;
 }
