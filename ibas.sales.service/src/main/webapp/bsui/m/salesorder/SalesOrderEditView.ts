@@ -7,7 +7,7 @@
  */
 
 import * as ibas from "ibas/index";
-import { utils } from "openui5/typings/ibas.utils";
+import * as openui5 from "openui5/index";
 import * as bo from "../../../borep/bo/index";
 import { ISalesOrderEditView } from "../../../bsapp/salesorder/index";
 export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEditView {
@@ -70,7 +70,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentstatus") }),
                 new sap.m.Select("", {
                     showSecondaryValues: true,
-                    items: utils.createComboBoxItems(ibas.emDocumentStatus),
+                    items: openui5.utils.createComboBoxItems(ibas.emDocumentStatus),
                 }).bindProperty("selectedKey", {
                     path: "documentStatus",
                     type: "sap.ui.model.type.Integer",
@@ -78,7 +78,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_canceled") }),
                 new sap.m.Select("", {
                     showSecondaryValues: true,
-                    items: utils.createComboBoxItems(ibas.emYesNo),
+                    items: openui5.utils.createComboBoxItems(ibas.emYesNo),
                 }).bindProperty("selectedKey", {
                     path: "canceled",
                     type: "sap.ui.model.type.Integer",
@@ -147,7 +147,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
         this.tableSalesOrderItem = new sap.m.List("", {
             inset: false,
             growing: true,
-            growingThreshold: ibas.config.get(utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 5),
+            growingThreshold: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 5),
             growingScrollToLoad: true,
             visibleRowCountMode: sap.ui.table.VisibleRowCountMode.Auto,
             mode: sap.m.ListMode.None,
@@ -264,7 +264,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_linestatus") }),
                 new sap.m.Select("", {
                     width: "100%",
-                    items: utils.createComboBoxItems(ibas.emDocumentStatus)
+                    items: openui5.utils.createComboBoxItems(ibas.emDocumentStatus)
                 }).bindProperty("selectedKey", {
                     path: "lineStatus",
                     type: "sap.ui.model.type.Integer"
@@ -414,7 +414,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
         // 新建时：禁用删除，
         if (data.isNew) {
             if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
+                openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
             }
         }
         // 不可编辑：已批准，
@@ -422,10 +422,10 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
             || data.documentStatus === ibas.emDocumentStatus.CLOSED
             || data.canceled === ibas.emYesNo.YES) {
             if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
+                openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
+                openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
             }
-            utils.changeFormEditable(this.mainLayout, false);
+            openui5.utils.changeFormEditable(this.mainLayout, false);
         }
     }
     /** 显示数据 */
@@ -433,7 +433,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
         this.mainLayout.setModel(new sap.ui.model.json.JSONModel(data));
         this.mainLayout.bindObject("/");
         // 监听属性改变，并更新控件
-        utils.refreshModelChanged(this.mainLayout, data);
+        openui5.utils.refreshModelChanged(this.mainLayout, data);
         // 改变视图状态
         this.changeViewStatus(data);
     }
@@ -441,7 +441,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
     showSalesOrderItems(datas: bo.SalesOrderItem[]): void {
         this.tableSalesOrderItem.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
         // 监听属性改变，并更新控件
-        utils.refreshModelChanged(this.tableSalesOrderItem, datas);
+        openui5.utils.refreshModelChanged(this.tableSalesOrderItem, datas);
     }
 
 }
