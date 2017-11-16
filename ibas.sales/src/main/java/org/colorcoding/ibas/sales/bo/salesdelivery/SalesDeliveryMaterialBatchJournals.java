@@ -41,7 +41,7 @@ public class SalesDeliveryMaterialBatchJournals extends BusinessObjects<IMateria
         if (this.add(item)) {
             return item;
         }
-        return null;
+        return item;
     }
 
     /**
