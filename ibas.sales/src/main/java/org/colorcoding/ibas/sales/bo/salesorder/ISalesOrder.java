@@ -1,8 +1,12 @@
 package org.colorcoding.ibas.sales.bo.salesorder;
 
-import org.colorcoding.ibas.bobas.bo.*;
-import org.colorcoding.ibas.bobas.data.*;
-import org.colorcoding.ibas.sales.data.*;
+import org.colorcoding.ibas.bobas.bo.IBODocument;
+import org.colorcoding.ibas.bobas.data.DateTime;
+import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.data.emApprovalStatus;
+import org.colorcoding.ibas.bobas.data.emBOStatus;
+import org.colorcoding.ibas.bobas.data.emDocumentStatus;
+import org.colorcoding.ibas.bobas.data.emYesNo;
 
 /**
 * 销售订单 接口

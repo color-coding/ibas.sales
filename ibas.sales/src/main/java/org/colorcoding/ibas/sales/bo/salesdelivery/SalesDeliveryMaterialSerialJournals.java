@@ -2,10 +2,10 @@ package org.colorcoding.ibas.sales.bo.salesdelivery;
 
 import org.colorcoding.ibas.bobas.bo.BusinessObjects;
 import org.colorcoding.ibas.bobas.common.*;
-import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerial;
 import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialJournal;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialJournal;
 import org.colorcoding.ibas.sales.MyConfiguration;
+
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import java.beans.PropertyChangeEvent;

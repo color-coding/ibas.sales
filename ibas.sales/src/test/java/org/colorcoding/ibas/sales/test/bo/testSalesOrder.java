@@ -1,14 +1,12 @@
 package org.colorcoding.ibas.sales.test.bo;
 
 import junit.framework.TestCase;
-import org.colorcoding.ibas.bobas.data.*;
-import org.colorcoding.ibas.bobas.common.*;
-import org.colorcoding.ibas.bobas.repository.*;
-import org.colorcoding.ibas.materials.bo.materialpricelist.IMaterialPriceItem;
-import org.colorcoding.ibas.materials.bo.materialpricelist.MaterialPriceList;
-import org.colorcoding.ibas.sales.data.*;
-import org.colorcoding.ibas.sales.bo.salesorder.*;
-import org.colorcoding.ibas.sales.repository.*;
+import org.colorcoding.ibas.bobas.common.ICriteria;
+import org.colorcoding.ibas.bobas.common.IOperationResult;
+import org.colorcoding.ibas.sales.bo.salesorder.ISalesOrderItem;
+import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
+import org.colorcoding.ibas.sales.repository.BORepositorySales;
+import org.colorcoding.ibas.sales.repository.IBORepositorySalesApp;
 
 /**
 * 销售订单 测试

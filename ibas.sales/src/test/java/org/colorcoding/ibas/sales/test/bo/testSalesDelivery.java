@@ -1,12 +1,11 @@
 package org.colorcoding.ibas.sales.test.bo;
 
 import junit.framework.TestCase;
-import org.colorcoding.ibas.bobas.data.*;
-import org.colorcoding.ibas.bobas.common.*;
-import org.colorcoding.ibas.bobas.repository.*;
-import org.colorcoding.ibas.sales.data.*;
-import org.colorcoding.ibas.sales.bo.salesdelivery.*;
-import org.colorcoding.ibas.sales.repository.*;
+import org.colorcoding.ibas.bobas.common.ICriteria;
+import org.colorcoding.ibas.bobas.common.IOperationResult;
+import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
+import org.colorcoding.ibas.sales.repository.BORepositorySales;
+import org.colorcoding.ibas.sales.repository.IBORepositorySalesApp;
 
 /**
 * 销售交货 测试
@@ -29,7 +28,7 @@ public class testSalesDelivery extends TestCase {
         // 测试属性赋值
 
         // 测试销售交货-行
-        ISalesDeliveryItem salesdeliveryitem = bo.getSalesDeliveryItems().create();
+        
         // 测试属性赋值
         
 

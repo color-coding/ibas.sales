@@ -1,12 +1,11 @@
 package org.colorcoding.ibas.sales.test.bo;
 
 import junit.framework.TestCase;
-import org.colorcoding.ibas.bobas.data.*;
-import org.colorcoding.ibas.bobas.common.*;
-import org.colorcoding.ibas.bobas.repository.*;
-import org.colorcoding.ibas.sales.data.*;
-import org.colorcoding.ibas.sales.bo.productsuit.*;
-import org.colorcoding.ibas.sales.repository.*;
+import org.colorcoding.ibas.bobas.common.ICriteria;
+import org.colorcoding.ibas.bobas.common.IOperationResult;
+import org.colorcoding.ibas.sales.bo.productsuit.ProductSuit;
+import org.colorcoding.ibas.sales.repository.BORepositorySales;
+import org.colorcoding.ibas.sales.repository.IBORepositorySalesApp;
 
 /**
 * 产品套装 测试
@@ -29,7 +28,7 @@ public class testProductSuit extends TestCase {
         // 测试属性赋值
 
         // 测试产品套装-项目
-        IProductSuitItem productsuititem = bo.getProductSuitItems().create();
+        
         // 测试属性赋值
         
 

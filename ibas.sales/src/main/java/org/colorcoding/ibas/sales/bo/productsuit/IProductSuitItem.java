@@ -1,8 +1,8 @@
 package org.colorcoding.ibas.sales.bo.productsuit;
 
-import org.colorcoding.ibas.bobas.bo.*;
-import org.colorcoding.ibas.bobas.data.*;
-import org.colorcoding.ibas.sales.data.*;
+import org.colorcoding.ibas.bobas.bo.IBOSimpleLine;
+import org.colorcoding.ibas.bobas.data.DateTime;
+import org.colorcoding.ibas.bobas.data.Decimal;
 
 /**
 * 产品套装-项目 接口

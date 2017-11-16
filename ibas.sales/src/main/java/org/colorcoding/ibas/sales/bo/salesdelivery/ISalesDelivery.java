@@ -1,8 +1,7 @@
 package org.colorcoding.ibas.sales.bo.salesdelivery;
 
-import org.colorcoding.ibas.bobas.bo.*;
+import org.colorcoding.ibas.bobas.bo.IBODocument;
 import org.colorcoding.ibas.bobas.data.*;
-import org.colorcoding.ibas.sales.data.*;
 
 /**
 * 销售交货 接口
