@@ -163,7 +163,7 @@ export class SalesOrderChooseView extends ibas.BOChooseView implements ISalesOrd
                 for (let item of datas) {
                     hDatas.rows.push(item);
                 }
-                model.refresh(false);
+                model.refresh(false);                done = true;
 
             }
         }
