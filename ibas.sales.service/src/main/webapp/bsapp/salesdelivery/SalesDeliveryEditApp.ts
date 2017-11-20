@@ -11,15 +11,19 @@ import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
 import { BO_CODE_CUSTOMER, ICustomer } from "../../3rdparty/businesspartner/index";
 import {
-    IMaterialEx,
+    IWarehouse,
+    IProduct,
     IMaterialSerialJournal,
     IMaterialBatchJournal,
-    IMaterialBatchSerialInOutData,
-    IMaterialBatchSerialInOutDataBatchJournals,
-    IMaterialBatchSerialInOutDataSerialJournals,
-    BO_CODE_MATERIALEX, BO_CODE_ISSUE_MATERIALSERIAL,
-    BO_CODE_MATERIALBATCHSERIALDATA,
+    IMaterialBatchService,
+    IMaterialSerialService,
+    IMaterialBatchServiceJournals,
+    IMaterialSerialServiceJournals,
+    BO_CODE_PRODUCT, BO_CODE_ISSUE_MATERIALSERIAL,
+    BO_CODE_MATERIALBATCHSERVICE,
+    BO_CODE_MATERIALSERIALSERVICE,
     BO_CODE_ISSUE_MATERIALBATCH, IMaterial,
+    BO_CODE_WAREHOUSE,
 } from "../../3rdparty/materials/index";
 
 
@@ -52,6 +56,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         this.view.chooseSalesDeliveryItemMaterialEvent = this.chooseSalesDeliveryItemMaterial;
         this.view.chooseSalesDeliveryItemMaterialBatchEvent = this.chooseSalesDeliveryLineMaterialBatch;
         this.view.chooseSalesDeliveryItemMaterialSerialEvent = this.chooseSalesDeliveryLineMaterialSerial;
+        this.view.chooseSalesDeliveryItemWarehouseEvent = this.chooseSalesDeliveryItemWarehouse;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -201,15 +206,15 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
             }
         });
     }
-    /** 选择销售交货物料事件 */
+    /** 选择销售交货行物料事件 */
     private chooseSalesDeliveryItemMaterial(caller: bo.SalesDeliveryItem): void {
         let that: this = this;
-        ibas.servicesManager.runChooseService<IMaterialEx>({
-            boCode: BO_CODE_MATERIALEX,
+        ibas.servicesManager.runChooseService<IProduct>({
+            boCode: BO_CODE_PRODUCT,
             caller: caller,
             criteria: [
             ],
-            onCompleted(selecteds: ibas.List<IMaterialEx>): void {
+            onCompleted(selecteds: ibas.List<IProduct>): void {
                 let index: number = that.editData.salesDeliveryItems.indexOf(caller);
                 let item: bo.SalesDeliveryItem = that.editData.salesDeliveryItems[index];
                 // 选择返回数量多余触发数量时,自动创建新的项目
@@ -219,17 +224,48 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                         item = that.editData.salesDeliveryItems.create();
                         created = true;
                     }
-                    if (item.itemCode !== selected.code || item.warehouse !== selected.warehouseCode) {
-                        item.salesDeliveryMaterialBatchJournals.clear();
-                        item.salesDeliveryMaterialSerialJournals.clear();
+                    if (item.itemCode !== selected.code) {
+                        item.salesDeliveryMaterialBatchJournals.deleteAll();
+                        item.salesDeliveryMaterialSerialJournals.deleteAll();
                     }
                     item.itemCode = selected.code;
                     item.itemDescription = selected.name;
-                    item.warehouse = selected.warehouseCode;
                     item.serialManagement = selected.serialManagement;
                     item.batchManagement = selected.batchManagement;
                     item.price = selected.price;
                     item.quantity = 1;
+                    item = null;
+                }
+                if (created) {
+                    // 创建了新的行项目
+                    that.view.showSalesDeliveryItems(that.editData.salesDeliveryItems.filterDeleted());
+                }
+            }
+        });
+    }
+    /** 选择销售交货行仓库事件 */
+    private chooseSalesDeliveryItemWarehouse(caller: bo.SalesDeliveryItem): void{
+        let that: this = this;
+        ibas.servicesManager.runChooseService<IWarehouse>({
+            boCode: BO_CODE_WAREHOUSE,
+            caller: caller,
+            criteria: [
+            ],
+            onCompleted(selecteds: ibas.List<IWarehouse>): void {
+                let index: number = that.editData.salesDeliveryItems.indexOf(caller);
+                let item: bo.SalesDeliveryItem = that.editData.salesDeliveryItems[index];
+                // 选择返回数量多余触发数量时,自动创建新的项目
+                let created: boolean = false;
+                for (let selected of selecteds) {
+                    if (ibas.objects.isNull(item)) {
+                        item = that.editData.salesDeliveryItems.create();
+                        created = true;
+                    }
+                    if (item.itemCode !== selected.code) {
+                        item.salesDeliveryMaterialBatchJournals.deleteAll();
+                        item.salesDeliveryMaterialSerialJournals.deleteAll();
+                    }
+                    item.warehouse = selected.code;
                     item = null;
                 }
                 if (created) {
@@ -273,42 +309,29 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
     /** 选择销售交货行批次事件 */
     chooseSalesDeliveryLineMaterialBatch(): void {
         let that: this = this;
-        let caller: IMaterialBatchSerialInOutData[] = that.getBatchData();
+        let caller: IMaterialBatchService[] = that.getBatchData();
         if (ibas.objects.isNull(caller) || caller.length === 0) {
             this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("materials_app_no_batchmanaged"));
             return;
         }
-        ibas.servicesManager.runChooseService<IMaterialBatchSerialInOutData>({
+        ibas.servicesManager.runChooseService<IMaterialBatchService>({
             caller: caller,
             boCode: BO_CODE_ISSUE_MATERIALBATCH,
             criteria: [
             ],
-            onCompleted(callbackData: ibas.List<IMaterialBatchSerialInOutData>): void {
+            onCompleted(callbackData: ibas.List<IMaterialBatchService>): void {
                 // 获取触发的对象
                 for (let line of callbackData) {
                     let item: bo.SalesDeliveryItem = that.editData.salesDeliveryItems[line.index];
-                    item.salesDeliveryMaterialBatchJournals.clear();
-                    // for (let batchLine of item.salesDeliveryMaterialBatchJournals) {
-                    //     batchLine.delete();
-                    // }
-                    for (let batchJournal of line.materialBatchSerialInOutDataBatchJournals.filterDeleted()) {
+                    for (let batchLine of item.salesDeliveryMaterialBatchJournals) {
+                        batchLine.markDeleted(true);
+                    }
+                    for (let batchJournal of line.materialBatchServiceJournals.filterDeleted()) {
                         // 如果批次号为空 不处理
                         if (ibas.objects.isNull(batchJournal.batchCode)) {
                             continue;
                         }
-                        let batchLine: IMaterialBatchJournal = item.salesDeliveryMaterialBatchJournals
-                            .find(c => c.batchCode === batchJournal.batchCode);
-                        if (ibas.objects.isNull(batchLine)) {
-                            batchLine = item.salesDeliveryMaterialBatchJournals.create();
-                        }
-                        batchLine.batchCode = batchJournal.batchCode;
-                        batchLine.itemCode = batchJournal.itemCode;
-                        batchLine.warehouse = batchJournal.warehouse;
-                        batchLine.quantity = batchJournal.quantity;
-                        batchLine.direction = batchJournal.direction;
-                        batchLine.admissionDate = batchJournal.admissionDate;
-                        batchLine.expirationDate = batchJournal.expirationDate;
-                        batchLine.manufacturingDate = batchJournal.manufacturingDate;
+                        let batchLine: IMaterialBatchJournal = item.salesDeliveryMaterialBatchJournals.createJournal(batchJournal);
                     }
                 }
             }
@@ -317,48 +340,40 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
     /** 选择销售交货序列事件 */
     chooseSalesDeliveryLineMaterialSerial(): void {
         let that: this = this;
-        let caller: IMaterialBatchSerialInOutData[] = that.getSerialData();
+        let caller: IMaterialSerialService[] = that.getSerialData();
         if (ibas.objects.isNull(caller) || caller.length === 0) {
             this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("materials_app_no_serialmanaged"));
             return;
         }
-        ibas.servicesManager.runChooseService<IMaterialBatchSerialInOutData>({
+        ibas.servicesManager.runChooseService<IMaterialSerialService>({
             caller: caller,
             boCode: BO_CODE_ISSUE_MATERIALSERIAL,
-            onCompleted(callbackData: ibas.List<IMaterialBatchSerialInOutData>): void {
+            onCompleted(callbackData: ibas.List<IMaterialSerialService>): void {
                 // 获取触发的对象
                 for (let line of callbackData) {
                     let item: bo.SalesDeliveryItem = that.editData.salesDeliveryItems[line.index];
-                    item.salesDeliveryMaterialSerialJournals.clear();
-                    // for (let serialLine of item.salesDeliveryMaterialSerialJournals) {
-                    //     serialLine.delete();
-                    // }
-                    for (let serial of line.materialBatchSerialInOutDataSerialJournals.filterDeleted()) {
-                        let serialLine: IMaterialSerialJournal = item.salesDeliveryMaterialSerialJournals.create();
-                        serialLine.serialCode = serial.serialCode;
-                        serialLine.itemCode = serial.itemCode;
-                        serialLine.direction = serial.direction;
-                        serialLine.warehouse = serial.warehouse;
-                        serialLine.admissionDate = serial.admissionDate;
-                        serialLine.expirationDate = serial.expirationDate;
-                        serialLine.manufacturingDate = serial.manufacturingDate;
+                    for (let serialLine of item.salesDeliveryMaterialSerialJournals) {
+                        serialLine.markDeleted(true);
+                    }
+                    for (let serial of line.materialSerialServiceJournals.filterDeleted()) {
+                        let serialLine: IMaterialSerialJournal = item.salesDeliveryMaterialSerialJournals.createJournal(serial);
                     }
                 }
             }
         });
     }
     /** 获取行-批次序列信息 */
-    getBatchData(): IMaterialBatchSerialInOutData[] {
+    getBatchData(): IMaterialBatchService[] {
         // 获取行数据
         let salesDeliveryLines: bo.SalesDeliveryItem[] = this.editData.salesDeliveryItems.filterDeleted();
         // let batchJournal: bo.Material
-        let inputData: IMaterialBatchSerialInOutData[] = new Array<IMaterialBatchSerialInOutData>();
+        let inputData: IMaterialBatchService[] = new Array<IMaterialBatchService>();
         for (let line of salesDeliveryLines) {
             if (!ibas.objects.isNull(line.batchManagement) &&
                 line.batchManagement.toString() === ibas.enums.toString(ibas.emYesNo, ibas.emYesNo.NO)) {
                 continue;
             }
-            let input: IMaterialBatchSerialInOutData = ibas.boFactory.create(BO_CODE_MATERIALBATCHSERIALDATA);
+            let input: IMaterialBatchService = ibas.boFactory.create(BO_CODE_MATERIALBATCHSERVICE);
             input.index = salesDeliveryLines.indexOf(line);
             input.itemCode = line.itemCode;
             input.quantity = line.quantity;
@@ -369,7 +384,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                 input.selectedBatchQuantity = 0;
             } else {
                 for (let item of line.salesDeliveryMaterialBatchJournals.filterDeleted()) {
-                    let batchLine: IMaterialBatchJournal = input.materialBatchSerialInOutDataBatchJournals.create();
+                    let batchLine: IMaterialBatchJournal = input.materialBatchServiceJournals.create();
                     batchLine.batchCode = item.batchCode;
                     batchLine.itemCode = item.itemCode;
                     batchLine.warehouse = item.warehouse;
@@ -382,16 +397,16 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         return inputData;
     }
     /** 获取行-序列信息 */
-    getSerialData(): IMaterialBatchSerialInOutData[] {
+    getSerialData(): IMaterialSerialService[] {
         // 获取行数据
         let salesDeliveryLines: bo.SalesDeliveryItem[] = this.editData.salesDeliveryItems.filterDeleted();
-        let inputData: IMaterialBatchSerialInOutData[] = new Array<IMaterialBatchSerialInOutData>();
+        let inputData: IMaterialSerialService[] = new Array<IMaterialSerialService>();
         for (let line of salesDeliveryLines) {
             if (!ibas.objects.isNull(line.serialManagement) &&
                 line.serialManagement.toString() === ibas.enums.toString(ibas.emYesNo, ibas.emYesNo.NO)) {
                 continue;
             }
-            let input: IMaterialBatchSerialInOutData = ibas.boFactory.create(BO_CODE_MATERIALBATCHSERIALDATA);
+            let input: IMaterialSerialService = ibas.boFactory.create(BO_CODE_MATERIALSERIALSERVICE);
             input.index = salesDeliveryLines.indexOf(line);
             input.itemCode = line.itemCode;
             input.quantity = line.quantity;
@@ -402,7 +417,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                 input.selectedSerialQuantity = 0;
             } else {
                 for (let item of line.salesDeliveryMaterialSerialJournals.filterDeleted()) {
-                    let serialLine: IMaterialSerialJournal = input.materialBatchSerialInOutDataSerialJournals.create();
+                    let serialLine: IMaterialSerialJournal = input.materialSerialServiceJournals.create();
                     serialLine.serialCode = item.serialCode;
                     serialLine.itemCode = item.itemCode;
                     serialLine.warehouse = item.warehouse;
@@ -432,6 +447,8 @@ export interface ISalesDeliveryEditView extends ibas.IBOEditView {
     chooseSalesDeliveryCustomerEvent: Function;
     /** 选择销售交货物料事件 */
     chooseSalesDeliveryItemMaterialEvent: Function;
+    /** 选择销售交货仓库事件 */
+    chooseSalesDeliveryItemWarehouseEvent: Function;
     /** 选择销售交货单行物料批次事件 */
     chooseSalesDeliveryItemMaterialBatchEvent: Function;
     /** 选择销售交货行物料序列号事件 */

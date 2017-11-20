@@ -717,6 +717,27 @@ export class SalesDeliveryMaterialBatchJournals extends BusinessObjects<IMateria
         this.add(item);
         return item;
     }
+    createJournal(data: IMaterialBatchJournal): IMaterialBatchJournal {
+        let item: IMaterialBatchJournal = boFactory.create(BO_CODE_MATERIALBATCH);
+        if (objects.isNull(data)) {
+            item.batchCode = data.batchCode;
+            item.itemCode = data.itemCode;
+            item.warehouse = data.warehouse;
+            item.quantity = data.quantity;
+            item.direction = data.direction;
+            item.admissionDate = data.admissionDate;
+            item.expirationDate = data.expirationDate;
+            item.manufacturingDate = data.manufacturingDate;
+            this.add(item);
+        }
+        return item;
+    }
+    /** 所有批次日记账标记为删除 */
+    deleteAll(): void {
+        for(let item of this){
+            item.markDeleted(true);
+        }
+    }
 }
 /** 销售交货-序列日记账 集合 */
 export class SalesDeliveryMaterialSerialJournals extends BusinessObjects<IMaterialSerialJournal, SalesDeliveryItem>
@@ -726,6 +747,26 @@ export class SalesDeliveryMaterialSerialJournals extends BusinessObjects<IMateri
         let item: IMaterialSerialJournal = boFactory.create(BO_CODE_MATERIALSERIAL);
         this.add(item);
         return item;
+    }
+    createJournal(data: IMaterialSerialJournal): IMaterialSerialJournal {
+        let item: IMaterialSerialJournal = boFactory.create(BO_CODE_MATERIALSERIAL);
+        if (objects.isNull(data)) {
+            item.serialCode = data.serialCode;
+            item.itemCode = data.itemCode;
+            item.direction = data.direction;
+            item.warehouse = data.warehouse;
+            item.admissionDate = data.admissionDate;
+            item.expirationDate = data.expirationDate;
+            item.manufacturingDate = data.manufacturingDate;
+            this.add(item);
+        }
+        return item;
+    }
+    /** 所序列日记账标记为删除 */
+    deleteAll(): void {
+        for(let item of this){
+            item.markDeleted(true);
+        }
     }
 }
 

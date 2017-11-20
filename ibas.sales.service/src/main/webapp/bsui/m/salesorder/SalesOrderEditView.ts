@@ -31,6 +31,8 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
     chooseSalesOrderCustomerEvent: Function;
     /** 选择销售订单行物料事件 */
     chooseSalesOrderItemMaterialEvent: Function;
+    /** 选择销售订单行仓库事件 */
+    chooseSalesOrderItemWarehouseEvent: Function;
 
     /** 绘制视图 */
     darw(): any {

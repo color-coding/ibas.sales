@@ -41,6 +41,8 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
     chooseSalesDeliveryItemMaterialBatchEvent: Function;
     /** 选择销售交货行物料序列号事件 */
     chooseSalesDeliveryItemMaterialSerialEvent: Function;
+     /** 选择销售交货仓库事件 */
+     chooseSalesDeliveryItemWarehouseEvent: Function;
 
     /** 绘制视图 */
     darw(): any {
@@ -202,6 +204,21 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                         }
                     }).bindProperty("value", {
                         path: "itemCode",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesdeliveryitem_warehouse"),
+                    template: new sap.m.Input("", {
+                        width: "100%",
+                        showValueHelp: true,
+                        valueHelpRequest: function (): void {
+                            that.fireViewEvents(that.chooseSalesDeliveryItemWarehouseEvent,
+                                // 获取当前对象
+                                this.getBindingContext().getObject()
+                            );
+                        }
+                    }).bindProperty("value", {
+                        path: "warehouse",
                     })
                 }),
                 new sap.ui.table.Column("", {
