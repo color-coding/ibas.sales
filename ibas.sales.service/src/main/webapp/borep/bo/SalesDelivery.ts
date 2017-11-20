@@ -19,6 +19,7 @@ import {
     BODocumentLine,
     BOSimple,
     BOSimpleLine,
+    boFactory,
     config,
     strings,
     objects
@@ -33,12 +34,13 @@ import {
     emProductTreeType,
 } from "../../api/index";
 import {
+    IMaterialBatchJournal,
+    IMaterialSerialJournal,
+    BO_CODE_MATERIALBATCH,
+    BO_CODE_MATERIALSERIAL,
     emItemType
-} from "../../3rdparty/materials/api/index";
-import{
-    MaterialBatchJournal,
-    MaterialSerialJournal
-} from "../../3rdparty/materials/borep/bo/index";
+} from "../../3rdparty/materials/index";
+
 /** 销售交货 */
 export class SalesDelivery extends BODocument<SalesDelivery> implements ISalesDelivery {
 
@@ -707,21 +709,21 @@ export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, Sales
 }
 
 /** 销售交货-批次日记账 集合 */
-export class SalesDeliveryMaterialBatchJournals extends BusinessObjects<MaterialBatchJournal, SalesDeliveryItem>
+export class SalesDeliveryMaterialBatchJournals extends BusinessObjects<IMaterialBatchJournal, SalesDeliveryItem>
     implements ISalesDeliveryMaterialBatchJournals {
     /** 创建并添加子项 */
-    create(): MaterialBatchJournal {
-        let item: MaterialBatchJournal = new MaterialBatchJournal();
+    create(): IMaterialBatchJournal {
+        let item: IMaterialBatchJournal = boFactory.create(BO_CODE_MATERIALBATCH);
         this.add(item);
         return item;
     }
 }
 /** 销售交货-序列日记账 集合 */
-export class SalesDeliveryMaterialSerialJournals extends BusinessObjects<MaterialSerialJournal, SalesDeliveryItem>
+export class SalesDeliveryMaterialSerialJournals extends BusinessObjects<IMaterialSerialJournal, SalesDeliveryItem>
     implements ISalesDeliveryMaterialSerialJournals {
     /** 创建并添加子项 */
-    create(): MaterialSerialJournal {
-        let item: MaterialSerialJournal = new MaterialSerialJournal();
+    create(): IMaterialSerialJournal {
+        let item: IMaterialSerialJournal = boFactory.create(BO_CODE_MATERIALSERIAL);
         this.add(item);
         return item;
     }
