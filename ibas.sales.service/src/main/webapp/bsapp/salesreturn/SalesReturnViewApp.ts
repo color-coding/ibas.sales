@@ -40,7 +40,7 @@ export class SalesReturnViewApp extends ibas.BOViewService<ISalesReturnViewView>
         if (ibas.objects.isNull(this.viewData)) {
             // 创建编辑对象实例
             this.viewData = new bo.SalesReturn();
-            this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("sys_shell_data_created_new"));
+            this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_created_new"));
         }
         this.view.showSalesReturn(this.viewData);
         this.view.showSalesReturnItems(this.viewData.salesReturnItems.filterDeleted());
@@ -76,7 +76,7 @@ export class SalesReturnViewApp extends ibas.BOViewService<ISalesReturnViewView>
                             // 数据重新检索无效
                             that.messages({
                                 type: ibas.emMessageType.WARNING,
-                                message: ibas.i18n.prop("sys_shell_data_deleted_and_created"),
+                                message: ibas.i18n.prop("shell_data_deleted_and_created"),
                                 onCompleted(): void {
                                     that.show();
                                 }
@@ -114,7 +114,7 @@ export class SalesReturnViewApp extends ibas.BOViewService<ISalesReturnViewView>
                 }
             }
         });
-        this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("sys_shell_fetching_data"));
+        this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_fetching_data"));
     }
     /** 获取服务的契约 */
     protected getServiceProxies(): ibas.IServiceProxy<ibas.IServiceContract>[] {

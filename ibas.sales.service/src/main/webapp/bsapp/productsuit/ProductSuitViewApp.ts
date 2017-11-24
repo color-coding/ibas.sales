@@ -69,7 +69,7 @@ export class ProductSuitViewApp extends ibas.BOViewService<IProductSuitViewView>
                             // 数据重新检索无效
                             that.messages({
                                 type: ibas.emMessageType.WARNING,
-                                message: ibas.i18n.prop("sys_shell_data_deleted_and_created"),
+                                message: ibas.i18n.prop("shell_data_deleted_and_created"),
                                 onCompleted(): void {
                                     that.show();
                                 }
@@ -108,7 +108,7 @@ export class ProductSuitViewApp extends ibas.BOViewService<IProductSuitViewView>
                 }
             }
         });
-        this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("sys_shell_fetching_data"));
+        this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_fetching_data"));
     }
     /** 获取服务的契约 */
     protected getServiceProxies(): ibas.IServiceProxy<ibas.IServiceContract>[] {

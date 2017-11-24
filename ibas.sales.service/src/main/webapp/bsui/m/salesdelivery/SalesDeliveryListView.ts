@@ -36,7 +36,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
             swipeContent: new sap.m.Toolbar("", {
                 content: [
                     new sap.m.Button("", {
-                        text: ibas.i18n.prop("sys_shell_data_view"),
+                        text: ibas.i18n.prop("shell_data_view"),
                         type: sap.m.ButtonType.Accept,
                         icon: "sap-icon://display",
                         press(oEvent: any): void {
@@ -49,7 +49,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                         }
                     }),
                     new sap.m.Button("", {
-                        text: ibas.i18n.prop("sys_shell_data_edit"),
+                        text: ibas.i18n.prop("shell_data_edit"),
                         type: sap.m.ButtonType.Accept,
                         icon: "sap-icon://edit",
                         press(oEvent: any): void {
@@ -62,7 +62,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                         }
                     }),
                     new sap.m.Button("", {
-                        text: ibas.i18n.prop("sys_shell_data_delete"),
+                        text: ibas.i18n.prop("shell_data_delete"),
                         type: sap.m.ButtonType.Reject,
                         icon: "sap-icon://delete",
                         press(oEvent: any): void {
@@ -129,7 +129,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
             subHeader: new sap.m.Toolbar("", {
                 content: [
                     new sap.m.Button("", {
-                        text: ibas.i18n.prop("sys_shell_data_new"),
+                        text: ibas.i18n.prop("shell_data_new"),
                         type: sap.m.ButtonType.Transparent,
                         icon: "sap-icon://create",
                         press: function (): void {

@@ -64,7 +64,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         if (ibas.objects.isNull(this.editData)) {
             // 创建编辑对象实例
             this.editData = new bo.SalesDelivery();
-            this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("sys_shell_data_created_new"));
+            this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_created_new"));
         }
         this.view.showSalesDelivery(this.editData);
         this.view.showSalesDeliveryItems(this.editData.salesDeliveryItems.filterDeleted());
@@ -93,7 +93,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                             // 数据重新检索无效
                             that.messages({
                                 type: ibas.emMessageType.WARNING,
-                                message: ibas.i18n.prop("sys_shell_data_deleted_and_created"),
+                                message: ibas.i18n.prop("shell_data_deleted_and_created"),
                                 onCompleted(): void {
                                     that.show();
                                 }
@@ -125,13 +125,13 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                     if (opRslt.resultObjects.length === 0) {
                         // 删除成功，释放当前对象
                         that.messages(ibas.emMessageType.SUCCESS,
-                            ibas.i18n.prop("sys_shell_data_delete") + ibas.i18n.prop("sys_shell_sucessful"));
+                            ibas.i18n.prop("shell_data_delete") + ibas.i18n.prop("shell_sucessful"));
                         that.editData = undefined;
                     } else {
                         // 替换编辑对象
                         that.editData = opRslt.resultObjects.firstOrDefault();
                         that.messages(ibas.emMessageType.SUCCESS,
-                            ibas.i18n.prop("sys_shell_data_save") + ibas.i18n.prop("sys_shell_sucessful"));
+                            ibas.i18n.prop("shell_data_save") + ibas.i18n.prop("shell_sucessful"));
                     }
                     // 刷新当前视图
                     that.viewShowed();
@@ -141,7 +141,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
             }
         });
         this.busy(true);
-        this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("sys_shell_saving_data"));
+        this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_saving_data"));
     }
     /** 删除数据 */
     protected deleteData(): void {
@@ -166,12 +166,12 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
             if (clone) {
                 // 克隆对象
                 that.editData = that.editData.clone();
-                that.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("sys_shell_data_cloned_new"));
+                that.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_cloned_new"));
                 that.viewShowed();
             } else {
                 // 新建对象
                 that.editData = new bo.SalesDelivery();
-                that.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("sys_shell_data_created_new"));
+                that.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_created_new"));
                 that.viewShowed();
             }
         };
