@@ -8,10 +8,18 @@
 
 // 共享的数据
 import {
+    strings,
+    MODULE_REPOSITORY_NAME_TEMPLATE,
 } from "ibas/index";
 
+/** 模块-标识 */
+export const CONSOLE_ID: string = "2bd803fd-975c-4f7c-aa41-1ca2991cc126";
+/** 模块-名称 */
+export const CONSOLE_NAME: string = "BusinessPartner";
+/** 模块-版本 */
+export const CONSOLE_VERSION: string = "0.1.0";
 /** 业务仓库名称 */
-export const BO_REPOSITORY_BUSINESSPARTNER: string = "BORepositoryBusinessPartner";
+export const BO_REPOSITORY_BUSINESSPARTNER: string = strings.format(MODULE_REPOSITORY_NAME_TEMPLATE, CONSOLE_NAME);
 /** 业务对象编码-业务伙伴余额记录 */
 export const BO_CODE_BUSINESSPARTNERBALANCEJOURNAL: string = "${Company}_BP_BALANCEJOURNAL";
 /** 业务对象编码-业务伙伴组 */
