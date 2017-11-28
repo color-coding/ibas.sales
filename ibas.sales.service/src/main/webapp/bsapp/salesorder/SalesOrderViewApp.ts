@@ -41,7 +41,7 @@ export class SalesOrderViewApp extends ibas.BOViewService<ISalesOrderViewView> {
         if (ibas.objects.isNull(this.viewData)) {
             // 创建编辑对象实例
             this.viewData = new bo.SalesOrder();
-            this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("sys_shell_data_created_new"));
+            this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_created_new"));
         }
         this.view.showSalesOrder(this.viewData);
         this.view.showSalesOrderItems(this.viewData.salesOrderItems.filterDeleted());
@@ -77,7 +77,7 @@ export class SalesOrderViewApp extends ibas.BOViewService<ISalesOrderViewView> {
                             // 数据重新检索无效
                             that.messages({
                                 type: ibas.emMessageType.WARNING,
-                                message: ibas.i18n.prop("sys_shell_data_deleted_and_created"),
+                                message: ibas.i18n.prop("shell_data_deleted_and_created"),
                                 onCompleted(): void {
                                     that.show();
                                 }
@@ -115,7 +115,7 @@ export class SalesOrderViewApp extends ibas.BOViewService<ISalesOrderViewView> {
                 }
             }
         });
-        this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("sys_shell_fetching_data"));
+        this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_fetching_data"));
     }
     /** 获取服务的契约 */
     protected getServiceProxies(): ibas.IServiceProxy<ibas.IServiceContract>[] {
