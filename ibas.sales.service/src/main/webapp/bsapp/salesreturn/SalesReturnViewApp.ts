@@ -88,7 +88,7 @@ export class SalesReturnViewApp extends ibas.BOViewService<ISalesReturnViewView>
                 return;
             }
         }
-        super.run();
+        super.run.apply(this, args);
     }
     private viewData: bo.SalesReturn;
     /** 查询数据 */

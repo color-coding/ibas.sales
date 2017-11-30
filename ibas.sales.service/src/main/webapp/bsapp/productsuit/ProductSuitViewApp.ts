@@ -81,7 +81,7 @@ export class ProductSuitViewApp extends ibas.BOViewService<IProductSuitViewView>
                 return;
             }
         }
-        super.run();
+        super.run.apply(this, args);
     }
     private viewData: bo.ProductSuit;
     /** 查询数据 */
