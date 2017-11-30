@@ -89,7 +89,7 @@ export class SalesDeliveryViewApp extends ibas.BOViewService<ISalesDeliveryViewV
                 return;
             }
         }
-        super.run();
+        super.run.apply(this, args);
     }
     private viewData: bo.SalesDelivery;
     /** 查询数据 */
