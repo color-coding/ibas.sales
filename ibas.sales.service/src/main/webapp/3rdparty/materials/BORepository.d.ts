@@ -8,13 +8,27 @@
 
 import {
     FetchCaller,
-    SaveCaller
+    SaveCaller,
+    UploadFileCaller,
+    DownloadFileCaller,
+    FileData,
+    IBORepositoryApplication
 } from "ibas/index";
 import * as bo from "./bo/index"
 
 /** 业务仓库 */
-export interface IBORepositoryMaterials {
+export interface IBORepositoryMaterials extends IBORepositoryApplication {
 
+    /**
+     * 上传文件
+     * @param caller 调用者
+     */
+    upload(caller: UploadFileCaller<FileData>);
+    /**
+     * 下载文件
+     * @param caller 调用者
+     */
+    download(caller: DownloadFileCaller<Blob>);
     /**
      * 查询 库存发货
      * @param fetcher 查询者

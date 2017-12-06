@@ -7,6 +7,7 @@
  */
 
 import * as ibas from "ibas/index";
+import { CONSOLE_ID, CONSOLE_NAME, CONSOLE_VERSION } from "../api/index";
 import { ProductSuitFunc, ProductSuitChooseServiceMapping, ProductSuitLinkServiceMapping } from "./productsuit/index";
 import { SalesDeliveryFunc, SalesDeliveryChooseServiceMapping, SalesDeliveryLinkServiceMapping } from "./salesdelivery/index";
 import { SalesOrderFunc, SalesOrderChooseServiceMapping, SalesOrderLinkServiceMapping } from "./salesorder/index";
@@ -14,15 +15,13 @@ import { SalesReturnFunc, SalesReturnChooseServiceMapping, SalesReturnLinkServic
 
 /** 模块控制台 */
 export class Console extends ibas.ModuleConsole {
-    /** 模块-标识 */
-    static CONSOLE_ID: string = "bc24810f-da83-4e99-9252-d22bc28b614c";
-    /** 模块-名称 */
-    static CONSOLE_NAME: string = "Sales";
     /** 构造函数 */
     constructor() {
         super();
-        this.id = Console.CONSOLE_ID;
-        this.name = Console.CONSOLE_NAME;
+        this.id = CONSOLE_ID;
+        this.name = CONSOLE_NAME;
+        this.version = CONSOLE_VERSION;
+        this.copyright = ibas.i18n.prop("shell_license");
     }
     private _navigation: ibas.IViewNavigation;
     /** 创建视图导航 */
@@ -52,6 +51,7 @@ export class Console extends ibas.ModuleConsole {
     run(): void {
         // 加载语言-框架默认
         ibas.i18n.load(this.rootUrl + "resources/languages/sales.json");
+        ibas.i18n.load(this.rootUrl + "resources/languages/enums.json");
         ibas.i18n.load(this.rootUrl + "resources/languages/bo/productsuit.json");
         ibas.i18n.load(this.rootUrl + "resources/languages/bo/salesdelivery.json");
         ibas.i18n.load(this.rootUrl + "resources/languages/bo/salesorder.json");
