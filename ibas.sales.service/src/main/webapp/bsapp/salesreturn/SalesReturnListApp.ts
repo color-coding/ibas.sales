@@ -99,7 +99,7 @@ export class SalesReturnListApp extends ibas.BOListApplication<ISalesReturnListV
         app.run(data);
     }
     /** 删除数据，参数：目标数据集合 */
-    protected deleteData(data: bo.SalesReturn): void {
+    protected deleteData(data: bo.SalesReturn | bo.SalesReturn[]): void {
         // 检查目标数据
         if (ibas.objects.isNull(data)) {
             this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
@@ -107,14 +107,15 @@ export class SalesReturnListApp extends ibas.BOListApplication<ISalesReturnListV
             ));
             return;
         }
-        let beDeleteds:ibas.ArrayList<bo.SalesReturn> = new ibas.ArrayList<bo.SalesReturn>();
-        if (data instanceof Array ) {
+        let beDeleteds: ibas.ArrayList<bo.SalesReturn> = new ibas.ArrayList<bo.SalesReturn>();
+        if (data instanceof Array) {
             for (let item of data) {
-                if (ibas.objects.instanceOf(item, bo.SalesReturn)) {
-                    item.delete();
-                    beDeleteds.add(item);
-                }
+                item.delete();
+                beDeleteds.add(item);
             }
+        } else {
+            data.delete();
+            beDeleteds.add(data);
         }
         // 没有选择删除的对象
         if (beDeleteds.length === 0) {
@@ -130,7 +131,7 @@ export class SalesReturnListApp extends ibas.BOListApplication<ISalesReturnListV
                 if (action === ibas.emMessageAction.YES) {
                     try {
                         let boRepository: BORepositorySales = new BORepositorySales();
-                        let saveMethod: Function = function(beSaved: bo.SalesReturn):void {
+                        let saveMethod: Function = function (beSaved: bo.SalesReturn): void {
                             boRepository.saveSalesReturn({
                                 beSaved: beSaved,
                                 onCompleted(opRslt: ibas.IOperationResult<bo.SalesReturn>): void {
@@ -146,7 +147,7 @@ export class SalesReturnListApp extends ibas.BOListApplication<ISalesReturnListV
                                             // 处理完成
                                             that.busy(false);
                                             that.messages(ibas.emMessageType.SUCCESS,
-                                            ibas.i18n.prop("shell_data_delete") + ibas.i18n.prop("shell_sucessful"));
+                                                ibas.i18n.prop("shell_data_delete") + ibas.i18n.prop("shell_sucessful"));
                                         }
                                     } catch (error) {
                                         that.messages(ibas.emMessageType.ERROR,
