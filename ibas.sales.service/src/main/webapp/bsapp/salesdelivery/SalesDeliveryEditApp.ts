@@ -244,7 +244,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         });
     }
     /** 选择销售交货行仓库事件 */
-    private chooseSalesDeliveryItemWarehouse(caller: bo.SalesDeliveryItem): void{
+    private chooseSalesDeliveryItemWarehouse(caller: bo.SalesDeliveryItem): void {
         let that: this = this;
         ibas.servicesManager.runChooseService<IWarehouse>({
             boCode: BO_CODE_WAREHOUSE,
