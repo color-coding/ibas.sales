@@ -26,6 +26,7 @@ export class ProductSuitViewView extends ibas.BOViewView implements IProductSuit
         this.form.addContent(new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_productsuititem") }));
         this.tableProductSuitItem = new sap.ui.table.Table("", {
             enableSelectAll: false,
+            selectionBehavior: sap.ui.table.SelectionBehavior.Row,
             visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
             rows: "{/rows}",
             columns: [

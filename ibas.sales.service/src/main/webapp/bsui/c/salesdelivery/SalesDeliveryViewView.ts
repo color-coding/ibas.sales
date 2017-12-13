@@ -153,6 +153,7 @@ export class SalesDeliveryViewView extends ibas.BOViewView implements ISalesDeli
         });
         this.tableSalesDeliveryItem = new sap.ui.table.Table("", {
             enableSelectAll: false,
+            selectionBehavior: sap.ui.table.SelectionBehavior.Row,
             selectionMode: sap.ui.table.SelectionMode.None,
             visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
             rows: "{/rows}",
