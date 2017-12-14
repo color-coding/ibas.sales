@@ -17,6 +17,8 @@ hs_err_pid*
 *.class
 *.js
 *.glf
+*.project
+*.settings
 
 
 # work folder
