@@ -23,6 +23,9 @@ import {
 import {
 
 } from "../Datas";
+import{
+    IMaterialBatchBaseLine,
+} from "./index";
 export interface IMaterialSerialJournal extends IBOSimple {
     /**物料编号 */
     itemCode: string;
@@ -34,7 +37,7 @@ export interface IMaterialSerialJournal extends IBOSimple {
     warehouse: string;
     /**方向 */
     direction: emDirection;
-    
+
     /**在仓库 */
     inStock: emYesNo;
 
@@ -64,6 +67,9 @@ export interface IMaterialSerialJournal extends IBOSimple {
 
     /**备注 */
     notes: string;
+
+    /** 单据状态 */
+    lineStatus: emDocumentStatus;
 
     /**基于类型 */
     baseDocumentType: string;
