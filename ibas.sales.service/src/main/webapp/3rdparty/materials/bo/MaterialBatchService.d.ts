@@ -19,7 +19,6 @@ import {
     IMaterialBatch,
     IMaterialBatchJournal,
     IMaterialIssueBatchLine,
-    IMaterialBatchServiceJournals,
 } from "./index";
 export interface IMaterialBatchService extends IBusinessObject {
     /** table 行index索引 */

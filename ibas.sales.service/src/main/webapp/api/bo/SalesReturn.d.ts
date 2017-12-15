@@ -207,12 +207,12 @@ export interface ISalesReturnItems extends IBusinessObjects<ISalesReturnItem, IS
 }
 
 /** 销售退货-批次日记账 集合 */
-export interface ISalesReturnMaterialBatchJournals extends IBusinessObjects<IMaterialBatchJournal, ISalesReturnItem> {
+export interface ISalesReturnItemMaterialBatchJournals extends IBusinessObjects<IMaterialBatchJournal, ISalesReturnItem> {
     /** 创建并添加子项 */
     create(): IMaterialBatchJournal;
 }
 /**  销售退货-序列号日记账  */
-export interface ISalesReturnMaterialSerialJournals extends IBusinessObjects<IMaterialSerialJournal, ISalesReturnItem> {
+export interface ISalesReturnItemMaterialSerialJournals extends IBusinessObjects<IMaterialSerialJournal, ISalesReturnItem> {
     /** 创建并添加子项 */
     create(): IMaterialSerialJournal;
 }
