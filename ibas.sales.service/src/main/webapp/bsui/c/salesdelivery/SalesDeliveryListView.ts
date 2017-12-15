@@ -30,6 +30,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
         this.form = new sap.ui.layout.form.SimpleForm("");
         this.table = new sap.ui.table.Table("", {
             enableSelectAll: false,
+            selectionBehavior: sap.ui.table.SelectionBehavior.Row,
             visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 15),
             visibleRowCountMode: sap.ui.table.VisibleRowCountMode.Interactive,
             rows: "{/rows}",
@@ -103,8 +104,8 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
         this.form.addContent(this.table);
         this.page = new sap.m.Page("", {
             showHeader: false,
-            subHeader: new sap.m.Bar("", {
-                contentLeft: [
+            subHeader: new sap.m.Toolbar("", {
+                content: [
                     new sap.m.Button("", {
                         text: ibas.i18n.prop("shell_data_new"),
                         type: sap.m.ButtonType.Transparent,
@@ -135,7 +136,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                             );
                         }
                     }),
-                    // new sap.m.ToolbarSeparator(""),// 加了后面不显示？
+                    new sap.m.ToolbarSeparator(""),
                     new sap.m.Button("", {
                         text: ibas.i18n.prop("shell_data_delete"),
                         type: sap.m.ButtonType.Transparent,
@@ -147,8 +148,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                             );
                         }
                     }),
-                ],
-                contentRight: [
+                    new sap.m.ToolbarSpacer(""),
                     new sap.m.Button("", {
                         type: sap.m.ButtonType.Transparent,
                         icon: "sap-icon://action",
