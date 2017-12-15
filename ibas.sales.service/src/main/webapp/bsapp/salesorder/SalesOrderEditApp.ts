@@ -52,7 +52,9 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
     }
     /** 运行,覆盖原方法 */
-    run(...args: any[]): void {
+    run(): void;
+    run(data: bo.SalesOrder): void;
+    run(): void {
         let that: this = this;
         if (ibas.objects.instanceOf(arguments[0], bo.SalesOrder)) {
             // 尝试重新查询编辑对象
@@ -87,7 +89,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
                 return;
             }
         }
-        super.run.apply(this, args);
+        super.run.apply(this, arguments);
     }
     /** 待编辑的数据 */
     protected editData: bo.SalesOrder;
@@ -192,10 +194,8 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
     private chooseSalesOrderItem(caller: bo.SalesOrderItem): void {
         let that: this = this;
         ibas.servicesManager.runChooseService<IProduct>({
-            caller: caller,
             boCode: BO_CODE_PRODUCT,
-            criteria: [
-            ],
+            criteria: [],
             onCompleted(selecteds: ibas.List<IProduct>): void {
                 // 获取触发的对象
                 let index: number = that.editData.salesOrderItems.indexOf(caller);
@@ -252,9 +252,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         let that: this = this;
         ibas.servicesManager.runChooseService<IWarehouse>({
             boCode: BO_CODE_WAREHOUSE,
-            caller: caller,
-            criteria: [
-            ],
+            criteria: [],
             onCompleted(selecteds: ibas.List<IWarehouse>): void {
                 let index: number = that.editData.salesOrderItems.indexOf(caller);
                 let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];

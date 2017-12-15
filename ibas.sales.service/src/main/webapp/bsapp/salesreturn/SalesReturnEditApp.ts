@@ -72,7 +72,9 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         this.view.showSalesReturnItems(this.editData.salesReturnItems.filterDeleted());
     }
     /** 运行,覆盖原方法 */
-    run(...args: any[]): void {
+    run(): void;
+    run(data: bo.SalesReturn): void;
+    run(): void {
         let that: this = this;
         if (ibas.objects.instanceOf(arguments[0], bo.SalesReturn)) {
             // 尝试重新查询编辑对象
@@ -107,7 +109,7 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
                 return;
             }
         }
-        super.run.apply(this, args);
+        super.run.apply(this, arguments);
     }
     /** 待编辑的数据 */
     protected editData: bo.SalesReturn;
@@ -212,10 +214,8 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
     private chooseSalesReturnItemMaterial(caller: bo.SalesReturnItem): void {
         let that: this = this;
         ibas.servicesManager.runChooseService<IProduct>({
-            caller: caller,
             boCode: BO_CODE_PRODUCT,
-            criteria: [
-            ],
+            criteria: [],
             onCompleted(selecteds: ibas.List<IProduct>): void {
                 // 获取触发的对象
                 let index: number = that.editData.salesReturnItems.indexOf(caller);
@@ -248,10 +248,8 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
     private chooseSalesReturnItemWarehouse(caller: bo.SalesReturnItem): void {
         let that: this = this;
         ibas.servicesManager.runChooseService<IWarehouse>({
-            caller: caller,
             boCode: BO_CODE_WAREHOUSE,
-            criteria: [
-            ],
+            criteria: [],
             onCompleted(selecteds: ibas.List<IWarehouse>): void {
                 // 获取触发的对象
                 let index: number = that.editData.salesReturnItems.indexOf(caller);
@@ -317,7 +315,7 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         }
         ibas.servicesManager.runApplicationService<IMaterialReceiptBatchContract>({
             caller: that.getBatchContract(salesReturnItems),
-            proxy: MaterialBatchReceiptServiceProxy,
+            proxy: MaterialBatchReceiptServiceProxy
         });
     }
     /** 新建物料序列信息 */
