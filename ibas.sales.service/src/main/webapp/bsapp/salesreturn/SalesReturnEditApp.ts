@@ -314,8 +314,7 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
             return;
         }
         ibas.servicesManager.runApplicationService<IMaterialReceiptBatchContract>({
-            caller: that.getBatchContract(salesReturnItems),
-            proxy: MaterialBatchReceiptServiceProxy
+            proxy: new MaterialBatchReceiptServiceProxy(that.getBatchContract(salesReturnItems))
         });
     }
     /** 新建物料序列信息 */
@@ -327,13 +326,12 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
             return;
         }
         ibas.servicesManager.runApplicationService<IMaterialReceiptSerialContract>({
-            caller: that.getSerialContract(goodReceiptLines),
-            proxy: MaterialSerialReceiptServiceProxy,
+            proxy: new MaterialSerialReceiptServiceProxy(that.getSerialContract(goodReceiptLines))
         });
     }
 
-     /** 获取行-批次服务契约信息 */
-     getBatchContract(salesReturnItems: bo.SalesReturnItem[]): IMaterialReceiptBatchContract {
+    /** 获取行-批次服务契约信息 */
+    getBatchContract(salesReturnItems: bo.SalesReturnItem[]): IMaterialReceiptBatchContract {
         let contracts: IMaterialReceiptBatchContractLine[] = [];
         for (let item of salesReturnItems) {
             // 定义事件

@@ -320,8 +320,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         }
         // 调用批次选择服务
         ibas.servicesManager.runApplicationService<IMaterialIssueBatchContract>({
-            caller: that.getBatchContract(goodIssueLines),
-            proxy: MaterialBatchIssueServiceProxy
+            proxy: new MaterialBatchIssueServiceProxy(that.getBatchContract(goodIssueLines))
         });
     }
     /** 选择销售交货序列事件 */
@@ -334,8 +333,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         }
         // 调用序列选择服务
         ibas.servicesManager.runApplicationService<IMaterialIssueSerialContract>({
-            caller: that.getSerialContract(goodIssueLines),
-            proxy: MaterialSerialIssueServiceProxy,
+            proxy: new MaterialSerialIssueServiceProxy(that.getSerialContract(goodIssueLines))
         });
     }
     /** 获取行-批次服务契约信息 */
