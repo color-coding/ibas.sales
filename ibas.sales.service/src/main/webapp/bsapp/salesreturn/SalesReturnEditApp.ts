@@ -228,8 +228,13 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
                         created = true;
                     }
                     if (item.itemCode !== selected.code) {
-                        item.materialBatchJournals.clear();
-                        item.materialSerialJournals.clear();
+                        if (item.isNew) {
+                            item.materialBatchJournals.removeAll();
+                            item.materialSerialJournals.removeAll();
+                        } else {
+                            item.materialBatchJournals.deleteAll();
+                            item.materialSerialJournals.deleteAll();
+                        }
                     }
                     item.itemCode = selected.code;
                     item.serialManagement = selected.serialManagement;
@@ -262,8 +267,13 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
                         created = true;
                     }
                     if (item.warehouse !== selected.code) {
-                        item.materialBatchJournals.clear();
-                        item.materialSerialJournals.clear();
+                        if (item.isNew) {
+                            item.materialBatchJournals.removeAll();
+                            item.materialSerialJournals.removeAll();
+                        } else {
+                            item.materialBatchJournals.deleteAll();
+                            item.materialSerialJournals.deleteAll();
+                        }
                     }
                     item.warehouse = selected.code;
                     item = null;
