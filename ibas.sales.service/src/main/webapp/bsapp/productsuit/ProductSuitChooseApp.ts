@@ -97,8 +97,8 @@ export class ProductSuitChooseServiceMapping extends ibas.BOChooseServiceMapping
         this.boCode = ProductSuitChooseApp.BUSINESS_OBJECT_CODE;
         this.description = ibas.i18n.prop(this.name);
     }
-    /** 创建服务并运行 */
-    create(): ibas.IService<ibas.IServiceContract> {
+    /** 创建服务实例 */
+    create(): ibas.IService<ibas.IBOChooseServiceCaller<bo.ProductSuit>> {
         return new ProductSuitChooseApp();
     }
 }
