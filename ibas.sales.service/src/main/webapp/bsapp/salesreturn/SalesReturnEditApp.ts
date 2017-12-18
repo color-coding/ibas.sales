@@ -314,7 +314,12 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
             return;
         }
         ibas.servicesManager.runApplicationService<IMaterialReceiptBatchContract>({
+<<<<<<< HEAD
             proxy: new MaterialBatchReceiptServiceProxy(that.getBatchContract(salesReturnItems))
+=======
+            caller: that.getBatchContract(salesReturnItems),
+            proxy: MaterialBatchReceiptServiceProxy
+>>>>>>> 2d8fab9484f652dcb75f7add9c363e38504712f8
         });
     }
     /** 新建物料序列信息 */
@@ -326,7 +331,12 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
             return;
         }
         ibas.servicesManager.runApplicationService<IMaterialReceiptSerialContract>({
+<<<<<<< HEAD
             proxy: new MaterialSerialReceiptServiceProxy(that.getSerialContract(goodReceiptLines))
+=======
+            caller: that.getSerialContract(goodReceiptLines),
+            proxy: MaterialSerialReceiptServiceProxy,
+>>>>>>> 2d8fab9484f652dcb75f7add9c363e38504712f8
         });
     }
 
