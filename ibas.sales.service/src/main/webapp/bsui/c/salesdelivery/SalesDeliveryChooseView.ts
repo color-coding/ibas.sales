@@ -10,7 +10,7 @@ import * as ibas from "ibas/index";
 import * as openui5 from "openui5/index";
 import * as bo from "../../../borep/bo/index";
 import { ISalesDeliveryChooseView } from "../../../bsapp/salesdelivery/index";
-import { BO_CODE_CUSTOMER } from "../../../3rdparty/businesspartner/index";
+import { BO_CODE_CUSTOMER } from "3rdparty/businesspartner/index";
 
 /**
  * 选择视图-销售交货

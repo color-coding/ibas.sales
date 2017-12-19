@@ -32,7 +32,7 @@ import {
 } from "../../api/index";
 import {
     emItemType
-} from "../../3rdparty/materials/index";
+} from "3rdparty/materials/index";
 
 /** 销售订单 */
 export class SalesOrder extends BODocument<SalesOrder> implements ISalesOrder {
