@@ -10,7 +10,7 @@ import * as ibas from "ibas/index";
 import * as openui5 from "openui5/index";
 import * as bo from "../../../borep/bo/index";
 import { ISalesReturnListView } from "../../../bsapp/salesreturn/index";
-import { BO_CODE_CUSTOMER } from "../../../3rdparty/businesspartner/index";
+import { BO_CODE_CUSTOMER } from "3rdparty/businesspartner/index";
 
 /**
  * 列表视图-销售退货

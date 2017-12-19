@@ -42,7 +42,7 @@ import {
     BO_CODE_MATERIALBATCHJOURNAL,
     BO_CODE_MATERIALSERIALJOURNAL,
     emItemType
-} from "../../3rdparty/materials/index";
+} from "3rdparty/materials/index";
 
 /** 销售交货 */
 export class SalesDelivery extends BODocument<SalesDelivery> implements ISalesDelivery {
