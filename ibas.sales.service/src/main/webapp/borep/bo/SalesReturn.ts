@@ -7,6 +7,7 @@
  */
 
 import {
+    enums,
     emYesNo,
     emDocumentStatus,
     emBOStatus,
@@ -28,19 +29,19 @@ import {
     ISalesReturn,
     ISalesReturnItems,
     ISalesReturnItem,
-    ISalesReturnMaterialBatchJournals,
-    ISalesReturnMaterialSerialJournals,
+    ISalesReturnItemMaterialBatchJournals,
+    ISalesReturnItemMaterialSerialJournals,
     BO_CODE_SALESRETURN,
     emProductTreeType,
 } from "../../api/index";
 import {
-    emItemType
-} from "../../3rdparty/materials/index";
-import {
+    emItemType,
+    IMaterialReceiptBatchLine,
+    IMaterialReceiptSerialLine,
     IMaterialBatchJournal,
     IMaterialSerialJournal,
-    BO_CODE_MATERIALBATCH,
-    BO_CODE_MATERIALSERIAL,
+    BO_CODE_MATERIALBATCHJOURNAL,
+    BO_CODE_MATERIALSERIALJOURNAL,
 } from "../../3rdparty/materials/index";
 /** 销售退货 */
 export class SalesReturn extends BODocument<SalesReturn> implements ISalesReturn {
@@ -707,19 +708,45 @@ export class SalesReturnItems extends BusinessObjects<SalesReturnItem, SalesRetu
             this.parent.discountTotal -= (item.quantity * item.price - item.lineTotal);
         }
     }
+
+    /** 取出需要创建批次的行集合 */
+    filterBatchLine(): SalesReturnItem[] {
+        let goodReceiptLines: SalesReturnItem[] = this.filter(
+            c => c.isDeleted === false
+                && !objects.isNull(c.lineStatus)
+                && c.lineStatus !== emDocumentStatus.PLANNED
+                && c.batchManagement !== undefined
+                && c.batchManagement.toString() === enums.toString(emYesNo, emYesNo.YES)
+                && !strings.isEmpty(c.itemCode)
+                && !strings.isEmpty(c.warehouse));
+        return goodReceiptLines;
+    }
+
+    /** 取出需要创建序列的行集合 */
+    filterSerialLine(): SalesReturnItem[] {
+        let goodReceiptLines: SalesReturnItem[] = this.filter(
+            c => c.isDeleted === false
+                && !objects.isNull(c.lineStatus)
+                && c.lineStatus !== emDocumentStatus.PLANNED
+                && c.serialManagement !== undefined
+                && c.serialManagement.toString() === enums.toString(emYesNo, emYesNo.YES)
+                && !strings.isEmpty(c.itemCode)
+                && !strings.isEmpty(c.warehouse));
+        return goodReceiptLines;
+    }
 }
 
 /** 销售退货-批次日记账 集合 */
-export class SalesReturnMaterialBatchJournals extends BusinessObjects<IMaterialBatchJournal, SalesReturnItem>
-    implements ISalesReturnMaterialBatchJournals {
+export class SalesReturnItemMaterialBatchJournals extends BusinessObjects<IMaterialBatchJournal, SalesReturnItem>
+    implements ISalesReturnItemMaterialBatchJournals {
     /** 创建并添加子项 */
     create(): IMaterialBatchJournal {
-        let item: IMaterialBatchJournal = boFactory.create(BO_CODE_MATERIALBATCH);
+        let item: IMaterialBatchJournal = boFactory.create(BO_CODE_MATERIALBATCHJOURNAL);
         this.add(item);
         return item;
     }
     createJournal(data: IMaterialBatchJournal): IMaterialBatchJournal {
-        let item: IMaterialBatchJournal = boFactory.create(BO_CODE_MATERIALBATCH);
+        let item: IMaterialBatchJournal = this.create();
         if (!objects.isNull(data)) {
             item.batchCode = data.batchCode;
             item.itemCode = data.itemCode;
@@ -729,10 +756,25 @@ export class SalesReturnMaterialBatchJournals extends BusinessObjects<IMaterialB
             item.admissionDate = data.admissionDate;
             item.expirationDate = data.expirationDate;
             item.manufacturingDate = data.manufacturingDate;
-            this.add(item);
         }
         return item;
+    }
 
+
+    /**
+     * 创建批次日记账
+     * @data 批次服务契约信息
+     */
+    createBatchJournal(data: IMaterialReceiptBatchLine): IMaterialBatchJournal {
+        if (!objects.isNull(data)) {
+            let batchJournal: IMaterialBatchJournal = this.create();
+            batchJournal.batchCode = data.batchCode;
+            batchJournal.itemCode = data.itemCode;
+            batchJournal.warehouse = data.warehouse;
+            batchJournal.direction = data.direction;
+            batchJournal.quantity = data.quantity;
+            return batchJournal;
+        }
     }
     /** 所有批次日记账标记为删除 */
     deleteAll(): void {
@@ -742,16 +784,17 @@ export class SalesReturnMaterialBatchJournals extends BusinessObjects<IMaterialB
     }
 }
 /** 销售退货-序列日记账 集合 */
-export class SalesReturnMaterialSerialJournals extends BusinessObjects<IMaterialSerialJournal, SalesReturnItem>
-    implements ISalesReturnMaterialSerialJournals {
+export class SalesReturnItemMaterialSerialJournals extends BusinessObjects<IMaterialSerialJournal, SalesReturnItem>
+    implements ISalesReturnItemMaterialSerialJournals {
     /** 创建并添加子项 */
     create(): IMaterialSerialJournal {
-        let item: IMaterialSerialJournal = boFactory.create(BO_CODE_MATERIALSERIAL);
+        let item: IMaterialSerialJournal = boFactory.create(BO_CODE_MATERIALSERIALJOURNAL);
         this.add(item);
+        item.lineStatus = this.parent.lineStatus;
         return item;
     }
     createJournal(data: IMaterialSerialJournal): IMaterialSerialJournal {
-        let item: IMaterialSerialJournal = boFactory.create(BO_CODE_MATERIALSERIAL);
+        let item: IMaterialSerialJournal = this.create();
         if (objects.isNull(data)) {
             item.supplierSerial = data.supplierSerial;
             item.serialCode = data.serialCode;
@@ -762,6 +805,16 @@ export class SalesReturnMaterialSerialJournals extends BusinessObjects<IMaterial
             item.manufacturingDate = data.manufacturingDate;
             this.add(item);
         }
+        return item;
+    }
+    createSerialJournal(data: IMaterialReceiptSerialLine): IMaterialSerialJournal {
+        let item: IMaterialSerialJournal = this.create();
+        item.serialCode = data.serialCode;
+        item.supplierSerial = data.supplierSerial;
+        item.itemCode = data.itemCode;
+        item.direction = data.direction;
+        item.warehouse = data.warehouse;
+        item.direction = data.direction;
         return item;
     }
     /** 所有序列日记账标记为删除 */
@@ -1470,31 +1523,31 @@ export class SalesReturnItem extends BODocumentLine<SalesReturnItem> implements 
     }
 
     /** 映射的属性名称-销售交货-行-序列号集合 */
-    static PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME: string = "SalesReturnMaterialSerialJournals";
+    static PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME: string = "SalesReturnItemMaterialSerialJournals";
     /** 获取-销售交货-行-序列号集合 */
-    get salesReturnMaterialSerialJournals(): SalesReturnMaterialSerialJournals {
-        return this.getProperty<SalesReturnMaterialSerialJournals>(SalesReturnItem.PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME);
+    get materialSerialJournals(): SalesReturnItemMaterialSerialJournals {
+        return this.getProperty<SalesReturnItemMaterialSerialJournals>(SalesReturnItem.PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME);
     }
     /** 设置-销售交货-行-序列号集合 */
-    set salesReturnMaterialSerialJournals(value: SalesReturnMaterialSerialJournals) {
+    set materialSerialJournals(value: SalesReturnItemMaterialSerialJournals) {
         this.setProperty(SalesReturnItem.PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME, value);
     }
     /** 映射的属性名称-销售交货-行-批次集合 */
-    static PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME: string = "SalesReturnMaterialBatchJournals";
+    static PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME: string = "SalesReturnItemMaterialBatchJournals";
     /** 获取-销售交货-行-序列号集合 */
-    get salesReturnMaterialBatchJournals(): SalesReturnMaterialBatchJournals {
-        return this.getProperty<SalesReturnMaterialBatchJournals>(SalesReturnItem.PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME);
+    get materialBatchJournals(): SalesReturnItemMaterialBatchJournals {
+        return this.getProperty<SalesReturnItemMaterialBatchJournals>(SalesReturnItem.PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME);
     }
     /** 设置-销售交货-行-序列号集合 */
-    set salesReturnMaterialBatchJournals(value: SalesReturnMaterialBatchJournals) {
+    set materialBatchJournals(value: SalesReturnItemMaterialBatchJournals) {
         this.setProperty(SalesReturnItem.PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME, value);
     }
 
     /** 初始化数据 */
     protected init(): void {
         //
-        this.salesReturnMaterialBatchJournals = new SalesReturnMaterialBatchJournals(this);
-        this.salesReturnMaterialSerialJournals = new SalesReturnMaterialSerialJournals(this);
+        this.materialBatchJournals = new SalesReturnItemMaterialBatchJournals(this);
+        this.materialSerialJournals = new SalesReturnItemMaterialSerialJournals(this);
     }
 }
 

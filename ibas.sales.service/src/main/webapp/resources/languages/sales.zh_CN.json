@@ -29,5 +29,9 @@
   "sales_app_salesreturn_choose": "销售退货选择",
   "sales_app_salesreturn_view": "销售退货查看",
   "sales_app_salesreturn_edit": "销售退货编辑",
+  "sales_app_no_matched_documentline_to_choose_serial": "没有匹配的行需要选择序列",
+  "sales_app_no_matched_documentline_to_choose_batch": "没有匹配的行需要选择批次",
+  "sales_app_no_matched_documentline_to_create_serial": "没有匹配的行需要创建序列",
+  "sales_app_no_matched_documentline_to_create_batch": "没有匹配的行需要创建批次",
   "sales_closing_delimiter": "----结束----"
 }

@@ -7,6 +7,7 @@
  */
 
 import {
+    enums,
     emYesNo,
     emDocumentStatus,
     emBOStatus,
@@ -28,16 +29,18 @@ import {
     ISalesDelivery,
     ISalesDeliveryItems,
     ISalesDeliveryItem,
-    ISalesDeliveryMaterialBatchJournals,
-    ISalesDeliveryMaterialSerialJournals,
+    ISalesDeliveryItemMaterialBatchJournals,
+    ISalesDeliveryItemMaterialSerialJournals,
     BO_CODE_SALESDELIVERY,
     emProductTreeType,
 } from "../../api/index";
 import {
+    IMaterialIssueBatchLine,
     IMaterialBatchJournal,
     IMaterialSerialJournal,
-    BO_CODE_MATERIALBATCH,
-    BO_CODE_MATERIALSERIAL,
+    IMaterialIssueSerialLine,
+    BO_CODE_MATERIALBATCHJOURNAL,
+    BO_CODE_MATERIALSERIALJOURNAL,
     emItemType
 } from "../../3rdparty/materials/index";
 
@@ -706,50 +709,70 @@ export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, Sales
             this.parent.discountTotal -= (item.quantity * item.price - item.lineTotal);
         }
     }
+
+    /** 取出需要添加批次的行 */
+    filterBatchLine(): SalesDeliveryItem[] {
+        let goodIssueLines: SalesDeliveryItem[] = this.filter(
+            c => c.isDeleted === false
+                && !objects.isNull(c.lineStatus)
+                && c.lineStatus !== emDocumentStatus.PLANNED
+                && c.batchManagement !== undefined
+                && c.batchManagement.toString() === enums.toString(emYesNo, emYesNo.YES)
+                && !strings.isEmpty(c.itemCode)
+                && !strings.isEmpty(c.warehouse));
+        return goodIssueLines;
+    }
+
+    /** 取出需要添加序列的行 */
+    filterSerialLine(): SalesDeliveryItem[] {
+        let goodIssueLines: SalesDeliveryItem[] = this.filter(
+            c => c.isDeleted === false
+                && !objects.isNull(c.lineStatus)
+                && c.lineStatus !== emDocumentStatus.PLANNED
+                && c.serialManagement !== undefined
+                && c.serialManagement.toString() === enums.toString(emYesNo, emYesNo.YES)
+                && !strings.isEmpty(c.itemCode)
+                && !strings.isEmpty(c.warehouse));
+        return goodIssueLines;
+    }
 }
 
 /** 销售交货-批次日记账 集合 */
-export class SalesDeliveryMaterialBatchJournals extends BusinessObjects<IMaterialBatchJournal, SalesDeliveryItem>
-    implements ISalesDeliveryMaterialBatchJournals {
+export class SalesDeliveryItemMaterialBatchJournals extends BusinessObjects<IMaterialBatchJournal, SalesDeliveryItem>
+    implements ISalesDeliveryItemMaterialBatchJournals {
     /** 创建并添加子项 */
     create(): IMaterialBatchJournal {
-        let item: IMaterialBatchJournal = boFactory.create(BO_CODE_MATERIALBATCH);
+        let item: IMaterialBatchJournal = boFactory.create(BO_CODE_MATERIALBATCHJOURNAL);
         this.add(item);
         return item;
     }
-    createJournal(data: IMaterialBatchJournal): IMaterialBatchJournal {
-        let item: IMaterialBatchJournal = boFactory.create(BO_CODE_MATERIALBATCH);
-        if (objects.isNull(data)) {
-            item.batchCode = data.batchCode;
-            item.itemCode = data.itemCode;
-            item.warehouse = data.warehouse;
-            item.quantity = data.quantity;
-            item.direction = data.direction;
-            item.admissionDate = data.admissionDate;
-            item.expirationDate = data.expirationDate;
-            item.manufacturingDate = data.manufacturingDate;
-            this.add(item);
-        }
+    createBatchJournal(data: IMaterialIssueBatchLine): IMaterialBatchJournal {
+        let item: IMaterialBatchJournal = this.create();
+        item.batchCode = data.batchCode;
+        item.itemCode = data.itemCode;
+        item.warehouse = data.warehouse;
+        item.quantity = data.quantity;
+        item.direction = data.direction;
         return item;
     }
     /** 所有批次日记账标记为删除 */
     deleteAll(): void {
-        for(let item of this){
+        for (let item of this) {
             item.markDeleted(true);
         }
     }
 }
 /** 销售交货-序列日记账 集合 */
-export class SalesDeliveryMaterialSerialJournals extends BusinessObjects<IMaterialSerialJournal, SalesDeliveryItem>
-    implements ISalesDeliveryMaterialSerialJournals {
+export class SalesDeliveryItemMaterialSerialJournals extends BusinessObjects<IMaterialSerialJournal, SalesDeliveryItem>
+    implements ISalesDeliveryItemMaterialSerialJournals {
     /** 创建并添加子项 */
     create(): IMaterialSerialJournal {
-        let item: IMaterialSerialJournal = boFactory.create(BO_CODE_MATERIALSERIAL);
+        let item: IMaterialSerialJournal = boFactory.create(BO_CODE_MATERIALSERIALJOURNAL);
         this.add(item);
         return item;
     }
     createJournal(data: IMaterialSerialJournal): IMaterialSerialJournal {
-        let item: IMaterialSerialJournal = boFactory.create(BO_CODE_MATERIALSERIAL);
+        let item: IMaterialSerialJournal = this.create();
         if (objects.isNull(data)) {
             item.serialCode = data.serialCode;
             item.itemCode = data.itemCode;
@@ -758,15 +781,18 @@ export class SalesDeliveryMaterialSerialJournals extends BusinessObjects<IMateri
             item.admissionDate = data.admissionDate;
             item.expirationDate = data.expirationDate;
             item.manufacturingDate = data.manufacturingDate;
-            this.add(item);
         }
         return item;
     }
-    /** 所序列日记账标记为删除 */
-    deleteAll(): void {
-        for(let item of this){
-            item.markDeleted(true);
-        }
+    createSerialJournal(data: IMaterialIssueSerialLine): IMaterialSerialJournal {
+        let item: IMaterialSerialJournal = this.create();
+        item.serialCode = data.serialCode;
+        item.supplierSerial = data.supplierSerial;
+        item.itemCode = data.itemCode;
+        item.direction = data.direction;
+        item.warehouse = data.warehouse;
+        item.lineStatus = this.parent.lineStatus;
+        return item;
     }
 }
 
@@ -1467,23 +1493,24 @@ export class SalesDeliveryItem extends BODocumentLine<SalesDeliveryItem> impleme
         this.setProperty(SalesDeliveryItem.PROPERTY_DISTRIBUTIONRULE5_NAME, value);
     }
     /** 映射的属性名称-销售交货-行-序列号集合 */
-    static PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME: string = "SalesDeliveryMaterialSerialJournals";
+    static PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME: string = "SalesDeliveryItemMaterialSerialJournals";
     /** 获取-销售交货-行-序列号集合 */
-    get salesDeliveryMaterialSerialJournals(): SalesDeliveryMaterialSerialJournals {
-        return this.getProperty<SalesDeliveryMaterialSerialJournals>(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME);
+    get materialSerialJournals(): SalesDeliveryItemMaterialSerialJournals {
+        return this.getProperty<SalesDeliveryItemMaterialSerialJournals>
+            (SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME);
     }
     /** 设置-销售交货-行-序列号集合 */
-    set salesDeliveryMaterialSerialJournals(value: SalesDeliveryMaterialSerialJournals) {
+    set materialSerialJournals(value: SalesDeliveryItemMaterialSerialJournals) {
         this.setProperty(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME, value);
     }
     /** 映射的属性名称-销售交货-行-批次集合 */
-    static PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME: string = "SalesDeliveryMaterialBatchJournals";
+    static PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME: string = "SalesDeliveryItemMaterialBatchJournals";
     /** 获取-销售交货-行-序列号集合 */
-    get salesDeliveryMaterialBatchJournals(): SalesDeliveryMaterialBatchJournals {
-        return this.getProperty<SalesDeliveryMaterialBatchJournals>(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME);
+    get materialBatchJournals(): SalesDeliveryItemMaterialBatchJournals {
+        return this.getProperty<SalesDeliveryItemMaterialBatchJournals>(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME);
     }
     /** 设置-销售交货-行-序列号集合 */
-    set salesDeliveryMaterialBatchJournals(value: SalesDeliveryMaterialBatchJournals) {
+    set materialBatchJournals(value: SalesDeliveryItemMaterialBatchJournals) {
         this.setProperty(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME, value);
     }
 
@@ -1491,8 +1518,8 @@ export class SalesDeliveryItem extends BODocumentLine<SalesDeliveryItem> impleme
     /** 初始化数据 */
     protected init(): void {
         //
-        this.salesDeliveryMaterialBatchJournals = new SalesDeliveryMaterialBatchJournals(this);
-        this.salesDeliveryMaterialSerialJournals = new SalesDeliveryMaterialSerialJournals(this);
+        this.materialBatchJournals = new SalesDeliveryItemMaterialBatchJournals(this);
+        this.materialSerialJournals = new SalesDeliveryItemMaterialSerialJournals(this);
     }
 }
 

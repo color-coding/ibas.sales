@@ -19,7 +19,7 @@ hs_err_pid*
 *.glf
 *.project
 *.settings
-*.project
+.project
 *.settings
 
 # work folder

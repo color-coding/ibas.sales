@@ -9,10 +9,15 @@
 // 共享的数据
 import {
     ServiceProxy,
-    IApplicationServiceContract,
     strings,
     MODULE_REPOSITORY_NAME_TEMPLATE,
 } from "ibas/index";
+import {
+    IMaterialIssueBatchContract,
+    IMaterialReceiptBatchContract,
+    IMaterialIssueSerialContract,
+    IMaterialReceiptSerialContract,
+} from "./bo/index";
 
 /** 模块-标识 */
 export const CONSOLE_ID: string = "bad47859-3d74-4b2b-975a-48c635406be4";
@@ -38,20 +43,12 @@ export const BO_CODE_MATERIALBATCH: string = "${Company}_MM_BATCH";
 export const BO_CODE_MATERIALBATCHJOURNAL: string = "${Company}_MM_BATCHJOURNAL";
 /**  业务对象编码-物料批次服务 */
 export const BO_CODE_MATERIALBATCHSERVICE: string = "${Company}_MM_BATCHJOURNAL";
-/** 业务对象编码-物料批次-入 */
-export const BO_CODE_RECEIPT_MATERIALBATCH: string = "${Company}_MM_RECEIEPT_BATCH";
-/** 业务对象编码-物料批次-出 */
-export const BO_CODE_ISSUE_MATERIALBATCH: string = "${Company}_MM_ISSUE_BATCH";
 /** 业务对象编码-物料序列号 */
 export const BO_CODE_MATERIALSERIAL: string = "${Company}_MM_SERIAL";
 /** 业务对象编码-物料序列号凭证 */
 export const BO_CODE_MATERIALSERIALJOURNAL: string = "${Company}_MM_SERIALJOURNAL";
 /** 业务对象编码-物料序列凭证 */
 export const BO_CODE_MATERIALSERIALSERVICE: string = "${Company}_MM_SERIALJOURNAL";
-/** 业务对象编码-物料序列号-入 */
-export const BO_CODE_RECEIPT_MATERIALSERIAL: string = "${Company}_MM_RECEIEPT_SERIAL";
-/** 业务对象编码-物料序列号-出 */
-export const BO_CODE_ISSUE_MATERIALSERIAL: string = "${Company}_MM_ISSUE_SERIAL";
 /** 业务对象编码-物料组 */
 export const BO_CODE_MATERIALGROUP: string = "${Company}_MM_MATERIALGROUP";
 /** 业务对象编码-物料库存 */
@@ -74,26 +71,26 @@ export enum emItemType {
 /** 排序规则 */
 export enum emAutoSelectBatchSerialRules {
     /** 先进先出 */
-    FIRSTINFIRSTOUT,
+    FIRST_IN_FIRST_OUT,
     /** 先进后出 */
-    FIRSTINLASTOUT,
+    FIRST_IN_LAST_OUT,
     /** 编码排序 */
-    ORDERBYCODE,
+    ORDER_BY_CODE,
 }
 
 /** 物料批次创建服务代理 */
-export class MaterialBatchReceiptServiceProxy extends ServiceProxy<IApplicationServiceContract> {
+export class MaterialBatchReceiptServiceProxy extends ServiceProxy<IMaterialReceiptBatchContract> {
 
 }
 /** 物料批次选择服务代理 */
-export class MaterialBatchIssueServiceProxy extends ServiceProxy<IApplicationServiceContract> {
+export class MaterialBatchIssueServiceProxy extends ServiceProxy<IMaterialIssueBatchContract> {
 
 }
 /** 物料序列创建服务代理 */
-export class MaterialSerialReceiptServiceProxy extends ServiceProxy<IApplicationServiceContract> {
+export class MaterialSerialReceiptServiceProxy extends ServiceProxy<IMaterialReceiptSerialContract> {
 
 }
 /** 物料序列选择服务代理 */
-export class MaterialSerialIssueServiceProxy extends ServiceProxy<IApplicationServiceContract> {
+export class MaterialSerialIssueServiceProxy extends ServiceProxy<IMaterialIssueSerialContract> {
 
 }

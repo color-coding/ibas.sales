@@ -58,6 +58,9 @@ export class SalesDeliveryChooseApp extends ibas.BOChooseService<ISalesDeliveryC
                             // 没显示视图，先显示
                             that.show();
                         }
+                        if (opRslt.resultObjects.length === 0) {
+                            that.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_data_fetched_none"));
+                        }
                         that.view.showData(opRslt.resultObjects);
                         that.busy(false);
                     }
@@ -94,8 +97,8 @@ export class SalesDeliveryChooseServiceMapping extends ibas.BOChooseServiceMappi
         this.boCode = SalesDeliveryChooseApp.BUSINESS_OBJECT_CODE;
         this.description = ibas.i18n.prop(this.name);
     }
-    /** 创建服务并运行 */
-    create(): ibas.IService<ibas.IServiceContract> {
+    /** 创建服务实例 */
+    create(): ibas.IService<ibas.IBOChooseServiceCaller<bo.SalesDelivery>> {
         return new SalesDeliveryChooseApp();
     }
 }

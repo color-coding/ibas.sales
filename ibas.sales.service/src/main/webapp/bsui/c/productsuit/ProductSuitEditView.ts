@@ -28,6 +28,7 @@ export class ProductSuitEditView extends ibas.BOEditView implements IProductSuit
     darw(): any {
         let that: this = this;
         this.form = new sap.ui.layout.form.SimpleForm("", {
+            editable: true,
             content: [
             ]
         });
@@ -160,7 +161,7 @@ export class ProductSuitEditView extends ibas.BOEditView implements IProductSuit
     }
     /** 显示数据 */
     showProductSuitItems(datas: bo.ProductSuitItem[]): void {
-        this.tableProductSuitItem.setModel(new sap.ui.model.json.JSONModel({rows: datas}));
+        this.tableProductSuitItem.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
         // 监听属性改变，并更新控件
         openui5.utils.refreshModelChanged(this.tableProductSuitItem, datas);
     }
