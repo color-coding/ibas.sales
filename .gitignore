@@ -19,8 +19,6 @@ hs_err_pid*
 *.glf
 *.project
 *.settings
-.project
-*.settings
 
 # work folder
 /target/
