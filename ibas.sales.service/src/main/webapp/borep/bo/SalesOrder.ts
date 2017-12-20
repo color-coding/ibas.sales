@@ -32,7 +32,7 @@ import {
 } from "../../api/index";
 import {
     emItemType
-} from "../../3rdparty/materials/index";
+} from "3rdparty/materials/index";
 
 /** 销售订单 */
 export class SalesOrder extends BODocument<SalesOrder> implements ISalesOrder {
@@ -667,7 +667,6 @@ export class SalesOrderItems extends BusinessObjects<SalesOrderItem, SalesOrder>
     /** 监听子项属性改变 */
     protected onChildPropertyChanged(item: SalesOrderItem, name: string): void {
         super.onChildPropertyChanged(item, name);
-        /** 当行总计发生变化，改变单据总计及折扣总计的值 */
         if (strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_LINETOTAL_NAME)) {
             let total: number = 0;
             let discount: number = 0;
@@ -675,26 +674,27 @@ export class SalesOrderItems extends BusinessObjects<SalesOrderItem, SalesOrder>
                 if (objects.isNull(salesOrderItem.lineTotal)) {
                     salesOrderItem.lineTotal = 0;
                 }
+                // total += salesOrderItem.lineTotal;
                 total = Number(total) + Number(salesOrderItem.lineTotal);
                 discount = Number(discount) + Number(salesOrderItem.price * salesOrderItem.quantity - salesOrderItem.lineTotal);
             }
             this.parent.documentTotal = total;
             this.parent.discountTotal = discount;
         }
+        if (strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_DISCOUNT_NAME)) {
+            let count: number = 0;
+            for (let salesOrderItem of this.filterDeleted()) {
+                if (objects.isNull(salesOrderItem.discount) || salesOrderItem.discount === NaN) {
+                    salesOrderItem.discount = 0;
+                }
+                // count += salesOrderItem.discount;
+                count = Number(count) + Number(salesOrderItem.discount);
+            }
+            this.parent.discountTotal = count;
+        }
         // 折扣总计为NaN时显示为0
         if (isNaN(this.parent.discountTotal)) {
             this.parent.discountTotal = 0;
-        }
-    }
-    /** 移除行后重新计算相关字段值 */
-    protected afterRemove(item: SalesOrderItem): void {
-        super.afterRemove(item);
-        if (this.parent.salesOrderItems.length === 0) {
-            this.parent.documentTotal = 0;
-            this.parent.discountTotal = 0;
-        } else {
-            this.parent.documentTotal -= item.lineTotal;
-            this.parent.discountTotal -= (item.quantity * item.price - item.lineTotal);
         }
     }
 }
@@ -713,11 +713,7 @@ export class SalesOrderItem extends BODocumentLine<SalesOrderItem> implements IS
         if (strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_QUANTITY_NAME) ||
             strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_PRICE_NAME) ||
             strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_DISCOUNT_NAME)) {
-            if (this.discount == null) {
-                this.discount = 0;
-            } else {
-                this.lineTotal = this.quantity * this.price * (1 - this.discount / 100);
-            }
+            this.lineTotal = this.quantity * this.price * (1 - this.discount / 100);
         }
         // 行总计为NaN时显示为0
         if (isNaN(this.lineTotal)) {
@@ -1403,4 +1399,3 @@ export class SalesOrderItem extends BODocumentLine<SalesOrderItem> implements IS
         //
     }
 }
-
