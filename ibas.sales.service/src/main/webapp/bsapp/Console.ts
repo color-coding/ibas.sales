@@ -31,10 +31,10 @@ export class Console extends ibas.ModuleConsole {
     /** 初始化 */
     protected registers(): void {
         // 注册功能
-        this.register(new ProductSuitFunc());
-        this.register(new SalesDeliveryFunc());
         this.register(new SalesOrderFunc());
+        this.register(new SalesDeliveryFunc());
         this.register(new SalesReturnFunc());
+        this.register(new ProductSuitFunc());
         // 注册服务应用
         this.register(new ProductSuitChooseServiceMapping());
         this.register(new ProductSuitLinkServiceMapping());
