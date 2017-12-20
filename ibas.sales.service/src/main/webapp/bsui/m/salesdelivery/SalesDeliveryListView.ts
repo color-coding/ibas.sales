@@ -108,7 +108,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                 }),
                 new sap.m.ObjectStatus("", {
                 }).bindProperty("text", {
-                    path: "ApprovalStatus",
+                    path: "approvalStatus",
                     formatter(data: any): any {
                         return ibas.enums.describe(ibas.emApprovalStatus, data);
                     }
@@ -116,7 +116,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
             ]
         });
         list_item_object.bindProperty("number", {
-            parts: [{ path: "DocumentTotal" }],
+            parts: [{ path: "documentTotal" }],
             type: sap.ui.model.type.Currency,
             formatOptions: { showMeasure: false }
         });

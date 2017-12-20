@@ -110,7 +110,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                     width: "100px",
                     type: sap.m.InputType.Number,
                 }).bindProperty("value", {
-                    path: "/DocumentTotal",
+                    path: "/documentTotal",
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_discounttotal") }),
                 new sap.m.Input("", {
@@ -118,7 +118,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                     type: sap.m.InputType.Number,
                     description: "RMB"
                 }).bindProperty("value", {
-                    path: "/DiscountTotal",
+                    path: "/discountTotal",
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_time") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentdate") }),
