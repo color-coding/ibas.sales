@@ -123,12 +123,12 @@ export class SalesDeliveryViewView extends ibas.BOViewView implements ISalesDeli
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_discounttotal") }),
                 new sap.m.Text("", {
                 }).bindProperty("text", {
-                    path: "DiscountTotal"
+                    path: "discountTotal"
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documenttotal") }),
                 new sap.m.Text("", {
                 }).bindProperty("text", {
-                    path: "DocumentTotal"
+                    path: "documentTotal"
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_distribution_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_consignee") }),
