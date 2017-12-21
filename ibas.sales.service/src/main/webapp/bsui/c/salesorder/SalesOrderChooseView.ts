@@ -68,37 +68,7 @@ export class SalesOrderChooseView extends ibas.BOChooseView implements ISalesOrd
                     template: new sap.m.Text("", {
                         wrapping: false
                     }).bindProperty("text", {
-                        path: "docEntry"
-                    })
-                }),
-                new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesorder_customercode"),
-                    template: new sap.m.Link("", {
-                        wrapping: false,
-                        press(event: any): void {
-                            ibas.servicesManager.runLinkService({
-                                boCode: BO_CODE_CUSTOMER,
-                                linkValue: event.getSource().getText()
-                            });
-                        }
-                    }).bindProperty("text", {
-                        path: "customerCode"
-                    })
-                }),
-                new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesorder_customername"),
-                    template: new sap.m.Text("", {
-                        wrapping: false
-                    }).bindProperty("text", {
-                        path: "customerName"
-                    })
-                }),
-                new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesorder_documenttotal"),
-                    template: new sap.m.Text("", {
-                        wrapping: false
-                    }).bindProperty("text", {
-                        path: "documentTotal"
+                        path: "docEntry",
                     })
                 }),
                 new sap.ui.table.Column("", {
@@ -107,22 +77,72 @@ export class SalesOrderChooseView extends ibas.BOChooseView implements ISalesOrd
                         wrapping: false
                     }).bindProperty("text", {
                         path: "documentStatus",
-                        formatter(data: any): any {
-                            return ibas.enums.describe(ibas.emDocumentStatus, data);
-                        }
                     })
                 }),
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesorder_canceled"),
+                    label: ibas.i18n.prop("bo_salesorder_customername"),
                     template: new sap.m.Text("", {
                         wrapping: false
                     }).bindProperty("text", {
-                        path: "canceled",
-                        formatter(data: any): any {
-                            return ibas.enums.describe(ibas.emYesNo, data);
-                        }
+                        path: "customerName",
                     })
-                })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_contactperson"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "contactPerson",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_documenttotal"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "documentTotal",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_paidtotal"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "paidTotal",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_discount"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "discount",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_discounttotal"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "discountTotal",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_reference1"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "reference1",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_reference2"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "reference2",
+                    })
+                }),
             ]
         });
         this.id = this.table.getId();

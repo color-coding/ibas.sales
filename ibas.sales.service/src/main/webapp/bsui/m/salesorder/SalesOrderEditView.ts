@@ -13,7 +13,7 @@ import { ISalesOrderEditView } from "../../../bsapp/salesorder/index";
 export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEditView {
 
     private page: sap.m.Page;
-    private mainLayout: sap.ui.layout.VerticalLayout;
+    private layoutMain: sap.ui.layout.VerticalLayout;
     private viewTopForm: sap.ui.layout.form.SimpleForm;
     private viewBottomForm: sap.ui.layout.form.SimpleForm;
     private tableSalesOrderItem: sap.m.List;
@@ -40,7 +40,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
         this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_basis_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_general_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_customercode") }),
                 new sap.m.Input("", {
                     showValueHelp: true,
@@ -219,7 +219,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
             path: "/rows",
             template: list_child_customer,
         });
-        this.mainLayout = new sap.ui.layout.VerticalLayout("", {
+        this.layoutMain = new sap.ui.layout.VerticalLayout("", {
             height: "100%",
             content: [
                 this.viewTopForm,
@@ -232,7 +232,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
             horizontal: false,
             height: "100%",
             content: [
-                this.mainLayout
+                this.layoutMain
             ]
         });
         // 子对象编辑页
@@ -413,15 +413,15 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
                 openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
             }
-            openui5.utils.changeFormEditable(this.mainLayout, false);
+            openui5.utils.changeFormEditable(this.layoutMain, false);
         }
     }
     /** 显示数据 */
     showSalesOrder(data: bo.SalesOrder): void {
-        this.mainLayout.setModel(new sap.ui.model.json.JSONModel(data));
-        this.mainLayout.bindObject("/");
+        this.layoutMain.setModel(new sap.ui.model.json.JSONModel(data));
+        this.layoutMain.bindObject("/");
         // 监听属性改变，并更新控件
-        openui5.utils.refreshModelChanged(this.mainLayout, data);
+        openui5.utils.refreshModelChanged(this.layoutMain, data);
         // 改变视图状态
         this.changeViewStatus(data);
     }

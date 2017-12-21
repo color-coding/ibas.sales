@@ -17,7 +17,7 @@ import { ISalesOrderViewView } from "../../../bsapp/salesorder/index";
 export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderViewView {
 
     private page: sap.m.Page;
-    private mainLayout: sap.ui.layout.VerticalLayout;
+    private layoutMain: sap.ui.layout.VerticalLayout;
     private viewTopForm: sap.ui.layout.form.SimpleForm;
     private viewBottomForm: sap.ui.layout.form.SimpleForm;
     private tableSalesOrderItem: sap.m.List;
@@ -38,7 +38,7 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
             columnsM: 1,
             columnsS: 1,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_basis_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_general_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_docentry") }),
                 new sap.m.Text("", {
                 }).bindProperty("text", {
@@ -168,7 +168,7 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
             path: "/rows",
             template: list_child_customer
         });
-        this.mainLayout = new sap.ui.layout.VerticalLayout("", {
+        this.layoutMain = new sap.ui.layout.VerticalLayout("", {
             content: [
                 this.viewTopForm,
                 this.tableSalesOrderItem,
@@ -221,7 +221,7 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
                     })
                 ]
             }),
-            content: [this.mainLayout]
+            content: [this.layoutMain]
         });
         this.id = this.page.getId();
         return this.page;
@@ -246,14 +246,14 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
                 openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
                 openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
             }
-            openui5.utils.changeFormEditable(this.mainLayout, false);
+            openui5.utils.changeFormEditable(this.layoutMain, false);
         }
     }
 
     /** 显示数据 */
     showSalesOrder(data: bo.SalesOrder): void {
-        this.mainLayout.setModel(new sap.ui.model.json.JSONModel(data));
-        this.mainLayout.bindObject("/");
+        this.layoutMain.setModel(new sap.ui.model.json.JSONModel(data));
+        this.layoutMain.bindObject("/");
     }
     /** 显示数据 */
     showSalesOrderItems(datas: bo.SalesOrderItem[]): void {
