@@ -17,7 +17,7 @@ import { ISalesReturnEditView } from "../../../bsapp/salesreturn/index";
 export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturnEditView {
 
     private page: sap.m.Page;
-    private mainLayout: sap.ui.layout.VerticalLayout;
+    private layoutMain: sap.ui.layout.VerticalLayout;
     private viewTopForm: sap.ui.layout.form.SimpleForm;
     private viewBottomForm: sap.ui.layout.form.SimpleForm;
     private tableSalesReturnItem: sap.ui.table.Table;
@@ -44,129 +44,72 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
     /** 绘制视图 */
     darw(): any {
         let that: this = this;
-        this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
+        let formTop: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
-            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
-            singleContainerFullSize: false,
-            adjustLabelSpan: false,
-            labelSpanL: 2,
-            labelSpanM: 2,
-            labelSpanS: 12,
-            columnsXL: 2,
-            columnsL: 2,
-            columnsM: 1,
-            columnsS: 1,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_basis_information") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_customercode") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("purchase_general_information") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_customercode") }),
                 new sap.m.Input("", {
-                    placeholder: ibas.i18n.prop("bo_salesdelivery_customercode"),
-                    tooltip: ibas.i18n.prop("bo_salesdelivery_customercode"),
                     showValueHelp: true,
                     valueHelpRequest: function (): void {
                         that.fireViewEvents(that.chooseSalesReturnCustomerEvent);
                     }
                 }).bindProperty("value", {
-                    path: "customerCode",
+                    path: "customerCode"
                 }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_customername") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_customername") }),
                 new sap.m.Input("", {
-                    type: sap.m.InputType.Text,
-                    editable: false
+                    editable: false,
                 }).bindProperty("value", {
                     path: "customerName"
                 }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_status") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documentstatus") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_contactperson") }),
+                new sap.m.Input("", {
+                    showValueHelp: true,
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "contactPerson"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_reference1") }),
+                new sap.m.Input("", {}).bindProperty("value", {
+                    path: "reference1"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_reference2") }),
+                new sap.m.Input("", {}).bindProperty("value", {
+                    path: "reference2"
+                }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("purchase_status_information") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_docnum") }),
+                new sap.m.Input("", {
+                }).bindProperty("value", {
+                    path: "docNum",
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_documentstatus") }),
                 new sap.m.Select("", {
-                    showSecondaryValues: false,
                     items: openui5.utils.createComboBoxItems(ibas.emDocumentStatus),
                 }).bindProperty("selectedKey", {
                     path: "documentStatus",
                     type: "sap.ui.model.type.Integer",
                 }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_canceled") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_canceled") }),
                 new sap.m.Select("", {
-                    showSecondaryValues: false,
                     items: openui5.utils.createComboBoxItems(ibas.emYesNo),
                 }).bindProperty("selectedKey", {
                     path: "canceled",
                     type: "sap.ui.model.type.Integer",
                 }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_time") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documentdate") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_documentdate") }),
                 new sap.m.DatePicker("", {
-                    valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                    displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                 }).bindProperty("dateValue", {
                     path: "documentDate",
                 }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_postingdate") }),
-                new sap.m.DatePicker("", {
-                    valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                    displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                }).bindProperty("dateValue", {
-                    path: "postingDate",
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_deliverydate") }),
-                new sap.m.DatePicker("", {
-                    valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                    displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                }).bindProperty("dateValue", {
-                    path: "deliveryDate",
-                })
-            ],
-        });
-        this.viewBottomForm = new sap.ui.layout.form.SimpleForm("", {
-            editable: true,
-            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
-            labelSpanL: 2,
-            labelSpanM: 2,
-            labelSpanS: 12,
-            columnsXL: 2,
-            columnsL: 2,
-            columnsM: 1,
-            columnsS: 1,
-            content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_salesdelivery_remarks") }),
-                new sap.m.TextArea("", {
-                    rows: 5,
-                }).bindProperty("value", {
-                    path: "/remarks",
-                }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_amount") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documenttotal") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_receipt_dataowner") }),
                 new sap.m.Input("", {
-                    width: "100px",
-                    type: sap.m.InputType.Number,
+                    showValueHelp: true,
                 }).bindProperty("value", {
-                    path: "/DocumentTotal",
+                    path: "dataOwner",
                 }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_discounttotal") }),
-                new sap.m.Input("", {
-                    width: "100px",
-                    type: sap.m.InputType.Number,
-                }).bindProperty("value", {
-                    path: "/DiscountTotal",
-                }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_distribution_information") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_consignee") }),
-                new sap.m.Input("", {
-                }).bindProperty("value", {
-                    path: "consignee",
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_phone") }),
-                new sap.m.Input("", {
-                    type: sap.m.InputType.Number,
-                }).bindProperty("value", {
-                    path: "phone",
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_address") }),
-                new sap.m.Input("", {
-                }).bindProperty("value", {
-                    path: "address",
-                })
-            ],
+            ]
         });
         this.tableSalesReturnItem = new sap.ui.table.Table("", {
             toolbar: new sap.m.Toolbar("", {
@@ -186,23 +129,24 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                         press: function (): void {
                             that.fireViewEvents(that.removeSalesReturnItemEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesDeliveryItem>(that.tableSalesReturnItem)
+                                openui5.utils.getTableSelecteds<bo.SalesReturnItem>(that.tableSalesReturnItem)
                             );
                         }
                     }),
-                    new sap.m.MenuButton("",{
-                        text: ibas.i18n.prop("materials_data_batch_serial"),
-                        menu:[
-                            new sap.m.Menu("",{
+                    new sap.m.ToolbarSeparator(""),
+                    new sap.m.MenuButton("", {
+                        text: ibas.strings.format("{0}/{1}", ibas.i18n.prop("sales_batch"), ibas.i18n.prop("sales_serial")),
+                        menu: [
+                            new sap.m.Menu("", {
                                 items: [
-                                    new sap.m.MenuItem("",{
-                                        text: ibas.i18n.prop("materials_app_materialbatchreceipt"),
-                                        press: function(): void {
+                                    new sap.m.MenuItem("", {
+                                        text: ibas.i18n.prop("sales_batch"),
+                                        press: function (): void {
                                             that.fireViewEvents(that.createSalesReturnItemMaterialBatchEvent);
                                         }
                                     }),
                                     new sap.m.MenuItem("", {
-                                        text: ibas.i18n.prop("materials_app_materialserialhissue"),
+                                        text: ibas.i18n.prop("sales_serial"),
                                         press: function (): void {
                                             that.fireViewEvents(that.createSalesReturnItemMaterialSerialEvent);
                                         }
@@ -215,9 +159,17 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
             }),
             enableSelectAll: false,
             selectionBehavior: sap.ui.table.SelectionBehavior.Row,
-            visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
+            visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 8),
             rows: "{/rows}",
             columns: [
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesreturnitem_lineid"),
+                    template: new sap.m.Text("", {
+                        wrapping: false,
+                    }).bindProperty("text", {
+                        path: "lineId",
+                    }),
+                }),
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_salesreturnitem_linestatus"),
                     template: new sap.m.Select("", {
@@ -226,7 +178,7 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                     }).bindProperty("selectedKey", {
                         path: "lineStatus",
                         type: "sap.ui.model.type.Integer",
-                    }),
+                    })
                 }),
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_salesreturnitem_itemcode"),
@@ -240,7 +192,16 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                             );
                         }
                     }).bindProperty("value", {
-                        path: "itemCode",
+                        path: "itemCode"
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesreturnitem_itemdescription"),
+                    template: new sap.m.Input("", {
+                        width: "100%",
+                        editable: false,
+                    }).bindProperty("value", {
+                        path: "itemDescription"
                     })
                 }),
                 new sap.ui.table.Column("", {
@@ -255,53 +216,101 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                             );
                         }
                     }).bindProperty("value", {
-                        path: "warehouse",
+                        path: "warehouse"
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesreturnitem_quantity"),
+                    template: new sap.m.Input("", {
+                        width: "100%",
+                        type: sap.m.InputType.Number
+                    }).bindProperty("value", {
+                        path: "quantity"
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesreturnitem_uom"),
+                    template: new sap.m.Input("", {
+                        width: "100%",
+                    }).bindProperty("value", {
+                        path: "uom"
                     })
                 }),
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_salesreturnitem_price"),
                     template: new sap.m.Input("", {
                         width: "100%",
-                        type: sap.m.InputType.Number,
+                        type: sap.m.InputType.Number
                     }).bindProperty("value", {
-                        path: "price",
-                    }),
-                }),
-                new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesreturnitem_quantity"),
-                    template: new sap.m.Input("", {
-                        width: "100%",
-                        type: sap.m.InputType.Number,
-                    }).bindProperty("value", {
-                        path: "quantity",
-                    }),
-                }),
-                new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesreturnitem_discount"),
-                    template: new sap.m.Input("", {
-                        width: "100%",
-                        type: sap.m.InputType.Number,
-                    }).bindProperty("value", {
-                        path: "discount",
-                    }),
+                        path: "price"
+                    })
                 }),
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_salesreturnitem_linetotal"),
                     template: new sap.m.Input("", {
                         width: "100%",
-                        type: sap.m.InputType.Number,
+                        type: sap.m.InputType.Number
                     }).bindProperty("value", {
-                        path: "lineTotal",
+                        path: "lineTotal"
                     })
-                })
+                }),
             ]
         });
-        this.mainLayout = new sap.ui.layout.VerticalLayout("", {
+        let formMiddle: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
+            editable: true,
             content: [
-                this.viewTopForm,
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_salesreturnitem") }),
                 this.tableSalesReturnItem,
-                this.viewBottomForm,
-            ],
+            ]
+        });
+        let formBottom: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
+            editable: true,
+            content: [
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("purchase_remarks_information") }),
+                new sap.m.TextArea("", {
+                    rows: 5,
+                }).bindProperty("value", {
+                    path: "remarks",
+                }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("purchase_total_information") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_documenttotal") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "documentTotal"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_taxrate") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "taxRate"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_taxtotal") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "taxTotal"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_discount") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "discount"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_discounttotal") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "discountTotal"
+                }),
+            ]
+        });
+        this.layoutMain = new sap.ui.layout.VerticalLayout("", {
+            content: [
+                formTop,
+                formMiddle,
+                formBottom,
+            ]
         });
         this.page = new sap.m.Page("", {
             showHeader: false,
@@ -337,11 +346,11 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                             items: [
                                 new sap.m.MenuItem("", {
                                     text: ibas.i18n.prop("shell_data_new"),
-                                    icon: "sap-icon://create",
+                                    icon: "sap-icon://create"
                                 }),
                                 new sap.m.MenuItem("", {
                                     text: ibas.i18n.prop("shell_data_clone"),
-                                    icon: "sap-icon://copy",
+                                    icon: "sap-icon://copy"
                                 }),
                             ],
                             itemSelected: function (event: any): void {
@@ -356,13 +365,12 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                                     }
                                 }
                             }
-                        }),
+                        })
                     }),
-                ],
+                ]
             }),
-            content: [this.mainLayout],
+            content: [this.layoutMain]
         });
-        this.id = this.page.getId();
         return this.page;
     }
     /** 改变视图状态 */
@@ -384,16 +392,16 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                 openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
                 openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
             }
-            openui5.utils.changeFormEditable(this.mainLayout, false);
+            openui5.utils.changeFormEditable(this.layoutMain, false);
         }
     }
 
     /** 显示数据 */
     showSalesReturn(data: bo.SalesReturn): void {
-        this.mainLayout.setModel(new sap.ui.model.json.JSONModel(data));
-        this.mainLayout.bindObject("/");
+        this.layoutMain.setModel(new sap.ui.model.json.JSONModel(data));
+        this.layoutMain.bindObject("/");
         // 监听属性改变，并更新控件
-        openui5.utils.refreshModelChanged(this.mainLayout, data);
+        openui5.utils.refreshModelChanged(this.layoutMain, data);
         // 改变视图状态
         this.changeViewStatus(data);
     }

@@ -13,7 +13,7 @@ import { ISalesOrderEditView } from "../../../bsapp/salesorder/index";
 export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEditView {
 
     private page: sap.m.Page;
-    private mainLayout: sap.ui.layout.VerticalLayout;
+    private layoutMain: sap.ui.layout.VerticalLayout;
     private viewTopForm: sap.ui.layout.form.SimpleForm;
     private viewBottomForm: sap.ui.layout.form.SimpleForm;
     private tableSalesOrderItem: sap.m.List;
@@ -39,22 +39,10 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
         let that: this = this;
         this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
-            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
-            singleContainerFullSize: false,
-            adjustLabelSpan: false,
-            labelSpanL: 2,
-            labelSpanM: 2,
-            labelSpanS: 12,
-            columnsXL: 2,
-            columnsL: 2,
-            columnsM: 1,
-            columnsS: 1,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_basis_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_general_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_customercode") }),
                 new sap.m.Input("", {
-                    placeholder: ibas.i18n.prop("bo_salesorder_customercode"),
-                    tooltip: ibas.i18n.prop("bo_salesorder_customercode"),
                     showValueHelp: true,
                     valueHelpRequest: function (): void {
                         that.fireViewEvents(that.chooseSalesOrderCustomerEvent);
@@ -71,7 +59,6 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_status") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentstatus") }),
                 new sap.m.Select("", {
-                    showSecondaryValues: true,
                     items: openui5.utils.createComboBoxItems(ibas.emDocumentStatus),
                 }).bindProperty("selectedKey", {
                     path: "documentStatus",
@@ -79,7 +66,6 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_canceled") }),
                 new sap.m.Select("", {
-                    showSecondaryValues: true,
                     items: openui5.utils.createComboBoxItems(ibas.emYesNo),
                 }).bindProperty("selectedKey", {
                     path: "canceled",
@@ -89,14 +75,6 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
         });
         this.viewBottomForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
-            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
-            labelSpanL: 2,
-            labelSpanM: 2,
-            labelSpanS: 12,
-            columnsXL: 2,
-            columnsL: 2,
-            columnsM: 1,
-            columnsS: 1,
             content: [
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_salesorder_remarks") }),
                 new sap.m.TextArea("", {
@@ -110,7 +88,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                     width: "100px",
                     type: sap.m.InputType.Number,
                 }).bindProperty("value", {
-                    path: "/DocumentTotal",
+                    path: "/documentTotal",
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_discounttotal") }),
                 new sap.m.Input("", {
@@ -118,7 +96,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                     type: sap.m.InputType.Number,
                     description: "RMB"
                 }).bindProperty("value", {
-                    path: "/DiscountTotal",
+                    path: "/discountTotal",
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_time") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentdate") }),
@@ -233,7 +211,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
             path: "/rows",
             template: list_child_customer,
         });
-        this.mainLayout = new sap.ui.layout.VerticalLayout("", {
+        this.layoutMain = new sap.ui.layout.VerticalLayout("", {
             height: "100%",
             content: [
                 this.viewTopForm,
@@ -246,22 +224,12 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
             horizontal: false,
             height: "100%",
             content: [
-                this.mainLayout
+                this.layoutMain
             ]
         });
         // 子对象编辑页
         this.childEditForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
-            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
-            singleContainerFullSize: false,
-            adjustLabelSpan: false,
-            labelSpanL: 2,
-            labelSpanM: 2,
-            labelSpanS: 12,
-            columnsXL: 2,
-            columnsL: 2,
-            columnsM: 1,
-            columnsS: 1,
             content: [
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_linestatus") }),
                 new sap.m.Select("", {
@@ -427,15 +395,15 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
                 openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
             }
-            openui5.utils.changeFormEditable(this.mainLayout, false);
+            openui5.utils.changeFormEditable(this.layoutMain, false);
         }
     }
     /** 显示数据 */
     showSalesOrder(data: bo.SalesOrder): void {
-        this.mainLayout.setModel(new sap.ui.model.json.JSONModel(data));
-        this.mainLayout.bindObject("/");
+        this.layoutMain.setModel(new sap.ui.model.json.JSONModel(data));
+        this.layoutMain.bindObject("/");
         // 监听属性改变，并更新控件
-        openui5.utils.refreshModelChanged(this.mainLayout, data);
+        openui5.utils.refreshModelChanged(this.layoutMain, data);
         // 改变视图状态
         this.changeViewStatus(data);
     }

@@ -116,7 +116,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
             ]
         });
         list_item_object.bindProperty("number", {
-            parts: [{ path: "DocumentTotal" }],
+            parts: [{ path: "documentTotal" }],
             type: sap.ui.model.type.Currency,
             formatOptions: { showMeasure: false }
         });

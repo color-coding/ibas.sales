@@ -22,7 +22,7 @@ import {
 } from "ibas/index";
 import {
     emItemType
-} from "../../3rdparty/materials/index";
+} from "3rdparty/materials/index";
 import {
     emProductTreeType
 } from "../Datas";

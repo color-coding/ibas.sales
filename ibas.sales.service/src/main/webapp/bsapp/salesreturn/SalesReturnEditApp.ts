@@ -9,7 +9,7 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
-import { BO_CODE_CUSTOMER, ICustomer } from "../../3rdparty/businesspartner/index";
+import { BO_CODE_CUSTOMER, ICustomer } from "3rdparty/businesspartner/index";
 import {
     IProduct,
     IWarehouse,
@@ -27,7 +27,7 @@ import {
     MaterialSerialReceiptServiceProxy,
     BO_CODE_PRODUCT, IMaterial, BO_CODE_MATERIALBATCHSERVICE,
     BO_CODE_MATERIALSERIALSERVICE, BO_CODE_WAREHOUSE,
-} from "../../3rdparty/materials/index";
+} from "3rdparty/materials/index";
 
 /** 编辑应用-销售退货 */
 export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditView, bo.SalesReturn> {
@@ -228,8 +228,13 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
                         created = true;
                     }
                     if (item.itemCode !== selected.code) {
-                        item.materialBatchJournals.clear();
-                        item.materialSerialJournals.clear();
+                        if (item.isNew) {
+                            item.materialBatchJournals.removeAll();
+                            item.materialSerialJournals.removeAll();
+                        } else {
+                            item.materialBatchJournals.deleteAll();
+                            item.materialSerialJournals.deleteAll();
+                        }
                     }
                     item.itemCode = selected.code;
                     item.serialManagement = selected.serialManagement;
@@ -262,8 +267,13 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
                         created = true;
                     }
                     if (item.warehouse !== selected.code) {
-                        item.materialBatchJournals.clear();
-                        item.materialSerialJournals.clear();
+                        if (item.isNew) {
+                            item.materialBatchJournals.removeAll();
+                            item.materialSerialJournals.removeAll();
+                        } else {
+                            item.materialBatchJournals.deleteAll();
+                            item.materialSerialJournals.deleteAll();
+                        }
                     }
                     item.warehouse = selected.code;
                     item = null;

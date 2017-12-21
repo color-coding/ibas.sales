@@ -42,7 +42,7 @@ import {
     BO_CODE_MATERIALBATCHJOURNAL,
     BO_CODE_MATERIALSERIALJOURNAL,
     emItemType
-} from "../../3rdparty/materials/index";
+} from "3rdparty/materials/index";
 
 /** 销售交货 */
 export class SalesDelivery extends BODocument<SalesDelivery> implements ISalesDelivery {
@@ -759,6 +759,12 @@ export class SalesDeliveryItemMaterialBatchJournals extends BusinessObjects<IMat
             item.markDeleted(true);
         }
     }
+    /** 移除所有批次日记账集合 */
+    removeAll(): void {
+        for (let item of this) {
+            this.remove(item);
+        }
+    }
 }
 /** 销售交货-序列日记账 集合 */
 export class SalesDeliveryItemMaterialSerialJournals extends BusinessObjects<IMaterialSerialJournal, SalesDeliveryItem>
@@ -791,6 +797,18 @@ export class SalesDeliveryItemMaterialSerialJournals extends BusinessObjects<IMa
         item.warehouse = data.warehouse;
         item.lineStatus = this.parent.lineStatus;
         return item;
+    }
+    /** 所有序列日记账标记为删除 */
+    deleteAll(): void {
+        for (let item of this) {
+            item.markDeleted(true);
+        }
+    }
+    /** 移除所有序列日记账集合 */
+    removeAll(): void {
+        for (let item of this) {
+            this.remove(item);
+        }
     }
 }
 
