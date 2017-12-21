@@ -95,7 +95,6 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documentdate") }),
                 new sap.m.DatePicker("", {
-                    valueFormat: "yyyy-MM-dd",
                 }).bindProperty("dateValue", {
                     path: "documentDate",
                 }),

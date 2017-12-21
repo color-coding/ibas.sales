@@ -89,7 +89,6 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentdate") }),
                 new sap.m.DatePicker("", {
-                    valueFormat: "yyyy-MM-dd",
                 }).bindProperty("dateValue", {
                     path: "documentDate",
                 }),

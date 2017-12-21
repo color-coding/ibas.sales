@@ -75,14 +75,6 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
         });
         this.viewBottomForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
-            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
-            labelSpanL: 2,
-            labelSpanM: 2,
-            labelSpanS: 12,
-            columnsXL: 2,
-            columnsL: 2,
-            columnsM: 1,
-            columnsS: 1,
             content: [
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_salesorder_remarks") }),
                 new sap.m.TextArea("", {
@@ -238,16 +230,6 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
         // 子对象编辑页
         this.childEditForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
-            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
-            singleContainerFullSize: false,
-            adjustLabelSpan: false,
-            labelSpanL: 2,
-            labelSpanM: 2,
-            labelSpanS: 12,
-            columnsXL: 2,
-            columnsL: 2,
-            columnsM: 1,
-            columnsS: 1,
             content: [
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_linestatus") }),
                 new sap.m.Select("", {
