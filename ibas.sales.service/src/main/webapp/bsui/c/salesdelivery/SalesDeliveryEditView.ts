@@ -261,13 +261,13 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
         let formBottom: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("purchase_remarks_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_remarks_information") }),
                 new sap.m.TextArea("", {
                     rows: 5,
                 }).bindProperty("value", {
                     path: "remarks",
                 }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("purchase_total_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_total_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documenttotal") }),
                 new sap.m.Input("", {
                     editable: false,

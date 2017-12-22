@@ -789,7 +789,7 @@ export class SalesDeliveryItemMaterialSerialJournals extends BusinessObjects<IMa
         return item;
     }
     createSerialJournal(data: IMaterialIssueSerialLine): IMaterialSerialJournal {
-        let item: IMaterialSerialJournal =this.create();
+        let item: IMaterialSerialJournal = this.create();
         item.serialCode = data.serialCode;
         item.supplierSerial = data.supplierSerial;
         item.itemCode = data.itemCode;
@@ -826,7 +826,7 @@ export class SalesDeliveryItem extends BODocumentLine<SalesDeliveryItem> impleme
         if (strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_QUANTITY_NAME) ||
             strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_PRICE_NAME) ||
             strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_DISCOUNT_NAME)) {
-            this.lineTotal = this.quantity * this.price * (1 - this.discount / 100);
+            this.lineTotal = this.quantity * this.price * (1 - (!this.discount ? 0 : this.discount) / 100);
         }
         // 行总计为NaN时显示为0
         if (isNaN(this.lineTotal)) {
