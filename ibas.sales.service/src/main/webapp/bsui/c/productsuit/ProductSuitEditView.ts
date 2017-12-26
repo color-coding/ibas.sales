@@ -33,6 +33,14 @@ export class ProductSuitEditView extends ibas.BOEditView implements IProductSuit
         let that: this = this;
         let formTop: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
+            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
+            labelSpanL: 2,
+            labelSpanM: 2,
+            labelSpanS: 12,
+            columnsXL: 2,
+            columnsL: 2,
+            columnsM: 1,
+            columnsS: 1,
             content: [
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_general_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_product") }),
@@ -191,6 +199,14 @@ export class ProductSuitEditView extends ibas.BOEditView implements IProductSuit
         });
         let formBottom: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
+            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
+            labelSpanL: 2,
+            labelSpanM: 2,
+            labelSpanS: 12,
+            columnsXL: 2,
+            columnsL: 2,
+            columnsM: 1,
+            columnsS: 1,
             content: [
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_remarks_information") }),
                 new sap.m.TextArea("", {
