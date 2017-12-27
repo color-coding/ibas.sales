@@ -41,8 +41,16 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
         let that: this = this;
         let formTop: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
+            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
+            labelSpanL: 2,
+            labelSpanM: 2,
+            labelSpanS: 12,
+            columnsXL: 2,
+            columnsL: 2,
+            columnsM: 1,
+            columnsS: 1,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("purchase_general_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_general_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_customercode") }),
                 new sap.m.Input("", {
                     showValueHelp: true,
@@ -73,7 +81,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                 new sap.m.Input("", {}).bindProperty("value", {
                     path: "reference2"
                 }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("purchase_status_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_status_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_docnum") }),
                 new sap.m.Input("", {
                 }).bindProperty("value", {
@@ -98,7 +106,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                 }).bindProperty("dateValue", {
                     path: "documentDate",
                 }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_receipt_dataowner") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_dataowner") }),
                 new sap.m.Input("", {
                     showValueHelp: true,
                 }).bindProperty("value", {
@@ -260,6 +268,14 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
         });
         let formBottom: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
+            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
+            labelSpanL: 2,
+            labelSpanM: 2,
+            labelSpanS: 12,
+            columnsXL: 2,
+            columnsL: 2,
+            columnsM: 1,
+            columnsS: 1,
             content: [
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_remarks_information") }),
                 new sap.m.TextArea("", {
