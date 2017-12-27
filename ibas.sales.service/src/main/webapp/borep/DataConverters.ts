@@ -44,44 +44,11 @@ class BOConverter4sl extends ibas.BOConverter {
      */
     protected convertData(boName: string, property: string, value: any): any {
         if (boName === bo.SalesOrder.name) {
-            if (property === bo.SalesOrder.PROPERTY_CANCELED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesOrder.PROPERTY_STATUS_NAME) {
-                return ibas.enums.toString(emBOStatus, value);
-            }
-            if (property === bo.SalesOrder.PROPERTY_APPROVALSTATUS_NAME) {
-                return ibas.enums.toString(emApprovalResult, value);
-            }
-            if (property === bo.SalesOrder.PROPERTY_DOCUMENTSTATUS_NAME) {
-                return ibas.enums.toString(emDocumentStatus, value);
-            }
-            if (property === bo.SalesOrder.PROPERTY_REFERENCED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesOrder.PROPERTY_DELETED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
             if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
                 return ibas.enums.toString(emYesNo, value);
             }
         }
         if (boName === bo.SalesOrderItem.name) {
-            if (property === bo.SalesOrderItem.PROPERTY_CANCELED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesOrderItem.PROPERTY_STATUS_NAME) {
-                return ibas.enums.toString(emBOStatus, value);
-            }
-            if (property === bo.SalesOrderItem.PROPERTY_LINESTATUS_NAME) {
-                return ibas.enums.toString(emDocumentStatus, value);
-            }
-            if (property === bo.SalesOrderItem.PROPERTY_REFERENCED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesOrderItem.PROPERTY_DELETED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
             if (property === bo.SalesOrderItem.PROPERTY_ITEMTYPE_NAME) {
                 return ibas.enums.toString(emItemType, value);
             }
@@ -96,44 +63,11 @@ class BOConverter4sl extends ibas.BOConverter {
             }
         }
         if (boName === bo.SalesDelivery.name) {
-            if (property === bo.SalesDelivery.PROPERTY_CANCELED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesDelivery.PROPERTY_STATUS_NAME) {
-                return ibas.enums.toString(emBOStatus, value);
-            }
-            if (property === bo.SalesDelivery.PROPERTY_APPROVALSTATUS_NAME) {
-                return ibas.enums.toString(emApprovalResult, value);
-            }
-            if (property === bo.SalesDelivery.PROPERTY_DOCUMENTSTATUS_NAME) {
-                return ibas.enums.toString(emDocumentStatus, value);
-            }
-            if (property === bo.SalesDelivery.PROPERTY_REFERENCED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesDelivery.PROPERTY_DELETED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
             if (property === bo.SalesDelivery.PROPERTY_ROUNDING_NAME) {
                 return ibas.enums.toString(emYesNo, value);
             }
         }
         if (boName === bo.SalesDeliveryItem.name) {
-            if (property === bo.SalesDeliveryItem.PROPERTY_CANCELED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesDeliveryItem.PROPERTY_STATUS_NAME) {
-                return ibas.enums.toString(emBOStatus, value);
-            }
-            if (property === bo.SalesDeliveryItem.PROPERTY_LINESTATUS_NAME) {
-                return ibas.enums.toString(emDocumentStatus, value);
-            }
-            if (property === bo.SalesDeliveryItem.PROPERTY_REFERENCED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesDeliveryItem.PROPERTY_DELETED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
             if (property === bo.SalesDeliveryItem.PROPERTY_ITEMTYPE_NAME) {
                 return ibas.enums.toString(emItemType, value);
             }
@@ -148,44 +82,11 @@ class BOConverter4sl extends ibas.BOConverter {
             }
         }
         if (boName === bo.SalesReturn.name) {
-            if (property === bo.SalesReturn.PROPERTY_CANCELED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesReturn.PROPERTY_STATUS_NAME) {
-                return ibas.enums.toString(emBOStatus, value);
-            }
-            if (property === bo.SalesReturn.PROPERTY_APPROVALSTATUS_NAME) {
-                return ibas.enums.toString(emApprovalResult, value);
-            }
-            if (property === bo.SalesReturn.PROPERTY_DOCUMENTSTATUS_NAME) {
-                return ibas.enums.toString(emDocumentStatus, value);
-            }
-            if (property === bo.SalesReturn.PROPERTY_REFERENCED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesReturn.PROPERTY_DELETED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
             if (property === bo.SalesReturn.PROPERTY_ROUNDING_NAME) {
                 return ibas.enums.toString(emYesNo, value);
             }
         }
         if (boName === bo.SalesReturnItem.name) {
-            if (property === bo.SalesReturnItem.PROPERTY_CANCELED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesReturnItem.PROPERTY_STATUS_NAME) {
-                return ibas.enums.toString(emBOStatus, value);
-            }
-            if (property === bo.SalesReturnItem.PROPERTY_LINESTATUS_NAME) {
-                return ibas.enums.toString(emDocumentStatus, value);
-            }
-            if (property === bo.SalesReturnItem.PROPERTY_REFERENCED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesReturnItem.PROPERTY_DELETED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
             if (property === bo.SalesReturnItem.PROPERTY_ITEMTYPE_NAME) {
                 return ibas.enums.toString(emItemType, value);
             }
@@ -197,14 +98,6 @@ class BOConverter4sl extends ibas.BOConverter {
             }
             if (property === bo.SalesReturnItem.PROPERTY_TREETYPE_NAME) {
                 return ibas.enums.toString(emProductTreeType, value);
-            }
-        }
-        if (boName === bo.ProductSuit.name) {
-            if (property === bo.ProductSuit.PROPERTY_ACTIVATED_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.ProductSuit.PROPERTY_APPROVALSTATUS_NAME) {
-                return ibas.enums.toString(emApprovalStatus, value);
             }
         }
         return super.convertData(boName, property, value);
@@ -219,44 +112,11 @@ class BOConverter4sl extends ibas.BOConverter {
      */
     protected parsingData(boName: string, property: string, value: any): any {
         if (boName === bo.SalesOrder.name) {
-            if (property === bo.SalesOrder.PROPERTY_CANCELED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesOrder.PROPERTY_STATUS_NAME) {
-                return ibas.enums.valueOf(emBOStatus, value);
-            }
-            if (property === bo.SalesOrder.PROPERTY_APPROVALSTATUS_NAME) {
-                return ibas.enums.valueOf(emApprovalResult, value);
-            }
-            if (property === bo.SalesOrder.PROPERTY_DOCUMENTSTATUS_NAME) {
-                return ibas.enums.valueOf(emDocumentStatus, value);
-            }
-            if (property === bo.SalesOrder.PROPERTY_REFERENCED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesOrder.PROPERTY_DELETED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
             if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
                 return ibas.enums.valueOf(emYesNo, value);
             }
         }
         if (boName === bo.SalesOrderItem.name) {
-            if (property === bo.SalesOrderItem.PROPERTY_CANCELED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesOrderItem.PROPERTY_STATUS_NAME) {
-                return ibas.enums.valueOf(emBOStatus, value);
-            }
-            if (property === bo.SalesOrderItem.PROPERTY_LINESTATUS_NAME) {
-                return ibas.enums.valueOf(emDocumentStatus, value);
-            }
-            if (property === bo.SalesOrderItem.PROPERTY_REFERENCED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesOrderItem.PROPERTY_DELETED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
             if (property === bo.SalesOrderItem.PROPERTY_ITEMTYPE_NAME) {
                 return ibas.enums.valueOf(emItemType, value);
             }
@@ -271,44 +131,11 @@ class BOConverter4sl extends ibas.BOConverter {
             }
         }
         if (boName === bo.SalesDelivery.name) {
-            if (property === bo.SalesDelivery.PROPERTY_CANCELED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesDelivery.PROPERTY_STATUS_NAME) {
-                return ibas.enums.valueOf(emBOStatus, value);
-            }
-            if (property === bo.SalesDelivery.PROPERTY_APPROVALSTATUS_NAME) {
-                return ibas.enums.valueOf(emApprovalResult, value);
-            }
-            if (property === bo.SalesDelivery.PROPERTY_DOCUMENTSTATUS_NAME) {
-                return ibas.enums.valueOf(emDocumentStatus, value);
-            }
-            if (property === bo.SalesDelivery.PROPERTY_REFERENCED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesDelivery.PROPERTY_DELETED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
             if (property === bo.SalesDelivery.PROPERTY_ROUNDING_NAME) {
                 return ibas.enums.valueOf(emYesNo, value);
             }
         }
         if (boName === bo.SalesDeliveryItem.name) {
-            if (property === bo.SalesDeliveryItem.PROPERTY_CANCELED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesDeliveryItem.PROPERTY_STATUS_NAME) {
-                return ibas.enums.valueOf(emBOStatus, value);
-            }
-            if (property === bo.SalesDeliveryItem.PROPERTY_LINESTATUS_NAME) {
-                return ibas.enums.valueOf(emDocumentStatus, value);
-            }
-            if (property === bo.SalesDeliveryItem.PROPERTY_REFERENCED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesDeliveryItem.PROPERTY_DELETED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
             if (property === bo.SalesDeliveryItem.PROPERTY_ITEMTYPE_NAME) {
                 return ibas.enums.valueOf(emItemType, value);
             }
@@ -323,44 +150,11 @@ class BOConverter4sl extends ibas.BOConverter {
             }
         }
         if (boName === bo.SalesReturn.name) {
-            if (property === bo.SalesReturn.PROPERTY_CANCELED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesReturn.PROPERTY_STATUS_NAME) {
-                return ibas.enums.valueOf(emBOStatus, value);
-            }
-            if (property === bo.SalesReturn.PROPERTY_APPROVALSTATUS_NAME) {
-                return ibas.enums.valueOf(emApprovalResult, value);
-            }
-            if (property === bo.SalesReturn.PROPERTY_DOCUMENTSTATUS_NAME) {
-                return ibas.enums.valueOf(emDocumentStatus, value);
-            }
-            if (property === bo.SalesReturn.PROPERTY_REFERENCED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesReturn.PROPERTY_DELETED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
             if (property === bo.SalesReturn.PROPERTY_ROUNDING_NAME) {
                 return ibas.enums.valueOf(emYesNo, value);
             }
         }
         if (boName === bo.SalesReturnItem.name) {
-            if (property === bo.SalesReturnItem.PROPERTY_CANCELED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesReturnItem.PROPERTY_STATUS_NAME) {
-                return ibas.enums.valueOf(emBOStatus, value);
-            }
-            if (property === bo.SalesReturnItem.PROPERTY_LINESTATUS_NAME) {
-                return ibas.enums.valueOf(emDocumentStatus, value);
-            }
-            if (property === bo.SalesReturnItem.PROPERTY_REFERENCED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesReturnItem.PROPERTY_DELETED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
             if (property === bo.SalesReturnItem.PROPERTY_ITEMTYPE_NAME) {
                 return ibas.enums.valueOf(emItemType, value);
             }
@@ -372,14 +166,6 @@ class BOConverter4sl extends ibas.BOConverter {
             }
             if (property === bo.SalesReturnItem.PROPERTY_TREETYPE_NAME) {
                 return ibas.enums.valueOf(emProductTreeType, value);
-            }
-        }
-        if (boName === bo.ProductSuit.name) {
-            if (property === bo.ProductSuit.PROPERTY_ACTIVATED_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.ProductSuit.PROPERTY_APPROVALSTATUS_NAME) {
-                return ibas.enums.valueOf(emApprovalStatus, value);
             }
         }
         return super.parsingData(boName, property, value);
