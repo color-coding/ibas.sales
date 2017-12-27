@@ -11,7 +11,7 @@ import * as bo from "./bo/index";
 import {
     emProductTreeType
 } from "../api/index";
-import { emYesNo, emBOStatus, emApprovalResult, emDocumentStatus, emApprovalStatus } from "ibas/index";
+import { emYesNo } from "ibas/index";
 import { emItemType } from "../3rdparty/materials/Datas";
 
 /** 数据转换者 */
