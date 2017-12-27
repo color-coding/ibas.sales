@@ -42,7 +42,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
         let formTop: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("purchase_general_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_general_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_customercode") }),
                 new sap.m.Input("", {
                     showValueHelp: true,
@@ -73,7 +73,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                 new sap.m.Input("", {}).bindProperty("value", {
                     path: "reference2"
                 }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("purchase_status_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_status_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_docnum") }),
                 new sap.m.Input("", {
                 }).bindProperty("value", {
@@ -98,7 +98,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                 }).bindProperty("dateValue", {
                     path: "documentDate",
                 }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_receipt_dataowner") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_dataowner") }),
                 new sap.m.Input("", {
                     showValueHelp: true,
                 }).bindProperty("value", {
