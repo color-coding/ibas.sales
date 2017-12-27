@@ -49,6 +49,9 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                         wrapping: false
                     }).bindProperty("text", {
                         path: "documentStatus",
+                        formatter(data: any): any {
+                            return ibas.enums.describe(ibas.emDocumentStatus, data);
+                        }
                     })
                 }),
                 new sap.ui.table.Column("", {
