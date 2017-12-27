@@ -24,7 +24,6 @@
   "sales_general_information": "常规信息",
   "sales_status_information": "状态信息",
   "sales_total_information": "总计",
-  "sales_remarks_information": "备注",
   "sales_batch": "批次",
   "sales_serial": "序列",
   "sales_app_no_matched_documentline_to_choose_serial": "没有匹配的行需要选择序列",

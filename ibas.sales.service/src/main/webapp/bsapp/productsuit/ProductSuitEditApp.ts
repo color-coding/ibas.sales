@@ -238,11 +238,10 @@ export class ProductSuitEditApp extends ibas.BOEditApplication<IProductSuitEditV
         let that: this = this;
         ibas.servicesManager.runChooseService<IMaterial>({
             boCode: BO_CODE_MATERIAL,
-            criteria: [],
+            criteria: [
+            ],
             onCompleted(selecteds: ibas.List<IMaterial>): void {
-                let selected: IMaterial = selecteds.firstOrDefault();
-                that.editData.product = selected.code;
-                that.editData.description = selected.name;
+                that.editData.product = selecteds.firstOrDefault().code;
             }
         });
     }

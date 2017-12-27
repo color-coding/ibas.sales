@@ -39,6 +39,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         this.view.removeSalesOrderItemEvent = this.removeSalesOrderItem;
         this.view.chooseSalesOrderItemMaterialEvent = this.chooseSalesOrderItem;
         this.view.chooseSalesOrderCustomerEvent = this.chooseSalesOrderCustomer;
+        this.view.chooseSalesOrderItemWarehouseEvent = this.chooseSalesOrderItemWarehouse;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -181,8 +182,8 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         ibas.servicesManager.runChooseService<ICustomer>({
             boCode: BO_CODE_CUSTOMER,
             criteria: [
-                new ibas.Condition(BO_CODE_CUSTOMER,
-                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.customerCode)),
+                /*  new ibas.Condition("code",
+                     ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.customerCode)), */
             ],
             onCompleted(selecteds: ibas.List<ICustomer>): void {
                 that.editData.customerCode = selecteds.firstOrDefault().code;
