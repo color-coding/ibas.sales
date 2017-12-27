@@ -201,8 +201,6 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         ibas.servicesManager.runChooseService<ICustomer>({
             boCode: BO_CODE_CUSTOMER,
             criteria: [
-                new ibas.Condition(BO_CODE_CUSTOMER,
-                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.customerCode)),
             ],
             onCompleted(selecteds: ibas.List<ICustomer>): void {
                 that.editData.customerCode = selecteds.firstOrDefault().code;

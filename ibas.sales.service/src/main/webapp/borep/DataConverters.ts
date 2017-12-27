@@ -9,7 +9,10 @@
 import * as ibas from "ibas/index";
 import * as bo from "./bo/index";
 import {
+    emProductTreeType
 } from "../api/index";
+import { emYesNo, emBOStatus, emApprovalResult, emDocumentStatus, emApprovalStatus } from "ibas/index";
+import { emItemType } from "../3rdparty/materials/Datas";
 
 /** 数据转换者 */
 export class DataConverter4sl extends ibas.DataConverter4j {
@@ -40,6 +43,170 @@ class BOConverter4sl extends ibas.BOConverter {
      * @returns 转换的值
      */
     protected convertData(boName: string, property: string, value: any): any {
+        if (boName === bo.SalesOrder.name) {
+            if (property === bo.SalesOrder.PROPERTY_CANCELED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesOrder.PROPERTY_STATUS_NAME) {
+                return ibas.enums.toString(emBOStatus, value);
+            }
+            if (property === bo.SalesOrder.PROPERTY_APPROVALSTATUS_NAME) {
+                return ibas.enums.toString(emApprovalResult, value);
+            }
+            if (property === bo.SalesOrder.PROPERTY_DOCUMENTSTATUS_NAME) {
+                return ibas.enums.toString(emDocumentStatus, value);
+            }
+            if (property === bo.SalesOrder.PROPERTY_REFERENCED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesOrder.PROPERTY_DELETED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+        }
+        if (boName === bo.SalesOrderItem.name) {
+            if (property === bo.SalesOrderItem.PROPERTY_CANCELED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_STATUS_NAME) {
+                return ibas.enums.toString(emBOStatus, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_LINESTATUS_NAME) {
+                return ibas.enums.toString(emDocumentStatus, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_REFERENCED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_DELETED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_ITEMTYPE_NAME) {
+                return ibas.enums.toString(emItemType, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_TREETYPE_NAME) {
+                return ibas.enums.toString(emProductTreeType, value);
+            }
+        }
+        if (boName === bo.SalesDelivery.name) {
+            if (property === bo.SalesDelivery.PROPERTY_CANCELED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesDelivery.PROPERTY_STATUS_NAME) {
+                return ibas.enums.toString(emBOStatus, value);
+            }
+            if (property === bo.SalesDelivery.PROPERTY_APPROVALSTATUS_NAME) {
+                return ibas.enums.toString(emApprovalResult, value);
+            }
+            if (property === bo.SalesDelivery.PROPERTY_DOCUMENTSTATUS_NAME) {
+                return ibas.enums.toString(emDocumentStatus, value);
+            }
+            if (property === bo.SalesDelivery.PROPERTY_REFERENCED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesDelivery.PROPERTY_DELETED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesDelivery.PROPERTY_ROUNDING_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+        }
+        if (boName === bo.SalesDeliveryItem.name) {
+            if (property === bo.SalesDeliveryItem.PROPERTY_CANCELED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_STATUS_NAME) {
+                return ibas.enums.toString(emBOStatus, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_LINESTATUS_NAME) {
+                return ibas.enums.toString(emDocumentStatus, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_REFERENCED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_DELETED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_ITEMTYPE_NAME) {
+                return ibas.enums.toString(emItemType, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_TREETYPE_NAME) {
+                return ibas.enums.toString(emProductTreeType, value);
+            }
+        }
+        if (boName === bo.SalesReturn.name) {
+            if (property === bo.SalesReturn.PROPERTY_CANCELED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesReturn.PROPERTY_STATUS_NAME) {
+                return ibas.enums.toString(emBOStatus, value);
+            }
+            if (property === bo.SalesReturn.PROPERTY_APPROVALSTATUS_NAME) {
+                return ibas.enums.toString(emApprovalResult, value);
+            }
+            if (property === bo.SalesReturn.PROPERTY_DOCUMENTSTATUS_NAME) {
+                return ibas.enums.toString(emDocumentStatus, value);
+            }
+            if (property === bo.SalesReturn.PROPERTY_REFERENCED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesReturn.PROPERTY_DELETED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesReturn.PROPERTY_ROUNDING_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+        }
+        if (boName === bo.SalesReturnItem.name) {
+            if (property === bo.SalesReturnItem.PROPERTY_CANCELED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_STATUS_NAME) {
+                return ibas.enums.toString(emBOStatus, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_LINESTATUS_NAME) {
+                return ibas.enums.toString(emDocumentStatus, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_REFERENCED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_DELETED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_ITEMTYPE_NAME) {
+                return ibas.enums.toString(emItemType, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_TREETYPE_NAME) {
+                return ibas.enums.toString(emProductTreeType, value);
+            }
+        }
+        if (boName === bo.ProductSuit.name) {
+            if (property === bo.ProductSuit.PROPERTY_ACTIVATED_NAME) {
+                return ibas.enums.toString(emYesNo, value);
+            }
+            if (property === bo.ProductSuit.PROPERTY_APPROVALSTATUS_NAME) {
+                return ibas.enums.toString(emApprovalStatus, value);
+            }
+        }
         return super.convertData(boName, property, value);
     }
 
@@ -51,6 +218,170 @@ class BOConverter4sl extends ibas.BOConverter {
      * @returns 解析的值
      */
     protected parsingData(boName: string, property: string, value: any): any {
+        if (boName === bo.SalesOrder.name) {
+            if (property === bo.SalesOrder.PROPERTY_CANCELED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesOrder.PROPERTY_STATUS_NAME) {
+                return ibas.enums.valueOf(emBOStatus, value);
+            }
+            if (property === bo.SalesOrder.PROPERTY_APPROVALSTATUS_NAME) {
+                return ibas.enums.valueOf(emApprovalResult, value);
+            }
+            if (property === bo.SalesOrder.PROPERTY_DOCUMENTSTATUS_NAME) {
+                return ibas.enums.valueOf(emDocumentStatus, value);
+            }
+            if (property === bo.SalesOrder.PROPERTY_REFERENCED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesOrder.PROPERTY_DELETED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+        }
+        if (boName === bo.SalesOrderItem.name) {
+            if (property === bo.SalesOrderItem.PROPERTY_CANCELED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_STATUS_NAME) {
+                return ibas.enums.valueOf(emBOStatus, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_LINESTATUS_NAME) {
+                return ibas.enums.valueOf(emDocumentStatus, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_REFERENCED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_DELETED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_ITEMTYPE_NAME) {
+                return ibas.enums.valueOf(emItemType, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesOrderItem.PROPERTY_TREETYPE_NAME) {
+                return ibas.enums.valueOf(emProductTreeType, value);
+            }
+        }
+        if (boName === bo.SalesDelivery.name) {
+            if (property === bo.SalesDelivery.PROPERTY_CANCELED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesDelivery.PROPERTY_STATUS_NAME) {
+                return ibas.enums.valueOf(emBOStatus, value);
+            }
+            if (property === bo.SalesDelivery.PROPERTY_APPROVALSTATUS_NAME) {
+                return ibas.enums.valueOf(emApprovalResult, value);
+            }
+            if (property === bo.SalesDelivery.PROPERTY_DOCUMENTSTATUS_NAME) {
+                return ibas.enums.valueOf(emDocumentStatus, value);
+            }
+            if (property === bo.SalesDelivery.PROPERTY_REFERENCED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesDelivery.PROPERTY_DELETED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesDelivery.PROPERTY_ROUNDING_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+        }
+        if (boName === bo.SalesDeliveryItem.name) {
+            if (property === bo.SalesDeliveryItem.PROPERTY_CANCELED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_STATUS_NAME) {
+                return ibas.enums.valueOf(emBOStatus, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_LINESTATUS_NAME) {
+                return ibas.enums.valueOf(emDocumentStatus, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_REFERENCED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_DELETED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_ITEMTYPE_NAME) {
+                return ibas.enums.valueOf(emItemType, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesDeliveryItem.PROPERTY_TREETYPE_NAME) {
+                return ibas.enums.valueOf(emProductTreeType, value);
+            }
+        }
+        if (boName === bo.SalesReturn.name) {
+            if (property === bo.SalesReturn.PROPERTY_CANCELED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesReturn.PROPERTY_STATUS_NAME) {
+                return ibas.enums.valueOf(emBOStatus, value);
+            }
+            if (property === bo.SalesReturn.PROPERTY_APPROVALSTATUS_NAME) {
+                return ibas.enums.valueOf(emApprovalResult, value);
+            }
+            if (property === bo.SalesReturn.PROPERTY_DOCUMENTSTATUS_NAME) {
+                return ibas.enums.valueOf(emDocumentStatus, value);
+            }
+            if (property === bo.SalesReturn.PROPERTY_REFERENCED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesReturn.PROPERTY_DELETED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesReturn.PROPERTY_ROUNDING_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+        }
+        if (boName === bo.SalesReturnItem.name) {
+            if (property === bo.SalesReturnItem.PROPERTY_CANCELED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_STATUS_NAME) {
+                return ibas.enums.valueOf(emBOStatus, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_LINESTATUS_NAME) {
+                return ibas.enums.valueOf(emDocumentStatus, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_REFERENCED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_DELETED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_ITEMTYPE_NAME) {
+                return ibas.enums.valueOf(emItemType, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.SalesReturnItem.PROPERTY_TREETYPE_NAME) {
+                return ibas.enums.valueOf(emProductTreeType, value);
+            }
+        }
+        if (boName === bo.ProductSuit.name) {
+            if (property === bo.ProductSuit.PROPERTY_ACTIVATED_NAME) {
+                return ibas.enums.valueOf(emYesNo, value);
+            }
+            if (property === bo.ProductSuit.PROPERTY_APPROVALSTATUS_NAME) {
+                return ibas.enums.valueOf(emApprovalStatus, value);
+            }
+        }
         return super.parsingData(boName, property, value);
     }
 }
