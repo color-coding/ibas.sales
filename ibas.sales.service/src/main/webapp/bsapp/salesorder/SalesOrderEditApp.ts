@@ -181,8 +181,9 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         let that: this = this;
         ibas.servicesManager.runChooseService<ICustomer>({
             boCode: BO_CODE_CUSTOMER,
-            chooseType: ibas.emChooseType.SINGLE,
             criteria: [
+                /*  new ibas.Condition("code",
+                     ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.customerCode)), */
             ],
             onCompleted(selecteds: ibas.List<ICustomer>): void {
                 that.editData.customerCode = selecteds.firstOrDefault().code;
@@ -195,10 +196,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         let that: this = this;
         ibas.servicesManager.runChooseService<IProduct>({
             boCode: BO_CODE_PRODUCT,
-            chooseType: ibas.emChooseType.SINGLE,
-            criteria: [
-                new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, "Y")
-            ],
+            criteria: [],
             onCompleted(selecteds: ibas.List<IProduct>): void {
                 // 获取触发的对象
                 let index: number = that.editData.salesOrderItems.indexOf(caller);
@@ -255,9 +253,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         let that: this = this;
         ibas.servicesManager.runChooseService<IWarehouse>({
             boCode: BO_CODE_WAREHOUSE,
-            chooseType: ibas.emChooseType.SINGLE,
-            criteria: [
-            ],
+            criteria: [],
             onCompleted(selecteds: ibas.List<IWarehouse>): void {
                 let index: number = that.editData.salesOrderItems.indexOf(caller);
                 let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];

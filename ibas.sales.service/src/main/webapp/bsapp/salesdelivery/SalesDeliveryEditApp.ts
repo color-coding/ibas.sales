@@ -204,8 +204,9 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         let that: this = this;
         ibas.servicesManager.runChooseService<ICustomer>({
             boCode: BO_CODE_CUSTOMER,
-            chooseType: ibas.emChooseType.SINGLE,
             criteria: [
+                /*  new ibas.Condition("code",
+                     ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.customerCode)), */
             ],
             onCompleted(selecteds: ibas.List<ICustomer>): void {
                 that.editData.customerCode = selecteds.firstOrDefault().code;

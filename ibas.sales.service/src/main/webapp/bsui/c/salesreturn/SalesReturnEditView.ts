@@ -289,12 +289,30 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                 }).bindProperty("value", {
                     path: "documentTotal"
                 }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_taxrate") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "taxRate"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_taxtotal") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "taxTotal"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_discount") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "discount"
+                }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_discounttotal") }),
                 new sap.m.Input("", {
                     editable: false,
                 }).bindProperty("value", {
                     path: "discountTotal"
-                })
+                }),
             ]
         });
         this.layoutMain = new sap.ui.layout.VerticalLayout("", {

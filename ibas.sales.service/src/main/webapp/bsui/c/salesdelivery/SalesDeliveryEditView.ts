@@ -82,7 +82,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                     path: "reference2"
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_status_information") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_docnum") }),
+                new sap.m.Label("", { text: ibas.i18n.prop("sales_status_information") }),
                 new sap.m.Input("", {
                 }).bindProperty("value", {
                     path: "docNum",
@@ -284,12 +284,30 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                 }).bindProperty("value", {
                     path: "documentTotal"
                 }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_taxrate") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "taxRate"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_taxtotal") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "taxTotal"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_discount") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "discount"
+                }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_discounttotal") }),
                 new sap.m.Input("", {
                     editable: false,
                 }).bindProperty("value", {
                     path: "discountTotal"
-                })
+                }),
             ]
         });
         this.layoutMain = new sap.ui.layout.VerticalLayout("", {

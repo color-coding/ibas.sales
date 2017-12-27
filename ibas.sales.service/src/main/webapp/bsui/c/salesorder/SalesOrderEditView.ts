@@ -44,7 +44,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
             columnsM: 1,
             columnsS: 1,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_app_general_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_general_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_customercode") }),
                 new sap.m.Input("", {
                     showValueHelp: true,
@@ -75,7 +75,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 new sap.m.Input("", {}).bindProperty("value", {
                     path: "reference2"
                 }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_app_status_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_status_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_docnum") }),
                 new sap.m.Input("", {
                 }).bindProperty("value", {
@@ -249,12 +249,30 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 }).bindProperty("value", {
                     path: "remarks",
                 }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_app_total_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_total_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documenttotal") }),
                 new sap.m.Input("", {
                     editable: false,
                 }).bindProperty("value", {
                     path: "documentTotal"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_taxrate") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "taxRate"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_taxtotal") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "taxTotal"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_discount") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "discount"
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_discounttotal") }),
                 new sap.m.Input("", {
