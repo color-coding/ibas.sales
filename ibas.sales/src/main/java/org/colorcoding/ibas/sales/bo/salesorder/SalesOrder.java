@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
@@ -18,6 +19,7 @@ import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.BOCode;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
 import org.colorcoding.ibas.sales.MyConfiguration;
 
 /**
@@ -28,7 +30,7 @@ import org.colorcoding.ibas.sales.MyConfiguration;
 @XmlType(name = SalesOrder.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = SalesOrder.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BOCode(SalesOrder.BUSINESS_OBJECT_CODE)
-public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrder {
+public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrder, IDataOwnership, IApprovalData {
 
 	/**
 	 * 序列化版本标记
@@ -2066,7 +2068,7 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 		this.setDocumentDate(DateTime.getToday());
 		this.setDeliveryDate(DateTime.getToday());
 		this.setDocumentStatus(emDocumentStatus.RELEASED);
-		this.setGrossProfitPriceList(1);//测试物料价格清单 测试结束后要去掉
+		this.setGrossProfitPriceList(1);// 测试物料价格清单 测试结束后要去掉
 
 	}
 
