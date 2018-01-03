@@ -100,7 +100,7 @@ export class ProductSuitListView extends ibas.BOListView implements IProductSuit
                         press: function (): void {
                             that.fireViewEvents(that.viewDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ProductSuit>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.ProductSuit>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -112,7 +112,7 @@ export class ProductSuitListView extends ibas.BOListView implements IProductSuit
                         press: function (): void {
                             that.fireViewEvents(that.editDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ProductSuit>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.ProductSuit>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -124,7 +124,7 @@ export class ProductSuitListView extends ibas.BOListView implements IProductSuit
                         press: function (): void {
                             that.fireViewEvents(that.deleteDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ProductSuit>(that.table)
+                                openui5.utils.getSelecteds<bo.ProductSuit>(that.table)
                             );
                         }
                     }),
@@ -223,6 +223,6 @@ export class ProductSuitListView extends ibas.BOListView implements IProductSuit
     }
     /** 获取选择的数据 */
     getSelecteds(): bo.ProductSuit[] {
-        return openui5.utils.getTableSelecteds<bo.ProductSuit>(this.table);
+        return openui5.utils.getSelecteds<bo.ProductSuit>(this.table);
     }
 }

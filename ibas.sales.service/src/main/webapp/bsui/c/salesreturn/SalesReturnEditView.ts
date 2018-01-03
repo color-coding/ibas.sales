@@ -129,7 +129,7 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                         press: function (): void {
                             that.fireViewEvents(that.removeSalesReturnItemEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesReturnItem>(that.tableSalesReturnItem)
+                                openui5.utils.getSelecteds<bo.SalesReturnItem>(that.tableSalesReturnItem)
                             );
                         }
                     }),

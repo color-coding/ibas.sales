@@ -38,7 +38,7 @@ export class ProductSuitChooseView extends ibas.BOChooseView implements IProduct
                 press: function (): void {
                     that.fireViewEvents(that.chooseDataEvent,
                         // 获取表格选中的对象
-                        openui5.utils.getTableSelecteds<bo.ProductSuit>(that.table)
+                        openui5.utils.getSelecteds<bo.ProductSuit>(that.table)
                     );
                 }
             }),

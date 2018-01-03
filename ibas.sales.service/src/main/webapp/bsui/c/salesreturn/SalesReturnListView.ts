@@ -141,7 +141,7 @@ export class SalesReturnListView extends ibas.BOListView implements ISalesReturn
                         press: function (): void {
                             that.fireViewEvents(that.viewDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesReturn>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.SalesReturn>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -153,7 +153,7 @@ export class SalesReturnListView extends ibas.BOListView implements ISalesReturn
                         press: function (): void {
                             that.fireViewEvents(that.editDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesReturn>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.SalesReturn>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -165,7 +165,7 @@ export class SalesReturnListView extends ibas.BOListView implements ISalesReturn
                         press: function (): void {
                             that.fireViewEvents(that.deleteDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesReturn>(that.table)
+                                openui5.utils.getSelecteds<bo.SalesReturn>(that.table)
                             );
                         }
                     }),
@@ -264,6 +264,6 @@ export class SalesReturnListView extends ibas.BOListView implements ISalesReturn
     }
     /** 获取选择的数据 */
     getSelecteds(): bo.SalesReturn[] {
-        return openui5.utils.getTableSelecteds<bo.SalesReturn>(this.table);
+        return openui5.utils.getSelecteds<bo.SalesReturn>(this.table);
     }
 }

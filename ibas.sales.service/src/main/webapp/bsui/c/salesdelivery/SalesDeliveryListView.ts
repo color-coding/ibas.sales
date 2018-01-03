@@ -141,7 +141,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                         press: function (): void {
                             that.fireViewEvents(that.viewDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesDelivery>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.SalesDelivery>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -153,7 +153,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                         press: function (): void {
                             that.fireViewEvents(that.editDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesDelivery>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.SalesDelivery>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -165,7 +165,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                         press: function (): void {
                             that.fireViewEvents(that.deleteDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesDelivery>(that.table)
+                                openui5.utils.getSelecteds<bo.SalesDelivery>(that.table)
                             );
                         }
                     }),
@@ -264,6 +264,6 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
     }
     /** 获取选择的数据 */
     getSelecteds(): bo.SalesDelivery[] {
-        return openui5.utils.getTableSelecteds<bo.SalesDelivery>(this.table);
+        return openui5.utils.getSelecteds<bo.SalesDelivery>(this.table);
     }
 }

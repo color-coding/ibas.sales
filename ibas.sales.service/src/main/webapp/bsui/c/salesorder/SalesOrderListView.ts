@@ -141,7 +141,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                         press: function (): void {
                             that.fireViewEvents(that.viewDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesOrder>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.SalesOrder>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -153,7 +153,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                         press: function (): void {
                             that.fireViewEvents(that.editDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesOrder>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.SalesOrder>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -165,7 +165,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                         press: function (): void {
                             that.fireViewEvents(that.deleteDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesOrder>(that.table)
+                                openui5.utils.getSelecteds<bo.SalesOrder>(that.table)
                             );
                         }
                     }),
@@ -262,6 +262,6 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
     }
     /** 获取选择的数据 */
     getSelecteds(): bo.SalesOrder[] {
-        return openui5.utils.getTableSelecteds<bo.SalesOrder>(this.table);
+        return openui5.utils.getSelecteds<bo.SalesOrder>(this.table);
     }
 }
