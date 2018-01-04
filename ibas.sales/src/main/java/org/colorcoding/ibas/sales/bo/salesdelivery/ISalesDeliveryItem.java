@@ -1273,26 +1273,26 @@ public interface ISalesDeliveryItem extends IBODocumentLine {
 	 *
 	 * @return 值
 	 */
-	ISalesDeliveryMaterialBatchJournals getSalesDeliveryMaterialBatchJournals();
+	ISalesDeliveryItemMaterialBatchJournals getSalesDeliveryMaterialBatchJournals();
 
 	/**
 	 * 设置-销售交货-物料批次集合
 	 *
 	 * @param value 值
 	 */
-	void setSalesDeliveryMaterialBatchJournals(ISalesDeliveryMaterialBatchJournals value);
+	void setSalesDeliveryMaterialBatchJournals(ISalesDeliveryItemMaterialBatchJournals value);
 
 	/**
 	 * 获取-销售交货-物料序列集合
 	 *
 	 * @return 值
 	 */
-	ISalesDeliveryMaterialSerialJournals getSalesDeliveryMaterialSerialJournals();
+	ISalesDeliveryItemMaterialSerialJournals getSalesDeliveryMaterialSerialJournals();
 
 	/**
 	 * 设置-销售交货-物料序列集合
 	 *
 	 * @param value 值
 	 */
-	void setSalesDeliveryMaterialSerialJournals(ISalesDeliveryMaterialSerialJournals value);
+	void setSalesDeliveryMaterialSerialJournals(ISalesDeliveryItemMaterialSerialJournals value);
 }
