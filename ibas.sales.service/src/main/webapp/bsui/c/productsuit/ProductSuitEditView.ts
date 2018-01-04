@@ -102,7 +102,7 @@ export class ProductSuitEditView extends ibas.BOEditView implements IProductSuit
                         press: function (): void {
                             that.fireViewEvents(that.removeProductSuitItemEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ProductSuitItem>(that.tableProductSuitItem)
+                                openui5.utils.getSelecteds<bo.ProductSuitItem>(that.tableProductSuitItem)
                             );
                         }
                     }),

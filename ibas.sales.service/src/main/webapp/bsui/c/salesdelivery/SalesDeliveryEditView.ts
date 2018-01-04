@@ -124,7 +124,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                         press: function (): void {
                             that.fireViewEvents(that.removeSalesDeliveryItemEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesDeliveryItem>(that.tableSalesDeliveryItem)
+                                openui5.utils.getSelecteds<bo.SalesDeliveryItem>(that.tableSalesDeliveryItem)
                             );
                         }
                     }),
