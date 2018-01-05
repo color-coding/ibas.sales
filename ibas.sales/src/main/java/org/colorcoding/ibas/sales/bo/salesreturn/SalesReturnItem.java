@@ -1,14 +1,8 @@
 package org.colorcoding.ibas.sales.bo.salesreturn;
 
-import javax.xml.bind.annotation.*;
-
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
-import org.colorcoding.ibas.bobas.data.DateTime;
-import org.colorcoding.ibas.bobas.data.Decimal;
-import org.colorcoding.ibas.bobas.data.emBOStatus;
-import org.colorcoding.ibas.bobas.data.emDocumentStatus;
-import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.bobas.data.*;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchJournal;
@@ -16,6 +10,8 @@ import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialJournal;
 import org.colorcoding.ibas.materials.data.emItemType;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
+
+import javax.xml.bind.annotation.*;
 
 /**
  * 获取-销售退货-行
@@ -2425,14 +2421,14 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	/**
 	 * 属性名称-销售退货-物料批次
 	 */
-	private static final String PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME = "SalesReturnMaterialBatchJournals";
+	private static final String PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME = "SalesReturnItemMaterialBatchJournals";
 
 	/**
 	 * 销售退货-物料批次的集合属性
 	 *
 	 */
-	public static final IPropertyInfo<ISalesReturnMaterialBatchJournals> PROPERTY_SALESRETURNMATERIALBATCHJOURNALS = registerProperty(
-			PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME, ISalesReturnMaterialBatchJournals.class, MY_CLASS);
+	public static final IPropertyInfo<ISalesReturnItemMaterialBatchJournals> PROPERTY_SALESRETURNMATERIALBATCHJOURNALS = registerProperty(
+			PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME, ISalesReturnItemMaterialBatchJournals.class, MY_CLASS);
 
 	/**
 	 * 获取-销售退货-物料批次集合
@@ -2441,7 +2437,7 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	 */
 	@XmlElementWrapper(name = PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME)
 	@XmlElement(name = MaterialBatchJournal.BUSINESS_OBJECT_NAME, type = MaterialBatchJournal.class)
-	public final ISalesReturnMaterialBatchJournals getSalesReturnMaterialBatchJournals() {
+	public final ISalesReturnItemMaterialBatchJournals getSalesReturnMaterialBatchJournals() {
 		return this.getProperty(PROPERTY_SALESRETURNMATERIALBATCHJOURNALS);
 	}
 
@@ -2451,21 +2447,21 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	 * @param value
 	 *            值
 	 */
-	public final void setSalesReturnMaterialBatchJournals(ISalesReturnMaterialBatchJournals value) {
+	public final void setSalesReturnMaterialBatchJournals(ISalesReturnItemMaterialBatchJournals value) {
 		this.setProperty(PROPERTY_SALESRETURNMATERIALBATCHJOURNALS, value);
 	}
 
 	/**
 	 * 属性名称-销售退货-物料序列
 	 */
-	private static final String PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME = "SalesReturnMaterialSerialJournals";
+	private static final String PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME = "SalesReturnItemMaterialSerialJournals";
 
 	/**
 	 * 销售退货-物料序列的集合属性
 	 *
 	 */
-	public static final IPropertyInfo<ISalesReturnMaterialSerialJournals> PROPERTY_SALESRETURNMATERIALSERIALJOURNALS = registerProperty(
-			PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME, ISalesReturnMaterialSerialJournals.class, MY_CLASS);
+	public static final IPropertyInfo<ISalesReturnItemMaterialSerialJournals> PROPERTY_SALESRETURNMATERIALSERIALJOURNALS = registerProperty(
+			PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME, ISalesReturnItemMaterialSerialJournals.class, MY_CLASS);
 
 	/**
 	 * 获取-销售退货-物料序列集合
@@ -2474,7 +2470,7 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	 */
 	@XmlElementWrapper(name = PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME)
 	@XmlElement(name = MaterialSerialJournal.BUSINESS_OBJECT_NAME, type = MaterialSerialJournal.class)
-	public final ISalesReturnMaterialSerialJournals getSalesReturnMaterialSerialJournals() {
+	public final ISalesReturnItemMaterialSerialJournals getSalesReturnMaterialSerialJournals() {
 		return this.getProperty(PROPERTY_SALESRETURNMATERIALSERIALJOURNALS);
 	}
 
@@ -2484,7 +2480,7 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	 * @param value
 	 *            值
 	 */
-	public final void setSalesReturnMaterialSerialJournals(ISalesReturnMaterialSerialJournals value) {
+	public final void setSalesReturnMaterialSerialJournals(ISalesReturnItemMaterialSerialJournals value) {
 		this.setProperty(PROPERTY_SALESRETURNMATERIALSERIALJOURNALS, value);
 	}
 	/**
@@ -2493,8 +2489,8 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
-		this.setSalesReturnMaterialBatchJournals(new SalesReturnMaterialBatchJournals(this));
-		this.setSalesReturnMaterialSerialJournals(new SalesReturnMaterialSerialJournals(this));
+		this.setSalesReturnMaterialBatchJournals(new SalesReturnItemMaterialBatchJournals(this));
+		this.setSalesReturnMaterialSerialJournals(new SalesReturnItemMaterialSerialJournals(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 
 	}

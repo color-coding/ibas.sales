@@ -9,6 +9,10 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
+import {
+    IMaterial,
+    BO_CODE_MATERIAL
+} from "3rdparty/materials/index";
 
 /** 编辑应用-产品套装 */
 export class ProductSuitEditApp extends ibas.BOEditApplication<IProductSuitEditView, bo.ProductSuit> {
@@ -35,6 +39,8 @@ export class ProductSuitEditApp extends ibas.BOEditApplication<IProductSuitEditV
         this.view.createDataEvent = this.createData;
         this.view.addProductSuitItemEvent = this.addProductSuitItem;
         this.view.removeProductSuitItemEvent = this.removeProductSuitItem;
+        this.view.chooseProductSuitItemMaterialEvent = this.chooseProductSuitItemMaterial;
+        this.view.chooseProductSuitMaterialEvent = this.chooseProductSuitMaterial;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -53,8 +59,15 @@ export class ProductSuitEditApp extends ibas.BOEditApplication<IProductSuitEditV
     run(): void {
         let that: this = this;
         if (ibas.objects.instanceOf(arguments[0], bo.ProductSuit)) {
+            let data: bo.ProductSuit = arguments[0];
+            // 新对象直接编辑
+            if (data.isNew) {
+                that.editData = data;
+                that.show();
+                return;
+            }
             // 尝试重新查询编辑对象
-            let criteria: ibas.ICriteria = arguments[0].criteria();
+            let criteria: ibas.ICriteria = data.criteria();
             if (!ibas.objects.isNull(criteria) && criteria.conditions.length > 0) {
                 // 有效的查询对象查询
                 let boRepository: BORepositorySales = new BORepositorySales();
@@ -201,6 +214,46 @@ export class ProductSuitEditApp extends ibas.BOEditApplication<IProductSuitEditV
         this.view.showProductSuitItems(this.editData.productSuitItems.filterDeleted());
     }
 
+    private chooseProductSuitItemMaterial(caller: bo.ProductSuitItem): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<IMaterial>({
+            boCode: BO_CODE_MATERIAL,
+            criteria: [],
+            onCompleted(selecteds: ibas.List<IMaterial>): void {
+                let index: number = that.editData.productSuitItems.indexOf(caller);
+                let item: bo.ProductSuitItem = that.editData.productSuitItems[index];
+                // 选择返回数量多余触发数量时,自动创建新的项目
+                let created: boolean = false;
+                for (let selected of selecteds) {
+                    if (ibas.objects.isNull(item)) {
+                        item = that.editData.productSuitItems.create();
+                        created = true;
+                    }
+                    item.itemCode = selected.code;
+                    item.itemDescription = selected.name;
+                    item.quantity = 1;
+                    item = null;
+                }
+                if (created) {
+                    // 创建了新的行项目
+                    that.view.showProductSuitItems(that.editData.productSuitItems.filterDeleted());
+                }
+            }
+        });
+    }
+    private chooseProductSuitMaterial(caller: bo.ProductSuitItem): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<IMaterial>({
+            boCode: BO_CODE_MATERIAL,
+            criteria: [],
+            onCompleted(selecteds: ibas.List<IMaterial>): void {
+                let selected: IMaterial = selecteds.firstOrDefault();
+                that.editData.product = selected.code;
+                that.editData.description = selected.name;
+            }
+        });
+    }
+
 }
 /** 视图-产品套装 */
 export interface IProductSuitEditView extends ibas.IBOEditView {
@@ -216,4 +269,8 @@ export interface IProductSuitEditView extends ibas.IBOEditView {
     removeProductSuitItemEvent: Function;
     /** 显示数据 */
     showProductSuitItems(datas: bo.ProductSuitItem[]): void;
+    /** 选择物料主数据事件 */
+    chooseProductSuitMaterialEvent: Function;
+    /** 选择物料主数据事件 */
+    chooseProductSuitItemMaterialEvent: Function;
 }

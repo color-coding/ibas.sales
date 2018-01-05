@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE Domain>
+<Domain Name="Sales" ShortName="SL">
+  <Model Name="ShippingAddress" Description="送货地址" ModelType="Simple" Mapped="${Company}_SL_OSAD">
+    <Property Name="BaseDocumentType" Description="基于类型" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="BaseType" UniqueKey="Yes"/>
+    <Property Name="BaseDocumentEntry" Description="基于标识" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="BaseEntry" UniqueKey="Yes"/>
+    <Property Name="Name" Description="名称" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="Name" UniqueKey="Yes"/>
+    <Property Name="Order" Description="顺序" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Order"/>    
+    <Property Name="ShippingStatus" Description="送货状态" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emShippingStatus" Mapped="Status"/>
+    <Property Name="Consignee" Description="收货人" DataType="Alphanumeric" DataSubType="Default" EditSize="50" Mapped="Consignee"/>
+    <Property Name="Street" Description="街道" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="Street"/>
+    <Property Name="District" Description="县/区" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="District"/>
+    <Property Name="City" Description="市" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="City"/>
+    <Property Name="Province" Description="省" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="Province"/>
+    <Property Name="Country" Description="国" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="Country"/>
+    <Property Name="ZipCode" Description="邮编" DataType="Alphanumeric" DataSubType="Default" EditSize="10" Mapped="ZipCode"/>
+    <Property Name="MobilePhone" Description="联系电话" DataType="Alphanumeric" DataSubType="Default" EditSize="20" Mapped="Phone"/>
+    <Property Name="Telephone" Description="电话 " DataType="Alphanumeric" DataSubType="Default" EditSize="20" Mapped="Telephone"/>
+    <Property Name="Remark1" Description="备注 1" DataType="Alphanumeric" DataSubType="Default" EditSize="200" Mapped="Notes1"/>
+    <Property Name="Remark2" Description="备注 2" DataType="Alphanumeric" DataSubType="Default" EditSize="200" Mapped="Notes2"/>
+    <Property Name="ObjectKey" Description="对象编号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="ObjectKey" PrimaryKey="Yes"/>
+    <Property Name="ObjectCode" Description="对象类型" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="ObjectCode"/>
+    <Property Name="CreateDate" Description="创建日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="CreateDate"/>
+    <Property Name="CreateTime" Description="创建时间" DataType="Date" DataSubType="Time" EditSize="8" Mapped="CreateTime"/>
+    <Property Name="UpdateDate" Description="修改日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="UpdateDate"/>
+    <Property Name="UpdateTime" Description="修改时间" DataType="Date" DataSubType="Time" EditSize="8" Mapped="UpdateTime"/>
+    <Property Name="LogInst" Description="实例号（版本）" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="LogInst"/>
+    <Property Name="Series" Description="服务系列" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Series"/>
+    <Property Name="DataSource" Description="数据源" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="DataSource"/>
+    <Property Name="CreateUserSign" Description="创建用户" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Creator"/>
+    <Property Name="UpdateUserSign" Description="修改用户" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Updator"/>
+    <Property Name="CreateActionId" Description="创建动作标识" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="CreateActId"/>
+    <Property Name="UpdateActionId" Description="更新动作标识" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="UpdateActId"/>
+  </Model>
+  <BusinessObject MappedModel="ShippingAddress" ShortName="${Company}_SL_SHIPADDRESS"/>
+</Domain>

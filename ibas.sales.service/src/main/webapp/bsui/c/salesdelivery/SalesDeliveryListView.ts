@@ -40,37 +40,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                     template: new sap.m.Text("", {
                         wrapping: false
                     }).bindProperty("text", {
-                        path: "docEntry"
-                    })
-                }),
-                new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesdelivery_customercode"),
-                    template: new sap.m.Link("", {
-                        wrapping: false,
-                        press(event: any): void {
-                            ibas.servicesManager.runLinkService({
-                                boCode: BO_CODE_CUSTOMER,
-                                linkValue: event.getSource().getText()
-                            });
-                        }
-                    }).bindProperty("text", {
-                        path: "customerCode"
-                    })
-                }),
-                new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesdelivery_customername"),
-                    template: new sap.m.Text("", {
-                        wrapping: false
-                    }).bindProperty("text", {
-                        path: "customerName"
-                    })
-                }),
-                new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesdelivery_documenttotal"),
-                    template: new sap.m.Text("", {
-                        wrapping: false
-                    }).bindProperty("text", {
-                        path: "documentTotal"
+                        path: "docEntry",
                     })
                 }),
                 new sap.ui.table.Column("", {
@@ -85,21 +55,70 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                     })
                 }),
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesdelivery_canceled"),
+                    label: ibas.i18n.prop("bo_salesdelivery_customername"),
                     template: new sap.m.Text("", {
                         wrapping: false
                     }).bindProperty("text", {
-                        path: "canceled",
-                        formatter(data: any): any {
-                            return ibas.enums.describe(ibas.emYesNo, data);
-                        }
+                        path: "customerName",
                     })
-                })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesdelivery_contactperson"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "contactPerson",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesdelivery_documenttotal"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "documentTotal",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesdelivery_paidtotal"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "paidTotal",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesdelivery_discount"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "discount",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesdelivery_discounttotal"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "discountTotal",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesdelivery_reference1"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "reference1",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesdelivery_reference2"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "reference2",
+                    })
+                }),
             ],
-            // tslint:disable-next-line:typedef
-            rowSelectionChange: function (oEvent) {
-                this.setSelectedIndex(this.getSelectedIndex());
-            }
         });
         this.form.addContent(this.table);
         this.page = new sap.m.Page("", {
@@ -114,6 +133,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                             that.fireViewEvents(that.newDataEvent);
                         }
                     }),
+                    /*
                     new sap.m.Button("", {
                         text: ibas.i18n.prop("shell_data_view"),
                         type: sap.m.ButtonType.Transparent,
@@ -121,10 +141,11 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                         press: function (): void {
                             that.fireViewEvents(that.viewDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesDelivery>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.SalesDelivery>(that.table).firstOrDefault()
                             );
                         }
                     }),
+                    */
                     new sap.m.Button("", {
                         text: ibas.i18n.prop("shell_data_edit"),
                         type: sap.m.ButtonType.Transparent,
@@ -132,7 +153,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                         press: function (): void {
                             that.fireViewEvents(that.editDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesDelivery>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.SalesDelivery>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -144,7 +165,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                         press: function (): void {
                             that.fireViewEvents(that.deleteDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesDelivery>(that.table)
+                                openui5.utils.getSelecteds<bo.SalesDelivery>(that.table)
                             );
                         }
                     }),
@@ -243,6 +264,6 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
     }
     /** 获取选择的数据 */
     getSelecteds(): bo.SalesDelivery[] {
-        return openui5.utils.getTableSelecteds<bo.SalesDelivery>(this.table);
+        return openui5.utils.getSelecteds<bo.SalesDelivery>(this.table);
     }
 }

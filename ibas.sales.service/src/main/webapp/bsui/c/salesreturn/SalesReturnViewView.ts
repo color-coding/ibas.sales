@@ -17,7 +17,7 @@ import { ISalesReturnViewView } from "../../../bsapp/salesreturn/index";
 export class SalesReturnViewView extends ibas.BOViewView implements ISalesReturnViewView {
 
     private page: sap.m.Page;
-    private mainLayout: sap.ui.layout.VerticalLayout;
+    private layoutMain: sap.ui.layout.VerticalLayout;
     private viewTopForm: sap.ui.layout.form.SimpleForm;
     private viewBottomForm: sap.ui.layout.form.SimpleForm;
     private tableSalesReturnItem: sap.ui.table.Table;
@@ -27,18 +27,8 @@ export class SalesReturnViewView extends ibas.BOViewView implements ISalesReturn
         let that: this = this;
         this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
             editable: false,
-            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
-            singleContainerFullSize: false,
-            adjustLabelSpan: false,
-            labelSpanL: 2,
-            labelSpanM: 2,
-            labelSpanS: 12,
-            columnsXL: 2,
-            columnsL: 2,
-            columnsM: 1,
-            columnsS: 1,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_basis_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_general_information") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_docentry") }),
                 new sap.m.Text("", {
                 }).bindProperty("text", {
@@ -105,14 +95,6 @@ export class SalesReturnViewView extends ibas.BOViewView implements ISalesReturn
         });
         this.viewBottomForm = new sap.ui.layout.form.SimpleForm("", {
             editable: false,
-            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
-            labelSpanL: 2,
-            labelSpanM: 2,
-            labelSpanS: 12,
-            columnsXL: 2,
-            columnsL: 2,
-            columnsM: 1,
-            columnsS: 1,
             content: [
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_salesreturn_remarks") }),
                 new sap.m.Text("", {
@@ -218,7 +200,7 @@ export class SalesReturnViewView extends ibas.BOViewView implements ISalesReturn
                 })
             ]
         });
-        this.mainLayout = new sap.ui.layout.VerticalLayout("", {
+        this.layoutMain = new sap.ui.layout.VerticalLayout("", {
             content: [
                 this.viewTopForm,
                 this.tableSalesReturnItem,
@@ -271,15 +253,15 @@ export class SalesReturnViewView extends ibas.BOViewView implements ISalesReturn
                     })
                 ]
             }),
-            content: [this.mainLayout]
+            content: [this.layoutMain]
         });
         this.id = this.page.getId();
         return this.page;
     }
     /** 显示数据 */
     showSalesReturn(data: bo.SalesReturn): void {
-        this.mainLayout.setModel(new sap.ui.model.json.JSONModel(data));
-        this.mainLayout.bindObject("/");
+        this.layoutMain.setModel(new sap.ui.model.json.JSONModel(data));
+        this.layoutMain.bindObject("/");
     }
     /** 显示数据 */
     showSalesReturnItems(datas: bo.SalesReturnItem[]): void {

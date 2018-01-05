@@ -27,9 +27,15 @@ import {
     ISalesOrder,
     ISalesOrderItems,
     ISalesOrderItem,
+    IShippingAddress,
+    IShippingAddresss,
     BO_CODE_SALESORDER,
     emProductTreeType,
 } from "../../api/index";
+import {
+    ShippingAddress,
+    ShippingAddresss,
+} from "./ShippingAddress";
 import {
     emItemType
 } from "3rdparty/materials/index";
@@ -638,10 +644,21 @@ export class SalesOrder extends BODocument<SalesOrder> implements ISalesOrder {
         this.setProperty(SalesOrder.PROPERTY_SALESORDERITEMS_NAME, value);
     }
 
+    /** 映射的属性名称-送货地址集合 */
+    static PROPERTY_SHIPPINGADDRESSS_NAME: string = "ShippingAddresss";
+    /** 获取-送货地址集合 */
+    get shippingAddresss(): ShippingAddresss {
+        return this.getProperty<ShippingAddresss>(SalesOrder.PROPERTY_SHIPPINGADDRESSS_NAME);
+    }
+    /** 设置-送货地址集合 */
+    set shippingAddresss(value: ShippingAddresss) {
+        this.setProperty(SalesOrder.PROPERTY_SHIPPINGADDRESSS_NAME, value);
+    }
 
     /** 初始化数据 */
     protected init(): void {
         this.salesOrderItems = new SalesOrderItems(this);
+        this.shippingAddresss = new ShippingAddresss(this);
         this.objectCode = config.applyVariables(SalesOrder.BUSINESS_OBJECT_CODE);
     }
 }
@@ -713,7 +730,7 @@ export class SalesOrderItem extends BODocumentLine<SalesOrderItem> implements IS
         if (strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_QUANTITY_NAME) ||
             strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_PRICE_NAME) ||
             strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_DISCOUNT_NAME)) {
-            this.lineTotal = this.quantity * this.price * (1 - this.discount / 100);
+            this.lineTotal = this.quantity * this.price * (1 - (!this.discount ? 0 : this.discount) / 100);
         }
         // 行总计为NaN时显示为0
         if (isNaN(this.lineTotal)) {

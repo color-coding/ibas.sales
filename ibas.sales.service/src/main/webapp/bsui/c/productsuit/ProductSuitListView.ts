@@ -34,6 +34,49 @@ export class ProductSuitListView extends ibas.BOListView implements IProductSuit
             visibleRowCountMode: sap.ui.table.VisibleRowCountMode.Interactive,
             rows: "{/rows}",
             columns: [
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_productsuit_objectkey"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "objectKey",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_productsuit_product"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "product",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_productsuit_description"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "description",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_productsuit_version"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "version",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_productsuit_activated"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "activated",
+                        formatter(data: any): any {
+                            return ibas.enums.describe(ibas.emYesNo, data);
+                        }
+                    })
+                }),
             ]
         });
         this.form.addContent(this.table);
@@ -49,6 +92,7 @@ export class ProductSuitListView extends ibas.BOListView implements IProductSuit
                             that.fireViewEvents(that.newDataEvent);
                         }
                     }),
+                    /*
                     new sap.m.Button("", {
                         text: ibas.i18n.prop("shell_data_view"),
                         type: sap.m.ButtonType.Transparent,
@@ -56,10 +100,11 @@ export class ProductSuitListView extends ibas.BOListView implements IProductSuit
                         press: function (): void {
                             that.fireViewEvents(that.viewDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ProductSuit>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.ProductSuit>(that.table).firstOrDefault()
                             );
                         }
                     }),
+                    */
                     new sap.m.Button("", {
                         text: ibas.i18n.prop("shell_data_edit"),
                         type: sap.m.ButtonType.Transparent,
@@ -67,7 +112,7 @@ export class ProductSuitListView extends ibas.BOListView implements IProductSuit
                         press: function (): void {
                             that.fireViewEvents(that.editDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ProductSuit>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.ProductSuit>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -79,7 +124,7 @@ export class ProductSuitListView extends ibas.BOListView implements IProductSuit
                         press: function (): void {
                             that.fireViewEvents(that.deleteDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ProductSuit>(that.table)
+                                openui5.utils.getSelecteds<bo.ProductSuit>(that.table)
                             );
                         }
                     }),
@@ -161,7 +206,7 @@ export class ProductSuitListView extends ibas.BOListView implements IProductSuit
         }
         if (!done) {
             // 没有显示数据
-            this.table.setModel(new sap.ui.model.json.JSONModel({rows: datas}));
+            this.table.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
         }
         this.table.setBusy(false);
     }
@@ -178,6 +223,6 @@ export class ProductSuitListView extends ibas.BOListView implements IProductSuit
     }
     /** 获取选择的数据 */
     getSelecteds(): bo.ProductSuit[] {
-        return openui5.utils.getTableSelecteds<bo.ProductSuit>(this.table);
+        return openui5.utils.getSelecteds<bo.ProductSuit>(this.table);
     }
 }

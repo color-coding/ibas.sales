@@ -1,38 +1,33 @@
 package org.colorcoding.ibas.sales.bo.salesdelivery;
 
-import java.beans.PropertyChangeEvent;
-
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlType;
-
 import org.colorcoding.ibas.bobas.bo.BusinessObjects;
-import org.colorcoding.ibas.bobas.common.ConditionOperation;
-import org.colorcoding.ibas.bobas.common.ConditionRelationship;
-import org.colorcoding.ibas.bobas.common.Criteria;
-import org.colorcoding.ibas.bobas.common.ICondition;
-import org.colorcoding.ibas.bobas.common.ICriteria;
+import org.colorcoding.ibas.bobas.common.*;
 import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialJournal;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialJournal;
 import org.colorcoding.ibas.sales.MyConfiguration;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlType;
+import java.beans.PropertyChangeEvent;
+
 /**
  * 销售交货-序列 集合
  */
-@XmlType(name = SalesDeliveryMaterialSerialJournals.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
+@XmlType(name = SalesDeliveryItemMaterialSerialJournals.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlSeeAlso({ MaterialSerialJournal.class })
-public class SalesDeliveryMaterialSerialJournals extends BusinessObjects<IMaterialSerialJournal, ISalesDeliveryItem>
-		implements ISalesDeliveryMaterialSerialJournals {
+public class SalesDeliveryItemMaterialSerialJournals extends BusinessObjects<IMaterialSerialJournal, ISalesDeliveryItem>
+		implements ISalesDeliveryItemMaterialSerialJournals {
 	/**
 	 * 业务对象名称
 	 */
-	public static final String BUSINESS_OBJECT_NAME = "SalesDeliveryMaterialSerialJournals";
+	public static final String BUSINESS_OBJECT_NAME = "SalesDeliveryItemMaterialSerialJournals";
 
 	/**
 	 * 序列化版本标记
 	 */
 	private static final long serialVersionUID = 7759763557795210418L;
 
-	public SalesDeliveryMaterialSerialJournals() {
+	public SalesDeliveryItemMaterialSerialJournals() {
 		super();
 	}
 
@@ -42,7 +37,7 @@ public class SalesDeliveryMaterialSerialJournals extends BusinessObjects<IMateri
 	 * @param parent
 	 *            父项对象
 	 */
-	public SalesDeliveryMaterialSerialJournals(ISalesDeliveryItem parent) {
+	public SalesDeliveryItemMaterialSerialJournals(ISalesDeliveryItem parent) {
 		super(parent);
 	}
 
@@ -75,13 +70,18 @@ public class SalesDeliveryMaterialSerialJournals extends BusinessObjects<IMateri
 	public ICriteria getElementCriteria() {
 		ICriteria criteria = new Criteria();
 		ICondition condition = criteria.getConditions().create();
-		condition.setAlias("BaseType");
+		condition.setAlias(MaterialSerialJournal.PROPERTY_BASEDOCUMENTTYPE.getName());
 		condition.setOperation(ConditionOperation.EQUAL);
 		condition.setValue(this.getParent().getObjectCode());
 		condition = criteria.getConditions().create();
-		condition.setAlias("BaseEntry");
+		condition.setAlias(MaterialSerialJournal.PROPERTY_BASEDOCUMENTENTRY.getName());
 		condition.setOperation(ConditionOperation.EQUAL);
 		condition.setValue(this.getParent().getDocEntry());
+		condition.setRelationship(ConditionRelationship.AND);
+		condition = criteria.getConditions().create();
+		condition.setAlias(MaterialSerialJournal.PROPERTY_BASEDOCUMENTLINEID.getName());
+		condition.setOperation(ConditionOperation.EQUAL);
+		condition.setValue(this.getParent().getLineId());
 		condition.setRelationship(ConditionRelationship.AND);
 		return criteria;
 	}

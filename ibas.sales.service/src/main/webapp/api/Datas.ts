@@ -28,7 +28,26 @@ export const BO_CODE_SALESDELIVERY: string = "${Company}_SL_SALESDELIVERY";
 export const BO_CODE_SALESORDER: string = "${Company}_SL_SALESORDER";
 /** 业务对象编码-销售退货 */
 export const BO_CODE_SALESRETURN: string = "${Company}_SL_SALESRETURN";
+/** 业务对象编码-送货地址 */
+export const BO_CODE_SHIPPINGADDRESS: string = "${Company}_SL_SHIPADDRESS";
 
 /** 产品树类型 */
 export enum emProductTreeType {
+    /** 捆绑 */
+    BUNDLED,
+}
+/** 运输状态 */
+export enum emShippingStatus {
+	/**
+	 * 等待
+	 */
+    WAITING,
+	/**
+	 * 运输中
+	 */
+    SHIPPING,
+	/**
+	 * 已送达
+	 */
+    SHIPPED,
 }

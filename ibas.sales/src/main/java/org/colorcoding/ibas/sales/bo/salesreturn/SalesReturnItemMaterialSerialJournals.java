@@ -1,58 +1,59 @@
-package org.colorcoding.ibas.sales.bo.salesdelivery;
+package org.colorcoding.ibas.sales.bo.salesreturn;
 
 import org.colorcoding.ibas.bobas.bo.BusinessObjects;
 import org.colorcoding.ibas.bobas.common.*;
-import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchJournal;
-import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchJournal;
+import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialJournal;
+import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialJournal;
 import org.colorcoding.ibas.sales.MyConfiguration;
+
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import java.beans.PropertyChangeEvent;
 
 /**
- * 销售交货-批次 集合
+ * 销售退货-序列 集合
  */
-@XmlType(name = SalesDeliveryMaterialBatchJournals.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-@XmlSeeAlso({ MaterialBatchJournal.class })
-public class SalesDeliveryMaterialBatchJournals extends BusinessObjects<IMaterialBatchJournal,ISalesDeliveryItem> implements ISalesDeliveryMaterialBatchJournals{
+@XmlType(name = SalesReturnItemMaterialSerialJournals.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
+@XmlSeeAlso({ MaterialSerialJournal.class })
+public class SalesReturnItemMaterialSerialJournals extends BusinessObjects<IMaterialSerialJournal,ISalesReturnItem> implements ISalesReturnItemMaterialSerialJournals {
     /**
      * 业务对象名称
      */
-    public static final String BUSINESS_OBJECT_NAME = "SalesDeliveryMaterialBatchJournals";
+    public static final String BUSINESS_OBJECT_NAME = "SalesReturnItemMaterialSerialJournals";
 
     /**
      * 序列化版本标记
      */
     private static final long serialVersionUID = 7759763557795210418L;
 
-    public SalesDeliveryMaterialBatchJournals(){super();}
+    public SalesReturnItemMaterialSerialJournals(){super();}
 
     /**
      * 构造方法
      * @param parent 父项对象
      */
-    public SalesDeliveryMaterialBatchJournals(ISalesDeliveryItem parent) {
+    public SalesReturnItemMaterialSerialJournals(ISalesReturnItem parent) {
         super(parent);
     }
 
     @Override
-    public IMaterialBatchJournal create() {
-        IMaterialBatchJournal item = new MaterialBatchJournal();
+    public IMaterialSerialJournal create() {
+        IMaterialSerialJournal item = new MaterialSerialJournal();
         if (this.add(item)) {
             return item;
         }
-        return item;
+        return null;
     }
 
     /**
      * 元素类型
      */
     public Class<?> getElementType() {
-        return MaterialBatchJournal.class;
+        return MaterialSerialJournal.class;
     }
 
     @Override
-    protected void afterAddItem(IMaterialBatchJournal item) {
+    protected void afterAddItem(IMaterialSerialJournal item) {
         super.afterAddItem(item);
         // TODO 设置关联值
         item.setBaseDocumentType(this.getParent().getObjectCode());
@@ -64,13 +65,18 @@ public class SalesDeliveryMaterialBatchJournals extends BusinessObjects<IMateria
     public ICriteria getElementCriteria() {
         ICriteria criteria = new Criteria();
         ICondition condition = criteria.getConditions().create();
-        condition.setAlias("BaseType");
+        condition.setAlias(MaterialSerialJournal.PROPERTY_BASEDOCUMENTTYPE.getName());
         condition.setOperation(ConditionOperation.EQUAL);
         condition.setValue(this.getParent().getObjectCode());
         condition = criteria.getConditions().create();
-        condition.setAlias("BaseEntry");
+        condition.setAlias(MaterialSerialJournal.PROPERTY_BASEDOCUMENTENTRY.getName());
         condition.setOperation(ConditionOperation.EQUAL);
         condition.setValue(this.getParent().getDocEntry());
+        condition.setRelationship(ConditionRelationship.AND);
+        condition = criteria.getConditions().create();
+        condition.setAlias(MaterialSerialJournal.PROPERTY_BASEDOCUMENTLINEID.getName());
+        condition.setOperation(ConditionOperation.EQUAL);
+        condition.setValue(this.getParent().getLineId());
         condition.setRelationship(ConditionRelationship.AND);
         return criteria;
     }
@@ -79,8 +85,8 @@ public class SalesDeliveryMaterialBatchJournals extends BusinessObjects<IMateria
     public void onParentPropertyChanged(PropertyChangeEvent evt) {
         super.onParentPropertyChanged(evt);
         // TODO 设置关联值
-        if(evt.getPropertyName().equalsIgnoreCase(SalesDeliveryItem.MASTER_PRIMARY_KEY_NAME)){
-            for(IMaterialBatchJournal item: this){
+        if(evt.getPropertyName().equalsIgnoreCase(SalesReturnItem.MASTER_PRIMARY_KEY_NAME)){
+            for(IMaterialSerialJournal item: this){
                 item.setBaseDocumentType(this.getParent().getObjectCode());
                 item.setBaseDocumentEntry(this.getParent().getDocEntry());
                 item.setBaseDocumentLineId(this.getParent().getLineId());

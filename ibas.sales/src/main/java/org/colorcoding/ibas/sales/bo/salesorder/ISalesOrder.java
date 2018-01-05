@@ -7,6 +7,7 @@ import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 
 /**
  * 销售订单 接口
@@ -936,96 +937,6 @@ public interface ISalesOrder extends IBODocument {
 	void setProject(String value);
 
 	/**
-	 * 获取-收货人
-	 * 
-	 * @return 值
-	 */
-	String getConsignee();
-
-	/**
-	 * 设置-收货人
-	 * 
-	 * @param value
-	 *            值
-	 */
-	void setConsignee(String value);
-
-	/**
-	 * 获取-联系电话
-	 * 
-	 * @return 值
-	 */
-	String getPhone();
-
-	/**
-	 * 设置-联系电话
-	 * 
-	 * @param value
-	 *            值
-	 */
-	void setPhone(String value);
-
-	/**
-	 * 获取-省
-	 * 
-	 * @return 值
-	 */
-	String getProvince();
-
-	/**
-	 * 设置-省
-	 * 
-	 * @param value
-	 *            值
-	 */
-	void setProvince(String value);
-
-	/**
-	 * 获取-市
-	 * 
-	 * @return 值
-	 */
-	String getCity();
-
-	/**
-	 * 设置-市
-	 * 
-	 * @param value
-	 *            值
-	 */
-	void setCity(String value);
-
-	/**
-	 * 获取-县/区
-	 * 
-	 * @return 值
-	 */
-	String getCounty();
-
-	/**
-	 * 设置-县/区
-	 * 
-	 * @param value
-	 *            值
-	 */
-	void setCounty(String value);
-
-	/**
-	 * 获取-地址
-	 * 
-	 * @return 值
-	 */
-	String getAddress();
-
-	/**
-	 * 设置-地址
-	 * 
-	 * @param value
-	 *            值
-	 */
-	void setAddress(String value);
-
-	/**
 	 * 获取-销售订单-行集合
 	 * 
 	 * @return 值
@@ -1040,4 +951,18 @@ public interface ISalesOrder extends IBODocument {
 	 */
 	void setSalesOrderItems(ISalesOrderItems value);
 
+	/**
+	 * 获取-送货地址集合
+	 * 
+	 * @return 值
+	 */
+	IShippingAddresss getShippingAddresss();
+
+	/**
+	 * 设置-送货地址集合
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setShippingAddresss(IShippingAddresss value);
 }

@@ -11,7 +11,6 @@ import {
     emDocumentStatus,
     emBOStatus,
     emApprovalStatus,
-    emDirection,
     IBusinessObject,
     IBusinessObjects,
     IBOMasterData,
@@ -22,38 +21,11 @@ import {
     IBOSimpleLine
 } from "ibas/index";
 import {
-    emBusinessPartnerType,
+    emShippingStatus
 } from "../Datas";
 
-/** 业务伙伴余额记录 */
-export interface IBusinessPartnerBalanceJournal extends IBOSimple {
-
-    /** 业务伙伴类型 */
-    businessPartnerType: emBusinessPartnerType;
-
-    /** 业务伙伴编码 */
-    businessPartner: string;
-
-    /** 方向 */
-    direction: emDirection;
-
-    /** 方式 */
-    mode: string;
-
-    /** 金额 */
-    amount: number;
-
-    /** 币种 */
-    currency: string;
-
-    /** 汇率 */
-    rate: number;
-
-    /** 银行编码 */
-    bankCode: string;
-
-    /** 卡号 */
-    cardNumber: string;
+/** 送货地址 */
+export interface IShippingAddress extends IBOSimple {
 
     /** 基于类型 */
     baseDocumentType: string;
@@ -61,17 +33,47 @@ export interface IBusinessPartnerBalanceJournal extends IBOSimple {
     /** 基于标识 */
     baseDocumentEntry: number;
 
-    /** 基于行号 */
-    baseDocumentLineId: number;
+    /** 名称 */
+    name: string;
 
-    /** 原始类型 */
-    originalDocumentType: string;
+    /** 顺序 */
+    order: number;
 
-    /** 原始标识 */
-    originalDocumentEntry: number;
+    /** 送货状态 */
+    shippingStatus: emShippingStatus;
 
-    /** 原始行号 */
-    originalDocumentLineId: number;
+    /** 收货人 */
+    consignee: string;
+
+    /** 街道 */
+    street: string;
+
+    /** 县/区 */
+    district: string;
+
+    /** 市 */
+    city: string;
+
+    /** 省 */
+    province: string;
+
+    /** 国 */
+    country: string;
+
+    /** 邮编 */
+    zipCode: string;
+
+    /** 联系电话 */
+    mobilePhone: string;
+
+    /** 电话  */
+    telephone: string;
+
+    /** 备注 1 */
+    remark1: string;
+
+    /** 备注 2 */
+    remark2: string;
 
     /** 对象编号 */
     objectKey: number;
@@ -116,3 +118,9 @@ export interface IBusinessPartnerBalanceJournal extends IBOSimple {
 }
 
 
+/** 送货地址 集合 */
+export interface IShippingAddresss extends IBusinessObjects<IShippingAddress, IBODocument> {
+
+    /** 创建并添加子项 */
+    create(): IShippingAddress;
+}

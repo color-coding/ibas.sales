@@ -40,37 +40,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                     template: new sap.m.Text("", {
                         wrapping: false
                     }).bindProperty("text", {
-                        path: "docEntry"
-                    })
-                }),
-                new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesorder_customercode"),
-                    template: new sap.m.Link("", {
-                        wrapping: false,
-                        press(event: any): void {
-                            ibas.servicesManager.runLinkService({
-                                boCode: BO_CODE_CUSTOMER,
-                                linkValue: event.getSource().getText()
-                            });
-                        }
-                    }).bindProperty("text", {
-                        path: "customerCode"
-                    })
-                }),
-                new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesorder_customername"),
-                    template: new sap.m.Text("", {
-                        wrapping: false
-                    }).bindProperty("text", {
-                        path: "customerName"
-                    })
-                }),
-                new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesorder_documenttotal"),
-                    template: new sap.m.Text("", {
-                        wrapping: false
-                    }).bindProperty("text", {
-                        path: "documentTotal"
+                        path: "docEntry",
                     })
                 }),
                 new sap.ui.table.Column("", {
@@ -85,21 +55,70 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                     })
                 }),
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesorder_canceled"),
+                    label: ibas.i18n.prop("bo_salesorder_customername"),
                     template: new sap.m.Text("", {
                         wrapping: false
                     }).bindProperty("text", {
-                        path: "canceled",
-                        formatter(data: any): any {
-                            return ibas.enums.describe(ibas.emYesNo, data);
-                        }
+                        path: "customerName",
                     })
-                })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_contactperson"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "contactPerson",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_documenttotal"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "documentTotal",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_paidtotal"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "paidTotal",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_discount"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "discount",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_discounttotal"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "discountTotal",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_reference1"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "reference1",
+                    })
+                }),
+                new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesorder_reference2"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "reference2",
+                    })
+                }),
             ],
-            // tslint:disable-next-line:typedef
-            rowSelectionChange: function (oEvent) {
-                this.setSelectedIndex(this.getSelectedIndex());
-            }
         });
         this.form.addContent(this.table);
         this.page = new sap.m.Page("", {
@@ -114,6 +133,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                             that.fireViewEvents(that.newDataEvent);
                         }
                     }),
+                    /*
                     new sap.m.Button("", {
                         text: ibas.i18n.prop("shell_data_view"),
                         type: sap.m.ButtonType.Transparent,
@@ -121,10 +141,11 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                         press: function (): void {
                             that.fireViewEvents(that.viewDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesOrder>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.SalesOrder>(that.table).firstOrDefault()
                             );
                         }
                     }),
+                    */
                     new sap.m.Button("", {
                         text: ibas.i18n.prop("shell_data_edit"),
                         type: sap.m.ButtonType.Transparent,
@@ -132,7 +153,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                         press: function (): void {
                             that.fireViewEvents(that.editDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesOrder>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.SalesOrder>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -144,7 +165,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                         press: function (): void {
                             that.fireViewEvents(that.deleteDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.SalesOrder>(that.table)
+                                openui5.utils.getSelecteds<bo.SalesOrder>(that.table)
                             );
                         }
                     }),
@@ -215,7 +236,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
         let model: sap.ui.model.Model = this.table.getModel(undefined);
         if (!ibas.objects.isNull(model)) {
             // 已存在绑定数据，添加新的
-            let hDatas: any  = (<any>model).getData();
+            let hDatas: any = (<any>model).getData();
             if (!ibas.objects.isNull(hDatas) && hDatas.rows instanceof Array) {
                 for (let item of datas) {
                     hDatas.rows.push(item);
@@ -241,6 +262,6 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
     }
     /** 获取选择的数据 */
     getSelecteds(): bo.SalesOrder[] {
-        return openui5.utils.getTableSelecteds<bo.SalesOrder>(this.table);
+        return openui5.utils.getSelecteds<bo.SalesOrder>(this.table);
     }
 }

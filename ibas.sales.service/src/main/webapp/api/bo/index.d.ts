@@ -11,3 +11,4 @@ export * from "./ProductSuit.d";
 export * from "./SalesDelivery.d";
 export * from "./SalesOrder.d";
 export * from "./SalesReturn.d";
+export * from "./ShippingAddress.d";

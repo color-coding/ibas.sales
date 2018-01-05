@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
@@ -18,7 +19,11 @@ import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.BOCode;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
 import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
+import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
+import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
 
 /**
  * 获取-销售订单
@@ -28,7 +33,7 @@ import org.colorcoding.ibas.sales.MyConfiguration;
 @XmlType(name = SalesOrder.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = SalesOrder.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BOCode(SalesOrder.BUSINESS_OBJECT_CODE)
-public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrder {
+public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrder, IDataOwnership, IApprovalData {
 
 	/**
 	 * 序列化版本标记
@@ -1830,198 +1835,6 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 	}
 
 	/**
-	 * 属性名称-收货人
-	 */
-	private static final String PROPERTY_CONSIGNEE_NAME = "Consignee";
-
-	/**
-	 * 收货人 属性
-	 */
-	@DbField(name = "Consignee", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_CONSIGNEE = registerProperty(PROPERTY_CONSIGNEE_NAME,
-			String.class, MY_CLASS);
-
-	/**
-	 * 获取-收货人
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_CONSIGNEE_NAME)
-	public final String getConsignee() {
-		return this.getProperty(PROPERTY_CONSIGNEE);
-	}
-
-	/**
-	 * 设置-收货人
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setConsignee(String value) {
-		this.setProperty(PROPERTY_CONSIGNEE, value);
-	}
-
-	/**
-	 * 属性名称-联系电话
-	 */
-	private static final String PROPERTY_PHONE_NAME = "Phone";
-
-	/**
-	 * 联系电话 属性
-	 */
-	@DbField(name = "Phone", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_PHONE = registerProperty(PROPERTY_PHONE_NAME, String.class,
-			MY_CLASS);
-
-	/**
-	 * 获取-联系电话
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_PHONE_NAME)
-	public final String getPhone() {
-		return this.getProperty(PROPERTY_PHONE);
-	}
-
-	/**
-	 * 设置-联系电话
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setPhone(String value) {
-		this.setProperty(PROPERTY_PHONE, value);
-	}
-
-	/**
-	 * 属性名称-省
-	 */
-	private static final String PROPERTY_PROVINCE_NAME = "Province";
-
-	/**
-	 * 省 属性
-	 */
-	@DbField(name = "Province", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_PROVINCE = registerProperty(PROPERTY_PROVINCE_NAME, String.class,
-			MY_CLASS);
-
-	/**
-	 * 获取-省
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_PROVINCE_NAME)
-	public final String getProvince() {
-		return this.getProperty(PROPERTY_PROVINCE);
-	}
-
-	/**
-	 * 设置-省
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setProvince(String value) {
-		this.setProperty(PROPERTY_PROVINCE, value);
-	}
-
-	/**
-	 * 属性名称-市
-	 */
-	private static final String PROPERTY_CITY_NAME = "City";
-
-	/**
-	 * 市 属性
-	 */
-	@DbField(name = "City", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_CITY = registerProperty(PROPERTY_CITY_NAME, String.class,
-			MY_CLASS);
-
-	/**
-	 * 获取-市
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_CITY_NAME)
-	public final String getCity() {
-		return this.getProperty(PROPERTY_CITY);
-	}
-
-	/**
-	 * 设置-市
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setCity(String value) {
-		this.setProperty(PROPERTY_CITY, value);
-	}
-
-	/**
-	 * 属性名称-县/区
-	 */
-	private static final String PROPERTY_COUNTY_NAME = "County";
-
-	/**
-	 * 县/区 属性
-	 */
-	@DbField(name = "County", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_COUNTY = registerProperty(PROPERTY_COUNTY_NAME, String.class,
-			MY_CLASS);
-
-	/**
-	 * 获取-县/区
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_COUNTY_NAME)
-	public final String getCounty() {
-		return this.getProperty(PROPERTY_COUNTY);
-	}
-
-	/**
-	 * 设置-县/区
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setCounty(String value) {
-		this.setProperty(PROPERTY_COUNTY, value);
-	}
-
-	/**
-	 * 属性名称-地址
-	 */
-	private static final String PROPERTY_ADDRESS_NAME = "Address";
-
-	/**
-	 * 地址 属性
-	 */
-	@DbField(name = "Address", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_ADDRESS = registerProperty(PROPERTY_ADDRESS_NAME, String.class,
-			MY_CLASS);
-
-	/**
-	 * 获取-地址
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_ADDRESS_NAME)
-	public final String getAddress() {
-		return this.getProperty(PROPERTY_ADDRESS);
-	}
-
-	/**
-	 * 设置-地址
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setAddress(String value) {
-		this.setProperty(PROPERTY_ADDRESS, value);
-	}
-
-	/**
 	 * 属性名称-销售订单-行
 	 */
 	private static final String PROPERTY_SALESORDERITEMS_NAME = "SalesOrderItems";
@@ -2055,18 +1868,51 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 	}
 
 	/**
+	 * 属性名称-送货地址
+	 */
+	private static final String PROPERTY_SHIPPINGADDRESSS_NAME = "ShippingAddresss";
+
+	/**
+	 * 送货地址的集合属性
+	 * 
+	 */
+	public static final IPropertyInfo<IShippingAddresss> PROPERTY_SHIPPINGADDRESSS = registerProperty(
+			PROPERTY_SHIPPINGADDRESSS_NAME, IShippingAddresss.class, MY_CLASS);
+
+	/**
+	 * 获取-送货地址集合
+	 * 
+	 * @return 值
+	 */
+	@XmlElementWrapper(name = PROPERTY_SHIPPINGADDRESSS_NAME)
+	@XmlElement(name = ShippingAddress.BUSINESS_OBJECT_NAME, type = ShippingAddress.class)
+	public final IShippingAddresss getShippingAddresss() {
+		return this.getProperty(PROPERTY_SHIPPINGADDRESSS);
+	}
+
+	/**
+	 * 设置-送货地址集合
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setShippingAddresss(IShippingAddresss value) {
+		this.setProperty(PROPERTY_SHIPPINGADDRESSS, value);
+	}
+
+	/**
 	 * 初始化数据
 	 */
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
 		this.setSalesOrderItems(new SalesOrderItems(this));
+		this.setShippingAddresss(new ShippingAddresss(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 		this.setPostingDate(DateTime.getToday());
 		this.setDocumentDate(DateTime.getToday());
 		this.setDeliveryDate(DateTime.getToday());
 		this.setDocumentStatus(emDocumentStatus.RELEASED);
-		this.setGrossProfitPriceList(1);//测试物料价格清单 测试结束后要去掉
 
 	}
 

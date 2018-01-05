@@ -39,6 +39,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         this.view.removeSalesOrderItemEvent = this.removeSalesOrderItem;
         this.view.chooseSalesOrderItemMaterialEvent = this.chooseSalesOrderItem;
         this.view.chooseSalesOrderCustomerEvent = this.chooseSalesOrderCustomer;
+        this.view.chooseSalesOrderItemWarehouseEvent = this.chooseSalesOrderItemWarehouse;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -57,8 +58,15 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
     run(): void {
         let that: this = this;
         if (ibas.objects.instanceOf(arguments[0], bo.SalesOrder)) {
+            let data: bo.SalesOrder = arguments[0];
+            // 新对象直接编辑
+            if (data.isNew) {
+                that.editData = data;
+                that.show();
+                return;
+            }
             // 尝试重新查询编辑对象
-            let criteria: ibas.ICriteria = arguments[0].criteria();
+            let criteria: ibas.ICriteria = data.criteria();
             if (!ibas.objects.isNull(criteria) && criteria.conditions.length > 0) {
                 // 有效的查询对象查询
                 let boRepository: BORepositorySales = new BORepositorySales();
@@ -181,8 +189,6 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         ibas.servicesManager.runChooseService<ICustomer>({
             boCode: BO_CODE_CUSTOMER,
             criteria: [
-                new ibas.Condition(BO_CODE_CUSTOMER,
-                    ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.customerCode)),
             ],
             onCompleted(selecteds: ibas.List<ICustomer>): void {
                 that.editData.customerCode = selecteds.firstOrDefault().code;
