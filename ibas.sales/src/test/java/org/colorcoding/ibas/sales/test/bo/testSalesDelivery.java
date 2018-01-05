@@ -2,8 +2,10 @@ package org.colorcoding.ibas.sales.test.bo;
 
 import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
+import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 import org.colorcoding.ibas.sales.bo.salesdelivery.ISalesDeliveryItem;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
+import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddress;
 import org.colorcoding.ibas.sales.repository.BORepositorySales;
 import org.colorcoding.ibas.sales.repository.IBORepositorySalesApp;
 
@@ -18,7 +20,7 @@ public class testSalesDelivery extends TestCase {
 	 * 获取连接口令
 	 */
 	String getToken() {
-		return "";
+		return OrganizationFactory.SYSTEM_USER.getToken();
 	}
 
 	/**
@@ -35,6 +37,9 @@ public class testSalesDelivery extends TestCase {
 		System.out.println(String.format("new item: %s", salesdeliveryitem.toString()));
 		// 测试属性赋值
 
+		// 测试送货地址
+		IShippingAddress shippingAddress = bo.getShippingAddresss().create();
+		System.out.println(String.format("new item: %s", shippingAddress.toString()));
 		// 测试对象的保存和查询
 		IOperationResult<?> operationResult = null;
 		ICriteria criteria = null;

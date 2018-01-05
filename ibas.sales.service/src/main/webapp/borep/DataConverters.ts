@@ -9,7 +9,8 @@
 import * as ibas from "ibas/index";
 import * as bo from "./bo/index";
 import {
-    emProductTreeType
+    emProductTreeType,
+    emShippingStatus,
 } from "../api/index";
 import { emYesNo, boFactory } from "ibas/index";
 import { emItemType, BO_CODE_MATERIALBATCHJOURNAL, BO_CODE_MATERIALSERIALJOURNAL } from "../3rdparty/materials/Datas";
@@ -104,6 +105,10 @@ class BOConverter4sl extends ibas.BOConverter {
             if (property === bo.SalesReturnItem.PROPERTY_TREETYPE_NAME) {
                 return ibas.enums.toString(emProductTreeType, value);
             }
+        } else if (boName === bo.ShippingAddress.name) {
+            if (property === bo.ShippingAddress.PROPERTY_SHIPPINGSTATUS_NAME) {
+                return ibas.enums.toString(emShippingStatus, value);
+            }
         }
         return super.convertData(boName, property, value);
     }
@@ -176,6 +181,10 @@ class BOConverter4sl extends ibas.BOConverter {
             }
             if (property === bo.SalesReturnItem.PROPERTY_TREETYPE_NAME) {
                 return ibas.enums.valueOf(emProductTreeType, value);
+            }
+        } else if (boName === bo.ShippingAddress.name) {
+            if (property === bo.ShippingAddress.PROPERTY_SHIPPINGSTATUS_NAME) {
+                return ibas.enums.valueOf(emShippingStatus, value);
             }
         }
         return super.parsingData(boName, property, value);

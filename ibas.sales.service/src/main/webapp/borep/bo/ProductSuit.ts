@@ -290,6 +290,39 @@ export class ProductSuit extends BOSimple<ProductSuit> implements IProductSuit {
         this.setProperty(ProductSuit.PROPERTY_APPROVALSTATUS_NAME, value);
     }
 
+    /** 映射的属性名称-数据所有者 */
+    static PROPERTY_DATAOWNER_NAME: string = "DataOwner";
+    /** 获取-数据所有者 */
+    get dataOwner(): number {
+        return this.getProperty<number>(ProductSuit.PROPERTY_DATAOWNER_NAME);
+    }
+    /** 设置-数据所有者 */
+    set dataOwner(value: number) {
+        this.setProperty(ProductSuit.PROPERTY_DATAOWNER_NAME, value);
+    }
+
+    /** 映射的属性名称-团队成员 */
+    static PROPERTY_TEAMMEMBERS_NAME: string = "TeamMembers";
+    /** 获取-团队成员 */
+    get teamMembers(): string {
+        return this.getProperty<string>(ProductSuit.PROPERTY_TEAMMEMBERS_NAME);
+    }
+    /** 设置-团队成员 */
+    set teamMembers(value: string) {
+        this.setProperty(ProductSuit.PROPERTY_TEAMMEMBERS_NAME, value);
+    }
+
+    /** 映射的属性名称-数据所属组织 */
+    static PROPERTY_ORGANIZATION_NAME: string = "Organization";
+    /** 获取-数据所属组织 */
+    get organization(): string {
+        return this.getProperty<string>(ProductSuit.PROPERTY_ORGANIZATION_NAME);
+    }
+    /** 设置-数据所属组织 */
+    set organization(value: string) {
+        this.setProperty(ProductSuit.PROPERTY_ORGANIZATION_NAME, value);
+    }
+
 
     /** 映射的属性名称-产品套装-项目集合 */
     static PROPERTY_PRODUCTSUITITEMS_NAME: string = "ProductSuitItems";
