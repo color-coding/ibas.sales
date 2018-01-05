@@ -669,22 +669,15 @@ export class SalesReturnItems extends BusinessObjects<SalesReturnItem, SalesRetu
     implements ISalesReturnItems,
     IBatchManagementLines,
     ISerialManagementLines {
-    constructor(parent: SalesReturn) {
-        super(parent);
-        let bo: any = boFactory.classOf(BO_CODE_SERIALMANAGEMENTLINE);
-        this.serialManagementLines = new bo(this);
-        bo = boFactory.classOf(BO_CODE_BATCHMANAGEMENTLINE);
-        this.batchManagementLines = new bo(this);
-    }
-    batchManagementLines: IBatchManagementLines;
-    serialManagementLines: ISerialManagementLines;
 
     checkBatchQuantity(): boolean {
-        return this.batchManagementLines.checkBatchQuantity();
+        return new (boFactory.classOf(BO_CODE_BATCHMANAGEMENTLINE))
+            (this.filterDeleted().filter(c => c.batchManagement === emYesNo.YES)).checkBatchQuantity();
     }
 
     checkSerialQuantity(): boolean {
-        return this.serialManagementLines.checkSerialQuantity();
+        return new (boFactory.classOf(BO_CODE_SERIALMANAGEMENTLINE))
+            (this.filterDeleted().filter(c => c.serialManagement === emYesNo.YES)).checkSerialQuantity();
     }
     /** 创建并添加子项 */
     create(): SalesReturnItem {
@@ -734,31 +727,6 @@ export class SalesReturnItems extends BusinessObjects<SalesReturnItem, SalesRetu
         if (isNaN(this.parent.discountTotal)) {
             this.parent.discountTotal = 0;
         }
-    }
-    /** 取出需要创建批次的行集合 */
-    filterBatchLine(): SalesReturnItem[] {
-        let goodReceiptLines: SalesReturnItem[] = this.filter(
-            c => c.isDeleted === false
-                && !objects.isNull(c.lineStatus)
-                && c.lineStatus !== emDocumentStatus.PLANNED
-                && c.batchManagement !== undefined
-                && c.batchManagement.toString() === enums.toString(emYesNo, emYesNo.YES)
-                && !strings.isEmpty(c.itemCode)
-                && !strings.isEmpty(c.warehouse));
-        return goodReceiptLines;
-    }
-
-    /** 取出需要创建序列的行集合 */
-    filterSerialLine(): SalesReturnItem[] {
-        let goodReceiptLines: SalesReturnItem[] = this.filter(
-            c => c.isDeleted === false
-                && !objects.isNull(c.lineStatus)
-                && c.lineStatus !== emDocumentStatus.PLANNED
-                && c.serialManagement !== undefined
-                && c.serialManagement.toString() === enums.toString(emYesNo, emYesNo.YES)
-                && !strings.isEmpty(c.itemCode)
-                && !strings.isEmpty(c.warehouse));
-        return goodReceiptLines;
     }
 }
 

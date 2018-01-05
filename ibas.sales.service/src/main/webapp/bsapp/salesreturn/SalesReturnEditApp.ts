@@ -318,7 +318,14 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
     /** 新建物料批次信息 */
     createSalesReturnLineMaterialBatch(): void {
         let that: this = this;
-        let salesReturnItems: bo.SalesReturnItem[] = that.editData.salesReturnItems.filterBatchLine();
+        let salesReturnItems: bo.SalesReturnItem[] = this.editData.salesReturnItems.filter(
+            c => c.isDeleted === false
+                && !ibas.objects.isNull(c.lineStatus)
+                && c.batchManagement !== undefined
+                && c.batchManagement === ibas.emYesNo.YES
+                && !ibas.strings.isEmpty(c.itemCode)
+                && !ibas.strings.isEmpty(c.warehouse)
+        );
         if (ibas.objects.isNull(salesReturnItems) || salesReturnItems.length === 0) {
             this.messages(ibas.emMessageType.INFORMATION, ibas.i18n.prop("sales_app_no_matched_documentline_to_create_batch"));
             return;
@@ -330,7 +337,13 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
     /** 新建物料序列信息 */
     createSalesReturnLineMaterialSerial(): void {
         let that: this = this;
-        let salesReturnLines: bo.SalesReturnItem[] = that.editData.salesReturnItems.filterSerialLine();
+        let salesReturnLines: bo.SalesReturnItem[] = this.editData.salesReturnItems
+        .filter(c => c.isDeleted === false
+            && !ibas.objects.isNull(c.lineStatus)
+            && c.serialManagement !== undefined
+            && c.serialManagement === ibas.emYesNo.YES
+            && !ibas.strings.isEmpty(c.itemCode)
+            && !ibas.strings.isEmpty(c.warehouse));
         if (ibas.objects.isNull(salesReturnLines) || salesReturnLines.length === 0) {
             this.messages(ibas.emMessageType.INFORMATION, ibas.i18n.prop("sales_app_no_matched_documentline_to_create_serial"));
             return;

@@ -672,15 +672,6 @@ export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, Sales
     IBatchManagementLines,
     ISerialManagementLines {
 
-    constructor(parent: SalesDelivery) {
-        super(parent);
-        let bo: any = boFactory.classOf(BO_CODE_SERIALMANAGEMENTLINE);
-        this.serialManagementLines = new bo(this);
-        bo = boFactory.classOf(BO_CODE_BATCHMANAGEMENTLINE);
-        this.batchManagementLines = new bo(this);
-    }
-    batchManagementLines: IBatchManagementLines;
-    serialManagementLines: ISerialManagementLines;
     /** 创建并添加子项 */
     create(): SalesDeliveryItem {
         let item: SalesDeliveryItem = new SalesDeliveryItem();
@@ -690,11 +681,13 @@ export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, Sales
     }
 
     checkBatchQuantity(): boolean {
-        return this.batchManagementLines.checkBatchQuantity();
+        return new (boFactory.classOf(BO_CODE_BATCHMANAGEMENTLINE))
+            (this.filterDeleted().filter(c => c.batchManagement === emYesNo.YES)).checkBatchQuantity();
     }
 
     checkSerialQuantity(): boolean {
-        return this.serialManagementLines.checkSerialQuantity();
+        return new (boFactory.classOf(BO_CODE_SERIALMANAGEMENTLINE))
+            (this.filterDeleted().filter(c => c.serialManagement === emYesNo.YES)).checkSerialQuantity();
     }
 
     /** 监听父项属性改变 */
