@@ -382,6 +382,51 @@ public interface IProductSuit extends IBOSimple {
 	void setApprovalStatus(emApprovalStatus value);
 
 	/**
+	 * 获取-数据所有者
+	 * 
+	 * @return 值
+	 */
+	Integer getDataOwner();
+
+	/**
+	 * 设置-数据所有者
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setDataOwner(Integer value);
+
+	/**
+	 * 获取-团队成员
+	 * 
+	 * @return 值
+	 */
+	String getTeamMembers();
+
+	/**
+	 * 设置-团队成员
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setTeamMembers(String value);
+
+	/**
+	 * 获取-数据所属组织
+	 * 
+	 * @return 值
+	 */
+	String getOrganization();
+
+	/**
+	 * 设置-数据所属组织
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setOrganization(String value);
+
+	/**
 	 * 获取-产品套装-项目集合
 	 * 
 	 * @return 值

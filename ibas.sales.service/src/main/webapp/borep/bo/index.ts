@@ -12,6 +12,7 @@ export * from "./ProductSuit";
 export * from "./SalesDelivery";
 export * from "./SalesOrder";
 export * from "./SalesReturn";
+export * from "./ShippingAddress";
 
 // 注册业务对象到工厂
 import * as ibas from "ibas/index";

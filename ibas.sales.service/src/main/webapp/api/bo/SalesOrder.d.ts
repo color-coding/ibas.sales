@@ -26,6 +26,9 @@ import {
 import {
     emProductTreeType
 } from "../Datas";
+import {
+    IShippingAddresss
+} from "../bo/index";
 
 /** 销售订单 */
 export interface ISalesOrder extends IBODocument {
@@ -171,27 +174,12 @@ export interface ISalesOrder extends IBODocument {
     /** 项目代码 */
     project: string;
 
-    /** 收货人 */
-    consignee: string;
-
-    /** 联系电话 */
-    phone: string;
-
-    /** 省 */
-    province: string;
-
-    /** 市 */
-    city: string;
-
-    /** 县/区 */
-    county: string;
-
-    /** 地址 */
-    address: string;
-
-
     /** 销售订单-行集合 */
     salesOrderItems: ISalesOrderItems;
+
+    /** 送货地址集合 */
+    shippingAddresss: IShippingAddresss;
+
 
 
 }

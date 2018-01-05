@@ -58,8 +58,15 @@ export class SalesReturnViewApp extends ibas.BOViewService<ISalesReturnViewView>
     run(): void {
         let that: this = this;
         if (ibas.objects.instanceOf(arguments[0], bo.SalesReturn)) {
+            let data: bo.SalesReturn = arguments[0];
+            // 新对象直接编辑
+            if (data.isNew) {
+                that.viewData = data;
+                that.show();
+                return;
+            }
             // 尝试重新查询编辑对象
-            let criteria: ibas.ICriteria = arguments[0].criteria();
+            let criteria: ibas.ICriteria = data.criteria();
             if (!ibas.objects.isNull(criteria) && criteria.conditions.length > 0) {
                 // 有效的查询对象查询
                 let boRepository: BORepositorySales = new BORepositorySales();

@@ -1,376 +1,565 @@
-package org.colorcoding.ibas.sales.bo.productsuit;
+package org.colorcoding.ibas.sales.bo.shippingaddress;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
-import org.colorcoding.ibas.bobas.data.Decimal;
-import org.colorcoding.ibas.bobas.data.emApprovalStatus;
-import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.BOCode;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
-import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
 import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.data.emShippingStatus;
 
 /**
- * 获取-产品套装
+ * 送货地址
  * 
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = ProductSuit.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-@XmlRootElement(name = ProductSuit.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-@BOCode(ProductSuit.BUSINESS_OBJECT_CODE)
-public class ProductSuit extends BusinessObject<ProductSuit> implements IProductSuit, IDataOwnership, IApprovalData {
+@XmlType(name = ShippingAddress.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
+@XmlRootElement(name = ShippingAddress.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
+@BOCode(ShippingAddress.BUSINESS_OBJECT_CODE)
+public class ShippingAddress extends BusinessObject<ShippingAddress> implements IShippingAddress {
 
 	/**
 	 * 序列化版本标记
 	 */
-	private static final long serialVersionUID = -2038428172553246553L;
+	private static final long serialVersionUID = -5086004743874250649L;
 
 	/**
 	 * 当前类型
 	 */
-	private static final Class<?> MY_CLASS = ProductSuit.class;
+	private static final Class<?> MY_CLASS = ShippingAddress.class;
 
 	/**
 	 * 数据库表
 	 */
-	public static final String DB_TABLE_NAME = "${Company}_SL_OPDS";
+	public static final String DB_TABLE_NAME = "${Company}_SL_OSAD";
 
 	/**
 	 * 业务对象编码
 	 */
-	public static final String BUSINESS_OBJECT_CODE = "${Company}_SL_PDSUIT";
+	public static final String BUSINESS_OBJECT_CODE = "${Company}_SL_SHIPADDRESS";
 
 	/**
 	 * 业务对象名称
 	 */
-	public static final String BUSINESS_OBJECT_NAME = "ProductSuit";
+	public static final String BUSINESS_OBJECT_NAME = "ShippingAddress";
 
 	/**
-	 * 属性名称-产品编码
+	 * 属性名称-基于类型
 	 */
-	private static final String PROPERTY_PRODUCT_NAME = "Product";
+	private static final String PROPERTY_BASEDOCUMENTTYPE_NAME = "BaseDocumentType";
 
 	/**
-	 * 产品编码 属性
+	 * 基于类型 属性
 	 */
-	@DbField(name = "Product", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_PRODUCT = registerProperty(PROPERTY_PRODUCT_NAME, String.class,
-			MY_CLASS);
+	@DbField(name = "BaseType", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_BASEDOCUMENTTYPE = registerProperty(
+			PROPERTY_BASEDOCUMENTTYPE_NAME, String.class, MY_CLASS);
 
 	/**
-	 * 获取-产品编码
+	 * 获取-基于类型
 	 * 
 	 * @return 值
 	 */
-	@XmlElement(name = PROPERTY_PRODUCT_NAME)
-	public final String getProduct() {
-		return this.getProperty(PROPERTY_PRODUCT);
+	@XmlElement(name = PROPERTY_BASEDOCUMENTTYPE_NAME)
+	public final String getBaseDocumentType() {
+		return this.getProperty(PROPERTY_BASEDOCUMENTTYPE);
 	}
 
 	/**
-	 * 设置-产品编码
+	 * 设置-基于类型
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setProduct(String value) {
-		this.setProperty(PROPERTY_PRODUCT, value);
+	public final void setBaseDocumentType(String value) {
+		this.setProperty(PROPERTY_BASEDOCUMENTTYPE, value);
 	}
 
 	/**
-	 * 属性名称-产品描述
+	 * 属性名称-基于标识
 	 */
-	private static final String PROPERTY_DESCRIPTION_NAME = "Description";
+	private static final String PROPERTY_BASEDOCUMENTENTRY_NAME = "BaseDocumentEntry";
 
 	/**
-	 * 产品描述 属性
+	 * 基于标识 属性
 	 */
-	@DbField(name = "Description", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_DESCRIPTION = registerProperty(PROPERTY_DESCRIPTION_NAME,
+	@DbField(name = "BaseEntry", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<Integer> PROPERTY_BASEDOCUMENTENTRY = registerProperty(
+			PROPERTY_BASEDOCUMENTENTRY_NAME, Integer.class, MY_CLASS);
+
+	/**
+	 * 获取-基于标识
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_BASEDOCUMENTENTRY_NAME)
+	public final Integer getBaseDocumentEntry() {
+		return this.getProperty(PROPERTY_BASEDOCUMENTENTRY);
+	}
+
+	/**
+	 * 设置-基于标识
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setBaseDocumentEntry(Integer value) {
+		this.setProperty(PROPERTY_BASEDOCUMENTENTRY, value);
+	}
+
+	/**
+	 * 属性名称-名称
+	 */
+	private static final String PROPERTY_NAME_NAME = "Name";
+
+	/**
+	 * 名称 属性
+	 */
+	@DbField(name = "Name", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_NAME = registerProperty(PROPERTY_NAME_NAME, String.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-名称
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_NAME_NAME)
+	public final String getName() {
+		return this.getProperty(PROPERTY_NAME);
+	}
+
+	/**
+	 * 设置-名称
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setName(String value) {
+		this.setProperty(PROPERTY_NAME, value);
+	}
+
+	/**
+	 * 属性名称-顺序
+	 */
+	private static final String PROPERTY_ORDER_NAME = "Order";
+
+	/**
+	 * 顺序 属性
+	 */
+	@DbField(name = "Order", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<Integer> PROPERTY_ORDER = registerProperty(PROPERTY_ORDER_NAME, Integer.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-顺序
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_ORDER_NAME)
+	public final Integer getOrder() {
+		return this.getProperty(PROPERTY_ORDER);
+	}
+
+	/**
+	 * 设置-顺序
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setOrder(Integer value) {
+		this.setProperty(PROPERTY_ORDER, value);
+	}
+
+	/**
+	 * 属性名称-送货状态
+	 */
+	private static final String PROPERTY_SHIPPINGSTATUS_NAME = "ShippingStatus";
+
+	/**
+	 * 送货状态 属性
+	 */
+	@DbField(name = "Status", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<emShippingStatus> PROPERTY_SHIPPINGSTATUS = registerProperty(
+			PROPERTY_SHIPPINGSTATUS_NAME, emShippingStatus.class, MY_CLASS);
+
+	/**
+	 * 获取-送货状态
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_SHIPPINGSTATUS_NAME)
+	public final emShippingStatus getShippingStatus() {
+		return this.getProperty(PROPERTY_SHIPPINGSTATUS);
+	}
+
+	/**
+	 * 设置-送货状态
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setShippingStatus(emShippingStatus value) {
+		this.setProperty(PROPERTY_SHIPPINGSTATUS, value);
+	}
+
+	/**
+	 * 属性名称-收货人
+	 */
+	private static final String PROPERTY_CONSIGNEE_NAME = "Consignee";
+
+	/**
+	 * 收货人 属性
+	 */
+	@DbField(name = "Consignee", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_CONSIGNEE = registerProperty(PROPERTY_CONSIGNEE_NAME,
 			String.class, MY_CLASS);
 
 	/**
-	 * 获取-产品描述
+	 * 获取-收货人
 	 * 
 	 * @return 值
 	 */
-	@XmlElement(name = PROPERTY_DESCRIPTION_NAME)
-	public final String getDescription() {
-		return this.getProperty(PROPERTY_DESCRIPTION);
+	@XmlElement(name = PROPERTY_CONSIGNEE_NAME)
+	public final String getConsignee() {
+		return this.getProperty(PROPERTY_CONSIGNEE);
 	}
 
 	/**
-	 * 设置-产品描述
+	 * 设置-收货人
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setDescription(String value) {
-		this.setProperty(PROPERTY_DESCRIPTION, value);
+	public final void setConsignee(String value) {
+		this.setProperty(PROPERTY_CONSIGNEE, value);
 	}
 
 	/**
-	 * 属性名称-版本
+	 * 属性名称-街道
 	 */
-	private static final String PROPERTY_VERSION_NAME = "Version";
+	private static final String PROPERTY_STREET_NAME = "Street";
 
 	/**
-	 * 版本 属性
+	 * 街道 属性
 	 */
-	@DbField(name = "Version", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_VERSION = registerProperty(PROPERTY_VERSION_NAME, String.class,
+	@DbField(name = "Street", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_STREET = registerProperty(PROPERTY_STREET_NAME, String.class,
 			MY_CLASS);
 
 	/**
-	 * 获取-版本
+	 * 获取-街道
 	 * 
 	 * @return 值
 	 */
-	@XmlElement(name = PROPERTY_VERSION_NAME)
-	public final String getVersion() {
-		return this.getProperty(PROPERTY_VERSION);
+	@XmlElement(name = PROPERTY_STREET_NAME)
+	public final String getStreet() {
+		return this.getProperty(PROPERTY_STREET);
 	}
 
 	/**
-	 * 设置-版本
+	 * 设置-街道
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setVersion(String value) {
-		this.setProperty(PROPERTY_VERSION, value);
+	public final void setStreet(String value) {
+		this.setProperty(PROPERTY_STREET, value);
 	}
 
 	/**
-	 * 属性名称-是否激活
+	 * 属性名称-县/区
 	 */
-	private static final String PROPERTY_ACTIVATED_NAME = "Activated";
+	private static final String PROPERTY_DISTRICT_NAME = "District";
 
 	/**
-	 * 是否激活 属性
+	 * 县/区 属性
 	 */
-	@DbField(name = "Activated", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<emYesNo> PROPERTY_ACTIVATED = registerProperty(PROPERTY_ACTIVATED_NAME,
-			emYesNo.class, MY_CLASS);
-
-	/**
-	 * 获取-是否激活
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_ACTIVATED_NAME)
-	public final emYesNo getActivated() {
-		return this.getProperty(PROPERTY_ACTIVATED);
-	}
-
-	/**
-	 * 设置-是否激活
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setActivated(emYesNo value) {
-		this.setProperty(PROPERTY_ACTIVATED, value);
-	}
-
-	/**
-	 * 属性名称-单位数量
-	 */
-	private static final String PROPERTY_UNITQUANTITY_NAME = "UnitQuantity";
-
-	/**
-	 * 单位数量 属性
-	 */
-	@DbField(name = "UnitQty", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_UNITQUANTITY = registerProperty(PROPERTY_UNITQUANTITY_NAME,
-			Decimal.class, MY_CLASS);
-
-	/**
-	 * 获取-单位数量
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_UNITQUANTITY_NAME)
-	public final Decimal getUnitQuantity() {
-		return this.getProperty(PROPERTY_UNITQUANTITY);
-	}
-
-	/**
-	 * 设置-单位数量
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setUnitQuantity(Decimal value) {
-		this.setProperty(PROPERTY_UNITQUANTITY, value);
-	}
-
-	/**
-	 * 设置-单位数量
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setUnitQuantity(String value) {
-		this.setUnitQuantity(new Decimal(value));
-	}
-
-	/**
-	 * 设置-单位数量
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setUnitQuantity(int value) {
-		this.setUnitQuantity(new Decimal(value));
-	}
-
-	/**
-	 * 设置-单位数量
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setUnitQuantity(double value) {
-		this.setUnitQuantity(new Decimal(value));
-	}
-
-	/**
-	 * 属性名称-计量单位
-	 */
-	private static final String PROPERTY_UOM_NAME = "UOM";
-
-	/**
-	 * 计量单位 属性
-	 */
-	@DbField(name = "UOM", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_UOM = registerProperty(PROPERTY_UOM_NAME, String.class,
+	@DbField(name = "District", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_DISTRICT = registerProperty(PROPERTY_DISTRICT_NAME, String.class,
 			MY_CLASS);
 
 	/**
-	 * 获取-计量单位
+	 * 获取-县/区
 	 * 
 	 * @return 值
 	 */
-	@XmlElement(name = PROPERTY_UOM_NAME)
-	public final String getUOM() {
-		return this.getProperty(PROPERTY_UOM);
+	@XmlElement(name = PROPERTY_DISTRICT_NAME)
+	public final String getDistrict() {
+		return this.getProperty(PROPERTY_DISTRICT);
 	}
 
 	/**
-	 * 设置-计量单位
+	 * 设置-县/区
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setUOM(String value) {
-		this.setProperty(PROPERTY_UOM, value);
+	public final void setDistrict(String value) {
+		this.setProperty(PROPERTY_DISTRICT, value);
 	}
 
 	/**
-	 * 属性名称-生效日期
+	 * 属性名称-市
 	 */
-	private static final String PROPERTY_VALIDDATE_NAME = "ValidDate";
+	private static final String PROPERTY_CITY_NAME = "City";
 
 	/**
-	 * 生效日期 属性
+	 * 市 属性
 	 */
-	@DbField(name = "ValidDate", type = DbFieldType.DATE, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<DateTime> PROPERTY_VALIDDATE = registerProperty(PROPERTY_VALIDDATE_NAME,
-			DateTime.class, MY_CLASS);
-
-	/**
-	 * 获取-生效日期
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_VALIDDATE_NAME)
-	public final DateTime getValidDate() {
-		return this.getProperty(PROPERTY_VALIDDATE);
-	}
-
-	/**
-	 * 设置-生效日期
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setValidDate(DateTime value) {
-		this.setProperty(PROPERTY_VALIDDATE, value);
-	}
-
-	/**
-	 * 属性名称-失效日期
-	 */
-	private static final String PROPERTY_INVALIDDATE_NAME = "InvalidDate";
-
-	/**
-	 * 失效日期 属性
-	 */
-	@DbField(name = "InvalidDate", type = DbFieldType.DATE, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<DateTime> PROPERTY_INVALIDDATE = registerProperty(PROPERTY_INVALIDDATE_NAME,
-			DateTime.class, MY_CLASS);
-
-	/**
-	 * 获取-失效日期
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_INVALIDDATE_NAME)
-	public final DateTime getInvalidDate() {
-		return this.getProperty(PROPERTY_INVALIDDATE);
-	}
-
-	/**
-	 * 设置-失效日期
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setInvalidDate(DateTime value) {
-		this.setProperty(PROPERTY_INVALIDDATE, value);
-	}
-
-	/**
-	 * 属性名称-备注
-	 */
-	private static final String PROPERTY_REMARKS_NAME = "Remarks";
-
-	/**
-	 * 备注 属性
-	 */
-	@DbField(name = "Remarks", type = DbFieldType.MEMO, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_REMARKS = registerProperty(PROPERTY_REMARKS_NAME, String.class,
+	@DbField(name = "City", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_CITY = registerProperty(PROPERTY_CITY_NAME, String.class,
 			MY_CLASS);
 
 	/**
-	 * 获取-备注
+	 * 获取-市
 	 * 
 	 * @return 值
 	 */
-	@XmlElement(name = PROPERTY_REMARKS_NAME)
-	public final String getRemarks() {
-		return this.getProperty(PROPERTY_REMARKS);
+	@XmlElement(name = PROPERTY_CITY_NAME)
+	public final String getCity() {
+		return this.getProperty(PROPERTY_CITY);
 	}
 
 	/**
-	 * 设置-备注
+	 * 设置-市
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setRemarks(String value) {
-		this.setProperty(PROPERTY_REMARKS, value);
+	public final void setCity(String value) {
+		this.setProperty(PROPERTY_CITY, value);
+	}
+
+	/**
+	 * 属性名称-省
+	 */
+	private static final String PROPERTY_PROVINCE_NAME = "Province";
+
+	/**
+	 * 省 属性
+	 */
+	@DbField(name = "Province", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_PROVINCE = registerProperty(PROPERTY_PROVINCE_NAME, String.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-省
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_PROVINCE_NAME)
+	public final String getProvince() {
+		return this.getProperty(PROPERTY_PROVINCE);
+	}
+
+	/**
+	 * 设置-省
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setProvince(String value) {
+		this.setProperty(PROPERTY_PROVINCE, value);
+	}
+
+	/**
+	 * 属性名称-国
+	 */
+	private static final String PROPERTY_COUNTRY_NAME = "Country";
+
+	/**
+	 * 国 属性
+	 */
+	@DbField(name = "Country", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_COUNTRY = registerProperty(PROPERTY_COUNTRY_NAME, String.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-国
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_COUNTRY_NAME)
+	public final String getCountry() {
+		return this.getProperty(PROPERTY_COUNTRY);
+	}
+
+	/**
+	 * 设置-国
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setCountry(String value) {
+		this.setProperty(PROPERTY_COUNTRY, value);
+	}
+
+	/**
+	 * 属性名称-邮编
+	 */
+	private static final String PROPERTY_ZIPCODE_NAME = "ZipCode";
+
+	/**
+	 * 邮编 属性
+	 */
+	@DbField(name = "ZipCode", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_ZIPCODE = registerProperty(PROPERTY_ZIPCODE_NAME, String.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-邮编
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_ZIPCODE_NAME)
+	public final String getZipCode() {
+		return this.getProperty(PROPERTY_ZIPCODE);
+	}
+
+	/**
+	 * 设置-邮编
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setZipCode(String value) {
+		this.setProperty(PROPERTY_ZIPCODE, value);
+	}
+
+	/**
+	 * 属性名称-联系电话
+	 */
+	private static final String PROPERTY_MOBILEPHONE_NAME = "MobilePhone";
+
+	/**
+	 * 联系电话 属性
+	 */
+	@DbField(name = "Phone", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_MOBILEPHONE = registerProperty(PROPERTY_MOBILEPHONE_NAME,
+			String.class, MY_CLASS);
+
+	/**
+	 * 获取-联系电话
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_MOBILEPHONE_NAME)
+	public final String getMobilePhone() {
+		return this.getProperty(PROPERTY_MOBILEPHONE);
+	}
+
+	/**
+	 * 设置-联系电话
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setMobilePhone(String value) {
+		this.setProperty(PROPERTY_MOBILEPHONE, value);
+	}
+
+	/**
+	 * 属性名称-电话
+	 */
+	private static final String PROPERTY_TELEPHONE_NAME = "Telephone";
+
+	/**
+	 * 电话 属性
+	 */
+	@DbField(name = "Telephone", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_TELEPHONE = registerProperty(PROPERTY_TELEPHONE_NAME,
+			String.class, MY_CLASS);
+
+	/**
+	 * 获取-电话
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_TELEPHONE_NAME)
+	public final String getTelephone() {
+		return this.getProperty(PROPERTY_TELEPHONE);
+	}
+
+	/**
+	 * 设置-电话
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setTelephone(String value) {
+		this.setProperty(PROPERTY_TELEPHONE, value);
+	}
+
+	/**
+	 * 属性名称-备注 1
+	 */
+	private static final String PROPERTY_REMARK1_NAME = "Remark1";
+
+	/**
+	 * 备注 1 属性
+	 */
+	@DbField(name = "Notes1", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_REMARK1 = registerProperty(PROPERTY_REMARK1_NAME, String.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-备注 1
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_REMARK1_NAME)
+	public final String getRemark1() {
+		return this.getProperty(PROPERTY_REMARK1);
+	}
+
+	/**
+	 * 设置-备注 1
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setRemark1(String value) {
+		this.setProperty(PROPERTY_REMARK1, value);
+	}
+
+	/**
+	 * 属性名称-备注 2
+	 */
+	private static final String PROPERTY_REMARK2_NAME = "Remark2";
+
+	/**
+	 * 备注 2 属性
+	 */
+	@DbField(name = "Notes2", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_REMARK2 = registerProperty(PROPERTY_REMARK2_NAME, String.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-备注 2
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_REMARK2_NAME)
+	public final String getRemark2() {
+		return this.getProperty(PROPERTY_REMARK2);
+	}
+
+	/**
+	 * 设置-备注 2
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setRemark2(String value) {
+		this.setProperty(PROPERTY_REMARK2, value);
 	}
 
 	/**
@@ -566,19 +755,19 @@ public class ProductSuit extends BusinessObject<ProductSuit> implements IProduct
 	}
 
 	/**
-	 * 属性名称-版本
+	 * 属性名称-实例号（版本）
 	 */
 	private static final String PROPERTY_LOGINST_NAME = "LogInst";
 
 	/**
-	 * 版本 属性
+	 * 实例号（版本） 属性
 	 */
 	@DbField(name = "LogInst", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
 	public static final IPropertyInfo<Integer> PROPERTY_LOGINST = registerProperty(PROPERTY_LOGINST_NAME, Integer.class,
 			MY_CLASS);
 
 	/**
-	 * 获取-版本
+	 * 获取-实例号（版本）
 	 * 
 	 * @return 值
 	 */
@@ -588,7 +777,7 @@ public class ProductSuit extends BusinessObject<ProductSuit> implements IProduct
 	}
 
 	/**
-	 * 设置-版本
+	 * 设置-实例号（版本）
 	 * 
 	 * @param value
 	 *            值
@@ -790,175 +979,13 @@ public class ProductSuit extends BusinessObject<ProductSuit> implements IProduct
 	}
 
 	/**
-	 * 属性名称-审批状态
-	 */
-	private static final String PROPERTY_APPROVALSTATUS_NAME = "ApprovalStatus";
-
-	/**
-	 * 审批状态 属性
-	 */
-	@DbField(name = "ApvlStatus", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<emApprovalStatus> PROPERTY_APPROVALSTATUS = registerProperty(
-			PROPERTY_APPROVALSTATUS_NAME, emApprovalStatus.class, MY_CLASS);
-
-	/**
-	 * 获取-审批状态
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_APPROVALSTATUS_NAME)
-	public final emApprovalStatus getApprovalStatus() {
-		return this.getProperty(PROPERTY_APPROVALSTATUS);
-	}
-
-	/**
-	 * 设置-审批状态
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setApprovalStatus(emApprovalStatus value) {
-		this.setProperty(PROPERTY_APPROVALSTATUS, value);
-	}
-
-	/**
-	 * 属性名称-数据所有者
-	 */
-	private static final String PROPERTY_DATAOWNER_NAME = "DataOwner";
-
-	/**
-	 * 数据所有者 属性
-	 */
-	@DbField(name = "DataOwner", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Integer> PROPERTY_DATAOWNER = registerProperty(PROPERTY_DATAOWNER_NAME,
-			Integer.class, MY_CLASS);
-
-	/**
-	 * 获取-数据所有者
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_DATAOWNER_NAME)
-	public final Integer getDataOwner() {
-		return this.getProperty(PROPERTY_DATAOWNER);
-	}
-
-	/**
-	 * 设置-数据所有者
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setDataOwner(Integer value) {
-		this.setProperty(PROPERTY_DATAOWNER, value);
-	}
-
-	/**
-	 * 属性名称-团队成员
-	 */
-	private static final String PROPERTY_TEAMMEMBERS_NAME = "TeamMembers";
-
-	/**
-	 * 团队成员 属性
-	 */
-	@DbField(name = "TeamMembers", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_TEAMMEMBERS = registerProperty(PROPERTY_TEAMMEMBERS_NAME,
-			String.class, MY_CLASS);
-
-	/**
-	 * 获取-团队成员
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_TEAMMEMBERS_NAME)
-	public final String getTeamMembers() {
-		return this.getProperty(PROPERTY_TEAMMEMBERS);
-	}
-
-	/**
-	 * 设置-团队成员
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setTeamMembers(String value) {
-		this.setProperty(PROPERTY_TEAMMEMBERS, value);
-	}
-
-	/**
-	 * 属性名称-数据所属组织
-	 */
-	private static final String PROPERTY_ORGANIZATION_NAME = "Organization";
-
-	/**
-	 * 数据所属组织 属性
-	 */
-	@DbField(name = "OrgCode", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_ORGANIZATION = registerProperty(PROPERTY_ORGANIZATION_NAME,
-			String.class, MY_CLASS);
-
-	/**
-	 * 获取-数据所属组织
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_ORGANIZATION_NAME)
-	public final String getOrganization() {
-		return this.getProperty(PROPERTY_ORGANIZATION);
-	}
-
-	/**
-	 * 设置-数据所属组织
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setOrganization(String value) {
-		this.setProperty(PROPERTY_ORGANIZATION, value);
-	}
-
-	/**
-	 * 属性名称-产品套装-项目
-	 */
-	private static final String PROPERTY_PRODUCTSUITITEMS_NAME = "ProductSuitItems";
-
-	/**
-	 * 产品套装-项目的集合属性
-	 * 
-	 */
-	public static final IPropertyInfo<IProductSuitItems> PROPERTY_PRODUCTSUITITEMS = registerProperty(
-			PROPERTY_PRODUCTSUITITEMS_NAME, IProductSuitItems.class, MY_CLASS);
-
-	/**
-	 * 获取-产品套装-项目集合
-	 * 
-	 * @return 值
-	 */
-	@XmlElementWrapper(name = PROPERTY_PRODUCTSUITITEMS_NAME)
-	@XmlElement(name = ProductSuitItem.BUSINESS_OBJECT_NAME, type = ProductSuitItem.class)
-	public final IProductSuitItems getProductSuitItems() {
-		return this.getProperty(PROPERTY_PRODUCTSUITITEMS);
-	}
-
-	/**
-	 * 设置-产品套装-项目集合
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setProductSuitItems(IProductSuitItems value) {
-		this.setProperty(PROPERTY_PRODUCTSUITITEMS, value);
-	}
-
-	/**
 	 * 初始化数据
 	 */
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
-		this.setProductSuitItems(new ProductSuitItems(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
-
+		this.setShippingStatus(emShippingStatus.WAITING);
 	}
 
 }

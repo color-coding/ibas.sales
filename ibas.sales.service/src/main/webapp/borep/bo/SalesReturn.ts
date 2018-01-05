@@ -31,9 +31,15 @@ import {
     ISalesReturnItem,
     ISalesReturnItemMaterialBatchJournals,
     ISalesReturnItemMaterialSerialJournals,
+    IShippingAddress,
+    IShippingAddresss,
     BO_CODE_SALESRETURN,
     emProductTreeType,
 } from "../../api/index";
+import {
+    ShippingAddress,
+    ShippingAddresss,
+} from "./ShippingAddress";
 import {
     emItemType,
     IBatchManagementLine,
@@ -655,10 +661,21 @@ export class SalesReturn extends BODocument<SalesReturn> implements ISalesReturn
         this.setProperty(SalesReturn.PROPERTY_SALESRETURNITEMS_NAME, value);
     }
 
+    /** 映射的属性名称-送货地址集合 */
+    static PROPERTY_SHIPPINGADDRESSS_NAME: string = "ShippingAddresss";
+    /** 获取-送货地址集合 */
+    get shippingAddresss(): ShippingAddresss {
+        return this.getProperty<ShippingAddresss>(SalesReturn.PROPERTY_SHIPPINGADDRESSS_NAME);
+    }
+    /** 设置-送货地址集合 */
+    set shippingAddresss(value: ShippingAddresss) {
+        this.setProperty(SalesReturn.PROPERTY_SHIPPINGADDRESSS_NAME, value);
+    }
 
     /** 初始化数据 */
     protected init(): void {
         this.salesReturnItems = new SalesReturnItems(this);
+        this.shippingAddresss = new ShippingAddresss(this);
         this.objectCode = config.applyVariables(SalesReturn.BUSINESS_OBJECT_CODE);
         this.documentStatus = emDocumentStatus.PLANNED;
     }

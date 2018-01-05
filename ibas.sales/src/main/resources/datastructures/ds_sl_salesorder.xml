@@ -49,12 +49,6 @@
     <Property Name="Rounding" Description="舍入" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emYesNo" Mapped="Rounding"/>
     <Property Name="DiffAmount" Description="舍入差额" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="RoundDiff"/>
     <Property Name="Project" Description="项目代码" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Project"/>
-    <Property Name="Consignee" Description="收货人" DataType="Alphanumeric" DataSubType="Default" EditSize="50" Mapped="Consignee"/>
-    <Property Name="Phone" Description="联系电话" DataType="Alphanumeric" DataSubType="Default" EditSize="20" Mapped="Phone"/>
-    <Property Name="Province" Description="省" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="Province"/>
-    <Property Name="City" Description="市" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="City"/>
-    <Property Name="County" Description="县/区" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="County"/>
-    <Property Name="Address" Description="地址" DataType="Alphanumeric" DataSubType="Default" EditSize="200" Mapped="Address"/>
   </Model>
   <Model Name="SalesOrderItem" Description="销售订单-行" ModelType="DocumentLine" Mapped="${Company}_SL_RDR1">
     <Property Name="DocEntry" Description="编码" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="DocEntry" PrimaryKey="Yes"/>

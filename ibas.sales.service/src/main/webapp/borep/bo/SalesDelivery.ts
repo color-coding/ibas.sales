@@ -32,9 +32,15 @@ import {
     ISalesDeliveryItem,
     ISalesDeliveryItemMaterialBatchJournals,
     ISalesDeliveryItemMaterialSerialJournals,
+    IShippingAddress,
+    IShippingAddresss,
     BO_CODE_SALESDELIVERY,
     emProductTreeType,
 } from "../../api/index";
+import {
+    ShippingAddress,
+    ShippingAddresss,
+} from "./ShippingAddress";
 import {
     IBatchManagementLine,
     ISerialManagementLine,
@@ -657,10 +663,21 @@ export class SalesDelivery extends BODocument<SalesDelivery> implements ISalesDe
         this.setProperty(SalesDelivery.PROPERTY_SALESDELIVERYITEMS_NAME, value);
     }
 
+    /** 映射的属性名称-送货地址集合 */
+    static PROPERTY_SHIPPINGADDRESSS_NAME: string = "ShippingAddresss";
+    /** 获取-送货地址集合 */
+    get shippingAddresss(): ShippingAddresss {
+        return this.getProperty<ShippingAddresss>(SalesDelivery.PROPERTY_SHIPPINGADDRESSS_NAME);
+    }
+    /** 设置-送货地址集合 */
+    set shippingAddresss(value: ShippingAddresss) {
+        this.setProperty(SalesDelivery.PROPERTY_SHIPPINGADDRESSS_NAME, value);
+    }
 
     /** 初始化数据 */
     protected init(): void {
         this.salesDeliveryItems = new SalesDeliveryItems(this);
+        this.shippingAddresss = new ShippingAddresss(this);
         this.objectCode = config.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE);
         this.documentStatus = emDocumentStatus.PLANNED;
     }

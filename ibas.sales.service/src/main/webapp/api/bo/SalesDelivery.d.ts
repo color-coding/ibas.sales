@@ -28,6 +28,9 @@ import {
 import {
     emProductTreeType
 } from "../Datas";
+import {
+    IShippingAddresss
+} from "../bo/index";
 
 /** 销售交货 */
 export interface ISalesDelivery extends IBODocument {
@@ -173,27 +176,10 @@ export interface ISalesDelivery extends IBODocument {
     /** 项目代码 */
     project: string;
 
-    /** 收货人 */
-    consignee: string;
-
-    /** 联系电话 */
-    phone: string;
-
-    /** 省 */
-    province: string;
-
-    /** 市 */
-    city: string;
-
-    /** 县/区 */
-    county: string;
-
-    /** 地址 */
-    address: string;
-
-
     /** 销售交货-行集合 */
     salesDeliveryItems: ISalesDeliveryItems;
+    /** 送货地址集合 */
+    shippingAddresss: IShippingAddresss;
 
 
 }

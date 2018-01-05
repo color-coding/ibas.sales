@@ -99,6 +99,15 @@ export interface IProductSuit extends IBOSimple {
     /** 审批状态 */
     approvalStatus: emApprovalStatus;
 
+    /** 数据所有者 */
+    dataOwner: number;
+
+    /** 团队成员 */
+    teamMembers: string;
+
+    /** 数据所属组织 */
+    organization: string;
+
 
     /** 产品套装-项目集合 */
     productSuitItems: IProductSuitItems;
