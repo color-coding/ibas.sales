@@ -30,15 +30,15 @@ export interface IBORepositoryBusinessPartner extends IBORepositoryApplication {
      */
     download(caller: DownloadFileCaller<Blob>);
     /**
-     * 查询 业务伙伴余额记录
+     * 查询 业务伙伴地址
      * @param fetcher 查询者
      */
-    fetchBusinessPartnerBalanceJournal(fetcher: FetchCaller<bo.IBusinessPartnerBalanceJournal>);
+    fetchAddress(fetcher: FetchCaller<bo.IAddress>);
     /**
-     * 保存 业务伙伴余额记录
+     * 保存 业务伙伴地址
      * @param saver 保存者
      */
-    saveBusinessPartnerBalanceJournal(saver: SaveCaller<bo.IBusinessPartnerBalanceJournal>);
+    saveAddress(saver: SaveCaller<bo.IAddress>);
     /**
      * 查询 业务伙伴组
      * @param fetcher 查询者
@@ -62,23 +62,23 @@ export interface IBORepositoryBusinessPartner extends IBORepositoryApplication {
     saveContactPerson(saver: SaveCaller<bo.IContactPerson>);
 
     /**
-     * 查询 业务伙伴-客户
+     * 查询 客户
      * @param fetcher 查询者
      */
     fetchCustomer(fetcher: FetchCaller<bo.ICustomer>);
     /**
-     * 保存 业务伙伴-客户
+     * 保存 客户
      * @param saver 保存者
      */
     saveCustomer(saver: SaveCaller<bo.ICustomer>);
 
     /**
-     * 查询 业务伙伴-供应商
+     * 查询 供应商
      * @param fetcher 查询者
      */
     fetchSupplier(fetcher: FetchCaller<bo.ISupplier>);
     /**
-     * 保存 业务伙伴-供应商
+     * 保存 供应商
      * @param saver 保存者
      */
     saveSupplier(saver: SaveCaller<bo.ISupplier>);
