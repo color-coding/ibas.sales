@@ -103,65 +103,7 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                 }).bindProperty("dateValue", {
                     path: "documentDate",
                 }),
-<<<<<<< HEAD
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_postingdate") }),
-                new sap.m.DatePicker("", {
-                    valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                    displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                }).bindProperty("dateValue", {
-                    path: "postingDate",
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_deliverydate") }),
-                new sap.m.DatePicker("", {
-                    valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                    displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                }).bindProperty("dateValue", {
-                    path: "deliveryDate",
-                })
-            ],
-        });
-        this.viewBottomForm = new sap.ui.layout.form.SimpleForm("", {
-            editable: true,
-            layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
-            labelSpanL: 2,
-            labelSpanM: 2,
-            labelSpanS: 12,
-            columnsXL: 2,
-            columnsL: 2,
-            columnsM: 1,
-            columnsS: 1,
-            content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_salesdelivery_remarks") }),
-                new sap.m.TextArea("", {
-                    rows: 5,
-                }).bindProperty("value", {
-                    path: "/remarks",
-                }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_amount") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documenttotal") }),
-                new sap.m.Input("", {
-                    width: "100px",
-                    type: sap.m.InputType.Number,
-                }).bindProperty("value", {
-                    path: "/documentTotal",
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_discounttotal") }),
-                new sap.m.Input("", {
-                    width: "100px",
-                    type: sap.m.InputType.Number,
-                }).bindProperty("value", {
-                    path: "/discountTotal",
-                }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_distribution_information") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_consignee") }),
-                new sap.m.Input("", {
-                }).bindProperty("value", {
-                    path: "consignee",
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_phone") }),
-=======
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_dataowner") }),
->>>>>>> color/master
                 new sap.m.Input("", {
                     showValueHelp: true,
                 }).bindProperty("value", {

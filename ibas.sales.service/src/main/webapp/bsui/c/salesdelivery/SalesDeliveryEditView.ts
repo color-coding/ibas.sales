@@ -93,34 +93,18 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                     path: "canceled",
                     type: "sap.ui.model.type.Integer",
                 }),
-<<<<<<< HEAD
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_order_amount") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documenttotal") }),
-                new sap.m.Input("", {
-                    width: "100px",
-                    type: sap.m.InputType.Number,
-                }).bindProperty("value", {
-                    path: "/documentTotal",
-=======
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documentdate") }),
                 new sap.m.DatePicker("", {
                 }).bindProperty("dateValue", {
                     path: "documentDate",
->>>>>>> color/master
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_dataowner") }),
                 new sap.m.Input("", {
                     showValueHelp: true,
                 }).bindProperty("value", {
-<<<<<<< HEAD
-                    path: "/discountTotal",
-                })
-            ],
-=======
                     path: "dataOwner",
                 }),
             ]
->>>>>>> color/master
         });
         this.tableSalesDeliveryItem = new sap.ui.table.Table("", {
             toolbar: new sap.m.Toolbar("", {

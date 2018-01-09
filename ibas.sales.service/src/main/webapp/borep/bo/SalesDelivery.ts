@@ -30,8 +30,6 @@ import {
     ISalesDelivery,
     ISalesDeliveryItems,
     ISalesDeliveryItem,
-    ISalesDeliveryItemMaterialBatchJournals,
-    ISalesDeliveryItemMaterialSerialJournals,
     IShippingAddress,
     IShippingAddresss,
     BO_CODE_SALESDELIVERY,
@@ -42,10 +40,10 @@ import {
     ShippingAddresss,
 } from "./ShippingAddress";
 import {
-    IBatchManagementLine,
-    ISerialManagementLine,
-    IBatchManagementLines,
-    ISerialManagementLines,
+    IMaterialBatchDocument,
+    IMaterialSerialDocument,
+    IMaterialBatchDocuments,
+    IMaterialSerialDocuments,
     IMaterialBatchJournal,
     IMaterialSerialJournal,
     IMaterialSerialJournals,
@@ -54,8 +52,8 @@ import {
     BO_CODE_MATERIALSERIALJOURNAL,
     BO_CODE_MATERIALSERIALJOURNALS,
     BO_CODE_MATERIALBATCHJOURNALS,
-    BO_CODE_SERIALMANAGEMENTLINE,
-    BO_CODE_BATCHMANAGEMENTLINE,
+    BO_CODE_MATERIALSERIALDOCUMENT,
+    BO_CODE_MATERIALBATCHDOCUMENT,
     emItemType
 } from "3rdparty/materials/index";
 
@@ -686,8 +684,8 @@ export class SalesDelivery extends BODocument<SalesDelivery> implements ISalesDe
 /** 销售交货-行 集合 */
 export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, SalesDelivery>
     implements ISalesDeliveryItems,
-    IBatchManagementLines,
-    ISerialManagementLines {
+    IMaterialBatchDocuments,
+    IMaterialSerialDocuments {
 
     /** 创建并添加子项 */
     create(): SalesDeliveryItem {
@@ -698,12 +696,12 @@ export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, Sales
     }
 
     checkBatchQuantity(): boolean {
-        return new (boFactory.classOf(BO_CODE_BATCHMANAGEMENTLINE))
+        return new (boFactory.classOf(BO_CODE_MATERIALBATCHDOCUMENT))
             (this.filterDeleted().filter(c => c.batchManagement === emYesNo.YES)).checkBatchQuantity();
     }
 
     checkSerialQuantity(): boolean {
-        return new (boFactory.classOf(BO_CODE_SERIALMANAGEMENTLINE))
+        return new (boFactory.classOf(BO_CODE_MATERIALSERIALDOCUMENT))
             (this.filterDeleted().filter(c => c.serialManagement === emYesNo.YES)).checkSerialQuantity();
     }
 
@@ -749,108 +747,10 @@ export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, Sales
     }
 }
 
-/** 销售交货-批次日记账 集合 */
-export class SalesDeliveryItemMaterialBatchJournals extends BusinessObjects<IMaterialBatchJournal, SalesDeliveryItem>
-    implements ISalesDeliveryItemMaterialBatchJournals, IMaterialBatchJournals {
-    constructor(parent: SalesDeliveryItem) {
-        super(parent);
-        let bo: any = boFactory.classOf(BO_CODE_MATERIALBATCHJOURNALS);
-        this.materialBatchs = new bo(this, parent);
-    }
-    materialBatchs: IMaterialBatchJournals;
-    /**
-     * 创建批次日记账
-     * @param data
-     */
-    create(data?: any): IMaterialBatchJournal {
-        return this.materialBatchs.create(data);
-    }
-    /**
-     * 删除批次日记账集合
-     */
-    deleteAll(): void {
-        this.materialBatchs.deleteAll();
-    }
-    /**
-     * 移除批次日记账集合
-     */
-    removeAll(): void {
-        this.materialBatchs.removeAll();
-    }
-
-    /**
-     * 父项属性发生改变
-     * @param name 属性名称
-     */
-    onParentPropertyChanged(name: string): void {
-        super.onParentPropertyChanged(name);
-        this.materialBatchs.onParentPropertyChanged(name);
-    }
-<<<<<<< HEAD
-    /** 移除所有批次日记账集合 */
-    removeAll(): void {
-        for (let item of this) {
-            this.remove(item);
-        }
-    }
-=======
-
->>>>>>> color/master
-}
-/** 销售交货-序列日记账 集合 */
-export class SalesDeliveryItemMaterialSerialJournals extends BusinessObjects<IMaterialSerialJournal, SalesDeliveryItem>
-    implements ISalesDeliveryItemMaterialSerialJournals, IMaterialSerialJournals {
-    constructor(parent: SalesDeliveryItem) {
-        super(parent);
-        let bo: any = boFactory.classOf(BO_CODE_MATERIALSERIALJOURNALS);
-        this.materialSerials = new bo(this, parent);
-    }
-    materialSerials: IMaterialSerialJournals;
-
-    /**
-     * 创建序列日记账
-     * @param data
-     */
-    create(data?: any): IMaterialSerialJournal {
-        return this.materialSerials.create(data);
-    }
-    /**
-     * 删除序列日记账集合
-     */
-    deleteAll(): void {
-        this.materialSerials.deleteAll();
-    }
-    /**
-     * 移除序列日记账集合
-     */
-    removeAll(): void {
-        this.materialSerials.removeAll();
-    }
-    /**
-     * 监听父项属性改变
-     * @param name 父项属性名称
-     */
-    onParentPropertyChanged(name: string): void {
-        super.onParentPropertyChanged(name);
-        this.materialSerials.onParentPropertyChanged(name);
-    }
-    /** 所有序列日记账标记为删除 */
-    deleteAll(): void {
-        for (let item of this) {
-            item.markDeleted(true);
-        }
-    }
-    /** 移除所有序列日记账集合 */
-    removeAll(): void {
-        for (let item of this) {
-            this.remove(item);
-        }
-    }
-}
 
 /** 销售交货-行 */
 export class SalesDeliveryItem extends BODocumentLine<SalesDeliveryItem>
-    implements ISalesDeliveryItem, IBatchManagementLine, ISerialManagementLine {
+    implements ISalesDeliveryItem, IMaterialBatchDocument, IMaterialSerialDocument {
 
     /** 构造函数 */
     constructor() {
@@ -1542,24 +1442,25 @@ export class SalesDeliveryItem extends BODocumentLine<SalesDeliveryItem>
         this.setProperty(SalesDeliveryItem.PROPERTY_DISTRIBUTIONRULE5_NAME, value);
     }
     /** 映射的属性名称-销售交货-行-序列号集合 */
-    static PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME: string = "SalesDeliveryItemMaterialSerialJournals";
+    static PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME: string = "MaterialSerialJournals";
     /** 获取-销售交货-行-序列号集合 */
-    get materialSerials(): SalesDeliveryItemMaterialSerialJournals {
-        return this.getProperty<SalesDeliveryItemMaterialSerialJournals>
+    get materialSerials(): IMaterialSerialJournals<SalesDeliveryItem> {
+        return this.getProperty<IMaterialSerialJournals<SalesDeliveryItem>>
             (SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME);
     }
     /** 设置-销售交货-行-序列号集合 */
-    set materialSerials(value: SalesDeliveryItemMaterialSerialJournals) {
+    set materialSerials(value: IMaterialSerialJournals<SalesDeliveryItem>) {
         this.setProperty(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME, value);
     }
     /** 映射的属性名称-销售交货-行-批次集合 */
-    static PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME: string = "SalesDeliveryItemMaterialBatchJournals";
+    static PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME: string = "MaterialBatchJournals";
     /** 获取-销售交货-行-序列号集合 */
-    get materialBatchs(): SalesDeliveryItemMaterialBatchJournals {
-        return this.getProperty<SalesDeliveryItemMaterialBatchJournals>(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME);
+    get materialBatchs(): IMaterialBatchJournals<SalesDeliveryItem> {
+        return this.getProperty<IMaterialBatchJournals<SalesDeliveryItem>>
+            (SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME);
     }
     /** 设置-销售交货-行-序列号集合 */
-    set materialBatchs(value: SalesDeliveryItemMaterialBatchJournals) {
+    set materialBatchs(value: IMaterialBatchJournals<SalesDeliveryItem>) {
         this.setProperty(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME, value);
     }
 
@@ -1567,8 +1468,8 @@ export class SalesDeliveryItem extends BODocumentLine<SalesDeliveryItem>
     /** 初始化数据 */
     protected init(): void {
         //
-        this.materialBatchs = new SalesDeliveryItemMaterialBatchJournals(this);
-        this.materialSerials = new SalesDeliveryItemMaterialSerialJournals(this);
+        this.materialBatchs = new (boFactory.classOf(BO_CODE_MATERIALBATCHJOURNALS))(this);
+        this.materialSerials = new (boFactory.classOf(BO_CODE_MATERIALSERIALJOURNALS))(this);
     }
 }
 

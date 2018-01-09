@@ -94,32 +94,7 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_dataowner") }),
                 new sap.m.Input("", {
-<<<<<<< HEAD
-                    width: "100px",
-                    type: sap.m.InputType.Number,
-                }).bindProperty("value", {
-                    path: "/documentTotal",
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_discounttotal") }),
-                new sap.m.Input("", {
-                    width: "100px",
-                    type: sap.m.InputType.Number,
-                }).bindProperty("value", {
-                    path: "/discountTotal",
-                }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_distribution_information") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_consignee") }),
-                new sap.m.Input("", {
-                    type: sap.m.InputType.Text,
-                }).bindProperty("value", {
-                    path: "consignee",
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_phone") }),
-                new sap.m.Input("", {
-                    type: sap.m.InputType.Number,
-=======
                     showValueHelp: true,
->>>>>>> color/master
                 }).bindProperty("value", {
                     path: "dataOwner",
                 }),

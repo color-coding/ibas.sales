@@ -23,7 +23,9 @@ import {
 import {
     IMaterialBatchJournal,
     IMaterialSerialJournal,
-    emItemType
+    emItemType,
+    IMaterialSerialDocument,
+    IMaterialBatchDocument,
 } from "3rdparty/materials/index";
 import {
     emProductTreeType
@@ -191,19 +193,8 @@ export interface ISalesDeliveryItems extends IBusinessObjects<ISalesDeliveryItem
     create(): ISalesDeliveryItem;
 }
 
-/** 销售交货-批次日记账 集合 */
-export interface ISalesDeliveryItemMaterialBatchJournals extends IBusinessObjects<IMaterialBatchJournal, ISalesDeliveryItem> {
-    /** 创建并添加子项 */
-    create(): IMaterialBatchJournal;
-}
-/**  销售交货-序列号日记账  */
-export interface ISalesDeliveryItemMaterialSerialJournals extends IBusinessObjects<IMaterialSerialJournal, ISalesDeliveryItem> {
-    /** 创建并添加子项 */
-    create(): IMaterialSerialJournal;
-}
-
 /** 销售交货-行 */
-export interface ISalesDeliveryItem extends IBODocumentLine {
+export interface ISalesDeliveryItem extends IBODocumentLine,IMaterialSerialDocument,IMaterialBatchDocument {
 
     /** 编码 */
     docEntry: number;

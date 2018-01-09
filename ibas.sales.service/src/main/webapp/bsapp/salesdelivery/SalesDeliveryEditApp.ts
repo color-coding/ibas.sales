@@ -238,21 +238,8 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                         created = true;
                     }
                     if (item.itemCode !== selected.code) {
-                        if (item.isNew) {
-<<<<<<< HEAD
-                            item.materialBatchJournals.removeAll();
-                            item.materialSerialJournals.removeAll();
-                        } else {
-                            item.materialBatchJournals.deleteAll();
-                            item.materialSerialJournals.deleteAll();
-=======
-                            item.materialBatchs.removeAll();
-                            item.materialSerials.removeAll();
-                        } else {
-                            item.materialBatchs.deleteAll();
-                            item.materialSerials.deleteAll();
->>>>>>> color/master
-                        }
+                        item.materialBatchs.deleteAll();
+                        item.materialSerials.deleteAll();
                     }
                     item.itemCode = selected.code;
                     item.itemDescription = selected.name;
@@ -286,21 +273,8 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                         created = true;
                     }
                     if (item.itemCode !== selected.code) {
-                        if (item.isNew) {
-<<<<<<< HEAD
-                            item.materialBatchJournals.removeAll();
-                            item.materialSerialJournals.removeAll();
-                        } else {
-                            item.materialBatchJournals.deleteAll();
-                            item.materialSerialJournals.deleteAll();
-=======
-                            item.materialBatchs.removeAll();
-                            item.materialSerials.removeAll();
-                        } else {
-                            item.materialBatchs.deleteAll();
-                            item.materialSerials.deleteAll();
->>>>>>> color/master
-                        }
+                        item.materialBatchs.deleteAll();
+                        item.materialSerials.deleteAll();
                     }
                     item.warehouse = selected.code;
                     item = null;

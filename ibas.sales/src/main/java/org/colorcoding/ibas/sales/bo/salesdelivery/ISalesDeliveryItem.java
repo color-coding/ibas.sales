@@ -1,11 +1,9 @@
 package org.colorcoding.ibas.sales.bo.salesdelivery;
 
 import org.colorcoding.ibas.bobas.bo.IBODocumentLine;
-import org.colorcoding.ibas.bobas.data.DateTime;
-import org.colorcoding.ibas.bobas.data.Decimal;
-import org.colorcoding.ibas.bobas.data.emBOStatus;
-import org.colorcoding.ibas.bobas.data.emDocumentStatus;
-import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.bobas.data.*;
+import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchDocument;
+import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialDocument;
 import org.colorcoding.ibas.materials.data.emItemType;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
 
@@ -15,7 +13,7 @@ import org.colorcoding.ibas.sales.data.emProductTreeType;
  * 销售交货-行 接口
  * 
  */
-public interface ISalesDeliveryItem extends IBODocumentLine {
+public interface ISalesDeliveryItem extends IBODocumentLine,IMaterialSerialDocument,IMaterialBatchDocument {
 
 	/**
 	 * 获取-编码
@@ -1268,31 +1266,12 @@ public interface ISalesDeliveryItem extends IBODocumentLine {
 	 */
 	void setDistributionRule5(String value);
 
-	/**
-	 * 获取-销售交货-物料批次集合
-	 *
-	 * @return 值
-	 */
-	ISalesDeliveryItemMaterialBatchJournals getSalesDeliveryMaterialBatchJournals();
+	ISalesDeliveryItemMaterialBatch getMaterialBatchs();
 
-	/**
-	 * 设置-销售交货-物料批次集合
-	 *
-	 * @param value 值
-	 */
-	void setSalesDeliveryMaterialBatchJournals(ISalesDeliveryItemMaterialBatchJournals value);
+	void setMaterialBatchs(ISalesDeliveryItemMaterialBatch value);
 
-	/**
-	 * 获取-销售交货-物料序列集合
-	 *
-	 * @return 值
-	 */
-	ISalesDeliveryItemMaterialSerialJournals getSalesDeliveryMaterialSerialJournals();
+	ISalesDeliveryItemMaterialSerial getMaterialSerials();
 
-	/**
-	 * 设置-销售交货-物料序列集合
-	 *
-	 * @param value 值
-	 */
-	void setSalesDeliveryMaterialSerialJournals(ISalesDeliveryItemMaterialSerialJournals value);
+	void setMaterialSerials(ISalesDeliveryItemMaterialSerial value);
+
 }

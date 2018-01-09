@@ -235,21 +235,8 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
                         created = true;
                     }
                     if (item.itemCode !== selected.code) {
-                        if (item.isNew) {
-<<<<<<< HEAD
-                            item.materialBatchJournals.removeAll();
-                            item.materialSerialJournals.removeAll();
-                        } else {
-                            item.materialBatchJournals.deleteAll();
-                            item.materialSerialJournals.deleteAll();
-=======
-                            item.materialBatchs.removeAll();
-                            item.materialSerials.removeAll();
-                        } else {
-                            item.materialBatchs.deleteAll();
-                            item.materialSerials.deleteAll();
->>>>>>> color/master
-                        }
+                        item.materialBatchs.deleteAll();
+                        item.materialSerials.deleteAll();
                     }
                     item.itemCode = selected.code;
                     item.serialManagement = selected.serialManagement;
@@ -282,21 +269,8 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
                         created = true;
                     }
                     if (item.warehouse !== selected.code) {
-                        if (item.isNew) {
-<<<<<<< HEAD
-                            item.materialBatchJournals.removeAll();
-                            item.materialSerialJournals.removeAll();
-                        } else {
-                            item.materialBatchJournals.deleteAll();
-                            item.materialSerialJournals.deleteAll();
-=======
-                            item.materialBatchs.removeAll();
-                            item.materialSerials.removeAll();
-                        } else {
-                            item.materialBatchs.deleteAll();
-                            item.materialSerials.deleteAll();
->>>>>>> color/master
-                        }
+                        item.materialBatchs.deleteAll();
+                        item.materialSerials.deleteAll();
                     }
                     item.warehouse = selected.code;
                     item = null;
@@ -361,12 +335,12 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
     createSalesReturnLineMaterialSerial(): void {
         let that: this = this;
         let salesReturnLines: bo.SalesReturnItem[] = this.editData.salesReturnItems
-        .filter(c => c.isDeleted === false
-            && !ibas.objects.isNull(c.lineStatus)
-            && c.serialManagement !== undefined
-            && c.serialManagement === ibas.emYesNo.YES
-            && !ibas.strings.isEmpty(c.itemCode)
-            && !ibas.strings.isEmpty(c.warehouse));
+            .filter(c => c.isDeleted === false
+                && !ibas.objects.isNull(c.lineStatus)
+                && c.serialManagement !== undefined
+                && c.serialManagement === ibas.emYesNo.YES
+                && !ibas.strings.isEmpty(c.itemCode)
+                && !ibas.strings.isEmpty(c.warehouse));
         if (ibas.objects.isNull(salesReturnLines) || salesReturnLines.length === 0) {
             this.messages(ibas.emMessageType.INFORMATION, ibas.i18n.prop("sales_app_no_matched_documentline_to_create_serial"));
             return;
@@ -376,8 +350,8 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         });
     }
 
-     /** 获取行-批次服务契约信息 */
-     getBatchContract(salesReturnLines: bo.SalesReturnItem[]): IMaterialBatchContract[] {
+    /** 获取行-批次服务契约信息 */
+    getBatchContract(salesReturnLines: bo.SalesReturnItem[]): IMaterialBatchContract[] {
         let contracts: IMaterialBatchContract[] = new ibas.ArrayList<IMaterialBatchContract>();
         for (let item of salesReturnLines) {
             contracts.push({
