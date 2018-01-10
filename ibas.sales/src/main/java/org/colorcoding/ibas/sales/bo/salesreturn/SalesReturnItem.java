@@ -2421,14 +2421,14 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	/**
 	 * 属性名称-销售退货-物料批次
 	 */
-	private static final String PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME = "SalesReturnItemMaterialBatchJournals";
+	private static final String PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME = "MaterialBatchs";
 
 	/**
 	 * 销售退货-物料批次的集合属性
 	 *
 	 */
-	public static final IPropertyInfo<ISalesReturnItemMaterialBatchJournals> PROPERTY_SALESRETURNMATERIALBATCHJOURNALS = registerProperty(
-			PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME, ISalesReturnItemMaterialBatchJournals.class, MY_CLASS);
+	public static final IPropertyInfo<ISalesReturnItemMaterialBatch> PROPERTY_SALESRETURNMATERIALBATCHJOURNALS = registerProperty(
+			PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME,ISalesReturnItemMaterialBatch.class , MY_CLASS);
 
 	/**
 	 * 获取-销售退货-物料批次集合
@@ -2437,7 +2437,7 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	 */
 	@XmlElementWrapper(name = PROPERTY_SALESRETURNMATERIALBATCHJOURNALS_NAME)
 	@XmlElement(name = MaterialBatchJournal.BUSINESS_OBJECT_NAME, type = MaterialBatchJournal.class)
-	public final ISalesReturnItemMaterialBatchJournals getSalesReturnMaterialBatchJournals() {
+	public final ISalesReturnItemMaterialBatch getMaterialBatchs() {
 		return this.getProperty(PROPERTY_SALESRETURNMATERIALBATCHJOURNALS);
 	}
 
@@ -2447,21 +2447,21 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	 * @param value
 	 *            值
 	 */
-	public final void setSalesReturnMaterialBatchJournals(ISalesReturnItemMaterialBatchJournals value) {
+	public final void setMaterialBatchs(ISalesReturnItemMaterialBatch value) {
 		this.setProperty(PROPERTY_SALESRETURNMATERIALBATCHJOURNALS, value);
 	}
 
 	/**
 	 * 属性名称-销售退货-物料序列
 	 */
-	private static final String PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME = "SalesReturnItemMaterialSerialJournals";
+	private static final String PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME = "MaterialSerials";
 
 	/**
 	 * 销售退货-物料序列的集合属性
 	 *
 	 */
-	public static final IPropertyInfo<ISalesReturnItemMaterialSerialJournals> PROPERTY_SALESRETURNMATERIALSERIALJOURNALS = registerProperty(
-			PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME, ISalesReturnItemMaterialSerialJournals.class, MY_CLASS);
+	public static final IPropertyInfo<ISalesReturnItemMaterialSerial> PROPERTY_SALESRETURNMATERIALSERIALJOURNALS = registerProperty(
+			PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME, ISalesReturnItemMaterialSerial.class, MY_CLASS);
 
 	/**
 	 * 获取-销售退货-物料序列集合
@@ -2470,7 +2470,7 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	 */
 	@XmlElementWrapper(name = PROPERTY_SALESRETURNMATERIALSERIALJOURNALS_NAME)
 	@XmlElement(name = MaterialSerialJournal.BUSINESS_OBJECT_NAME, type = MaterialSerialJournal.class)
-	public final ISalesReturnItemMaterialSerialJournals getSalesReturnMaterialSerialJournals() {
+	public final ISalesReturnItemMaterialSerial getMaterialSerials() {
 		return this.getProperty(PROPERTY_SALESRETURNMATERIALSERIALJOURNALS);
 	}
 
@@ -2480,7 +2480,7 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	 * @param value
 	 *            值
 	 */
-	public final void setSalesReturnMaterialSerialJournals(ISalesReturnItemMaterialSerialJournals value) {
+	public final void setMaterialSerials(ISalesReturnItemMaterialSerial value) {
 		this.setProperty(PROPERTY_SALESRETURNMATERIALSERIALJOURNALS, value);
 	}
 	/**
@@ -2489,8 +2489,8 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
-		this.setSalesReturnMaterialBatchJournals(new SalesReturnItemMaterialBatchJournals(this));
-		this.setSalesReturnMaterialSerialJournals(new SalesReturnItemMaterialSerialJournals(this));
+		this.setMaterialBatchs(new SalesReturnItemMaterialBatch(this));
+		this.setMaterialSerials(new SalesReturnItemMaterialSerial(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 
 	}

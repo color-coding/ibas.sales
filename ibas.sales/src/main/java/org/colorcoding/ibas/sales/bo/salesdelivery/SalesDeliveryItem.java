@@ -2421,14 +2421,14 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 	/**
 	 * 属性名称-销售交货-物料批次
 	 */
-	private static final String PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME = "SalesDeliveryItemMaterialBatchJournals";
+	private static final String PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME = "MaterialBatchJournals";
 
 	/**
 	 * 销售交货-物料批次的集合属性
 	 *
 	 */
-	public static final IPropertyInfo<ISalesDeliveryItemMaterialBatchJournals> PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS = registerProperty(
-			PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME, ISalesDeliveryItemMaterialBatchJournals.class, MY_CLASS);
+	public static final IPropertyInfo<ISalesDeliveryItemMaterialBatch> PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS = registerProperty(
+			PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME, ISalesDeliveryItemMaterialBatch.class, MY_CLASS);
 
 	/**
 	 * 获取-销售交货-物料批次集合
@@ -2437,7 +2437,7 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 	 */
 	@XmlElementWrapper(name = PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME)
 	@XmlElement(name = MaterialBatchJournal.BUSINESS_OBJECT_NAME, type = MaterialBatchJournal.class)
-	public final ISalesDeliveryItemMaterialBatchJournals getSalesDeliveryMaterialBatchJournals() {
+	public final ISalesDeliveryItemMaterialBatch getMaterialBatchs() {
 		return this.getProperty(PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS);
 	}
 
@@ -2447,21 +2447,21 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 	 * @param value
 	 *            值
 	 */
-	public final void setSalesDeliveryMaterialBatchJournals(ISalesDeliveryItemMaterialBatchJournals value) {
+	public final void setMaterialBatchs(ISalesDeliveryItemMaterialBatch value) {
 		this.setProperty(PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS, value);
 	}
 
 	/**
 	 * 属性名称-销售交货-物料序列
 	 */
-	private static final String PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME = "SalesDeliveryItemMaterialSerialJournals";
+	private static final String PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME = "MaterialSerialJournals";
 
 	/**
 	 * 销售交货-物料序列的集合属性
 	 *
 	 */
-	public static final IPropertyInfo<ISalesDeliveryItemMaterialSerialJournals> PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS = registerProperty(
-			PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME, ISalesDeliveryItemMaterialSerialJournals.class, MY_CLASS);
+	public static final IPropertyInfo<ISalesDeliveryItemMaterialSerial> PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS = registerProperty(
+			PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME, ISalesDeliveryItemMaterialSerial.class, MY_CLASS);
 
 	/**
 	 * 获取-销售交货-物料序列集合
@@ -2470,7 +2470,7 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 	 */
 	@XmlElementWrapper(name = PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME)
 	@XmlElement(name = MaterialSerialJournal.BUSINESS_OBJECT_NAME, type = MaterialSerialJournal.class)
-	public final ISalesDeliveryItemMaterialSerialJournals getSalesDeliveryMaterialSerialJournals() {
+	public final ISalesDeliveryItemMaterialSerial getMaterialSerials() {
 		return this.getProperty(PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS);
 	}
 
@@ -2480,7 +2480,7 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 	 * @param value
 	 *            值
 	 */
-	public final void setSalesDeliveryMaterialSerialJournals(ISalesDeliveryItemMaterialSerialJournals value) {
+	public final void setMaterialSerials(ISalesDeliveryItemMaterialSerial value) {
 		this.setProperty(PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS, value);
 	}
 	/**
@@ -2489,8 +2489,8 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
-		this.setSalesDeliveryMaterialBatchJournals(new SalesDeliveryItemMaterialBatchJournals(this));
-		this.setSalesDeliveryMaterialSerialJournals(new SalesDeliveryItemMaterialSerialJournals(this));
+		this.setMaterialBatchs(new SalesDeliveryItemMaterialBatch(this));
+		this.setMaterialSerials(new SalesDeliveryItemMaterialSerial(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 	}
 
