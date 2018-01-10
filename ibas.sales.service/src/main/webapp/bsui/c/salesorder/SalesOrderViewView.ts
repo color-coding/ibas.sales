@@ -112,22 +112,6 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
                 }).bindProperty("text", {
                     path: "discountTotal"
                 }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_distribution_information") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_consignee") }),
-                new sap.m.Text("", {
-                }).bindProperty("text", {
-                    path: "consignee"
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_phone") }),
-                new sap.m.Text("", {
-                }).bindProperty("text", {
-                    path: "phone"
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_address") }),
-                new sap.m.Text("", {
-                }).bindProperty("text", {
-                    path: "address"
-                })
             ]
         });
         this.tableSalesOrderItem = new sap.ui.table.Table("", {

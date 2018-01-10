@@ -1,9 +1,13 @@
 package org.colorcoding.ibas.sales.bo.salesreturn;
 
 import org.colorcoding.ibas.bobas.bo.IBODocumentLine;
-import org.colorcoding.ibas.bobas.data.*;
-import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchDocument;
-import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialDocument;
+import org.colorcoding.ibas.bobas.data.DateTime;
+import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.data.emBOStatus;
+import org.colorcoding.ibas.bobas.data.emDocumentStatus;
+import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchJournalsParent;
+import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialJournalsParent;
 import org.colorcoding.ibas.materials.data.emItemType;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
 
@@ -11,7 +15,7 @@ import org.colorcoding.ibas.sales.data.emProductTreeType;
  * 销售退货-行 接口
  * 
  */
-public interface ISalesReturnItem extends IBODocumentLine,IMaterialSerialDocument,IMaterialBatchDocument {
+public interface ISalesReturnItem extends IBODocumentLine, IMaterialBatchJournalsParent, IMaterialSerialJournalsParent {
 
 	/**
 	 * 获取-编码
@@ -1263,13 +1267,5 @@ public interface ISalesReturnItem extends IBODocumentLine,IMaterialSerialDocumen
 	 *            值
 	 */
 	void setDistributionRule5(String value);
-
-	ISalesReturnItemMaterialBatch getMaterialBatchs();
-
-	void setMaterialBatchs(ISalesReturnItemMaterialBatch value);
-
-	ISalesReturnItemMaterialSerial getMaterialSerials();
-
-	void setMaterialSerials(ISalesReturnItemMaterialSerial value);
 
 }

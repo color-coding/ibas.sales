@@ -180,8 +180,6 @@ export interface ISalesOrder extends IBODocument {
     /** 送货地址集合 */
     shippingAddresss: IShippingAddresss;
 
-
-
 }
 
 /** 销售订单-行 集合 */

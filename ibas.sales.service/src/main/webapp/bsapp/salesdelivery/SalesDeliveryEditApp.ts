@@ -15,12 +15,12 @@ import {
     IProduct,
     IMaterialSerialJournal,
     IMaterialBatchJournal,
-    MaterialIssueBatchServiceProxy,
+    MaterialBatchIssueServiceProxy,
     IMaterialBatchContract,
     IMaterialSerialContract,
     BO_CODE_PRODUCT,
     BO_CODE_MATERIAL,
-    MaterialIssueSerialServiceProxy,
+    MaterialSerialIssueServiceProxy,
     IMaterial,
     BO_CODE_WAREHOUSE,
 } from "3rdparty/materials/index";
@@ -122,15 +122,6 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
     protected saveData(): void {
         let that: this = this;
         let boRepository: BORepositorySales = new BORepositorySales();
-        // 物料数量与批次数量不相等
-        if (!this.editData.salesDeliveryItems.checkBatchQuantity()) {
-            this.messages(ibas.emMessageType.ERROR, ibas.i18n.prop("sales_app_material_quantity_not_equal_batch_quantity"));
-            return;
-        }
-        if (!this.editData.salesDeliveryItems.checkSerialQuantity()) {
-            this.messages(ibas.emMessageType.ERROR, ibas.i18n.prop("sales_app_material_quantity_not_equal_serial_quantity"));
-            return;
-        }
         boRepository.saveSalesDelivery({
             beSaved: this.editData,
             onCompleted(opRslt: ibas.IOperationResult<bo.SalesDelivery>): void {
@@ -237,10 +228,6 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                         item = that.editData.salesDeliveryItems.create();
                         created = true;
                     }
-                    if (item.itemCode !== selected.code) {
-                        item.materialBatchs.deleteAll();
-                        item.materialSerials.deleteAll();
-                    }
                     item.itemCode = selected.code;
                     item.itemDescription = selected.name;
                     item.serialManagement = selected.serialManagement;
@@ -271,10 +258,6 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                     if (ibas.objects.isNull(item)) {
                         item = that.editData.salesDeliveryItems.create();
                         created = true;
-                    }
-                    if (item.itemCode !== selected.code) {
-                        item.materialBatchs.deleteAll();
-                        item.materialSerials.deleteAll();
                     }
                     item.warehouse = selected.code;
                     item = null;
@@ -335,7 +318,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         // 调用批次选择服务
         // 调用批次选择服务
         ibas.servicesManager.runApplicationService<IMaterialBatchContract[]>({
-            proxy: new MaterialIssueBatchServiceProxy(that.getBatchContract(salesDeliveryLines))
+            proxy: new MaterialBatchIssueServiceProxy(that.getBatchContract(salesDeliveryLines))
         });
     }
     /** 选择销售交货序列事件 */
@@ -354,7 +337,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         }
         // 调用序列选择服务
         ibas.servicesManager.runApplicationService<IMaterialSerialContract[]>({
-            proxy: new MaterialIssueSerialServiceProxy(that.getSerialContract(salesDeliveryLines))
+            proxy: new MaterialSerialIssueServiceProxy(that.getSerialContract(salesDeliveryLines))
         });
     }
     /** 获取行-批次服务契约信息 */
@@ -365,7 +348,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                 itemCode: item.itemCode,
                 warehouse: item.warehouse,
                 quantity: item.quantity,
-                materialBatchs: item.materialBatchs,
+                materialBatches: item.materialBatches,
             });
         }
         return contracts;

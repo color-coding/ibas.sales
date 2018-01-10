@@ -566,73 +566,6 @@ export class SalesOrder extends BODocument<SalesOrder> implements ISalesOrder {
         this.setProperty(SalesOrder.PROPERTY_PROJECT_NAME, value);
     }
 
-    /** 映射的属性名称-收货人 */
-    static PROPERTY_CONSIGNEE_NAME: string = "Consignee";
-    /** 获取-收货人 */
-    get consignee(): string {
-        return this.getProperty<string>(SalesOrder.PROPERTY_CONSIGNEE_NAME);
-    }
-    /** 设置-收货人 */
-    set consignee(value: string) {
-        this.setProperty(SalesOrder.PROPERTY_CONSIGNEE_NAME, value);
-    }
-
-    /** 映射的属性名称-联系电话 */
-    static PROPERTY_PHONE_NAME: string = "Phone";
-    /** 获取-联系电话 */
-    get phone(): string {
-        return this.getProperty<string>(SalesOrder.PROPERTY_PHONE_NAME);
-    }
-    /** 设置-联系电话 */
-    set phone(value: string) {
-        this.setProperty(SalesOrder.PROPERTY_PHONE_NAME, value);
-    }
-
-    /** 映射的属性名称-省 */
-    static PROPERTY_PROVINCE_NAME: string = "Province";
-    /** 获取-省 */
-    get province(): string {
-        return this.getProperty<string>(SalesOrder.PROPERTY_PROVINCE_NAME);
-    }
-    /** 设置-省 */
-    set province(value: string) {
-        this.setProperty(SalesOrder.PROPERTY_PROVINCE_NAME, value);
-    }
-
-    /** 映射的属性名称-市 */
-    static PROPERTY_CITY_NAME: string = "City";
-    /** 获取-市 */
-    get city(): string {
-        return this.getProperty<string>(SalesOrder.PROPERTY_CITY_NAME);
-    }
-    /** 设置-市 */
-    set city(value: string) {
-        this.setProperty(SalesOrder.PROPERTY_CITY_NAME, value);
-    }
-
-    /** 映射的属性名称-县/区 */
-    static PROPERTY_COUNTY_NAME: string = "County";
-    /** 获取-县/区 */
-    get county(): string {
-        return this.getProperty<string>(SalesOrder.PROPERTY_COUNTY_NAME);
-    }
-    /** 设置-县/区 */
-    set county(value: string) {
-        this.setProperty(SalesOrder.PROPERTY_COUNTY_NAME, value);
-    }
-
-    /** 映射的属性名称-地址 */
-    static PROPERTY_ADDRESS_NAME: string = "Address";
-    /** 获取-地址 */
-    get address(): string {
-        return this.getProperty<string>(SalesOrder.PROPERTY_ADDRESS_NAME);
-    }
-    /** 设置-地址 */
-    set address(value: string) {
-        this.setProperty(SalesOrder.PROPERTY_ADDRESS_NAME, value);
-    }
-
-
     /** 映射的属性名称-销售订单-行集合 */
     static PROPERTY_SALESORDERITEMS_NAME: string = "SalesOrderItems";
     /** 获取-销售订单-行集合 */
@@ -671,15 +604,6 @@ export class SalesOrderItems extends BusinessObjects<SalesOrderItem, SalesOrder>
         let item: SalesOrderItem = new SalesOrderItem();
         this.add(item);
         return item;
-    }
-    /** 监听父项属性改变 */
-    protected onParentPropertyChanged(name: string): void {
-        super.onParentPropertyChanged(name);
-        if (strings.equalsIgnoreCase(name, SalesOrder.PROPERTY_DOCUMENTSTATUS_NAME)) {
-            for (let salesOrderItem of this.filterDeleted()) {
-                salesOrderItem.lineStatus = this.parent.documentStatus;
-            }
-        }
     }
     /** 监听子项属性改变 */
     protected onChildPropertyChanged(item: SalesOrderItem, name: string): void {
@@ -722,20 +646,6 @@ export class SalesOrderItem extends BODocumentLine<SalesOrderItem> implements IS
     /** 构造函数 */
     constructor() {
         super();
-    }
-
-    /** 监听行属性改变 */
-    protected onPropertyChanged(name: string): void {
-        super.onPropertyChanged(name);
-        if (strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_QUANTITY_NAME) ||
-            strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_PRICE_NAME) ||
-            strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_DISCOUNT_NAME)) {
-            this.lineTotal = this.quantity * this.price * (1 - (!this.discount ? 0 : this.discount) / 100);
-        }
-        // 行总计为NaN时显示为0
-        if (isNaN(this.lineTotal)) {
-            this.lineTotal = 0;
-        }
     }
 
     /** 映射的属性名称-编码 */
@@ -1409,11 +1319,24 @@ export class SalesOrderItem extends BODocumentLine<SalesOrderItem> implements IS
         this.setProperty(SalesOrderItem.PROPERTY_DISTRIBUTIONRULE5_NAME, value);
     }
 
-
-
     /** 初始化数据 */
     protected init(): void {
         //
     }
+
+    /** 监听行属性改变 */
+    protected onPropertyChanged(name: string): void {
+        super.onPropertyChanged(name);
+        if (strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_QUANTITY_NAME) ||
+            strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_PRICE_NAME) ||
+            strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_DISCOUNT_NAME)) {
+            this.lineTotal = this.quantity * this.price * (1 - (!this.discount ? 0 : this.discount) / 100);
+        }
+        // 行总计为NaN时显示为0
+        if (isNaN(this.lineTotal)) {
+            this.lineTotal = 0;
+        }
+    }
+
 }
 

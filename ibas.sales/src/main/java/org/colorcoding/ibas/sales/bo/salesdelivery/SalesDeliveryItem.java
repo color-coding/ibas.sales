@@ -1,17 +1,32 @@
 package org.colorcoding.ibas.sales.bo.salesdelivery;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
+
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
-import org.colorcoding.ibas.bobas.data.*;
+import org.colorcoding.ibas.bobas.data.DateTime;
+import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.data.emBOStatus;
+import org.colorcoding.ibas.bobas.data.emDocumentStatus;
+import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
+import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchJournals;
 import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchJournal;
+import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchJournals;
+import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialJournals;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialJournal;
+import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialJournals;
 import org.colorcoding.ibas.materials.data.emItemType;
+import org.colorcoding.ibas.materials.logic.IMaterialIssueContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
-
-import javax.xml.bind.annotation.*;
 
 /**
  * 获取-销售交货-行
@@ -19,7 +34,8 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = SalesDeliveryItem.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> implements ISalesDeliveryItem {
+public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
+		implements ISalesDeliveryItem, IBusinessLogicsHost {
 
 	/**
 	 * 序列化版本标记
@@ -2419,79 +2435,154 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 	}
 
 	/**
-	 * 属性名称-销售交货-物料批次
+	 * 属性名称-物料批次
 	 */
-	private static final String PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME = "MaterialBatchJournals";
+	private static final String PROPERTY_MATERIALBATCHES_NAME = "MaterialBatches";
 
 	/**
-	 * 销售交货-物料批次的集合属性
+	 * 库存发货-物料批次的集合属性
 	 *
 	 */
-	public static final IPropertyInfo<ISalesDeliveryItemMaterialBatch> PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS = registerProperty(
-			PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME, ISalesDeliveryItemMaterialBatch.class, MY_CLASS);
+	public static final IPropertyInfo<IMaterialBatchJournals> PROPERTY_MATERIALBATCHES = registerProperty(
+			PROPERTY_MATERIALBATCHES_NAME, IMaterialBatchJournals.class, MY_CLASS);
 
 	/**
-	 * 获取-销售交货-物料批次集合
+	 * 获取-物料批次集合
 	 *
 	 * @return 值
 	 */
-	@XmlElementWrapper(name = PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME)
+	@XmlElementWrapper(name = PROPERTY_MATERIALBATCHES_NAME)
 	@XmlElement(name = MaterialBatchJournal.BUSINESS_OBJECT_NAME, type = MaterialBatchJournal.class)
-	public final ISalesDeliveryItemMaterialBatch getMaterialBatchs() {
-		return this.getProperty(PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS);
+	public final IMaterialBatchJournals getMaterialBatches() {
+		return this.getProperty(PROPERTY_MATERIALBATCHES);
 	}
 
 	/**
-	 * 设置-销售交货-物料批次集合
+	 * 设置-物料批次集合
 	 *
 	 * @param value
 	 *            值
 	 */
-	public final void setMaterialBatchs(ISalesDeliveryItemMaterialBatch value) {
-		this.setProperty(PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS, value);
+	public final void setMaterialBatches(IMaterialBatchJournals value) {
+		this.setProperty(PROPERTY_MATERIALBATCHES, value);
 	}
 
 	/**
-	 * 属性名称-销售交货-物料序列
+	 * 属性名称-物料序列
 	 */
-	private static final String PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME = "MaterialSerialJournals";
+	private static final String PROPERTY_MATERIALSERIALS_NAME = "MaterialSerials";
 
 	/**
-	 * 销售交货-物料序列的集合属性
+	 * 库存发货-物料序列的集合属性
 	 *
 	 */
-	public static final IPropertyInfo<ISalesDeliveryItemMaterialSerial> PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS = registerProperty(
-			PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME, ISalesDeliveryItemMaterialSerial.class, MY_CLASS);
+	public static final IPropertyInfo<IMaterialSerialJournals> PROPERTY_MATERIALSERIALS = registerProperty(
+			PROPERTY_MATERIALSERIALS_NAME, IMaterialSerialJournals.class, MY_CLASS);
 
 	/**
-	 * 获取-销售交货-物料序列集合
+	 * 获取-库存发货-物料序列集合
 	 *
 	 * @return 值
 	 */
-	@XmlElementWrapper(name = PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME)
+	@XmlElementWrapper(name = PROPERTY_MATERIALSERIALS_NAME)
 	@XmlElement(name = MaterialSerialJournal.BUSINESS_OBJECT_NAME, type = MaterialSerialJournal.class)
-	public final ISalesDeliveryItemMaterialSerial getMaterialSerials() {
-		return this.getProperty(PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS);
+	public final IMaterialSerialJournals getMaterialSerials() {
+		return this.getProperty(PROPERTY_MATERIALSERIALS);
 	}
 
 	/**
-	 * 设置-销售交货-物料序列集合
+	 * 设置-库存发货-物料序列集合
 	 *
 	 * @param value
 	 *            值
 	 */
-	public final void setMaterialSerials(ISalesDeliveryItemMaterialSerial value) {
-		this.setProperty(PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS, value);
+	public final void setMaterialSerials(IMaterialSerialJournals value) {
+		this.setProperty(PROPERTY_MATERIALSERIALS, value);
 	}
+
 	/**
 	 * 初始化数据
 	 */
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
-		this.setMaterialBatchs(new SalesDeliveryItemMaterialBatch(this));
-		this.setMaterialSerials(new SalesDeliveryItemMaterialSerial(this));
+		this.setMaterialBatches(new MaterialBatchJournals(this));
+		this.setMaterialSerials(new MaterialSerialJournals(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 	}
 
+	/**
+	 * 父项
+	 */
+	ISalesDelivery parent;
+
+	@Override
+	public IBusinessLogicContract[] getContracts() {
+		return new IBusinessLogicContract[] { new IMaterialIssueContract() {
+			@Override
+			public String getIdentifiers() {
+				return SalesDeliveryItem.this.getIdentifiers();
+			}
+
+			@Override
+			public String getItemCode() {
+				return SalesDeliveryItem.this.getItemCode();
+			}
+
+			@Override
+			public String getItemName() {
+				return SalesDeliveryItem.this.getItemDescription();
+			}
+
+			@Override
+			public String getWarehouse() {
+				return SalesDeliveryItem.this.getWarehouse();
+			}
+
+			@Override
+			public String getBaseDocumentType() {
+				return SalesDeliveryItem.this.getObjectCode();
+			}
+
+			@Override
+			public Integer getBaseDocumentEntry() {
+				return SalesDeliveryItem.this.getDocEntry();
+			}
+
+			@Override
+			public Integer getBaseDocumentLineId() {
+				return SalesDeliveryItem.this.getLineId();
+			}
+
+			@Override
+			public Decimal getQuantity() {
+				return SalesDeliveryItem.this.getQuantity();
+			}
+
+			@Override
+			public DateTime getPostingDate() {
+				return SalesDeliveryItem.this.parent.getPostingDate();
+			}
+
+			@Override
+			public DateTime getDeliveryDate() {
+				return SalesDeliveryItem.this.parent.getDeliveryDate();
+			}
+
+			@Override
+			public DateTime getDocumentDate() {
+				return SalesDeliveryItem.this.parent.getDocumentDate();
+			}
+
+			@Override
+			public emYesNo getCanceled() {
+				return SalesDeliveryItem.this.getCanceled();
+			}
+
+			@Override
+			public emDocumentStatus getStatus() {
+				return SalesDeliveryItem.this.getLineStatus();
+			}
+		} };
+	}
 }

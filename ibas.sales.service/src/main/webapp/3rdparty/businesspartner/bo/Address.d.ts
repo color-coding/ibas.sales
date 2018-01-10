@@ -54,6 +54,9 @@ export interface IAddress extends IBOSimple {
     /** 国 */
     country: string;
 
+    /** 邮编 */
+    zipCode: string;
+
     /** 联系电话 */
     mobilePhone: string;
 

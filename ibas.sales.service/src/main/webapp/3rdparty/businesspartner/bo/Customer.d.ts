@@ -72,9 +72,6 @@ export interface ICustomer extends IBOMasterData {
     /** 价格清单 */
     priceList: number;
 
-    /** 余额 */
-    balance: number;
-
     /** 货币 */
     currency: string;
 

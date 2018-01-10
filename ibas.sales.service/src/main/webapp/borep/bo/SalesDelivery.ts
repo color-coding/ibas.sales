@@ -40,20 +40,8 @@ import {
     ShippingAddresss,
 } from "./ShippingAddress";
 import {
-    IMaterialBatchDocument,
-    IMaterialSerialDocument,
-    IMaterialBatchDocuments,
-    IMaterialSerialDocuments,
-    IMaterialBatchJournal,
-    IMaterialSerialJournal,
-    IMaterialSerialJournals,
-    IMaterialBatchJournals,
-    BO_CODE_MATERIALBATCHJOURNAL,
-    BO_CODE_MATERIALSERIALJOURNAL,
-    BO_CODE_MATERIALSERIALJOURNALS,
-    BO_CODE_MATERIALBATCHJOURNALS,
-    BO_CODE_MATERIALSERIALDOCUMENT,
-    BO_CODE_MATERIALBATCHDOCUMENT,
+    MaterialSerialJournals,
+    MaterialBatchJournals,
     emItemType
 } from "3rdparty/materials/index";
 
@@ -583,73 +571,6 @@ export class SalesDelivery extends BODocument<SalesDelivery> implements ISalesDe
         this.setProperty(SalesDelivery.PROPERTY_PROJECT_NAME, value);
     }
 
-    /** 映射的属性名称-收货人 */
-    static PROPERTY_CONSIGNEE_NAME: string = "Consignee";
-    /** 获取-收货人 */
-    get consignee(): string {
-        return this.getProperty<string>(SalesDelivery.PROPERTY_CONSIGNEE_NAME);
-    }
-    /** 设置-收货人 */
-    set consignee(value: string) {
-        this.setProperty(SalesDelivery.PROPERTY_CONSIGNEE_NAME, value);
-    }
-
-    /** 映射的属性名称-联系电话 */
-    static PROPERTY_PHONE_NAME: string = "Phone";
-    /** 获取-联系电话 */
-    get phone(): string {
-        return this.getProperty<string>(SalesDelivery.PROPERTY_PHONE_NAME);
-    }
-    /** 设置-联系电话 */
-    set phone(value: string) {
-        this.setProperty(SalesDelivery.PROPERTY_PHONE_NAME, value);
-    }
-
-    /** 映射的属性名称-省 */
-    static PROPERTY_PROVINCE_NAME: string = "Province";
-    /** 获取-省 */
-    get province(): string {
-        return this.getProperty<string>(SalesDelivery.PROPERTY_PROVINCE_NAME);
-    }
-    /** 设置-省 */
-    set province(value: string) {
-        this.setProperty(SalesDelivery.PROPERTY_PROVINCE_NAME, value);
-    }
-
-    /** 映射的属性名称-市 */
-    static PROPERTY_CITY_NAME: string = "City";
-    /** 获取-市 */
-    get city(): string {
-        return this.getProperty<string>(SalesDelivery.PROPERTY_CITY_NAME);
-    }
-    /** 设置-市 */
-    set city(value: string) {
-        this.setProperty(SalesDelivery.PROPERTY_CITY_NAME, value);
-    }
-
-    /** 映射的属性名称-县/区 */
-    static PROPERTY_COUNTY_NAME: string = "County";
-    /** 获取-县/区 */
-    get county(): string {
-        return this.getProperty<string>(SalesDelivery.PROPERTY_COUNTY_NAME);
-    }
-    /** 设置-县/区 */
-    set county(value: string) {
-        this.setProperty(SalesDelivery.PROPERTY_COUNTY_NAME, value);
-    }
-
-    /** 映射的属性名称-地址 */
-    static PROPERTY_ADDRESS_NAME: string = "Address";
-    /** 获取-地址 */
-    get address(): string {
-        return this.getProperty<string>(SalesDelivery.PROPERTY_ADDRESS_NAME);
-    }
-    /** 设置-地址 */
-    set address(value: string) {
-        this.setProperty(SalesDelivery.PROPERTY_ADDRESS_NAME, value);
-    }
-
-
     /** 映射的属性名称-销售交货-行集合 */
     static PROPERTY_SALESDELIVERYITEMS_NAME: string = "SalesDeliveryItems";
     /** 获取-销售交货-行集合 */
@@ -682,10 +603,7 @@ export class SalesDelivery extends BODocument<SalesDelivery> implements ISalesDe
 }
 
 /** 销售交货-行 集合 */
-export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, SalesDelivery>
-    implements ISalesDeliveryItems,
-    IMaterialBatchDocuments,
-    IMaterialSerialDocuments {
+export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, SalesDelivery> implements ISalesDeliveryItems {
 
     /** 创建并添加子项 */
     create(): SalesDeliveryItem {
@@ -693,26 +611,6 @@ export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, Sales
         this.add(item);
         item.lineStatus = this.parent.documentStatus;
         return item;
-    }
-
-    checkBatchQuantity(): boolean {
-        return new (boFactory.classOf(BO_CODE_MATERIALBATCHDOCUMENT))
-            (this.filterDeleted().filter(c => c.batchManagement === emYesNo.YES)).checkBatchQuantity();
-    }
-
-    checkSerialQuantity(): boolean {
-        return new (boFactory.classOf(BO_CODE_MATERIALSERIALDOCUMENT))
-            (this.filterDeleted().filter(c => c.serialManagement === emYesNo.YES)).checkSerialQuantity();
-    }
-
-    /** 监听父项属性改变 */
-    protected onParentPropertyChanged(name: string): void {
-        super.onParentPropertyChanged(name);
-        if (strings.equalsIgnoreCase(name, SalesDelivery.PROPERTY_DOCUMENTSTATUS_NAME)) {
-            for (let item of this.filterDeleted()) {
-                item.lineStatus = this.parent.documentStatus;
-            }
-        }
     }
     /** 监听子项属性改变 */
     protected onChildPropertyChanged(item: SalesDeliveryItem, name: string): void {
@@ -749,26 +647,11 @@ export class SalesDeliveryItems extends BusinessObjects<SalesDeliveryItem, Sales
 
 
 /** 销售交货-行 */
-export class SalesDeliveryItem extends BODocumentLine<SalesDeliveryItem>
-    implements ISalesDeliveryItem, IMaterialBatchDocument, IMaterialSerialDocument {
+export class SalesDeliveryItem extends BODocumentLine<SalesDeliveryItem> implements ISalesDeliveryItem {
 
     /** 构造函数 */
     constructor() {
         super();
-    }
-
-    /** 监听行属性改变 */
-    protected onPropertyChanged(name: string): void {
-        super.onPropertyChanged(name);
-        if (strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_QUANTITY_NAME) ||
-            strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_PRICE_NAME) ||
-            strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_DISCOUNT_NAME)) {
-            this.lineTotal = this.quantity * this.price * (1 - (numbers.toFloat(this.discount)) / 100);
-        }
-        // 行总计为NaN时显示为0
-        if (isNaN(this.lineTotal)) {
-            this.lineTotal = 0;
-        }
     }
 
     /** 映射的属性名称-编码 */
@@ -1441,35 +1324,48 @@ export class SalesDeliveryItem extends BODocumentLine<SalesDeliveryItem>
     set distributionRule5(value: string) {
         this.setProperty(SalesDeliveryItem.PROPERTY_DISTRIBUTIONRULE5_NAME, value);
     }
-    /** 映射的属性名称-销售交货-行-序列号集合 */
-    static PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME: string = "MaterialSerialJournals";
-    /** 获取-销售交货-行-序列号集合 */
-    get materialSerials(): IMaterialSerialJournals<SalesDeliveryItem> {
-        return this.getProperty<IMaterialSerialJournals<SalesDeliveryItem>>
-            (SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME);
+
+    /** 映射的属性名称-物料批次集合 */
+    static PROPERTY_MATERIALBATCHES_NAME: string = "MaterialBatches";
+    /** 获取-物料批次集合 */
+    get materialBatches(): MaterialBatchJournals {
+        return this.getProperty<MaterialBatchJournals>(SalesDeliveryItem.PROPERTY_MATERIALBATCHES_NAME);
     }
-    /** 设置-销售交货-行-序列号集合 */
-    set materialSerials(value: IMaterialSerialJournals<SalesDeliveryItem>) {
-        this.setProperty(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALSERIALJOURNALS_NAME, value);
-    }
-    /** 映射的属性名称-销售交货-行-批次集合 */
-    static PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME: string = "MaterialBatchJournals";
-    /** 获取-销售交货-行-序列号集合 */
-    get materialBatchs(): IMaterialBatchJournals<SalesDeliveryItem> {
-        return this.getProperty<IMaterialBatchJournals<SalesDeliveryItem>>
-            (SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME);
-    }
-    /** 设置-销售交货-行-序列号集合 */
-    set materialBatchs(value: IMaterialBatchJournals<SalesDeliveryItem>) {
-        this.setProperty(SalesDeliveryItem.PROPERTY_SALESDELIVERYMATERIALBATCHJOURNALS_NAME, value);
+    /** 设置-物料批次集合 */
+    set materialBatches(value: MaterialBatchJournals) {
+        this.setProperty(SalesDeliveryItem.PROPERTY_MATERIALBATCHES_NAME, value);
     }
 
+    /** 映射的属性名称-物料序列集合 */
+    static PROPERTY_MATERIALSERIALS_NAME: string = "MaterialSerials";
+    /** 获取-物料序列集合 */
+    get materialSerials(): MaterialSerialJournals {
+        return this.getProperty<MaterialSerialJournals>(SalesDeliveryItem.PROPERTY_MATERIALSERIALS_NAME);
+    }
+    /** 设置-物料序列集合 */
+    set materialSerials(value: MaterialSerialJournals) {
+        this.setProperty(SalesDeliveryItem.PROPERTY_MATERIALSERIALS_NAME, value);
+    }
 
     /** 初始化数据 */
     protected init(): void {
-        //
-        this.materialBatchs = new (boFactory.classOf(BO_CODE_MATERIALBATCHJOURNALS))(this);
-        this.materialSerials = new (boFactory.classOf(BO_CODE_MATERIALSERIALJOURNALS))(this);
+        this.materialBatches = new MaterialBatchJournals(this);
+        this.materialSerials = new MaterialSerialJournals(this);
     }
+
+    /** 监听行属性改变 */
+    protected onPropertyChanged(name: string): void {
+        super.onPropertyChanged(name);
+        if (strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_QUANTITY_NAME) ||
+            strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_PRICE_NAME) ||
+            strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_DISCOUNT_NAME)) {
+            this.lineTotal = this.quantity * this.price * (1 - (numbers.toFloat(this.discount)) / 100);
+        }
+        // 行总计为NaN时显示为0
+        if (isNaN(this.lineTotal)) {
+            this.lineTotal = 0;
+        }
+    }
+
 }
 
