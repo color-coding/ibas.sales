@@ -2541,17 +2541,17 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 			}
 
 			@Override
-			public String getBaseDocumentType() {
+			public String getDocumentType() {
 				return SalesReturnItem.this.getObjectCode();
 			}
 
 			@Override
-			public Integer getBaseDocumentEntry() {
+			public Integer getDocumentEntry() {
 				return SalesReturnItem.this.getDocEntry();
 			}
 
 			@Override
-			public Integer getBaseDocumentLineId() {
+			public Integer getDocumentLineId() {
 				return SalesReturnItem.this.getLineId();
 			}
 

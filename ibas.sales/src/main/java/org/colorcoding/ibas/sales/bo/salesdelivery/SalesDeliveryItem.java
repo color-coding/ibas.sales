@@ -2540,17 +2540,17 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 			}
 
 			@Override
-			public String getBaseDocumentType() {
+			public String getDocumentType() {
 				return SalesDeliveryItem.this.getObjectCode();
 			}
 
 			@Override
-			public Integer getBaseDocumentEntry() {
+			public Integer getDocumentEntry() {
 				return SalesDeliveryItem.this.getDocEntry();
 			}
 
 			@Override
-			public Integer getBaseDocumentLineId() {
+			public Integer getDocumentLineId() {
 				return SalesDeliveryItem.this.getLineId();
 			}
 
