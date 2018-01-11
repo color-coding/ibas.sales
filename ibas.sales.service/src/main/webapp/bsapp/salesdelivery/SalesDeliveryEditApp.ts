@@ -232,8 +232,11 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                     item.itemDescription = selected.name;
                     item.serialManagement = selected.serialManagement;
                     item.batchManagement = selected.batchManagement;
-                    // item.price = selected.price;
+                    item.warehouse = selected.defaultWarehouse;
                     item.quantity = 1;
+                    item.uom = selected.inventoryUOM;
+                    item.price = selected.price;
+                    item.currency = selected.currency;
                     item = null;
                 }
                 if (created) {
@@ -248,7 +251,11 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         let that: this = this;
         ibas.servicesManager.runChooseService<IWarehouse>({
             boCode: BO_CODE_WAREHOUSE,
-            criteria: [],
+            chooseType: ibas.emChooseType.SINGLE,
+            criteria: [
+                new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES),
+                new ibas.Condition("deleted", ibas.emConditionOperation.EQUAL, ibas.emYesNo.NO)
+            ],
             onCompleted(selecteds: ibas.List<IWarehouse>): void {
                 let index: number = that.editData.salesDeliveryItems.indexOf(caller);
                 let item: bo.SalesDeliveryItem = that.editData.salesDeliveryItems[index];
@@ -302,70 +309,33 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
 
     /** 选择销售交货行批次事件 */
     chooseSalesDeliveryLineMaterialBatch(): void {
-        let that: this = this;
-        let salesDeliveryLines: bo.SalesDeliveryItem[] = this.editData.salesDeliveryItems.filter(
-            c => c.isDeleted === false
-                && !ibas.objects.isNull(c.lineStatus)
-                && c.batchManagement !== undefined
-                && c.batchManagement === ibas.emYesNo.YES
-                && !ibas.strings.isEmpty(c.itemCode)
-                && !ibas.strings.isEmpty(c.warehouse)
-        );
-        if (ibas.objects.isNull(salesDeliveryLines) || salesDeliveryLines.length === 0) {
-            this.messages(ibas.emMessageType.INFORMATION, ibas.i18n.prop("sales_app_no_matched_documentline_to_choose_batch"));
-            return;
-        }
-        // 调用批次选择服务
-        // 调用批次选择服务
-        ibas.servicesManager.runApplicationService<IMaterialBatchContract[]>({
-            proxy: new MaterialBatchIssueServiceProxy(that.getBatchContract(salesDeliveryLines))
-        });
-    }
-    /** 选择销售交货序列事件 */
-    chooseSalesDeliveryLineMaterialSerial(): void {
-        let that: this = this;
-        let salesDeliveryLines: bo.SalesDeliveryItem[] = this.editData.salesDeliveryItems
-            .filter(c => c.isDeleted === false
-                && !ibas.objects.isNull(c.lineStatus)
-                && c.serialManagement !== undefined
-                && c.serialManagement === ibas.emYesNo.YES
-                && !ibas.strings.isEmpty(c.itemCode)
-                && !ibas.strings.isEmpty(c.warehouse));
-        if (ibas.objects.isNull(salesDeliveryLines) || salesDeliveryLines.length === 0) {
-            this.messages(ibas.emMessageType.INFORMATION, ibas.i18n.prop("sales_app_no_matched_documentline_to_choose_serial"));
-            return;
-        }
-        // 调用序列选择服务
-        ibas.servicesManager.runApplicationService<IMaterialSerialContract[]>({
-            proxy: new MaterialSerialIssueServiceProxy(that.getSerialContract(salesDeliveryLines))
-        });
-    }
-    /** 获取行-批次服务契约信息 */
-    getBatchContract(salesDeliveryLines: bo.SalesDeliveryItem[]): IMaterialBatchContract[] {
-        let contracts: IMaterialBatchContract[] = new ibas.ArrayList<IMaterialBatchContract>();
-        for (let item of salesDeliveryLines) {
-            contracts.push({
+        let contracts: ibas.ArrayList<IMaterialBatchContract> = new ibas.ArrayList<IMaterialBatchContract>();
+        for (let item of this.editData.salesDeliveryItems) {
+            contracts.add({
                 itemCode: item.itemCode,
                 warehouse: item.warehouse,
                 quantity: item.quantity,
                 materialBatches: item.materialBatches,
             });
         }
-        return contracts;
+        ibas.servicesManager.runApplicationService<IMaterialBatchContract[]>({
+            proxy: new MaterialBatchIssueServiceProxy(contracts)
+        });
     }
-
-    /** 获取行-批次服务契约信息 */
-    getSerialContract(salesDeliveryLines: bo.SalesDeliveryItem[]): IMaterialSerialContract[] {
-        let contracts: IMaterialSerialContract[] = new ibas.ArrayList<IMaterialSerialContract>();
-        for (let item of salesDeliveryLines) {
-            contracts.push({
+    /** 选择销售交货序列事件 */
+    chooseSalesDeliveryLineMaterialSerial(): void {
+        let contracts: ibas.ArrayList<IMaterialSerialContract> = new ibas.ArrayList<IMaterialSerialContract>();
+        for (let item of this.editData.salesDeliveryItems) {
+            contracts.add({
                 itemCode: item.itemCode,
                 warehouse: item.warehouse,
                 quantity: item.quantity,
-                materialSerials: item.materialSerials,
+                materialSerials: item.materialSerials
             });
         }
-        return contracts;
+        ibas.servicesManager.runApplicationService<IMaterialSerialContract[]>({
+            proxy: new MaterialSerialIssueServiceProxy(contracts)
+        });
     }
 }
 /** 视图-销售交货 */

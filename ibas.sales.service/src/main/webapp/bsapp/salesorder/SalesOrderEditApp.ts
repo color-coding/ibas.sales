@@ -37,7 +37,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         this.view.createDataEvent = this.createData;
         this.view.addSalesOrderItemEvent = this.addSalesOrderItem;
         this.view.removeSalesOrderItemEvent = this.removeSalesOrderItem;
-        this.view.chooseSalesOrderItemMaterialEvent = this.chooseSalesOrderItem;
+        this.view.chooseSalesOrderItemMaterialEvent = this.chooseSalesOrderItemMaterial;
         this.view.chooseSalesOrderCustomerEvent = this.chooseSalesOrderCustomer;
         this.view.chooseSalesOrderItemWarehouseEvent = this.chooseSalesOrderItemWarehouse;
     }
@@ -197,7 +197,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         });
     }
     /** 选择销售订单物料事件 */
-    private chooseSalesOrderItem(caller: bo.SalesOrderItem): void {
+    private chooseSalesOrderItemMaterial(caller: bo.SalesOrderItem): void {
         let that: this = this;
         ibas.servicesManager.runChooseService<IProduct>({
             boCode: BO_CODE_PRODUCT,
@@ -214,6 +214,14 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
                         created = true;
                     }
                     item.itemCode = selected.code;
+                    item.itemDescription = selected.name;
+                    item.serialManagement = selected.serialManagement;
+                    item.batchManagement = selected.batchManagement;
+                    item.warehouse = selected.defaultWarehouse;
+                    item.quantity = 1;
+                    item.uom = selected.inventoryUOM;
+                    item.price = selected.price;
+                    item.currency = selected.currency;
                     item = null;
                 }
                 if (created) {
@@ -258,7 +266,11 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         let that: this = this;
         ibas.servicesManager.runChooseService<IWarehouse>({
             boCode: BO_CODE_WAREHOUSE,
-            criteria: [],
+            chooseType: ibas.emChooseType.SINGLE,
+            criteria: [
+                new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES),
+                new ibas.Condition("deleted", ibas.emConditionOperation.EQUAL, ibas.emYesNo.NO)
+            ],
             onCompleted(selecteds: ibas.List<IWarehouse>): void {
                 let index: number = that.editData.salesOrderItems.indexOf(caller);
                 let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];
