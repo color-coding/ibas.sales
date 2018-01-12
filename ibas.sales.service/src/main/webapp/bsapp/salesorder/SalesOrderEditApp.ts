@@ -7,10 +7,10 @@
  */
 
 import * as ibas from "ibas/index";
+import * as mm from "3rdparty/materials/index";
+import * as bp from "3rdparty/businesspartner/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
-import { BO_CODE_CUSTOMER, ICustomer } from "3rdparty/businesspartner/index";
-import { BO_CODE_PRODUCT, IMaterial, IProduct, IWarehouse, BO_CODE_WAREHOUSE, } from "3rdparty/materials/index";
 
 /** 编辑应用-销售订单 */
 export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditView, bo.SalesOrder> {
@@ -186,23 +186,23 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
     /** 选择销售订单客户事件 */
     private chooseSalesOrderCustomer(): void {
         let that: this = this;
-        ibas.servicesManager.runChooseService<ICustomer>({
-            boCode: BO_CODE_CUSTOMER,
-            criteria: [
-            ],
-            onCompleted(selecteds: ibas.List<ICustomer>): void {
-                that.editData.customerCode = selecteds.firstOrDefault().code;
-                that.editData.customerName = selecteds.firstOrDefault().name;
+        ibas.servicesManager.runChooseService<bp.ICustomer>({
+            boCode: bp.BO_CODE_CUSTOMER,
+            criteria: bp.conditions.customer.create(),
+            onCompleted(selecteds: ibas.List<bp.ICustomer>): void {
+                let selected: bp.ICustomer = selecteds.firstOrDefault();
+                that.editData.customerCode = selected.code;
+                that.editData.customerName = selected.name;
             }
         });
     }
     /** 选择销售订单物料事件 */
     private chooseSalesOrderItemMaterial(caller: bo.SalesOrderItem): void {
         let that: this = this;
-        ibas.servicesManager.runChooseService<IProduct>({
-            boCode: BO_CODE_PRODUCT,
-            criteria: [],
-            onCompleted(selecteds: ibas.List<IProduct>): void {
+        ibas.servicesManager.runChooseService<mm.IProduct>({
+            boCode: mm.BO_CODE_PRODUCT,
+            criteria: mm.conditions.product.create(),
+            onCompleted(selecteds: ibas.List<mm.IProduct>): void {
                 // 获取触发的对象
                 let index: number = that.editData.salesOrderItems.indexOf(caller);
                 let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];
@@ -264,14 +264,11 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
     /** 选择销售交货行仓库事件 */
     private chooseSalesOrderItemWarehouse(caller: bo.SalesOrderItem): void {
         let that: this = this;
-        ibas.servicesManager.runChooseService<IWarehouse>({
-            boCode: BO_CODE_WAREHOUSE,
+        ibas.servicesManager.runChooseService<mm.IWarehouse>({
+            boCode: mm.BO_CODE_WAREHOUSE,
             chooseType: ibas.emChooseType.SINGLE,
-            criteria: [
-                new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES),
-                new ibas.Condition("deleted", ibas.emConditionOperation.EQUAL, ibas.emYesNo.NO)
-            ],
-            onCompleted(selecteds: ibas.List<IWarehouse>): void {
+            criteria: mm.conditions.warehouse.create(),
+            onCompleted(selecteds: ibas.List<mm.IWarehouse>): void {
                 let index: number = that.editData.salesOrderItems.indexOf(caller);
                 let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];
                 // 选择返回数量多余触发数量时,自动创建新的项目

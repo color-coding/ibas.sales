@@ -36,6 +36,9 @@ export interface ICustomer extends IBOMasterData {
     /** 组代码 */
     group: string;
 
+    /** 有效的 */
+    activated: emYesNo;
+
     /** 联系人 */
     contactPerson: number;
 

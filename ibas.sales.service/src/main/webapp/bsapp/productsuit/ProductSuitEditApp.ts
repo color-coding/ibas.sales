@@ -8,11 +8,8 @@
 
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
+import * as mm from "3rdparty/materials/index";
 import { BORepositorySales } from "../../borep/BORepositories";
-import {
-    IMaterial,
-    BO_CODE_MATERIAL
-} from "3rdparty/materials/index";
 
 /** 编辑应用-产品套装 */
 export class ProductSuitEditApp extends ibas.BOEditApplication<IProductSuitEditView, bo.ProductSuit> {
@@ -216,10 +213,10 @@ export class ProductSuitEditApp extends ibas.BOEditApplication<IProductSuitEditV
 
     private chooseProductSuitItemMaterial(caller: bo.ProductSuitItem): void {
         let that: this = this;
-        ibas.servicesManager.runChooseService<IMaterial>({
-            boCode: BO_CODE_MATERIAL,
-            criteria: [],
-            onCompleted(selecteds: ibas.List<IMaterial>): void {
+        ibas.servicesManager.runChooseService<mm.IMaterial>({
+            boCode: mm.BO_CODE_MATERIAL,
+            criteria: mm.conditions.material.create(),
+            onCompleted(selecteds: ibas.List<mm.IMaterial>): void {
                 let index: number = that.editData.productSuitItems.indexOf(caller);
                 let item: bo.ProductSuitItem = that.editData.productSuitItems[index];
                 // 选择返回数量多余触发数量时,自动创建新的项目
@@ -243,11 +240,11 @@ export class ProductSuitEditApp extends ibas.BOEditApplication<IProductSuitEditV
     }
     private chooseProductSuitMaterial(caller: bo.ProductSuitItem): void {
         let that: this = this;
-        ibas.servicesManager.runChooseService<IMaterial>({
-            boCode: BO_CODE_MATERIAL,
-            criteria: [],
-            onCompleted(selecteds: ibas.List<IMaterial>): void {
-                let selected: IMaterial = selecteds.firstOrDefault();
+        ibas.servicesManager.runChooseService<mm.IMaterial>({
+            boCode: mm.BO_CODE_MATERIAL,
+            criteria: mm.conditions.material.create(),
+            onCompleted(selecteds: ibas.List<mm.IMaterial>): void {
+                let selected: mm.IMaterial = selecteds.firstOrDefault();
                 that.editData.product = selected.code;
                 that.editData.description = selected.name;
             }

@@ -7,23 +7,10 @@
  */
 
 import * as ibas from "ibas/index";
+import * as mm from "3rdparty/materials/index";
+import * as bp from "3rdparty/businesspartner/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
-import { BO_CODE_CUSTOMER, ICustomer } from "3rdparty/businesspartner/index";
-import {
-    IWarehouse,
-    IProduct,
-    IMaterialSerialJournal,
-    IMaterialBatchJournal,
-    MaterialBatchIssueServiceProxy,
-    IMaterialBatchContract,
-    IMaterialSerialContract,
-    BO_CODE_PRODUCT,
-    BO_CODE_MATERIAL,
-    MaterialSerialIssueServiceProxy,
-    IMaterial,
-    BO_CODE_WAREHOUSE,
-} from "3rdparty/materials/index";
 
 
 /** 编辑应用-销售交货 */
@@ -202,23 +189,23 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
     /** 选择销售交货客户事件 */
     private chooseSalesDeliveryCustomer(): void {
         let that: this = this;
-        ibas.servicesManager.runChooseService<ICustomer>({
-            boCode: BO_CODE_CUSTOMER,
-            criteria: [
-            ],
-            onCompleted(selecteds: ibas.List<ICustomer>): void {
-                that.editData.customerCode = selecteds.firstOrDefault().code;
-                that.editData.customerName = selecteds.firstOrDefault().name;
+        ibas.servicesManager.runChooseService<bp.ICustomer>({
+            boCode: bp.BO_CODE_CUSTOMER,
+            criteria: bp.conditions.customer.create(),
+            onCompleted(selecteds: ibas.List<bp.ICustomer>): void {
+                let selected: bp.ICustomer = selecteds.firstOrDefault();
+                that.editData.customerCode = selected.code;
+                that.editData.customerName = selected.name;
             }
         });
     }
     /** 选择销售交货行物料事件 */
     private chooseSalesDeliveryItemMaterial(caller: bo.SalesDeliveryItem): void {
         let that: this = this;
-        ibas.servicesManager.runChooseService<IProduct>({
-            boCode: BO_CODE_PRODUCT,
-            criteria: [],
-            onCompleted(selecteds: ibas.List<IProduct>): void {
+        ibas.servicesManager.runChooseService<mm.IProduct>({
+            boCode: mm.BO_CODE_PRODUCT,
+            criteria: mm.conditions.product.create(),
+            onCompleted(selecteds: ibas.List<mm.IProduct>): void {
                 let index: number = that.editData.salesDeliveryItems.indexOf(caller);
                 let item: bo.SalesDeliveryItem = that.editData.salesDeliveryItems[index];
                 // 选择返回数量多余触发数量时,自动创建新的项目
@@ -249,14 +236,11 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
     /** 选择销售交货行仓库事件 */
     private chooseSalesDeliveryItemWarehouse(caller: bo.SalesDeliveryItem): void {
         let that: this = this;
-        ibas.servicesManager.runChooseService<IWarehouse>({
-            boCode: BO_CODE_WAREHOUSE,
+        ibas.servicesManager.runChooseService<mm.IWarehouse>({
+            boCode: mm.BO_CODE_WAREHOUSE,
             chooseType: ibas.emChooseType.SINGLE,
-            criteria: [
-                new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES),
-                new ibas.Condition("deleted", ibas.emConditionOperation.EQUAL, ibas.emYesNo.NO)
-            ],
-            onCompleted(selecteds: ibas.List<IWarehouse>): void {
+            criteria: mm.conditions.warehouse.create(),
+            onCompleted(selecteds: ibas.List<mm.IWarehouse>): void {
                 let index: number = that.editData.salesDeliveryItems.indexOf(caller);
                 let item: bo.SalesDeliveryItem = that.editData.salesDeliveryItems[index];
                 // 选择返回数量多余触发数量时,自动创建新的项目
@@ -309,7 +293,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
 
     /** 选择销售交货行批次事件 */
     chooseSalesDeliveryLineMaterialBatch(): void {
-        let contracts: ibas.ArrayList<IMaterialBatchContract> = new ibas.ArrayList<IMaterialBatchContract>();
+        let contracts: ibas.ArrayList<mm.IMaterialBatchContract> = new ibas.ArrayList<mm.IMaterialBatchContract>();
         for (let item of this.editData.salesDeliveryItems) {
             contracts.add({
                 itemCode: item.itemCode,
@@ -318,13 +302,13 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                 materialBatches: item.materialBatches,
             });
         }
-        ibas.servicesManager.runApplicationService<IMaterialBatchContract[]>({
-            proxy: new MaterialBatchIssueServiceProxy(contracts)
+        ibas.servicesManager.runApplicationService<mm.IMaterialBatchContract[]>({
+            proxy: new mm.MaterialBatchIssueServiceProxy(contracts)
         });
     }
     /** 选择销售交货序列事件 */
     chooseSalesDeliveryLineMaterialSerial(): void {
-        let contracts: ibas.ArrayList<IMaterialSerialContract> = new ibas.ArrayList<IMaterialSerialContract>();
+        let contracts: ibas.ArrayList<mm.IMaterialSerialContract> = new ibas.ArrayList<mm.IMaterialSerialContract>();
         for (let item of this.editData.salesDeliveryItems) {
             contracts.add({
                 itemCode: item.itemCode,
@@ -333,8 +317,8 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                 materialSerials: item.materialSerials
             });
         }
-        ibas.servicesManager.runApplicationService<IMaterialSerialContract[]>({
-            proxy: new MaterialSerialIssueServiceProxy(contracts)
+        ibas.servicesManager.runApplicationService<mm.IMaterialSerialContract[]>({
+            proxy: new mm.MaterialSerialIssueServiceProxy(contracts)
         });
     }
 }
