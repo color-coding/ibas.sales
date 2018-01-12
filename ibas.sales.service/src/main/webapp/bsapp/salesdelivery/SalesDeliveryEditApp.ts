@@ -296,9 +296,12 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         let contracts: ibas.ArrayList<mm.IMaterialBatchContract> = new ibas.ArrayList<mm.IMaterialBatchContract>();
         for (let item of this.editData.salesDeliveryItems) {
             contracts.add({
+                batchManagement: item.batchManagement,
                 itemCode: item.itemCode,
+                itemDescription: item.itemDescription,
                 warehouse: item.warehouse,
                 quantity: item.quantity,
+                uom: item.uom,
                 materialBatches: item.materialBatches,
             });
         }
@@ -311,9 +314,12 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         let contracts: ibas.ArrayList<mm.IMaterialSerialContract> = new ibas.ArrayList<mm.IMaterialSerialContract>();
         for (let item of this.editData.salesDeliveryItems) {
             contracts.add({
+                serialManagement: item.serialManagement,
                 itemCode: item.itemCode,
+                itemDescription: item.itemDescription,
                 warehouse: item.warehouse,
                 quantity: item.quantity,
+                uom: item.uom,
                 materialSerials: item.materialSerials
             });
         }
