@@ -593,6 +593,7 @@ export class SalesOrder extends BODocument<SalesOrder> implements ISalesOrder {
         this.salesOrderItems = new SalesOrderItems(this);
         this.shippingAddresss = new ShippingAddresss(this);
         this.objectCode = config.applyVariables(SalesOrder.BUSINESS_OBJECT_CODE);
+        this.documentStatus = emDocumentStatus.RELEASED;
     }
 }
 

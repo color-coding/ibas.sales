@@ -2575,15 +2575,6 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 				return SalesReturnItem.this.parent.getDocumentDate();
 			}
 
-			@Override
-			public emYesNo getCanceled() {
-				return SalesReturnItem.this.getCanceled();
-			}
-
-			@Override
-			public emDocumentStatus getStatus() {
-				return SalesReturnItem.this.getLineStatus();
-			}
 		} };
 	}
 }

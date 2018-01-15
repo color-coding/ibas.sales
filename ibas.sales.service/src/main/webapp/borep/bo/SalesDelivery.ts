@@ -598,7 +598,7 @@ export class SalesDelivery extends BODocument<SalesDelivery> implements ISalesDe
         this.salesDeliveryItems = new SalesDeliveryItems(this);
         this.shippingAddresss = new ShippingAddresss(this);
         this.objectCode = config.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE);
-        this.documentStatus = emDocumentStatus.PLANNED;
+        this.documentStatus = emDocumentStatus.RELEASED;
     }
 }
 

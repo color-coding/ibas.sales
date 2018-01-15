@@ -2574,15 +2574,6 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 				return SalesDeliveryItem.this.parent.getDocumentDate();
 			}
 
-			@Override
-			public emYesNo getCanceled() {
-				return SalesDeliveryItem.this.getCanceled();
-			}
-
-			@Override
-			public emDocumentStatus getStatus() {
-				return SalesDeliveryItem.this.getLineStatus();
-			}
 		} };
 	}
 }

@@ -596,7 +596,7 @@ export class SalesReturn extends BODocument<SalesReturn> implements ISalesReturn
         this.salesReturnItems = new SalesReturnItems(this);
         this.shippingAddresss = new ShippingAddresss(this);
         this.objectCode = config.applyVariables(SalesReturn.BUSINESS_OBJECT_CODE);
-        this.documentStatus = emDocumentStatus.PLANNED;
+        this.documentStatus = emDocumentStatus.RELEASED;
     }
 }
 
