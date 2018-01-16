@@ -217,7 +217,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
                     item.itemDescription = selected.name;
                     item.serialManagement = selected.serialManagement;
                     item.batchManagement = selected.batchManagement;
-                    item.warehouse = selected.defaultWarehouse;
+                    item.warehouse = selected.warehouse;
                     item.quantity = 1;
                     item.uom = selected.inventoryUOM;
                     item.price = selected.price;
