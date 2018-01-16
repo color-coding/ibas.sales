@@ -3,6 +3,7 @@ package org.colorcoding.ibas.sales.bo.salesorder;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
@@ -14,6 +15,12 @@ import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchItems;
+import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItem;
+import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItems;
+import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItems;
+import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
+import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.data.emItemType;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
@@ -2424,16 +2431,69 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem> implements IS
 	}
 
 	/**
-	 * 自定义父对象
+	 * 属性名称-物料批次
 	 */
-	private ISalesOrder myParent;
+	private static final String PROPERTY_MATERIALBATCHES_NAME = "MaterialBatches";
 
-	ISalesOrder getMyParent() {
-		return myParent;
+	/**
+	 * 物料批次的集合属性
+	 *
+	 */
+	public static final IPropertyInfo<IMaterialBatchItems> PROPERTY_MATERIALBATCHES = registerProperty(
+			PROPERTY_MATERIALBATCHES_NAME, IMaterialBatchItems.class, MY_CLASS);
+
+	/**
+	 * 获取-物料批次集合
+	 *
+	 * @return 值
+	 */
+	@XmlElementWrapper(name = PROPERTY_MATERIALBATCHES_NAME)
+	@XmlElement(name = MaterialBatchItem.BUSINESS_OBJECT_NAME, type = MaterialBatchItem.class)
+	public final IMaterialBatchItems getMaterialBatches() {
+		return this.getProperty(PROPERTY_MATERIALBATCHES);
 	}
 
-	void setMyParent(ISalesOrder myParent) {
-		this.myParent = myParent;
+	/**
+	 * 设置-物料批次集合
+	 *
+	 * @param value
+	 *            值
+	 */
+	public final void setMaterialBatches(IMaterialBatchItems value) {
+		this.setProperty(PROPERTY_MATERIALBATCHES, value);
+	}
+
+	/**
+	 * 属性名称-物料序列
+	 */
+	private static final String PROPERTY_MATERIALSERIALS_NAME = "MaterialSerials";
+
+	/**
+	 * 物料序列的集合属性
+	 *
+	 */
+	public static final IPropertyInfo<IMaterialSerialItems> PROPERTY_MATERIALSERIALS = registerProperty(
+			PROPERTY_MATERIALSERIALS_NAME, IMaterialSerialItems.class, MY_CLASS);
+
+	/**
+	 * 获取-物料序列集合
+	 *
+	 * @return 值
+	 */
+	@XmlElementWrapper(name = PROPERTY_MATERIALSERIALS_NAME)
+	@XmlElement(name = MaterialSerialItem.BUSINESS_OBJECT_NAME, type = MaterialSerialItem.class)
+	public final IMaterialSerialItems getMaterialSerials() {
+		return this.getProperty(PROPERTY_MATERIALSERIALS);
+	}
+
+	/**
+	 * 设置-物料序列集合
+	 *
+	 * @param value
+	 *            值
+	 */
+	public final void setMaterialSerials(IMaterialSerialItems value) {
+		this.setProperty(PROPERTY_MATERIALSERIALS, value);
 	}
 
 	/**
@@ -2442,7 +2502,14 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem> implements IS
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
+		this.setMaterialBatches(new MaterialBatchItems(this));
+		this.setMaterialSerials(new MaterialSerialItems(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 	}
+
+	/**
+	 * 父项
+	 */
+	ISalesOrder parent;
 
 }

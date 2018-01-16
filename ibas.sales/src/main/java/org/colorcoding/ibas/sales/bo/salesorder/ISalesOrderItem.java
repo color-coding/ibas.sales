@@ -6,6 +6,8 @@ import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchItemParent;
+import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItemParent;
 import org.colorcoding.ibas.materials.data.emItemType;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
 
@@ -13,7 +15,7 @@ import org.colorcoding.ibas.sales.data.emProductTreeType;
  * 销售订单-行 接口
  * 
  */
-public interface ISalesOrderItem extends IBODocumentLine {
+public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemParent, IMaterialSerialItemParent {
 
 	/**
 	 * 获取-编码

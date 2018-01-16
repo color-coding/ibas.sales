@@ -21,9 +21,7 @@ import {
     IBOSimpleLine
 } from "ibas/index";
 import {
-    IMaterialBatchJournalsParent,
-    IMaterialSerialJournalsParent,
-    emItemType,
+    emItemType, IMaterialBatchItemParent, IMaterialSerialItemParent
 } from "3rdparty/materials/index";
 import {
     emProductTreeType
@@ -194,7 +192,7 @@ export interface ISalesReturnItems extends IBusinessObjects<ISalesReturnItem, IS
 }
 
 /** 销售退货-行 */
-export interface ISalesReturnItem extends IBODocumentLine, IMaterialBatchJournalsParent, IMaterialBatchJournalsParent {
+export interface ISalesReturnItem extends IBODocumentLine, IMaterialBatchItemParent, IMaterialSerialItemParent {
 
     /** 编码 */
     docEntry: number;

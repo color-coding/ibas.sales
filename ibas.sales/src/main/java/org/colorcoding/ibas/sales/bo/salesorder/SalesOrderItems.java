@@ -66,23 +66,20 @@ public class SalesOrderItems extends BusinessObjects<ISalesOrderItem, ISalesOrde
 	@Override
 	protected void afterAddItem(ISalesOrderItem item) {
 		super.afterAddItem(item);
-		// TODO 设置关联值
 		if (item instanceof SalesOrderItem) {
 			SalesOrderItem myItem = (SalesOrderItem) item;
-			myItem.setMyParent(this.getParent());
+			myItem.parent = this.getParent();
 		}
 	}
 
 	@Override
 	public ICriteria getElementCriteria() {
 		ICriteria criteria = super.getElementCriteria();
-		// TODO 添加关联查询条件
 		return criteria;
 	}
 
 	@Override
 	public void onParentPropertyChanged(PropertyChangeEvent evt) {
 		super.onParentPropertyChanged(evt);
-		// TODO 设置关联值
 	}
 }

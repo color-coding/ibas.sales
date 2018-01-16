@@ -21,7 +21,7 @@ import {
     IBOSimpleLine
 } from "ibas/index";
 import {
-    emItemType
+    emItemType, IMaterialBatchItemParent, IMaterialSerialItemParent
 } from "3rdparty/materials/index";
 import {
     emProductTreeType
@@ -190,7 +190,7 @@ export interface ISalesOrderItems extends IBusinessObjects<ISalesOrderItem, ISal
 }
 
 /** 销售订单-行 */
-export interface ISalesOrderItem extends IBODocumentLine {
+export interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemParent, IMaterialSerialItemParent {
 
     /** 编码 */
     docEntry: number;
