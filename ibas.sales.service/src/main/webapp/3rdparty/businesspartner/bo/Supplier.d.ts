@@ -21,7 +21,7 @@ import {
     IBOSimpleLine
 } from "ibas/index";
 import {
-    emBusinessPartnerNature,
+    emBusinessPartnerNature
 } from "../Datas";
 
 /** 供应商 */
@@ -36,26 +36,20 @@ export interface ISupplier extends IBOMasterData {
     /** 组代码 */
     group: string;
 
-    /** 有效的 */
+    /** 激活 */
     activated: emYesNo;
-
-    /** 联系人 */
-    contactPerson: number;
 
     /** 公司/个人 */
     companyPrivate: emBusinessPartnerNature;
 
-    /** 付款方街道 */
-    billToStreet: string;
+    /** 联系人 */
+    contactPerson: number;
 
-    /** 付款方邮政编码 */
-    billToZipCode: string;
+    /** 账单地址 */
+    billAddress: number;
 
-    /** 送达方街道 */
-    shipToStreet: string;
-
-    /** 送达方邮政编码 */
-    shipToZipCode: string;
+    /** 送货地址 */
+    shipAddress: number;
 
     /** 电话 1 */
     telephone1: string;

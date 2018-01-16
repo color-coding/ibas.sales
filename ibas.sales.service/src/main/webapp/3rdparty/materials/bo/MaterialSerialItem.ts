@@ -19,7 +19,7 @@ import {
     BODocumentLine,
     BOSimple,
     BOSimpleLine,
-    strings,
+    strings, config,
     BO_PROPERTY_NAME_DOCENTRY,
     BO_PROPERTY_NAME_LINEID,
     BO_PROPERTY_NAME_OBJECTCODE,
@@ -240,11 +240,9 @@ export class MaterialSerialItem extends BOSimple<MaterialSerialItem> implements 
         this.setProperty(MaterialSerialItem.PROPERTY_UPDATEACTIONID_NAME, value);
     }
 
-
-
     /** 初始化数据 */
     protected init(): void {
-        this.objectCode = MaterialSerialItem.BUSINESS_OBJECT_CODE;
+        this.objectCode = config.applyVariables(MaterialSerialItem.BUSINESS_OBJECT_CODE);
     }
 }
 

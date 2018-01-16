@@ -72,6 +72,9 @@ export interface IAddress extends IBOSimple {
     /** 备注 2 */
     remark2: string;
 
+    /** 联系人 */
+    contacts: string;
+
     /** 对象编号 */
     objectKey: number;
 

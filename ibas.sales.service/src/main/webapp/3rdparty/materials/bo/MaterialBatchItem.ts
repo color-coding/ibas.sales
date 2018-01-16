@@ -19,7 +19,7 @@ import {
     BODocumentLine,
     BOSimple,
     BOSimpleLine,
-    strings,
+    strings, config,
     BO_PROPERTY_NAME_DOCENTRY,
     BO_PROPERTY_NAME_LINEID,
     BO_PROPERTY_NAME_OBJECTCODE,
@@ -253,7 +253,7 @@ export class MaterialBatchItem extends BOSimple<MaterialBatchItem> implements IM
 
     /** 初始化数据 */
     protected init(): void {
-        this.objectCode = MaterialBatchItem.BUSINESS_OBJECT_CODE;
+        this.objectCode = config.applyVariables(MaterialBatchItem.BUSINESS_OBJECT_CODE);
     }
 }
 
