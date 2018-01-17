@@ -197,10 +197,9 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                 }),
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_salesreturnitem_itemdescription"),
-                    template: new sap.m.Input("", {
-                        width: "100%",
-                        editable: false,
-                    }).bindProperty("value", {
+                    template: new sap.m.Text("", {
+                        wrapping: false,
+                    }).bindProperty("text", {
                         path: "itemDescription"
                     })
                 }),

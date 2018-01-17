@@ -138,10 +138,9 @@ export class ProductSuitEditView extends ibas.BOEditView implements IProductSuit
                 }),
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_productsuititem_itemdescription"),
-                    template: new sap.m.Input("", {
-                        width: "100%",
-                        editable: false,
-                    }).bindProperty("value", {
+                    template: new sap.m.Text("", {
+                        wrapping: false,
+                    }).bindProperty("text", {
                         path: "itemDescription"
                     })
                 }),
