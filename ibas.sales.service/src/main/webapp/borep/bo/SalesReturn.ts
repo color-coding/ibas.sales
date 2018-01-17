@@ -608,39 +608,6 @@ export class SalesReturnItems extends BusinessObjects<SalesReturnItem, SalesRetu
         this.add(item);
         return item;
     }
-    /** 监听子项属性改变 */
-    protected onChildPropertyChanged(item: SalesReturnItem, name: string): void {
-        super.onChildPropertyChanged(item, name);
-        if (strings.equalsIgnoreCase(name, SalesReturnItem.PROPERTY_LINETOTAL_NAME)) {
-            let total: number = 0;
-            let discount: number = 0;
-            for (let salesReturnItem of this.filterDeleted()) {
-                if (objects.isNull(salesReturnItem.lineTotal)) {
-                    salesReturnItem.lineTotal = 0;
-                }
-                // total += salesReturnItem.lineTotal;
-                total = Number(total) + Number(salesReturnItem.lineTotal);
-                discount = Number(discount) + Number(salesReturnItem.price * salesReturnItem.quantity - salesReturnItem.lineTotal);
-            }
-            this.parent.documentTotal = total;
-            this.parent.discountTotal = discount;
-        }
-        if (strings.equalsIgnoreCase(name, SalesReturnItem.PROPERTY_DISCOUNT_NAME)) {
-            let count: number = 0;
-            for (let salesReturnItem of this.filterDeleted()) {
-                if (objects.isNull(salesReturnItem.discount) || salesReturnItem.discount === NaN) {
-                    salesReturnItem.discount = 0;
-                }
-                // count += salesReturnItem.discount;
-                count = Number(count) + Number(salesReturnItem.discount);
-            }
-            this.parent.discountTotal = count;
-        }
-        // 折扣总计为NaN时显示为0
-        if (isNaN(this.parent.discountTotal)) {
-            this.parent.discountTotal = 0;
-        }
-    }
 }
 
 
@@ -1349,20 +1316,6 @@ export class SalesReturnItem extends BODocumentLine<SalesReturnItem> implements 
     protected init(): void {
         this.materialBatches = new MaterialBatchItems(this);
         this.materialSerials = new MaterialSerialItems(this);
-    }
-
-    /** 监听行属性改变 */
-    protected onPropertyChanged(name: string): void {
-        super.onPropertyChanged(name);
-        if (strings.equalsIgnoreCase(name, SalesReturnItem.PROPERTY_QUANTITY_NAME) ||
-            strings.equalsIgnoreCase(name, SalesReturnItem.PROPERTY_PRICE_NAME) ||
-            strings.equalsIgnoreCase(name, SalesReturnItem.PROPERTY_DISCOUNT_NAME)) {
-            this.lineTotal = this.quantity * this.price * (1 - (!this.discount ? 0 : this.discount) / 100);
-        }
-        // 行总计为NaN时显示为0
-        if (isNaN(this.lineTotal)) {
-            this.lineTotal = 0;
-        }
     }
 }
 

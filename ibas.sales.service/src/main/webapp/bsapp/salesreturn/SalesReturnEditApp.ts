@@ -190,6 +190,7 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         let that: this = this;
         ibas.servicesManager.runChooseService<bp.ICustomer>({
             boCode: bp.BO_CODE_CUSTOMER,
+            chooseType: ibas.emChooseType.SINGLE,
             criteria: bp.conditions.customer.create(),
             onCompleted(selecteds: ibas.List<bp.ICustomer>): void {
                 let selected: bp.ICustomer = selecteds.firstOrDefault();
