@@ -36,10 +36,10 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
     chooseSalesReturnItemMaterialEvent: Function;
     /** 选择销售退货仓库事件 */
     chooseSalesReturnItemWarehouseEvent: Function;
-    /** 新建销售退货单行物料序列事件 */
-    createSalesReturnItemMaterialSerialEvent: Function;
-    /** 新建销售退货单行物料批次事件 */
-    createSalesReturnItemMaterialBatchEvent: Function;
+    /** 选择销售退货单行物料序列事件 */
+    chooseSalesReturnItemMaterialSerialEvent: Function;
+    /** 选择销售退货单行物料批次事件 */
+    chooseSalesReturnItemMaterialBatchEvent: Function;
 
     /** 绘制视图 */
     darw(): any {
@@ -135,20 +135,21 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                     }),
                     new sap.m.ToolbarSeparator(""),
                     new sap.m.MenuButton("", {
-                        text: ibas.strings.format("{0}/{1}", ibas.i18n.prop("sales_batch"), ibas.i18n.prop("sales_serial")),
+                        text: ibas.strings.format("{0}/{1}",
+                            ibas.i18n.prop("sales_material_batch"), ibas.i18n.prop("sales_material_serial")),
                         menu: [
                             new sap.m.Menu("", {
                                 items: [
                                     new sap.m.MenuItem("", {
-                                        text: ibas.i18n.prop("sales_batch"),
+                                        text: ibas.i18n.prop("sales_material_batch"),
                                         press: function (): void {
-                                            that.fireViewEvents(that.createSalesReturnItemMaterialBatchEvent);
+                                            that.fireViewEvents(that.chooseSalesReturnItemMaterialBatchEvent);
                                         }
                                     }),
                                     new sap.m.MenuItem("", {
-                                        text: ibas.i18n.prop("sales_serial"),
+                                        text: ibas.i18n.prop("sales_material_serial"),
                                         press: function (): void {
-                                            that.fireViewEvents(that.createSalesReturnItemMaterialSerialEvent);
+                                            that.fireViewEvents(that.chooseSalesReturnItemMaterialSerialEvent);
                                         }
                                     }),
                                 ]

@@ -40,8 +40,8 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         this.view.chooseSalesReturnCustomerEvent = this.chooseSalesReturnCustomer;
         this.view.chooseSalesReturnItemMaterialEvent = this.chooseSalesReturnItemMaterial;
         this.view.chooseSalesReturnItemWarehouseEvent = this.chooseSalesReturnItemWarehouse;
-        this.view.createSalesReturnItemMaterialBatchEvent = this.createSalesReturnLineMaterialBatch;
-        this.view.createSalesReturnItemMaterialSerialEvent = this.createSalesReturnLineMaterialSerial;
+        this.view.chooseSalesReturnItemMaterialBatchEvent = this.createSalesReturnLineMaterialBatch;
+        this.view.chooseSalesReturnItemMaterialSerialEvent = this.createSalesReturnLineMaterialSerial;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -290,7 +290,7 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         // 仅显示没有标记删除的
         this.view.showSalesReturnItems(this.editData.salesReturnItems.filterDeleted());
     }
-    /** 新建物料批次信息 */
+    /** 选择物料批次信息 */
     createSalesReturnLineMaterialBatch(): void {
         let contracts: ibas.ArrayList<mm.IMaterialBatchContract> = new ibas.ArrayList<mm.IMaterialBatchContract>();
         for (let item of this.editData.salesReturnItems) {
@@ -308,7 +308,7 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
             proxy: new mm.MaterialBatchReceiptServiceProxy(contracts)
         });
     }
-    /** 新建物料序列信息 */
+    /** 选择物料序列信息 */
     createSalesReturnLineMaterialSerial(): void {
         let contracts: ibas.ArrayList<mm.IMaterialSerialContract> = new ibas.ArrayList<mm.IMaterialSerialContract>();
         for (let item of this.editData.salesReturnItems) {
@@ -347,8 +347,8 @@ export interface ISalesReturnEditView extends ibas.IBOEditView {
     chooseSalesReturnItemMaterialEvent: Function;
     /** 选择销售退货仓库事件 */
     chooseSalesReturnItemWarehouseEvent: Function;
-    /** 创建销售退货单行物料批次事件 */
-    createSalesReturnItemMaterialBatchEvent: Function;
-    /** 创建销售退货行物料序列事件 */
-    createSalesReturnItemMaterialSerialEvent: Function;
+    /** 选择销售退货单行物料批次事件 */
+    chooseSalesReturnItemMaterialBatchEvent: Function;
+    /** 选择销售退货行物料序列事件 */
+    chooseSalesReturnItemMaterialSerialEvent: Function;
 }

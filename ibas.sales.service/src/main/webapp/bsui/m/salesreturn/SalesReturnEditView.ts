@@ -34,9 +34,9 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
     /** 选择销售退货仓库事件 */
     chooseSalesReturnItemWarehouseEvent: Function;
     /** 新建销售退货单行物料序列事件 */
-    createSalesReturnItemMaterialSerialEvent: Function;
+    chooseSalesReturnItemMaterialSerialEvent: Function;
     /** 新建销售退货单行物料批次事件 */
-    createSalesReturnItemMaterialBatchEvent: Function;
+    chooseSalesReturnItemMaterialBatchEvent: Function;
     /** 绘制视图 */
     darw(): any {
         let that: this = this;

@@ -40,6 +40,8 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         this.view.chooseSalesOrderItemMaterialEvent = this.chooseSalesOrderItemMaterial;
         this.view.chooseSalesOrderCustomerEvent = this.chooseSalesOrderCustomer;
         this.view.chooseSalesOrderItemWarehouseEvent = this.chooseSalesOrderItemWarehouse;
+        this.view.chooseSalesOrderItemMaterialBatchEvent = this.chooseSalesOrderItemMaterialBatch;
+        this.view.chooseSalesOrderItemMaterialSerialEvent = this.chooseSalesOrderItemMaterialSerial;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -288,6 +290,42 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
             }
         });
     }
+    /** 选择销售交货行批次事件 */
+    chooseSalesOrderItemMaterialBatch(): void {
+        let contracts: ibas.ArrayList<mm.IMaterialBatchContract> = new ibas.ArrayList<mm.IMaterialBatchContract>();
+        for (let item of this.editData.salesOrderItems) {
+            contracts.add({
+                batchManagement: item.batchManagement,
+                itemCode: item.itemCode,
+                itemDescription: item.itemDescription,
+                warehouse: item.warehouse,
+                quantity: item.quantity,
+                uom: item.uom,
+                materialBatches: item.materialBatches,
+            });
+        }
+        ibas.servicesManager.runApplicationService<mm.IMaterialBatchContract[]>({
+            proxy: new mm.MaterialBatchIssueServiceProxy(contracts)
+        });
+    }
+    /** 选择销售交货序列事件 */
+    chooseSalesOrderItemMaterialSerial(): void {
+        let contracts: ibas.ArrayList<mm.IMaterialSerialContract> = new ibas.ArrayList<mm.IMaterialSerialContract>();
+        for (let item of this.editData.salesOrderItems) {
+            contracts.add({
+                serialManagement: item.serialManagement,
+                itemCode: item.itemCode,
+                itemDescription: item.itemDescription,
+                warehouse: item.warehouse,
+                quantity: item.quantity,
+                uom: item.uom,
+                materialSerials: item.materialSerials
+            });
+        }
+        ibas.servicesManager.runApplicationService<mm.IMaterialSerialContract[]>({
+            proxy: new mm.MaterialSerialIssueServiceProxy(contracts)
+        });
+    }
 
 }
 /** 视图-销售订单 */
@@ -310,4 +348,8 @@ export interface ISalesOrderEditView extends ibas.IBOEditView {
     chooseSalesOrderItemMaterialEvent: Function;
     /** 选择销售订单仓库事件 */
     chooseSalesOrderItemWarehouseEvent: Function;
+    /** 新建销售订单行物料序列事件 */
+    chooseSalesOrderItemMaterialSerialEvent: Function;
+    /** 新建销售订单行物料批次事件 */
+    chooseSalesOrderItemMaterialBatchEvent: Function;
 }

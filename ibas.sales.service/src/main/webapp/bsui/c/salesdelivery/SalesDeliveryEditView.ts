@@ -130,18 +130,19 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                     }),
                     new sap.m.ToolbarSeparator(""),
                     new sap.m.MenuButton("", {
-                        text: ibas.strings.format("{0}/{1}", ibas.i18n.prop("sales_batch"), ibas.i18n.prop("sales_serial")),
+                        text: ibas.strings.format("{0}/{1}",
+                            ibas.i18n.prop("sales_material_batch"), ibas.i18n.prop("sales_material_serial")),
                         menu: [
                             new sap.m.Menu("", {
                                 items: [
                                     new sap.m.MenuItem("", {
-                                        text: ibas.i18n.prop("sales_batch"),
+                                        text: ibas.i18n.prop("sales_material_batch"),
                                         press: function (): void {
                                             that.fireViewEvents(that.chooseSalesDeliveryItemMaterialBatchEvent);
                                         }
                                     }),
                                     new sap.m.MenuItem("", {
-                                        text: ibas.i18n.prop("sales_serial"),
+                                        text: ibas.i18n.prop("sales_material_serial"),
                                         press: function (): void {
                                             that.fireViewEvents(that.chooseSalesDeliveryItemMaterialSerialEvent);
                                         }

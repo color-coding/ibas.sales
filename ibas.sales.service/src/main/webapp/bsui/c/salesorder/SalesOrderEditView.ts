@@ -29,6 +29,10 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
     chooseSalesOrderItemMaterialEvent: Function;
     /** 选择销售订单仓库事件 */
     chooseSalesOrderItemWarehouseEvent: Function;
+    /** 选择销售订单行物料序列事件 */
+    chooseSalesOrderItemMaterialSerialEvent: Function;
+    /** 选择销售订单行物料批次事件 */
+    chooseSalesOrderItemMaterialBatchEvent: Function;
 
     /** 绘制视图 */
     darw(): any {
@@ -121,6 +125,29 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                                 openui5.utils.getSelecteds<bo.SalesOrderItem>(that.tableSalesOrderItem)
                             );
                         }
+                    }),
+                    new sap.m.ToolbarSeparator(""),
+                    new sap.m.MenuButton("", {
+                        text: ibas.strings.format("{0}/{1}",
+                            ibas.i18n.prop("sales_material_batch"), ibas.i18n.prop("sales_material_serial")),
+                        menu: [
+                            new sap.m.Menu("", {
+                                items: [
+                                    new sap.m.MenuItem("", {
+                                        text: ibas.i18n.prop("sales_material_batch"),
+                                        press: function (): void {
+                                            that.fireViewEvents(that.chooseSalesOrderItemMaterialBatchEvent);
+                                        }
+                                    }),
+                                    new sap.m.MenuItem("", {
+                                        text: ibas.i18n.prop("sales_material_serial"),
+                                        press: function (): void {
+                                            that.fireViewEvents(that.chooseSalesOrderItemMaterialSerialEvent);
+                                        }
+                                    }),
+                                ]
+                            })
+                        ]
                     })
                 ]
             }),
