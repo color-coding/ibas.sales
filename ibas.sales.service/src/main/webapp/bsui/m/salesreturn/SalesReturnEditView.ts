@@ -43,7 +43,7 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
         this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_general_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_general") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_customercode") }),
                 new sap.m.Input("", {
                     showValueHelp: true,

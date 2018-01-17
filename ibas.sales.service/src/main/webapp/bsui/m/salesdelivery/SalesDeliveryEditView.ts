@@ -33,7 +33,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
     chooseSalesDeliveryItemMaterialEvent: Function;
     /** 选择销售交货单行物料批次事件 */
     chooseSalesDeliveryItemMaterialBatchEvent: Function;
-    /** 选择销售交货行物料序列号事件 */
+    /** 选择销售交货行物料序列事件 */
     chooseSalesDeliveryItemMaterialSerialEvent: Function;
     /** 选择销售交货仓库事件 */
     chooseSalesDeliveryItemWarehouseEvent: Function;
@@ -43,7 +43,7 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
         this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_general_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_general") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_customercode") }),
                 new sap.m.Input("", {
                     showValueHelp: true,

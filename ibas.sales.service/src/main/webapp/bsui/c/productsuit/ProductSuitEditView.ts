@@ -34,7 +34,7 @@ export class ProductSuitEditView extends ibas.BOEditView implements IProductSuit
         let formTop: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_general_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_general") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_product") }),
                 new sap.m.Input("", {
                     showValueHelp: true,
@@ -59,7 +59,7 @@ export class ProductSuitEditView extends ibas.BOEditView implements IProductSuit
                 }).bindProperty("value", {
                     path: "uom"
                 }),
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_status_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_status") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_version") }),
                 new sap.m.Input("", {
                 }).bindProperty("value", {
@@ -192,7 +192,7 @@ export class ProductSuitEditView extends ibas.BOEditView implements IProductSuit
         let formBottom: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,
             content: [
-                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_remarks_information") }),
+                new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_remarks") }),
                 new sap.m.TextArea("", {
                     rows: 5,
                 }).bindProperty("value", {
