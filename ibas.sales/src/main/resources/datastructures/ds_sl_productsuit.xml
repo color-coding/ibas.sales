@@ -7,9 +7,11 @@
     <Property Name="Version" Description="版本" DataType="Alphanumeric" DataSubType="Default" EditSize="4" Mapped="Version" UniqueKey="Yes"/>
     <Property Name="Activated" Description="是否激活" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emYesNo" Mapped="Activated"/>
     <Property Name="UnitQuantity" Description="单位数量" DataType="Decimal" DataSubType="Quantity" EditSize="8" Mapped="UnitQty"/>
-    <Property Name="UOM" Description="计量单位" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="UOM"/>
+    <Property Name="UOM" Description="单位" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="UOM"/>
     <Property Name="ValidDate" Description="生效日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="ValidDate"/>
     <Property Name="InvalidDate" Description="失效日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="InvalidDate"/>
+    <Property Name="Total" Description="总计" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="Total"/>
+    <Property Name="Currency" Description="币种" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Currency"/>
     <Property Name="Remarks" Description="备注" DataType="Memo" DataSubType="Default" EditSize="254" Mapped="Remarks"/>
     <Property Name="ObjectKey" Description="对象编号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="ObjectKey" PrimaryKey="Yes"/>
     <Property Name="ObjectCode" Description="对象类型" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="ObjectCode"/>
@@ -46,7 +48,7 @@
     <Property Name="ItemCode" Description="组件编码" DataType="Alphanumeric" DataSubType="Default" EditSize="20" Mapped="ItemCode"/>
     <Property Name="ItemDescription" Description="组件名称" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="ItemName"/>
     <Property Name="Quantity" Description="数量" DataType="Decimal" DataSubType="Quantity" EditSize="8" Mapped="Quantity"/>
-    <Property Name="UOM" Description="计量单位" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="UOM"/>
+    <Property Name="UOM" Description="单位" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="UOM"/>
     <Property Name="Price" Description="价格" DataType="Decimal" DataSubType="Price" EditSize="8" Mapped="Price"/>
     <Property Name="Currency" Description="币种" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Currency"/>
     <Property Name="LineTotal" Description="总计" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="LineTotal"/>

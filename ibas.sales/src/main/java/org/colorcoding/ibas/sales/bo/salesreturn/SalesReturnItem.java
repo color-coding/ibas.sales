@@ -1148,19 +1148,19 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	}
 
 	/**
-	 * 属性名称-计量单位
+	 * 属性名称-单位
 	 */
 	private static final String PROPERTY_UOM_NAME = "UOM";
 
 	/**
-	 * 计量单位 属性
+	 * 单位 属性
 	 */
 	@DbField(name = "UOM", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
 	public static final IPropertyInfo<String> PROPERTY_UOM = registerProperty(PROPERTY_UOM_NAME, String.class,
 			MY_CLASS);
 
 	/**
-	 * 获取-计量单位
+	 * 获取-单位
 	 * 
 	 * @return 值
 	 */
@@ -1170,7 +1170,7 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	}
 
 	/**
-	 * 设置-计量单位
+	 * 设置-单位
 	 * 
 	 * @param value
 	 *            值

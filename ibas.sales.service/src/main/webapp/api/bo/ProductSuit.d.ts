@@ -54,6 +54,12 @@ export interface IProductSuit extends IBOSimple {
     /** 失效日期 */
     invalidDate: Date;
 
+    /** 总计 */
+    total: number;
+
+    /** 币种 */
+    currency: string;
+
     /** 备注 */
     remarks: string;
 

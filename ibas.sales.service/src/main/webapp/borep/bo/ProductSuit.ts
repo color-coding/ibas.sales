@@ -125,6 +125,28 @@ export class ProductSuit extends BOSimple<ProductSuit> implements IProductSuit {
         this.setProperty(ProductSuit.PROPERTY_INVALIDDATE_NAME, value);
     }
 
+    /** 映射的属性名称-总计 */
+    static PROPERTY_TOTAL_NAME: string = "Total";
+    /** 获取-总计 */
+    get total(): number {
+        return this.getProperty<number>(ProductSuit.PROPERTY_TOTAL_NAME);
+    }
+    /** 设置-总计 */
+    set total(value: number) {
+        this.setProperty(ProductSuit.PROPERTY_TOTAL_NAME, value);
+    }
+
+    /** 映射的属性名称-币种 */
+    static PROPERTY_CURRENCY_NAME: string = "Currency";
+    /** 获取-币种 */
+    get currency(): string {
+        return this.getProperty<string>(ProductSuit.PROPERTY_CURRENCY_NAME);
+    }
+    /** 设置-币种 */
+    set currency(value: string) {
+        this.setProperty(ProductSuit.PROPERTY_CURRENCY_NAME, value);
+    }
+
     /** 映射的属性名称-备注 */
     static PROPERTY_REMARKS_NAME: string = "Remarks";
     /** 获取-备注 */
@@ -340,6 +362,7 @@ export class ProductSuit extends BOSimple<ProductSuit> implements IProductSuit {
     protected init(): void {
         this.productSuitItems = new ProductSuitItems(this);
         this.objectCode = config.applyVariables(ProductSuit.BUSINESS_OBJECT_CODE);
+        this.activated = emYesNo.YES;
     }
 }
 

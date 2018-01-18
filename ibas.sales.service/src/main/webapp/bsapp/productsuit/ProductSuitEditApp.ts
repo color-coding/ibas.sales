@@ -229,6 +229,7 @@ export class ProductSuitEditApp extends ibas.BOEditApplication<IProductSuitEditV
                     item.itemCode = selected.code;
                     item.itemDescription = selected.name;
                     item.quantity = 1;
+                    item.uom = selected.inventoryUOM;
                     item = null;
                 }
                 if (created) {
@@ -242,11 +243,14 @@ export class ProductSuitEditApp extends ibas.BOEditApplication<IProductSuitEditV
         let that: this = this;
         ibas.servicesManager.runChooseService<mm.IMaterial>({
             boCode: mm.BO_CODE_MATERIAL,
+            chooseType: ibas.emChooseType.SINGLE,
             criteria: mm.conditions.material.create(),
             onCompleted(selecteds: ibas.List<mm.IMaterial>): void {
                 let selected: mm.IMaterial = selecteds.firstOrDefault();
                 that.editData.product = selected.code;
                 that.editData.description = selected.name;
+                that.editData.unitQuantity = 1;
+                that.editData.uom = selected.inventoryUOM;
             }
         });
     }

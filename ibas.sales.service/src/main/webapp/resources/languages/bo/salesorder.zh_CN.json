@@ -82,7 +82,7 @@
   "bo_salesorderitem_serialmanagement": "序号管理",
   "bo_salesorderitem_batchmanagement": "批号管理",
   "bo_salesorderitem_quantity": "数量",
-  "bo_salesorderitem_uom": "计量单位",
+  "bo_salesorderitem_uom": "单位",
   "bo_salesorderitem_warehouse": "仓库",
   "bo_salesorderitem_price": "价格",
   "bo_salesorderitem_currency": "货币",

@@ -112,14 +112,14 @@ public interface IProductSuit extends IBOSimple {
 	void setUnitQuantity(double value);
 
 	/**
-	 * 获取-计量单位
+	 * 获取-单位
 	 * 
 	 * @return 值
 	 */
 	String getUOM();
 
 	/**
-	 * 设置-计量单位
+	 * 设置-单位
 	 * 
 	 * @param value
 	 *            值
@@ -155,6 +155,60 @@ public interface IProductSuit extends IBOSimple {
 	 *            值
 	 */
 	void setInvalidDate(DateTime value);
+
+	/**
+	 * 获取-总计
+	 * 
+	 * @return 值
+	 */
+	Decimal getTotal();
+
+	/**
+	 * 设置-总计
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setTotal(Decimal value);
+
+	/**
+	 * 设置-总计
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setTotal(String value);
+
+	/**
+	 * 设置-总计
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setTotal(int value);
+
+	/**
+	 * 设置-总计
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setTotal(double value);
+
+	/**
+	 * 获取-币种
+	 * 
+	 * @return 值
+	 */
+	String getCurrency();
+
+	/**
+	 * 设置-币种
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setCurrency(String value);
 
 	/**
 	 * 获取-备注

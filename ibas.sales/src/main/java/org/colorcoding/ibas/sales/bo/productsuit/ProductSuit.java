@@ -249,19 +249,19 @@ public class ProductSuit extends BusinessObject<ProductSuit> implements IProduct
 	}
 
 	/**
-	 * 属性名称-计量单位
+	 * 属性名称-单位
 	 */
 	private static final String PROPERTY_UOM_NAME = "UOM";
 
 	/**
-	 * 计量单位 属性
+	 * 单位 属性
 	 */
 	@DbField(name = "UOM", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
 	public static final IPropertyInfo<String> PROPERTY_UOM = registerProperty(PROPERTY_UOM_NAME, String.class,
 			MY_CLASS);
 
 	/**
-	 * 获取-计量单位
+	 * 获取-单位
 	 * 
 	 * @return 值
 	 */
@@ -271,7 +271,7 @@ public class ProductSuit extends BusinessObject<ProductSuit> implements IProduct
 	}
 
 	/**
-	 * 设置-计量单位
+	 * 设置-单位
 	 * 
 	 * @param value
 	 *            值
@@ -342,6 +342,100 @@ public class ProductSuit extends BusinessObject<ProductSuit> implements IProduct
 	 */
 	public final void setInvalidDate(DateTime value) {
 		this.setProperty(PROPERTY_INVALIDDATE, value);
+	}
+
+	/**
+	 * 属性名称-币种
+	 */
+	private static final String PROPERTY_CURRENCY_NAME = "Currency";
+
+	/**
+	 * 币种 属性
+	 */
+	@DbField(name = "Currency", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_CURRENCY = registerProperty(PROPERTY_CURRENCY_NAME, String.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-币种
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_CURRENCY_NAME)
+	public final String getCurrency() {
+		return this.getProperty(PROPERTY_CURRENCY);
+	}
+
+	/**
+	 * 设置-币种
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setCurrency(String value) {
+		this.setProperty(PROPERTY_CURRENCY, value);
+	}
+
+	/**
+	 * 属性名称-总计
+	 */
+	private static final String PROPERTY_TOTAL_NAME = "Total";
+
+	/**
+	 * 总计 属性
+	 */
+	@DbField(name = "Total", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<Decimal> PROPERTY_TOTAL = registerProperty(PROPERTY_TOTAL_NAME, Decimal.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-总计
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_TOTAL_NAME)
+	public final Decimal getTotal() {
+		return this.getProperty(PROPERTY_TOTAL);
+	}
+
+	/**
+	 * 设置-总计
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setTotal(Decimal value) {
+		this.setProperty(PROPERTY_TOTAL, value);
+	}
+
+	/**
+	 * 设置-总计
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setTotal(String value) {
+		this.setTotal(new Decimal(value));
+	}
+
+	/**
+	 * 设置-总计
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setTotal(int value) {
+		this.setTotal(new Decimal(value));
+	}
+
+	/**
+	 * 设置-总计
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setTotal(double value) {
+		this.setTotal(new Decimal(value));
 	}
 
 	/**

@@ -537,14 +537,14 @@ public interface ISalesReturnItem extends IBODocumentLine, IMaterialBatchReceipt
 	void setQuantity(double value);
 
 	/**
-	 * 获取-计量单位
+	 * 获取-单位
 	 * 
 	 * @return 值
 	 */
 	String getUOM();
 
 	/**
-	 * 设置-计量单位
+	 * 设置-单位
 	 * 
 	 * @param value
 	 *            值

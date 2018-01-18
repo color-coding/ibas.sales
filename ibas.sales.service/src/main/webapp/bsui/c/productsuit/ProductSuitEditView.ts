@@ -54,10 +54,18 @@ export class ProductSuitEditView extends ibas.BOEditView implements IProductSuit
                 }).bindProperty("value", {
                     path: "unitQuantity"
                 }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_uom") }),
+                new sap.m.Text("", {
+                }).bindProperty("text", {
+                    path: "uom"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_total") }),
                 new sap.m.Input("", {
                 }).bindProperty("value", {
-                    path: "uom"
+                    path: "total"
+                }),
+                new sap.m.Text("", {
+                }).bindProperty("text", {
+                    path: "currency"
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_status") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_version") }),
@@ -155,9 +163,10 @@ export class ProductSuitEditView extends ibas.BOEditView implements IProductSuit
                 }),
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_productsuititem_uom"),
-                    template: new sap.m.Input("", {
+                    template: new sap.m.Text("", {
                         width: "100%",
-                    }).bindProperty("value", {
+                        wrapping: false
+                    }).bindProperty("text", {
                         path: "uom"
                     })
                 }),
