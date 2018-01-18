@@ -8,9 +8,12 @@
 
 // 共享的数据
 import {
-    strings,
-    MODULE_REPOSITORY_NAME_TEMPLATE,
+	strings, dates,
+	List, ArrayList, ICondition, Condition,
+	emConditionOperation, emConditionRelationship, emYesNo,
+	MODULE_REPOSITORY_NAME_TEMPLATE,
 } from "ibas/index";
+import * as mm from "3rdparty/materials/index";
 
 /** 模块-标识 */
 export const CONSOLE_ID: string = "bc24810f-da83-4e99-9252-d22bc28b614c";
@@ -33,21 +36,39 @@ export const BO_CODE_SHIPPINGADDRESS: string = "${Company}_SL_SHIPADDRESS";
 
 /** 产品树类型 */
 export enum emProductTreeType {
-    /** 捆绑 */
-    BUNDLED,
+	/** 捆绑 */
+	BUNDLED,
 }
 /** 运输状态 */
 export enum emShippingStatus {
 	/**
 	 * 等待
 	 */
-    WAITING,
+	WAITING,
 	/**
 	 * 运输中
 	 */
-    SHIPPING,
+	SHIPPING,
 	/**
 	 * 已送达
 	 */
-    SHIPPED,
+	SHIPPED,
+}
+/** 查询条件 */
+export namespace conditions {
+	export namespace material {
+		/** 销售物料的查询条件 */
+		export function create(): List<ICondition> {
+			let condition: ICondition;
+			let conditions: List<ICondition> = mm.conditions.material.create();
+			// 销售物料
+			condition = new Condition();
+			condition.relationship = emConditionRelationship.AND;
+			condition.alias = "salesItem";
+			condition.operation = emConditionOperation.EQUAL;
+			condition.value = emYesNo.YES.toString();
+			conditions.add(condition);
+			return conditions;
+		}
+	}
 }
