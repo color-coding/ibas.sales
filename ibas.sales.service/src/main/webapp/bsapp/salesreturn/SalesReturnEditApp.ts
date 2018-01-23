@@ -238,6 +238,14 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
             condition.relationship = ibas.emConditionRelationship.AND;
             conditions.add(condition);
         }
+        // 销售物料
+        condition = new ibas.Condition();
+        condition.alias = mm.conditions.product.CONDITION_ALIAS_SALES_ITEM;
+        condition.value = ibas.emYesNo.YES.toString();
+        condition.operation = ibas.emConditionOperation.EQUAL;
+        condition.relationship = ibas.emConditionRelationship.AND;
+        conditions.add(condition);
+        // 调用选择服务
         ibas.servicesManager.runChooseService<mm.IProduct>({
             boCode: mm.BO_CODE_PRODUCT,
             criteria: conditions,

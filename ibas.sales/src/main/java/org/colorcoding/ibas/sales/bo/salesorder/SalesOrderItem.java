@@ -15,6 +15,8 @@ import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.bobas.rule.IBusinessRule;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchItems;
 import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItem;
 import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItems;
@@ -2505,6 +2507,16 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem> implements IS
 		this.setMaterialBatches(new MaterialBatchItems(this));
 		this.setMaterialSerials(new MaterialSerialItems(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
+	}
+
+	@Override
+	protected IBusinessRule[] registerRules() {
+		return new IBusinessRule[] { // 注册的业务规则
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_QUANTITY), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_PRICE), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DISCOUNT), // 不能低于0
+		};
 	}
 
 	/**
