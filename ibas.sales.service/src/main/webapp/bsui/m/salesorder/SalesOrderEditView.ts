@@ -8,6 +8,8 @@
 
 import * as ibas from "ibas/index";
 import * as openui5 from "openui5/index";
+import * as mm from "3rdparty/materials/index";
+import * as bp from "3rdparty/businesspartner/index";
 import * as bo from "../../../borep/bo/index";
 import { ISalesOrderEditView } from "../../../bsapp/salesorder/index";
 export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEditView {
@@ -29,9 +31,11 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
     removeSalesOrderItemEvent: Function;
     /** 选择销售订单客户事件 */
     chooseSalesOrderCustomerEvent: Function;
+    /** 选择销售订单价格清单事件 */
+    chooseSalesOrderPriceListEvent: Function;
     /** 选择销售订单行物料事件 */
     chooseSalesOrderItemMaterialEvent: Function;
-    /** 选择销售订单行仓库事件 */
+    /** 选择销售订单仓库事件 */
     chooseSalesOrderItemWarehouseEvent: Function;
     /** 选择销售订单行物料序列事件 */
     chooseSalesOrderItemMaterialSerialEvent: Function;

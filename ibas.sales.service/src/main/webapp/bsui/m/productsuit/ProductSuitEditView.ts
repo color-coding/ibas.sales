@@ -8,5 +8,6 @@
 
 import * as ibas from "ibas/index";
 import * as openui5 from "openui5/index";
+import * as mm from "3rdparty/materials/index";
 import * as bo from "../../../borep/bo/index";
 import { IProductSuitEditView } from "../../../bsapp/productsuit/index";

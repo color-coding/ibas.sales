@@ -39,6 +39,7 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
         this.view.removeSalesOrderItemEvent = this.removeSalesOrderItem;
         this.view.chooseSalesOrderItemMaterialEvent = this.chooseSalesOrderItemMaterial;
         this.view.chooseSalesOrderCustomerEvent = this.chooseSalesOrderCustomer;
+        this.view.chooseSalesOrderPriceListEvent = this.chooseSalesOrderPriceList;
         this.view.chooseSalesOrderItemWarehouseEvent = this.chooseSalesOrderItemWarehouse;
         this.view.chooseSalesOrderItemMaterialBatchEvent = this.chooseSalesOrderItemMaterialBatch;
         this.view.chooseSalesOrderItemMaterialSerialEvent = this.chooseSalesOrderItemMaterialSerial;
@@ -196,15 +197,50 @@ export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditVie
                 let selected: bp.ICustomer = selecteds.firstOrDefault();
                 that.editData.customerCode = selected.code;
                 that.editData.customerName = selected.name;
+                that.editData.priceList = selected.priceList;
+                that.editData.contactPerson = selected.contactPerson;
+            }
+        });
+    }
+    /** 选择销售订单价格清单事件 */
+    private chooseSalesOrderPriceList(): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<mm.IMaterialPriceList>({
+            boCode: mm.BO_CODE_MATERIALPRICELIST,
+            chooseType: ibas.emChooseType.SINGLE,
+            criteria: mm.conditions.materialpricelist.create(),
+            onCompleted(selecteds: ibas.List<mm.IMaterialPriceList>): void {
+                let selected: mm.IMaterialPriceList = selecteds.firstOrDefault();
+                that.editData.priceList = selected.objectKey;
             }
         });
     }
     /** 选择销售订单物料事件 */
     private chooseSalesOrderItemMaterial(caller: bo.SalesOrderItem): void {
         let that: this = this;
+        let condition: ibas.ICondition;
+        let conditions: ibas.List<ibas.ICondition> = mm.conditions.product.create();
+        // 添加价格清单条件
+        if (this.editData.priceList > 0) {
+            condition = new ibas.Condition();
+            condition.alias = mm.conditions.product.CONDITION_ALIAS_PRICELIST;
+            condition.value = this.editData.priceList.toString();
+            condition.operation = ibas.emConditionOperation.EQUAL;
+            condition.relationship = ibas.emConditionRelationship.AND;
+            conditions.add(condition);
+        }
+        // 添加仓库条件
+        if (!ibas.objects.isNull(caller) && !ibas.strings.isEmpty(caller.warehouse)) {
+            condition = new ibas.Condition();
+            condition.alias = mm.conditions.product.CONDITION_ALIAS_WAREHOUSE;
+            condition.value = caller.warehouse;
+            condition.operation = ibas.emConditionOperation.EQUAL;
+            condition.relationship = ibas.emConditionRelationship.AND;
+            conditions.add(condition);
+        }
         ibas.servicesManager.runChooseService<mm.IProduct>({
             boCode: mm.BO_CODE_PRODUCT,
-            criteria: mm.conditions.product.create(),
+            criteria: conditions,
             onCompleted(selecteds: ibas.List<mm.IProduct>): void {
                 // 获取触发的对象
                 let index: number = that.editData.salesOrderItems.indexOf(caller);
@@ -345,6 +381,8 @@ export interface ISalesOrderEditView extends ibas.IBOEditView {
     showSalesOrderItems(datas: bo.SalesOrderItem[]): void;
     /** 选择销售订单客户事件 */
     chooseSalesOrderCustomerEvent: Function;
+    /** 选择销售订单价格清单事件 */
+    chooseSalesOrderPriceListEvent: Function;
     /** 选择销售订单行物料事件 */
     chooseSalesOrderItemMaterialEvent: Function;
     /** 选择销售订单仓库事件 */

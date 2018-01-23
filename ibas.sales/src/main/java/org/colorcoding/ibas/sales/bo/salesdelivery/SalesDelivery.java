@@ -1648,35 +1648,35 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	}
 
 	/**
-	 * 属性名称-毛利价格清单
+	 * 属性名称-价格清单
 	 */
-	private static final String PROPERTY_GROSSPROFITPRICELIST_NAME = "GrossProfitPriceList";
+	private static final String PROPERTY_PRICELIST_NAME = "PriceList";
 
 	/**
-	 * 毛利价格清单 属性
+	 * 价格清单 属性
 	 */
-	@DbField(name = "GrossBase", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Integer> PROPERTY_GROSSPROFITPRICELIST = registerProperty(
-			PROPERTY_GROSSPROFITPRICELIST_NAME, Integer.class, MY_CLASS);
+	@DbField(name = "PriceList", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<Integer> PROPERTY_PRICELIST = registerProperty(
+			PROPERTY_PRICELIST_NAME, Integer.class, MY_CLASS);
 
 	/**
-	 * 获取-毛利价格清单
+	 * 获取-价格清单
 	 * 
 	 * @return 值
 	 */
-	@XmlElement(name = PROPERTY_GROSSPROFITPRICELIST_NAME)
-	public final Integer getGrossProfitPriceList() {
-		return this.getProperty(PROPERTY_GROSSPROFITPRICELIST);
+	@XmlElement(name = PROPERTY_PRICELIST_NAME)
+	public final Integer getPriceList() {
+		return this.getProperty(PROPERTY_PRICELIST);
 	}
 
 	/**
-	 * 设置-毛利价格清单
+	 * 设置-价格清单
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setGrossProfitPriceList(Integer value) {
-		this.setProperty(PROPERTY_GROSSPROFITPRICELIST, value);
+	public final void setPriceList(Integer value) {
+		this.setProperty(PROPERTY_PRICELIST, value);
 	}
 
 	/**

@@ -39,6 +39,7 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
         this.view.addSalesDeliveryItemEvent = this.addSalesDeliveryItem;
         this.view.removeSalesDeliveryItemEvent = this.removeSalesDeliveryItem;
         this.view.chooseSalesDeliveryCustomerEvent = this.chooseSalesDeliveryCustomer;
+        this.view.chooseSalesDeliveryPriceListEvent = this.chooseSalesDeliveryPriceList;
         this.view.chooseSalesDeliveryItemMaterialEvent = this.chooseSalesDeliveryItemMaterial;
         this.view.chooseSalesDeliveryItemMaterialBatchEvent = this.chooseSalesDeliveryLineMaterialBatch;
         this.view.chooseSalesDeliveryItemMaterialSerialEvent = this.chooseSalesDeliveryLineMaterialSerial;
@@ -197,15 +198,50 @@ export class SalesDeliveryEditApp extends ibas.BOEditApplication<ISalesDeliveryE
                 let selected: bp.ICustomer = selecteds.firstOrDefault();
                 that.editData.customerCode = selected.code;
                 that.editData.customerName = selected.name;
+                that.editData.priceList = selected.priceList;
+                that.editData.contactPerson = selected.contactPerson;
+            }
+        });
+    }
+    /** 选择销售交货价格清单事件 */
+    private chooseSalesDeliveryPriceList(): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<mm.IMaterialPriceList>({
+            boCode: mm.BO_CODE_MATERIALPRICELIST,
+            chooseType: ibas.emChooseType.SINGLE,
+            criteria: mm.conditions.materialpricelist.create(),
+            onCompleted(selecteds: ibas.List<mm.IMaterialPriceList>): void {
+                let selected: mm.IMaterialPriceList = selecteds.firstOrDefault();
+                that.editData.priceList = selected.objectKey;
             }
         });
     }
     /** 选择销售交货行物料事件 */
     private chooseSalesDeliveryItemMaterial(caller: bo.SalesDeliveryItem): void {
         let that: this = this;
+        let condition: ibas.ICondition;
+        let conditions: ibas.List<ibas.ICondition> = mm.conditions.product.create();
+        // 添加价格清单条件
+        if (this.editData.priceList > 0) {
+            condition = new ibas.Condition();
+            condition.alias = mm.conditions.product.CONDITION_ALIAS_PRICELIST;
+            condition.value = this.editData.priceList.toString();
+            condition.operation = ibas.emConditionOperation.EQUAL;
+            condition.relationship = ibas.emConditionRelationship.AND;
+            conditions.add(condition);
+        }
+        // 添加仓库条件
+        if (!ibas.objects.isNull(caller) && !ibas.strings.isEmpty(caller.warehouse)) {
+            condition = new ibas.Condition();
+            condition.alias = mm.conditions.product.CONDITION_ALIAS_WAREHOUSE;
+            condition.value = caller.warehouse;
+            condition.operation = ibas.emConditionOperation.EQUAL;
+            condition.relationship = ibas.emConditionRelationship.AND;
+            conditions.add(condition);
+        }
         ibas.servicesManager.runChooseService<mm.IProduct>({
             boCode: mm.BO_CODE_PRODUCT,
-            criteria: mm.conditions.product.create(),
+            criteria: conditions,
             onCompleted(selecteds: ibas.List<mm.IProduct>): void {
                 let index: number = that.editData.salesDeliveryItems.indexOf(caller);
                 let item: bo.SalesDeliveryItem = that.editData.salesDeliveryItems[index];
@@ -345,6 +381,8 @@ export interface ISalesDeliveryEditView extends ibas.IBOEditView {
     showSalesDeliveryItems(datas: bo.SalesDeliveryItem[]): void;
     /** 选择销售交货客户事件 */
     chooseSalesDeliveryCustomerEvent: Function;
+    /** 选择销售交货价格清单事件 */
+    chooseSalesDeliveryPriceListEvent: Function;
     /** 选择销售交货物料事件 */
     chooseSalesDeliveryItemMaterialEvent: Function;
     /** 选择销售交货仓库事件 */

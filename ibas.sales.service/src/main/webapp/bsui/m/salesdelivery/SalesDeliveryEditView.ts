@@ -8,6 +8,8 @@
 
 import * as ibas from "ibas/index";
 import * as openui5 from "openui5/index";
+import * as mm from "3rdparty/materials/index";
+import * as bp from "3rdparty/businesspartner/index";
 import * as bo from "../../../borep/bo/index";
 import { ISalesDeliveryEditView } from "../../../bsapp/salesdelivery/index";
 export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeliveryEditView {
@@ -29,7 +31,9 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
     removeSalesDeliveryItemEvent: Function;
     /** 选择销售交货客户事件 */
     chooseSalesDeliveryCustomerEvent: Function;
-    /** 选择销售交货行物料事件 */
+    /** 选择销售交货价格清单事件 */
+    chooseSalesDeliveryPriceListEvent: Function;
+    /** 选择销售交货物料事件 */
     chooseSalesDeliveryItemMaterialEvent: Function;
     /** 选择销售交货单行物料批次事件 */
     chooseSalesDeliveryItemMaterialBatchEvent: Function;

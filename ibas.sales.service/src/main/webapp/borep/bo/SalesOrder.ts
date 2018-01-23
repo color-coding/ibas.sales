@@ -511,15 +511,15 @@ export class SalesOrder extends BODocument<SalesOrder> implements ISalesOrder {
         this.setProperty(SalesOrder.PROPERTY_GROSSPROFIT_NAME, value);
     }
 
-    /** 映射的属性名称-毛利价格清单 */
-    static PROPERTY_GROSSPROFITPRICELIST_NAME: string = "GrossProfitPriceList";
-    /** 获取-毛利价格清单 */
-    get grossProfitPriceList(): number {
-        return this.getProperty<number>(SalesOrder.PROPERTY_GROSSPROFITPRICELIST_NAME);
+    /** 映射的属性名称-价格清单 */
+    static PROPERTY_PRICELIST_NAME: string = "PriceList";
+    /** 获取-价格清单 */
+    get priceList(): number {
+        return this.getProperty<number>(SalesOrder.PROPERTY_PRICELIST_NAME);
     }
-    /** 设置-毛利价格清单 */
-    set grossProfitPriceList(value: number) {
-        this.setProperty(SalesOrder.PROPERTY_GROSSPROFITPRICELIST_NAME, value);
+    /** 设置-价格清单 */
+    set priceList(value: number) {
+        this.setProperty(SalesOrder.PROPERTY_PRICELIST_NAME, value);
     }
 
     /** 映射的属性名称-付款条款代码 */

@@ -8,6 +8,8 @@
 
 import * as ibas from "ibas/index";
 import * as openui5 from "openui5/index";
+import * as mm from "3rdparty/materials/index";
+import * as bp from "3rdparty/businesspartner/index";
 import * as bo from "../../../borep/bo/index";
 import { ISalesDeliveryEditView } from "../../../bsapp/salesdelivery/index";
 
@@ -15,8 +17,6 @@ import { ISalesDeliveryEditView } from "../../../bsapp/salesdelivery/index";
  * 编辑视图-销售交货
  */
 export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeliveryEditView {
-
-
     /** 删除数据事件 */
     deleteDataEvent: Function;
     /** 新建数据事件，参数1：是否克隆 */
@@ -27,6 +27,8 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
     removeSalesDeliveryItemEvent: Function;
     /** 选择销售交货客户事件 */
     chooseSalesDeliveryCustomerEvent: Function;
+    /** 选择销售交货价格清单事件 */
+    chooseSalesDeliveryPriceListEvent: Function;
     /** 选择销售交货物料事件 */
     chooseSalesDeliveryItemMaterialEvent: Function;
     /** 选择销售交货单行物料批次事件 */
@@ -65,6 +67,19 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                 }).bindProperty("value", {
                     path: "contactPerson"
                 }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_pricelist") }),
+                new sap.m.ex.BOInput("", {
+                    boText: "name",
+                    boKey: "objectKey",
+                    boCode: ibas.config.applyVariables(mm.BO_CODE_MATERIALPRICELIST),
+                    repositoryName: mm.BO_REPOSITORY_MATERIALS,
+                    valueHelpRequest: function (): void {
+                        that.fireViewEvents(that.chooseSalesDeliveryPriceListEvent);
+                    },
+                    bindingValue: {
+                        path: "priceList"
+                    }
+                }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_reference1") }),
                 new sap.m.Input("", {}).bindProperty("value", {
                     path: "reference1"
@@ -99,10 +114,10 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                     path: "documentDate",
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_dataowner") }),
-                new sap.m.Input("", {
-                    showValueHelp: true,
-                }).bindProperty("value", {
-                    path: "dataOwner",
+                new sap.m.ex.DataOwnerInput("", {
+                    bindingValue: {
+                        path: "dataOwner"
+                    }
                 }),
             ]
         });

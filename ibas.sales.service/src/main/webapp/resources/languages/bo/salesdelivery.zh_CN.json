@@ -42,7 +42,7 @@
   "bo_salesdelivery_documenttotal": "单据总计",
   "bo_salesdelivery_paidtotal": "已付款总计",
   "bo_salesdelivery_grossprofit": "毛利",
-  "bo_salesdelivery_grossprofitpricelist": "毛利价格清单",
+  "bo_salesdelivery_pricelist": "价格清单",
   "bo_salesdelivery_paymentcode": "付款条款代码",
   "bo_salesdelivery_rounding": "舍入",
   "bo_salesdelivery_diffamount": "舍入差额",

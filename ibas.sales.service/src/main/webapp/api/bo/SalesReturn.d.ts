@@ -160,8 +160,8 @@ export interface ISalesReturn extends IBODocument {
     /** 毛利 */
     grossProfit: number;
 
-    /** 毛利价格清单 */
-    grossProfitPriceList: number;
+    /** 价格清单 */
+    priceList: number;
 
     /** 付款条款代码 */
     paymentCode: string;

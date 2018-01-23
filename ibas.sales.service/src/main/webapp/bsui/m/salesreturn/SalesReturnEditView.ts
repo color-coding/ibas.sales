@@ -8,6 +8,8 @@
 
 import * as ibas from "ibas/index";
 import * as openui5 from "openui5/index";
+import * as mm from "3rdparty/materials/index";
+import * as bp from "3rdparty/businesspartner/index";
 import * as bo from "../../../borep/bo/index";
 import { ISalesReturnEditView } from "../../../bsapp/salesreturn/index";
 export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturnEditView {
@@ -29,13 +31,15 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
     removeSalesReturnItemEvent: Function;
     /** 选择销售退货客户事件 */
     chooseSalesReturnCustomerEvent: Function;
+    /** 选择销售退货价格清单事件 */
+    chooseSalesReturnPriceListEvent: Function;
     /** 选择销售退货行物料事件 */
     chooseSalesReturnItemMaterialEvent: Function;
     /** 选择销售退货仓库事件 */
     chooseSalesReturnItemWarehouseEvent: Function;
-    /** 新建销售退货单行物料序列事件 */
+    /** 选择销售退货单行物料序列事件 */
     chooseSalesReturnItemMaterialSerialEvent: Function;
-    /** 新建销售退货单行物料批次事件 */
+    /** 选择销售退货单行物料批次事件 */
     chooseSalesReturnItemMaterialBatchEvent: Function;
     /** 绘制视图 */
     darw(): any {

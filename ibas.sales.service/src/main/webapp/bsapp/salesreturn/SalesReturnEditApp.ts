@@ -38,6 +38,7 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         this.view.addSalesReturnItemEvent = this.addSalesReturnItem;
         this.view.removeSalesReturnItemEvent = this.removeSalesReturnItem;
         this.view.chooseSalesReturnCustomerEvent = this.chooseSalesReturnCustomer;
+        this.view.chooseSalesReturnPriceListEvent = this.chooseSalesReturnPriceList;
         this.view.chooseSalesReturnItemMaterialEvent = this.chooseSalesReturnItemMaterial;
         this.view.chooseSalesReturnItemWarehouseEvent = this.chooseSalesReturnItemWarehouse;
         this.view.chooseSalesReturnItemMaterialBatchEvent = this.createSalesReturnLineMaterialBatch;
@@ -196,15 +197,50 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
                 let selected: bp.ICustomer = selecteds.firstOrDefault();
                 that.editData.customerCode = selected.code;
                 that.editData.customerName = selected.name;
+                that.editData.priceList = selected.priceList;
+                that.editData.contactPerson = selected.contactPerson;
+            }
+        });
+    }
+    /** 选择销售退货价格清单事件 */
+    private chooseSalesReturnPriceList(): void {
+        let that: this = this;
+        ibas.servicesManager.runChooseService<mm.IMaterialPriceList>({
+            boCode: mm.BO_CODE_MATERIALPRICELIST,
+            chooseType: ibas.emChooseType.SINGLE,
+            criteria: mm.conditions.materialpricelist.create(),
+            onCompleted(selecteds: ibas.List<mm.IMaterialPriceList>): void {
+                let selected: mm.IMaterialPriceList = selecteds.firstOrDefault();
+                that.editData.priceList = selected.objectKey;
             }
         });
     }
     /** 选择销售退货物料事件 */
     private chooseSalesReturnItemMaterial(caller: bo.SalesReturnItem): void {
         let that: this = this;
+        let condition: ibas.ICondition;
+        let conditions: ibas.List<ibas.ICondition> = mm.conditions.product.create();
+        // 添加价格清单条件
+        if (this.editData.priceList > 0) {
+            condition = new ibas.Condition();
+            condition.alias = mm.conditions.product.CONDITION_ALIAS_PRICELIST;
+            condition.value = this.editData.priceList.toString();
+            condition.operation = ibas.emConditionOperation.EQUAL;
+            condition.relationship = ibas.emConditionRelationship.AND;
+            conditions.add(condition);
+        }
+        // 添加仓库条件
+        if (!ibas.objects.isNull(caller) && !ibas.strings.isEmpty(caller.warehouse)) {
+            condition = new ibas.Condition();
+            condition.alias = mm.conditions.product.CONDITION_ALIAS_WAREHOUSE;
+            condition.value = caller.warehouse;
+            condition.operation = ibas.emConditionOperation.EQUAL;
+            condition.relationship = ibas.emConditionRelationship.AND;
+            conditions.add(condition);
+        }
         ibas.servicesManager.runChooseService<mm.IProduct>({
             boCode: mm.BO_CODE_PRODUCT,
-            criteria: mm.conditions.product.create(),
+            criteria: conditions,
             onCompleted(selecteds: ibas.List<mm.IProduct>): void {
                 // 获取触发的对象
                 let index: number = that.editData.salesReturnItems.indexOf(caller);
@@ -344,6 +380,8 @@ export interface ISalesReturnEditView extends ibas.IBOEditView {
     showSalesReturnItems(datas: bo.SalesReturnItem[]): void;
     /** 选择销售退货客户事件 */
     chooseSalesReturnCustomerEvent: Function;
+    /** 选择销售退货价格清单事件 */
+    chooseSalesReturnPriceListEvent: Function;
     /** 选择销售退货物料事件 */
     chooseSalesReturnItemMaterialEvent: Function;
     /** 选择销售退货仓库事件 */

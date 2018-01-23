@@ -32,7 +32,7 @@ public class testSalesOrder extends TestCase {
 		// 测试属性赋值
 		bo.setCustomerCode("C0001");
 		bo.setCustomerName("奥维奥");
-		bo.setGrossProfitPriceList(1);// 毛利价格清单
+		bo.setPriceList(1);// 价格清单
 		// 测试销售订单-行
 		ISalesOrderItem salesorderitem = bo.getSalesOrderItems().create();
 		// 测试属性赋值

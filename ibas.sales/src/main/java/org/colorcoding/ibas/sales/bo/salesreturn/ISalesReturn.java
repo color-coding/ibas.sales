@@ -838,19 +838,19 @@ public interface ISalesReturn extends IBODocument {
 	void setGrossProfit(double value);
 
 	/**
-	 * 获取-毛利价格清单
+	 * 获取-价格清单
 	 * 
 	 * @return 值
 	 */
-	Integer getGrossProfitPriceList();
+	Integer getPriceList();
 
 	/**
-	 * 设置-毛利价格清单
+	 * 设置-价格清单
 	 * 
 	 * @param value
 	 *            值
 	 */
-	void setGrossProfitPriceList(Integer value);
+	void setPriceList(Integer value);
 
 	/**
 	 * 获取-付款条款代码

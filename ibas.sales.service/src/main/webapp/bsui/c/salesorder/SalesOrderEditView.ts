@@ -8,6 +8,8 @@
 
 import * as ibas from "ibas/index";
 import * as openui5 from "openui5/index";
+import * as mm from "3rdparty/materials/index";
+import * as bp from "3rdparty/businesspartner/index";
 import * as bo from "../../../borep/bo/index";
 import { ISalesOrderEditView } from "../../../bsapp/salesorder/index";
 
@@ -25,6 +27,8 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
     removeSalesOrderItemEvent: Function;
     /** 选择销售订单客户事件 */
     chooseSalesOrderCustomerEvent: Function;
+    /** 选择销售订单价格清单事件 */
+    chooseSalesOrderPriceListEvent: Function;
     /** 选择销售订单行物料事件 */
     chooseSalesOrderItemMaterialEvent: Function;
     /** 选择销售订单仓库事件 */
@@ -63,6 +67,19 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 }).bindProperty("value", {
                     path: "contactPerson"
                 }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_pricelist") }),
+                new sap.m.ex.BOInput("", {
+                    boText: "name",
+                    boKey: "objectKey",
+                    boCode: ibas.config.applyVariables(mm.BO_CODE_MATERIALPRICELIST),
+                    repositoryName: mm.BO_REPOSITORY_MATERIALS,
+                    valueHelpRequest: function (): void {
+                        that.fireViewEvents(that.chooseSalesOrderPriceListEvent);
+                    },
+                    bindingValue: {
+                        path: "priceList"
+                    }
+                }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_reference1") }),
                 new sap.m.Input("", {}).bindProperty("value", {
                     path: "reference1"
@@ -97,10 +114,10 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                     path: "documentDate",
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_dataowner") }),
-                new sap.m.Input("", {
-                    showValueHelp: true,
-                }).bindProperty("value", {
-                    path: "dataOwner",
+                new sap.m.ex.DataOwnerInput("", {
+                    bindingValue: {
+                        path: "dataOwner"
+                    }
                 }),
             ]
         });
