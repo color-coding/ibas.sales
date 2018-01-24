@@ -27,20 +27,14 @@ import {
 /** 业务伙伴组 */
 export interface IBusinessPartnerGroup extends IBOMasterData {
 
-    /** 编码 */
+    /** 编号 */
     code: string;
 
     /** 名称 */
     name: string;
 
-    /** 备注 */
-    remarks: string;
-
-    /** 已引用 */
-    referenced: emYesNo;
-
-    /** 已删除 */
-    deleted: emYesNo;
+    /** 激活 */
+    activated: emYesNo;
 
     /** 对象编号 */
     docEntry: number;
@@ -81,15 +75,11 @@ export interface IBusinessPartnerGroup extends IBOMasterData {
     /** 更新动作标识 */
     updateActionId: string;
 
-    /** 审批状态 */
-    approvalStatus: emApprovalStatus;
-
     /** 数据所有者 */
     dataOwner: number;
 
     /** 数据所属组织 */
     organization: string;
-
 
 }
 

@@ -230,6 +230,7 @@ export class ProductSuitEditApp extends ibas.BOEditApplication<IProductSuitEditV
                     item.itemDescription = selected.name;
                     item.quantity = 1;
                     item.uom = selected.inventoryUOM;
+                    item.price = selected.avgPrice;
                     item = null;
                 }
                 if (created) {
