@@ -88,12 +88,16 @@ export class SalesDeliveryChooseView extends ibas.BOChooseView implements ISales
                     })
                 }),
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesdelivery_contactperson"),
+                    label: ibas.i18n.prop("bo_salesdelivery_documentdate"),
                     template: new sap.m.Text("", {
-                        wrapping: false
+                        wrapping: false,
                     }).bindProperty("text", {
-                        path: "contactPerson",
-                    })
+                        path: "documentDate",
+                        type: new sap.ui.model.type.Date({
+                            pattern: "yyyy-MM-dd",
+                            strictParsing: true,
+                        })
+                    }),
                 }),
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_salesdelivery_documenttotal"),

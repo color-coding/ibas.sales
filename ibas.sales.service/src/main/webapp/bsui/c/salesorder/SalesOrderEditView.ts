@@ -61,11 +61,15 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                     path: "customerName"
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_contactperson") }),
-                new sap.m.Input("", {
-                    showValueHelp: true,
-                    editable: false,
-                }).bindProperty("value", {
-                    path: "contactPerson"
+                new sap.m.ex.BOChooseInput("", {
+                    boText: "name",
+                    boKey: "objectKey",
+                    boCode: ibas.config.applyVariables(bp.BO_CODE_CONTACTPERSON),
+                    repositoryName: bp.BO_REPOSITORY_BUSINESSPARTNER,
+                    criteria: bp.conditions.contactperson.create(bp.emBusinessPartnerType.CUSTOMER, "{customerCode}"),
+                    bindingValue: {
+                        path: "contactPerson"
+                    }
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_pricelist") }),
                 new sap.m.ex.BOInput("", {
@@ -89,11 +93,6 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                     path: "reference2"
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_status") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_docnum") }),
-                new sap.m.Input("", {
-                }).bindProperty("value", {
-                    path: "docNum",
-                }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentstatus") }),
                 new sap.m.Select("", {
                     items: openui5.utils.createComboBoxItems(ibas.emDocumentStatus),
@@ -110,6 +109,8 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                 }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentdate") }),
                 new sap.m.DatePicker("", {
+                    valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                    displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                 }).bindProperty("dateValue", {
                     path: "documentDate",
                 }),

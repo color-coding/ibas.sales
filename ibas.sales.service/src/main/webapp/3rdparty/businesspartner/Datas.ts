@@ -183,4 +183,58 @@ export namespace conditions {
             return conditions;
         }
     }
+    export namespace contactperson {
+        export function create(type: emBusinessPartnerType, bpCode: string): List<ICondition> {
+            let condition: ICondition;
+            let conditions: List<ICondition> = new ArrayList<ICondition>();
+            // 类型
+            condition = new Condition();
+            condition.bracketOpen = 1;
+            condition.alias = "ownerType";
+            condition.operation = emConditionOperation.EQUAL;
+            condition.value = type.toString();
+            conditions.add(condition);
+            // 激活的
+            condition = new Condition();
+            condition.alias = "activated";
+            condition.operation = emConditionOperation.EQUAL;
+            condition.value = emYesNo.YES.toString();
+            conditions.add(condition);
+            // 业务伙伴编码
+            condition = new Condition();
+            condition.bracketClose = 1;
+            condition.alias = "businessPartner";
+            condition.operation = emConditionOperation.EQUAL;
+            condition.value = bpCode;
+            conditions.add(condition);
+            return conditions;
+        }
+    }
+    export namespace address {
+        export function create(type: emBusinessPartnerType, bpCode: string): List<ICondition> {
+            let condition: ICondition;
+            let conditions: List<ICondition> = new ArrayList<ICondition>();
+            // 类型
+            condition = new Condition();
+            condition.bracketOpen = 1;
+            condition.alias = "ownerType";
+            condition.operation = emConditionOperation.EQUAL;
+            condition.value = type.toString();
+            conditions.add(condition);
+            // 激活的
+            condition = new Condition();
+            condition.alias = "activated";
+            condition.operation = emConditionOperation.EQUAL;
+            condition.value = emYesNo.YES.toString();
+            conditions.add(condition);
+            // 业务伙伴编码
+            condition = new Condition();
+            condition.bracketClose = 1;
+            condition.alias = "businessPartner";
+            condition.operation = emConditionOperation.EQUAL;
+            condition.value = bpCode;
+            conditions.add(condition);
+            return conditions;
+        }
+    }
 }

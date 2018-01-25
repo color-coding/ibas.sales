@@ -63,12 +63,16 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                     })
                 }),
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesorder_contactperson"),
+                    label: ibas.i18n.prop("bo_salesorder_documentdate"),
                     template: new sap.m.Text("", {
-                        wrapping: false
+                        wrapping: false,
                     }).bindProperty("text", {
-                        path: "contactPerson",
-                    })
+                        path: "documentDate",
+                        type: new sap.ui.model.type.Date({
+                            pattern: "yyyy-MM-dd",
+                            strictParsing: true,
+                        })
+                    }),
                 }),
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_salesorder_documenttotal"),

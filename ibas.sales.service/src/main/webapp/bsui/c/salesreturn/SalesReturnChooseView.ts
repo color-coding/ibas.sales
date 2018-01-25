@@ -88,12 +88,16 @@ export class SalesReturnChooseView extends ibas.BOChooseView implements ISalesRe
                     })
                 }),
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesreturn_contactperson"),
+                    label: ibas.i18n.prop("bo_salesreturn_documentdate"),
                     template: new sap.m.Text("", {
-                        wrapping: false
+                        wrapping: false,
                     }).bindProperty("text", {
-                        path: "contactPerson",
-                    })
+                        path: "documentDate",
+                        type: new sap.ui.model.type.Date({
+                            pattern: "yyyy-MM-dd",
+                            strictParsing: true,
+                        })
+                    }),
                 }),
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_salesreturn_documenttotal"),
