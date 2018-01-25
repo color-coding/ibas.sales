@@ -399,5 +399,7 @@ export interface ISalesDeliveryEditView extends ibas.IBOEditView {
     chooseSalesDeliveryItemMaterialBatchEvent: Function;
     /** 选择销售交货行物料序列事件 */
     chooseSalesDeliveryItemMaterialSerialEvent: Function;
+    /** 收款销售交货 */
+    paymentSalesDeliveryEvent: Function;
 
 }

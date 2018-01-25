@@ -37,6 +37,8 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
     chooseSalesOrderItemMaterialSerialEvent: Function;
     /** 选择销售订单行物料批次事件 */
     chooseSalesOrderItemMaterialBatchEvent: Function;
+    /** 收款销售订单 */
+    paymentSalesOrderEvent: Function;
 
     /** 绘制视图 */
     darw(): any {

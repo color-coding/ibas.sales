@@ -399,4 +399,6 @@ export interface ISalesOrderEditView extends ibas.IBOEditView {
     chooseSalesOrderItemMaterialSerialEvent: Function;
     /** 新建销售订单行物料批次事件 */
     chooseSalesOrderItemMaterialBatchEvent: Function;
+    /** 收款销售订单 */
+    paymentSalesOrderEvent: Function;
 }

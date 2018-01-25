@@ -398,4 +398,6 @@ export interface ISalesReturnEditView extends ibas.IBOEditView {
     chooseSalesReturnItemMaterialBatchEvent: Function;
     /** 选择销售退货行物料序列事件 */
     chooseSalesReturnItemMaterialSerialEvent: Function;
+    /** 付款销售退货 */
+    paymentSalesReturnEvent: Function;
 }
