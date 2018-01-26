@@ -16,16 +16,16 @@ import { emYesNo, boFactory } from "ibas/index";
 import { emItemType, BO_CODE_MATERIALBATCHJOURNAL, BO_CODE_MATERIALSERIALJOURNAL } from "../3rdparty/materials/Datas";
 
 /** 数据转换者 */
-export class DataConverter4sl extends ibas.DataConverter4j {
+export class DataConverter4SL extends ibas.DataConverter4j {
 
     /** 创建业务对象转换者 */
     protected createConverter(): ibas.BOConverter {
-        return new BOConverter4sl;
+        return new BOConverter4SL;
     }
 }
 
 /** 业务对象转换者 */
-class BOConverter4sl extends ibas.BOConverter {
+class BOConverter4SL extends ibas.BOConverter {
 
     /**
      * 自定义解析

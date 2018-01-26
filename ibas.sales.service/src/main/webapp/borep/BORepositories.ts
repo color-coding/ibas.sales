@@ -9,14 +9,14 @@
 import * as ibas from "ibas/index";
 import * as bo from "./bo/index";
 import { IBORepositorySales, BO_REPOSITORY_SALES } from "../api/index";
-import { DataConverter4sl } from "./DataConverters";
+import { DataConverter4SL } from "./DataConverters";
 
 /** 业务对象仓库 */
 export class BORepositorySales extends ibas.BORepositoryApplication implements IBORepositorySales {
 
     /** 创建此模块的后端与前端数据的转换者 */
     protected createConverter(): ibas.IDataConverter {
-        return new DataConverter4sl;
+        return new DataConverter4SL;
     }
 
     /**

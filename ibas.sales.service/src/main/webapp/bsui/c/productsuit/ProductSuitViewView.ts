@@ -17,7 +17,7 @@ import { IProductSuitViewView } from "../../../bsapp/productsuit/index";
 export class ProductSuitViewView extends ibas.BOViewView implements IProductSuitViewView {
 
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.form = new sap.ui.layout.form.SimpleForm("", {
             content: [

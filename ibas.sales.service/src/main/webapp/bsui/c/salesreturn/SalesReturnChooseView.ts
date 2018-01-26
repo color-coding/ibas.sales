@@ -21,7 +21,7 @@ export class SalesReturnChooseView extends ibas.BOChooseView implements ISalesRe
         return bo.SalesReturn;
     }
     /** 绘制工具条 */
-    darwBars(): any {
+    drawBars(): any {
         let that: this = this;
         return [
             new sap.m.Button("", {
@@ -54,7 +54,7 @@ export class SalesReturnChooseView extends ibas.BOChooseView implements ISalesRe
         ];
     }
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.table = new sap.ui.table.Table("", {
             enableSelectAll: false,
@@ -174,7 +174,7 @@ export class SalesReturnChooseView extends ibas.BOChooseView implements ISalesRe
             horizontalScrolling: true,
             verticalScrolling: true,
             content: [this.table],
-            buttons: [this.darwBars()]
+            buttons: [this.drawBars()]
         });
     }
     private table: sap.ui.table.Table;

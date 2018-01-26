@@ -21,7 +21,7 @@ export class SalesDeliveryViewView extends ibas.BOViewView implements ISalesDeli
     private childViewForm: sap.ui.layout.form.SimpleForm;
 
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,

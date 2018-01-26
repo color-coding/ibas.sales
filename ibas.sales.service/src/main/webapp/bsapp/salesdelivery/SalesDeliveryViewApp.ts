@@ -9,7 +9,7 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
-import { DataConverter4sl } from "../../borep/DataConverters";
+import { DataConverter4SL } from "../../borep/DataConverters";
 import { SalesDeliveryEditApp } from "./SalesDeliveryEditApp";
 
 /** 查看应用-销售交货 */

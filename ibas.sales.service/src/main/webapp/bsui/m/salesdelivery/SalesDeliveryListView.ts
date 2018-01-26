@@ -23,7 +23,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
     /** 删除数据事件，参数：删除对象集合 */
     deleteDataEvent: Function;
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.table = new sap.m.List("", {
             inset: false,

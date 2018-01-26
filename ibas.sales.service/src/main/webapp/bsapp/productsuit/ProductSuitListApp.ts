@@ -9,7 +9,7 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositorySales } from "../../borep/BORepositories";
-import { DataConverter4sl } from "../../borep/DataConverters";
+import { DataConverter4SL } from "../../borep/DataConverters";
 import { ProductSuitViewApp } from "./ProductSuitViewApp";
 import { ProductSuitEditApp } from "./ProductSuitEditApp";
 
@@ -179,7 +179,7 @@ export class ProductSuitListApp extends ibas.BOListApplication<IProductSuitListV
         return [
             new ibas.BOListServiceProxy({
                 data: this.view.getSelecteds(),
-                converter: new DataConverter4sl()
+                converter: new DataConverter4SL()
             })
         ];
     }

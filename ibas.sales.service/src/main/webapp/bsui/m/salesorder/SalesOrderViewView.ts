@@ -23,7 +23,7 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
     private tableSalesOrderItem: sap.m.List;
 
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.viewTopForm = new sap.ui.layout.form.SimpleForm("", {
             editable: true,

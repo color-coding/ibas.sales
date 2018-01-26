@@ -23,7 +23,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
     /** 删除数据事件，参数：删除对象集合 */
     deleteDataEvent: Function;
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.list = new sap.m.List("", {
             inset: false,
