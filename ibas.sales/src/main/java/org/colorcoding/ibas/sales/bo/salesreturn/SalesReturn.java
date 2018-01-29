@@ -22,6 +22,7 @@ import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
@@ -1655,8 +1656,8 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 价格清单 属性
 	 */
 	@DbField(name = "PriceList", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Integer> PROPERTY_PRICELIST = registerProperty(
-			PROPERTY_PRICELIST_NAME, Integer.class, MY_CLASS);
+	public static final IPropertyInfo<Integer> PROPERTY_PRICELIST = registerProperty(PROPERTY_PRICELIST_NAME,
+			Integer.class, MY_CLASS);
 
 	/**
 	 * 获取-价格清单
@@ -1922,6 +1923,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	protected IBusinessRule[] registerRules() {
 		return new IBusinessRule[] { // 注册的业务规则
 				new BusinessRuleRequired(PROPERTY_CUSTOMERCODE), // 要求有值
+				new BusinessRuleRequiredElements(PROPERTY_SALESRETURNITEMS), // 要求有元素
 		};
 	}
 }
