@@ -75,6 +75,12 @@ export interface IShippingAddress extends IBOSimple {
     /** 备注 2 */
     remark2: string;
 
+    /** 费用 */
+    expense: number;
+
+    /** 货币 */
+    currency: string;
+
     /** 对象编号 */
     objectKey: number;
 

@@ -70,6 +70,8 @@ public class SalesDeliveryItems extends BusinessObjects<ISalesDeliveryItem, ISal
 		if (item instanceof SalesDeliveryItem) {
 			((SalesDeliveryItem) item).parent = this.getParent();
 		}
+		// 记录父项的值
+		item.setRate(this.getParent().getDocumentRate());
 	}
 
 	@Override

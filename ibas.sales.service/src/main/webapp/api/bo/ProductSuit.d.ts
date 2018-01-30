@@ -57,7 +57,7 @@ export interface IProductSuit extends IBOSimple {
     /** 总计 */
     total: number;
 
-    /** 币种 */
+    /** 货币 */
     currency: string;
 
     /** 备注 */
@@ -185,7 +185,7 @@ export interface IProductSuitItem extends IBOSimpleLine {
     /** 价格 */
     price: number;
 
-    /** 币种 */
+    /** 货币 */
     currency: string;
 
     /** 总计 */

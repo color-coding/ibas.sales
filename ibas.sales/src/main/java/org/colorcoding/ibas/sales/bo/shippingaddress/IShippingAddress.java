@@ -2,6 +2,7 @@ package org.colorcoding.ibas.sales.bo.shippingaddress;
 
 import org.colorcoding.ibas.bobas.bo.IBOSimple;
 import org.colorcoding.ibas.bobas.data.DateTime;
+import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.sales.data.emShippingStatus;
 
 /**
@@ -249,6 +250,60 @@ public interface IShippingAddress extends IBOSimple {
 	 *            值
 	 */
 	void setRemark2(String value);
+
+	/**
+	 * 获取-费用
+	 * 
+	 * @return 值
+	 */
+	Decimal getExpense();
+
+	/**
+	 * 设置-费用
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setExpense(Decimal value);
+
+	/**
+	 * 设置-费用
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setExpense(String value);
+
+	/**
+	 * 设置-费用
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setExpense(int value);
+
+	/**
+	 * 设置-费用
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setExpense(double value);
+
+	/**
+	 * 获取-货币
+	 * 
+	 * @return 值
+	 */
+	String getCurrency();
+
+	/**
+	 * 设置-货币
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setCurrency(String value);
 
 	/**
 	 * 获取-对象编号

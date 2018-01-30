@@ -35,12 +35,10 @@
     <Property Name="CustomerCode" Description="客户代码" DataType="Alphanumeric" DataSubType="Default" EditSize="20" Mapped="CardCode"/>
     <Property Name="CustomerName" Description="客户名称" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="CardName"/>
     <Property Name="ContactPerson" Description="联系人" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="CntctCode"/>
-    <Property Name="TaxRate" Description="税率" DataType="Decimal" DataSubType="Rate" EditSize="8" Mapped="TaxRate"/>
-    <Property Name="TaxTotal" Description="税总额" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="TaxTotal"/>
     <Property Name="Discount" Description="折扣" DataType="Decimal" DataSubType="Percentage" EditSize="8" Mapped="DiscPrcnt"/>
     <Property Name="DiscountTotal" Description="折扣总计" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="DiscSum"/>
     <Property Name="DocumentCurrency" Description="单据货币" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="DocCur"/>
-    <Property Name="DocumentRate" Description="单据交换率" DataType="Decimal" DataSubType="Rate" EditSize="8" Mapped="DocRate"/>
+    <Property Name="DocumentRate" Description="单据汇率" DataType="Decimal" DataSubType="Rate" EditSize="8" Mapped="DocRate"/>
     <Property Name="DocumentTotal" Description="单据总计" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="DocTotal"/>
     <Property Name="PaidTotal" Description="已付款总计" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="PaidTotal"/>
     <Property Name="GrossProfit" Description="毛利" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="GrossProfit"/>

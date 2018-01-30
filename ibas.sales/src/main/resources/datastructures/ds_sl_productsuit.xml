@@ -11,7 +11,7 @@
     <Property Name="ValidDate" Description="生效日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="ValidDate"/>
     <Property Name="InvalidDate" Description="失效日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="InvalidDate"/>
     <Property Name="Total" Description="总计" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="Total"/>
-    <Property Name="Currency" Description="币种" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Currency"/>
+    <Property Name="Currency" Description="货币" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Currency"/>
     <Property Name="Remarks" Description="备注" DataType="Memo" DataSubType="Default" EditSize="254" Mapped="Remarks"/>
     <Property Name="ObjectKey" Description="对象编号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="ObjectKey" PrimaryKey="Yes"/>
     <Property Name="ObjectCode" Description="对象类型" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="ObjectCode"/>
@@ -50,7 +50,7 @@
     <Property Name="Quantity" Description="数量" DataType="Decimal" DataSubType="Quantity" EditSize="8" Mapped="Quantity"/>
     <Property Name="UOM" Description="单位" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="UOM"/>
     <Property Name="Price" Description="价格" DataType="Decimal" DataSubType="Price" EditSize="8" Mapped="Price"/>
-    <Property Name="Currency" Description="币种" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Currency"/>
+    <Property Name="Currency" Description="货币" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Currency"/>
     <Property Name="LineTotal" Description="总计" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="LineTotal"/>
   </Model>
   <BusinessObject MappedModel="ProductSuit" ShortName="${Company}_SL_PDSUIT">

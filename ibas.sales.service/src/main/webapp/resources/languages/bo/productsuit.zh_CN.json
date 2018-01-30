@@ -9,7 +9,7 @@
   "bo_productsuit_validdate": "生效日期",
   "bo_productsuit_invaliddate": "失效日期",
   "bo_productsuit_total": "总计",
-  "bo_productsuit_currency": "币种",
+  "bo_productsuit_currency": "货币",
   "bo_productsuit_remarks": "备注",
   "bo_productsuit_objectkey": "对象编号",
   "bo_productsuit_objectcode": "对象类型",
@@ -45,7 +45,7 @@
   "bo_productsuititem_quantity": "数量",
   "bo_productsuititem_uom": "单位",
   "bo_productsuititem_price": "价格",
-  "bo_productsuititem_currency": "币种",
+  "bo_productsuititem_currency": "货币",
   "bo_productsuititem_linetotal": "总计",
   "bo_productsuit_closing_delimiter": "----结束----"
 }

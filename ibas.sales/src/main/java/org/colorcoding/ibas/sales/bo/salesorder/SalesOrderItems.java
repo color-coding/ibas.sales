@@ -67,9 +67,10 @@ public class SalesOrderItems extends BusinessObjects<ISalesOrderItem, ISalesOrde
 	protected void afterAddItem(ISalesOrderItem item) {
 		super.afterAddItem(item);
 		if (item instanceof SalesOrderItem) {
-			SalesOrderItem myItem = (SalesOrderItem) item;
-			myItem.parent = this.getParent();
+			((SalesOrderItem) item).parent = this.getParent();
 		}
+		// 记录父项的值
+		item.setRate(this.getParent().getDocumentRate());
 	}
 
 	@Override

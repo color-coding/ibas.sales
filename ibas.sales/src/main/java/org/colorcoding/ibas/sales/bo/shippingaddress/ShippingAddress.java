@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
+import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.mapping.BOCode;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
@@ -560,6 +561,100 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	 */
 	public final void setRemark2(String value) {
 		this.setProperty(PROPERTY_REMARK2, value);
+	}
+
+	/**
+	 * 属性名称-费用
+	 */
+	private static final String PROPERTY_EXPENSE_NAME = "Expense";
+
+	/**
+	 * 费用 属性
+	 */
+	@DbField(name = "Expense", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<Decimal> PROPERTY_EXPENSE = registerProperty(PROPERTY_EXPENSE_NAME, Decimal.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-费用
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_EXPENSE_NAME)
+	public final Decimal getExpense() {
+		return this.getProperty(PROPERTY_EXPENSE);
+	}
+
+	/**
+	 * 设置-费用
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setExpense(Decimal value) {
+		this.setProperty(PROPERTY_EXPENSE, value);
+	}
+
+	/**
+	 * 设置-费用
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setExpense(String value) {
+		this.setExpense(new Decimal(value));
+	}
+
+	/**
+	 * 设置-费用
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setExpense(int value) {
+		this.setExpense(new Decimal(value));
+	}
+
+	/**
+	 * 设置-费用
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setExpense(double value) {
+		this.setExpense(new Decimal(value));
+	}
+
+	/**
+	 * 属性名称-货币
+	 */
+	private static final String PROPERTY_CURRENCY_NAME = "Currency";
+
+	/**
+	 * 货币 属性
+	 */
+	@DbField(name = "Currency", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_CURRENCY = registerProperty(PROPERTY_CURRENCY_NAME, String.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-货币
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_CURRENCY_NAME)
+	public final String getCurrency() {
+		return this.getProperty(PROPERTY_CURRENCY);
+	}
+
+	/**
+	 * 设置-货币
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setCurrency(String value) {
+		this.setProperty(PROPERTY_CURRENCY, value);
 	}
 
 	/**

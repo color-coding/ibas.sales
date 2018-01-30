@@ -136,13 +136,13 @@ export class ProductSuit extends BOSimple<ProductSuit> implements IProductSuit {
         this.setProperty(ProductSuit.PROPERTY_TOTAL_NAME, value);
     }
 
-    /** 映射的属性名称-币种 */
+    /** 映射的属性名称-货币 */
     static PROPERTY_CURRENCY_NAME: string = "Currency";
-    /** 获取-币种 */
+    /** 获取-货币 */
     get currency(): string {
         return this.getProperty<string>(ProductSuit.PROPERTY_CURRENCY_NAME);
     }
-    /** 设置-币种 */
+    /** 设置-货币 */
     set currency(value: string) {
         this.setProperty(ProductSuit.PROPERTY_CURRENCY_NAME, value);
     }
@@ -582,13 +582,13 @@ export class ProductSuitItem extends BOSimpleLine<ProductSuitItem> implements IP
         this.setProperty(ProductSuitItem.PROPERTY_PRICE_NAME, value);
     }
 
-    /** 映射的属性名称-币种 */
+    /** 映射的属性名称-货币 */
     static PROPERTY_CURRENCY_NAME: string = "Currency";
-    /** 获取-币种 */
+    /** 获取-货币 */
     get currency(): string {
         return this.getProperty<string>(ProductSuitItem.PROPERTY_CURRENCY_NAME);
     }
-    /** 设置-币种 */
+    /** 设置-货币 */
     set currency(value: string) {
         this.setProperty(ProductSuitItem.PROPERTY_CURRENCY_NAME, value);
     }

@@ -214,6 +214,28 @@ export class ShippingAddress extends BOSimple<ShippingAddress> implements IShipp
         this.setProperty(ShippingAddress.PROPERTY_REMARK2_NAME, value);
     }
 
+    /** 映射的属性名称-费用 */
+    static PROPERTY_EXPENSE_NAME: string = "Expense";
+    /** 获取-费用 */
+    get expense(): number {
+        return this.getProperty<number>(ShippingAddress.PROPERTY_EXPENSE_NAME);
+    }
+    /** 设置-费用 */
+    set expense(value: number) {
+        this.setProperty(ShippingAddress.PROPERTY_EXPENSE_NAME, value);
+    }
+
+    /** 映射的属性名称-货币 */
+    static PROPERTY_CURRENCY_NAME: string = "Currency";
+    /** 获取-货币 */
+    get currency(): string {
+        return this.getProperty<string>(ShippingAddress.PROPERTY_CURRENCY_NAME);
+    }
+    /** 设置-货币 */
+    set currency(value: string) {
+        this.setProperty(ShippingAddress.PROPERTY_CURRENCY_NAME, value);
+    }
+
     /** 映射的属性名称-对象编号 */
     static PROPERTY_OBJECTKEY_NAME: string = "ObjectKey";
     /** 获取-对象编号 */

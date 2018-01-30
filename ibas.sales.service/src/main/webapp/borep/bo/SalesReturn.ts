@@ -415,28 +415,6 @@ export class SalesReturn extends BODocument<SalesReturn> implements ISalesReturn
         this.setProperty(SalesReturn.PROPERTY_CONTACTPERSON_NAME, value);
     }
 
-    /** 映射的属性名称-税率 */
-    static PROPERTY_TAXRATE_NAME: string = "TaxRate";
-    /** 获取-税率 */
-    get taxRate(): number {
-        return this.getProperty<number>(SalesReturn.PROPERTY_TAXRATE_NAME);
-    }
-    /** 设置-税率 */
-    set taxRate(value: number) {
-        this.setProperty(SalesReturn.PROPERTY_TAXRATE_NAME, value);
-    }
-
-    /** 映射的属性名称-税总额 */
-    static PROPERTY_TAXTOTAL_NAME: string = "TaxTotal";
-    /** 获取-税总额 */
-    get taxTotal(): number {
-        return this.getProperty<number>(SalesReturn.PROPERTY_TAXTOTAL_NAME);
-    }
-    /** 设置-税总额 */
-    set taxTotal(value: number) {
-        this.setProperty(SalesReturn.PROPERTY_TAXTOTAL_NAME, value);
-    }
-
     /** 映射的属性名称-折扣 */
     static PROPERTY_DISCOUNT_NAME: string = "Discount";
     /** 获取-折扣 */
@@ -470,13 +448,13 @@ export class SalesReturn extends BODocument<SalesReturn> implements ISalesReturn
         this.setProperty(SalesReturn.PROPERTY_DOCUMENTCURRENCY_NAME, value);
     }
 
-    /** 映射的属性名称-单据交换率 */
+    /** 映射的属性名称-单据汇率 */
     static PROPERTY_DOCUMENTRATE_NAME: string = "DocumentRate";
-    /** 获取-单据交换率 */
+    /** 获取-单据汇率 */
     get documentRate(): number {
         return this.getProperty<number>(SalesReturn.PROPERTY_DOCUMENTRATE_NAME);
     }
-    /** 设置-单据交换率 */
+    /** 设置-单据汇率 */
     set documentRate(value: number) {
         this.setProperty(SalesReturn.PROPERTY_DOCUMENTRATE_NAME, value);
     }

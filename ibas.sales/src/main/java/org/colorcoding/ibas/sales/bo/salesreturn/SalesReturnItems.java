@@ -69,6 +69,8 @@ public class SalesReturnItems extends BusinessObjects<ISalesReturnItem, ISalesRe
 		if (item instanceof SalesReturnItem) {
 			((SalesReturnItem) item).parent = this.getParent();
 		}
+		// 记录父项的值
+		item.setRate(this.getParent().getDocumentRate());
 	}
 
 	@Override

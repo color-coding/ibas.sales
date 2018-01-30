@@ -1120,130 +1120,6 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 	}
 
 	/**
-	 * 属性名称-税率
-	 */
-	private static final String PROPERTY_TAXRATE_NAME = "TaxRate";
-
-	/**
-	 * 税率 属性
-	 */
-	@DbField(name = "TaxRate", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_TAXRATE = registerProperty(PROPERTY_TAXRATE_NAME, Decimal.class,
-			MY_CLASS);
-
-	/**
-	 * 获取-税率
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_TAXRATE_NAME)
-	public final Decimal getTaxRate() {
-		return this.getProperty(PROPERTY_TAXRATE);
-	}
-
-	/**
-	 * 设置-税率
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setTaxRate(Decimal value) {
-		this.setProperty(PROPERTY_TAXRATE, value);
-	}
-
-	/**
-	 * 设置-税率
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setTaxRate(String value) {
-		this.setTaxRate(new Decimal(value));
-	}
-
-	/**
-	 * 设置-税率
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setTaxRate(int value) {
-		this.setTaxRate(new Decimal(value));
-	}
-
-	/**
-	 * 设置-税率
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setTaxRate(double value) {
-		this.setTaxRate(new Decimal(value));
-	}
-
-	/**
-	 * 属性名称-税总额
-	 */
-	private static final String PROPERTY_TAXTOTAL_NAME = "TaxTotal";
-
-	/**
-	 * 税总额 属性
-	 */
-	@DbField(name = "TaxTotal", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_TAXTOTAL = registerProperty(PROPERTY_TAXTOTAL_NAME,
-			Decimal.class, MY_CLASS);
-
-	/**
-	 * 获取-税总额
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_TAXTOTAL_NAME)
-	public final Decimal getTaxTotal() {
-		return this.getProperty(PROPERTY_TAXTOTAL);
-	}
-
-	/**
-	 * 设置-税总额
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setTaxTotal(Decimal value) {
-		this.setProperty(PROPERTY_TAXTOTAL, value);
-	}
-
-	/**
-	 * 设置-税总额
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setTaxTotal(String value) {
-		this.setTaxTotal(new Decimal(value));
-	}
-
-	/**
-	 * 设置-税总额
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setTaxTotal(int value) {
-		this.setTaxTotal(new Decimal(value));
-	}
-
-	/**
-	 * 设置-税总额
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setTaxTotal(double value) {
-		this.setTaxTotal(new Decimal(value));
-	}
-
-	/**
 	 * 属性名称-折扣
 	 */
 	private static final String PROPERTY_DISCOUNT_NAME = "Discount";
@@ -1400,19 +1276,19 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 	}
 
 	/**
-	 * 属性名称-单据交换率
+	 * 属性名称-单据汇率
 	 */
 	private static final String PROPERTY_DOCUMENTRATE_NAME = "DocumentRate";
 
 	/**
-	 * 单据交换率 属性
+	 * 单据汇率 属性
 	 */
 	@DbField(name = "DocRate", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
 	public static final IPropertyInfo<Decimal> PROPERTY_DOCUMENTRATE = registerProperty(PROPERTY_DOCUMENTRATE_NAME,
 			Decimal.class, MY_CLASS);
 
 	/**
-	 * 获取-单据交换率
+	 * 获取-单据汇率
 	 * 
 	 * @return 值
 	 */
@@ -1422,7 +1298,7 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 	}
 
 	/**
-	 * 设置-单据交换率
+	 * 设置-单据汇率
 	 * 
 	 * @param value
 	 *            值
@@ -1432,7 +1308,7 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 	}
 
 	/**
-	 * 设置-单据交换率
+	 * 设置-单据汇率
 	 * 
 	 * @param value
 	 *            值
@@ -1442,7 +1318,7 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 	}
 
 	/**
-	 * 设置-单据交换率
+	 * 设置-单据汇率
 	 * 
 	 * @param value
 	 *            值
@@ -1452,7 +1328,7 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 	}
 
 	/**
-	 * 设置-单据交换率
+	 * 设置-单据汇率
 	 * 
 	 * @param value
 	 *            值
