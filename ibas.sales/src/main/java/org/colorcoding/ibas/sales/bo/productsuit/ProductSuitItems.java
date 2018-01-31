@@ -66,6 +66,7 @@ public class ProductSuitItems extends BusinessObjects<IProductSuitItem, IProduct
 	@Override
 	protected void afterAddItem(IProductSuitItem item) {
 		super.afterAddItem(item);
+		item.setCurrency(this.getParent().getCurrency());
 	}
 
 	@Override

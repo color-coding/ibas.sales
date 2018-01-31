@@ -54,21 +54,3 @@ export enum emShippingStatus {
 	 */
 	SHIPPED,
 }
-/** 查询条件 */
-export namespace conditions {
-	export namespace material {
-		/** 销售物料的查询条件 */
-		export function create(): List<ICondition> {
-			let condition: ICondition;
-			let conditions: List<ICondition> = mm.conditions.material.create();
-			// 销售物料
-			condition = new Condition();
-			condition.relationship = emConditionRelationship.AND;
-			condition.alias = "salesItem";
-			condition.operation = emConditionOperation.EQUAL;
-			condition.value = emYesNo.YES.toString();
-			conditions.add(condition);
-			return conditions;
-		}
-	}
-}

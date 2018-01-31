@@ -12,7 +12,6 @@ import {
     emProductTreeType,
     emShippingStatus,
 } from "../api/index";
-import { emYesNo, boFactory } from "ibas/index";
 import { emItemType, BO_CODE_MATERIALBATCHJOURNAL, BO_CODE_MATERIALSERIALJOURNAL } from "../3rdparty/materials/Datas";
 
 /** 数据转换者 */
@@ -44,65 +43,40 @@ class BOConverter4SL extends ibas.BOConverter {
      * @returns 转换的值
      */
     protected convertData(boName: string, property: string, value: any): any {
-        if (boName === boFactory.classOf(BO_CODE_MATERIALBATCHJOURNAL).name) {
-            if (property === "Direction") {
-                return ibas.enums.toString(ibas.emDirection, value);
-            }
-        } else if (boName === boFactory.classOf(BO_CODE_MATERIALSERIALJOURNAL).name) {
-            if (property === "Direction") {
-                return ibas.enums.toString(ibas.emDirection, value);
-            } else if (property === "InStock") {
+        if (boName === bo.SalesOrder.name) {
+            if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
                 return ibas.enums.toString(ibas.emYesNo, value);
             }
-        } else if (boName === bo.SalesOrder.name) {
-            if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
         } else if (boName === bo.SalesOrderItem.name) {
-            if (property === bo.SalesOrderItem.PROPERTY_ITEMTYPE_NAME) {
-                return ibas.enums.toString(emItemType, value);
-            }
             if (property === bo.SalesOrderItem.PROPERTY_BATCHMANAGEMENT_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesOrderItem.PROPERTY_SERIALMANAGEMENT_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesOrderItem.PROPERTY_TREETYPE_NAME) {
+                return ibas.enums.toString(ibas.emYesNo, value);
+            } else if (property === bo.SalesOrderItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                return ibas.enums.toString(ibas.emYesNo, value);
+            } else if (property === bo.SalesOrderItem.PROPERTY_TREETYPE_NAME) {
                 return ibas.enums.toString(emProductTreeType, value);
             }
         } else if (boName === bo.SalesDelivery.name) {
             if (property === bo.SalesDelivery.PROPERTY_ROUNDING_NAME) {
-                return ibas.enums.toString(emYesNo, value);
+                return ibas.enums.toString(ibas.emYesNo, value);
             }
         } else if (boName === bo.SalesDeliveryItem.name) {
-            if (property === bo.SalesDeliveryItem.PROPERTY_ITEMTYPE_NAME) {
-                return ibas.enums.toString(emItemType, value);
-            }
             if (property === bo.SalesDeliveryItem.PROPERTY_BATCHMANAGEMENT_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesDeliveryItem.PROPERTY_SERIALMANAGEMENT_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesDeliveryItem.PROPERTY_TREETYPE_NAME) {
+                return ibas.enums.toString(ibas.emYesNo, value);
+            } else if (property === bo.SalesDeliveryItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                return ibas.enums.toString(ibas.emYesNo, value);
+            } else if (property === bo.SalesDeliveryItem.PROPERTY_TREETYPE_NAME) {
                 return ibas.enums.toString(emProductTreeType, value);
             }
         } else if (boName === bo.SalesReturn.name) {
             if (property === bo.SalesReturn.PROPERTY_ROUNDING_NAME) {
-                return ibas.enums.toString(emYesNo, value);
+                return ibas.enums.toString(ibas.emYesNo, value);
             }
         } else if (boName === bo.SalesReturnItem.name) {
-            if (property === bo.SalesReturnItem.PROPERTY_ITEMTYPE_NAME) {
-                return ibas.enums.toString(emItemType, value);
-            }
             if (property === bo.SalesReturnItem.PROPERTY_BATCHMANAGEMENT_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesReturnItem.PROPERTY_SERIALMANAGEMENT_NAME) {
-                return ibas.enums.toString(emYesNo, value);
-            }
-            if (property === bo.SalesReturnItem.PROPERTY_TREETYPE_NAME) {
+                return ibas.enums.toString(ibas.emYesNo, value);
+            } else if (property === bo.SalesReturnItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                return ibas.enums.toString(ibas.emYesNo, value);
+            } else if (property === bo.SalesReturnItem.PROPERTY_TREETYPE_NAME) {
                 return ibas.enums.toString(emProductTreeType, value);
             }
         } else if (boName === bo.ShippingAddress.name) {
@@ -121,65 +95,40 @@ class BOConverter4SL extends ibas.BOConverter {
      * @returns 解析的值
      */
     protected parsingData(boName: string, property: string, value: any): any {
-        if (boName === boFactory.classOf(BO_CODE_MATERIALBATCHJOURNAL).name) {
-            if (property === "Direction") {
-                return ibas.enums.valueOf(ibas.emDirection, value);
-            }
-        } else if (boName === boFactory.classOf(BO_CODE_MATERIALSERIALJOURNAL).name) {
-            if (property === "Direction") {
-                return ibas.enums.valueOf(ibas.emDirection, value);
-            } else if (property === "InStock") {
+        if (boName === bo.SalesOrder.name) {
+            if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
                 return ibas.enums.valueOf(ibas.emYesNo, value);
             }
-        } else if (boName === bo.SalesOrder.name) {
-            if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
         } else if (boName === bo.SalesOrderItem.name) {
-            if (property === bo.SalesOrderItem.PROPERTY_ITEMTYPE_NAME) {
-                return ibas.enums.valueOf(emItemType, value);
-            }
             if (property === bo.SalesOrderItem.PROPERTY_BATCHMANAGEMENT_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesOrderItem.PROPERTY_SERIALMANAGEMENT_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesOrderItem.PROPERTY_TREETYPE_NAME) {
+                return ibas.enums.valueOf(ibas.emYesNo, value);
+            } else if (property === bo.SalesOrderItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                return ibas.enums.valueOf(ibas.emYesNo, value);
+            } else if (property === bo.SalesOrderItem.PROPERTY_TREETYPE_NAME) {
                 return ibas.enums.valueOf(emProductTreeType, value);
             }
         } else if (boName === bo.SalesDelivery.name) {
             if (property === bo.SalesDelivery.PROPERTY_ROUNDING_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
+                return ibas.enums.valueOf(ibas.emYesNo, value);
             }
         } else if (boName === bo.SalesDeliveryItem.name) {
-            if (property === bo.SalesDeliveryItem.PROPERTY_ITEMTYPE_NAME) {
-                return ibas.enums.valueOf(emItemType, value);
-            }
             if (property === bo.SalesDeliveryItem.PROPERTY_BATCHMANAGEMENT_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesDeliveryItem.PROPERTY_SERIALMANAGEMENT_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesDeliveryItem.PROPERTY_TREETYPE_NAME) {
+                return ibas.enums.valueOf(ibas.emYesNo, value);
+            } else if (property === bo.SalesDeliveryItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                return ibas.enums.valueOf(ibas.emYesNo, value);
+            } else if (property === bo.SalesDeliveryItem.PROPERTY_TREETYPE_NAME) {
                 return ibas.enums.valueOf(emProductTreeType, value);
             }
         } else if (boName === bo.SalesReturn.name) {
             if (property === bo.SalesReturn.PROPERTY_ROUNDING_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
+                return ibas.enums.valueOf(ibas.emYesNo, value);
             }
         } else if (boName === bo.SalesReturnItem.name) {
-            if (property === bo.SalesReturnItem.PROPERTY_ITEMTYPE_NAME) {
-                return ibas.enums.valueOf(emItemType, value);
-            }
             if (property === bo.SalesReturnItem.PROPERTY_BATCHMANAGEMENT_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesReturnItem.PROPERTY_SERIALMANAGEMENT_NAME) {
-                return ibas.enums.valueOf(emYesNo, value);
-            }
-            if (property === bo.SalesReturnItem.PROPERTY_TREETYPE_NAME) {
+                return ibas.enums.valueOf(ibas.emYesNo, value);
+            } else if (property === bo.SalesReturnItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                return ibas.enums.valueOf(ibas.emYesNo, value);
+            } else if (property === bo.SalesReturnItem.PROPERTY_TREETYPE_NAME) {
                 return ibas.enums.valueOf(emProductTreeType, value);
             }
         } else if (boName === bo.ShippingAddress.name) {

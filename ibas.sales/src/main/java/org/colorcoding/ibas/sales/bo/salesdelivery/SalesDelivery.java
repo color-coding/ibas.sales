@@ -21,8 +21,12 @@ import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMultiplication;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSummation;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
@@ -1183,19 +1187,19 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	}
 
 	/**
-	 * 属性名称-折扣总计
+	 * 属性名称-折扣后总计
 	 */
 	private static final String PROPERTY_DISCOUNTTOTAL_NAME = "DiscountTotal";
 
 	/**
-	 * 折扣总计 属性
+	 * 折扣后总计 属性
 	 */
 	@DbField(name = "DiscSum", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
 	public static final IPropertyInfo<Decimal> PROPERTY_DISCOUNTTOTAL = registerProperty(PROPERTY_DISCOUNTTOTAL_NAME,
 			Decimal.class, MY_CLASS);
 
 	/**
-	 * 获取-折扣总计
+	 * 获取-折扣后总计
 	 * 
 	 * @return 值
 	 */
@@ -1205,7 +1209,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	}
 
 	/**
-	 * 设置-折扣总计
+	 * 设置-折扣后总计
 	 * 
 	 * @param value
 	 *            值
@@ -1215,7 +1219,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	}
 
 	/**
-	 * 设置-折扣总计
+	 * 设置-折扣后总计
 	 * 
 	 * @param value
 	 *            值
@@ -1225,7 +1229,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	}
 
 	/**
-	 * 设置-折扣总计
+	 * 设置-折扣后总计
 	 * 
 	 * @param value
 	 *            值
@@ -1235,7 +1239,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	}
 
 	/**
-	 * 设置-折扣总计
+	 * 设置-折扣后总计
 	 * 
 	 * @param value
 	 *            值
@@ -1793,14 +1797,120 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 		this.setDocumentDate(DateTime.getToday());
 		this.setDeliveryDate(DateTime.getToday());
 		this.setDocumentStatus(emDocumentStatus.RELEASED);
+		this.setDiscount(Decimal.ONE);
 
+	}
+
+	/**
+	 * 属性名称-项目的行总计
+	 */
+	private static final String PROPERTY_ITEMS_LINETOTAL_NAME = "ItemsLineTotal";
+
+	/**
+	 * 项目的行总计 属性
+	 */
+	public static final IPropertyInfo<Decimal> PROPERTY_ITEMS_LINETOTAL = registerProperty(
+			PROPERTY_ITEMS_LINETOTAL_NAME, Decimal.class, MY_CLASS);
+
+	/**
+	 * 获取-项目的行总计
+	 * 
+	 * @return 值
+	 */
+	public final Decimal getItemsLineTotal() {
+		return this.getProperty(PROPERTY_ITEMS_LINETOTAL);
+	}
+
+	/**
+	 * 设置-项目的行总计
+	 * 
+	 * @param value
+	 *            值
+	 */
+	final void setItemsLineTotal(Decimal value) {
+		this.setProperty(PROPERTY_ITEMS_LINETOTAL, value);
+	}
+
+	/**
+	 * 属性名称-项目的税总计
+	 */
+	private static final String PROPERTY_ITEMS_TAXTOTAL_NAME = "ItemsTaxTotal";
+
+	/**
+	 * 项目的税总计 属性
+	 */
+	public static final IPropertyInfo<Decimal> PROPERTY_ITEMS_TAXTOTAL = registerProperty(PROPERTY_ITEMS_TAXTOTAL_NAME,
+			Decimal.class, MY_CLASS);
+
+	/**
+	 * 获取-项目的税总计
+	 * 
+	 * @return 值
+	 */
+	public final Decimal getItemsTaxTotal() {
+		return this.getProperty(PROPERTY_ITEMS_TAXTOTAL);
+	}
+
+	/**
+	 * 设置-项目的税总计
+	 * 
+	 * @param value
+	 *            值
+	 */
+	final void setItemsTaxTotal(Decimal value) {
+		this.setProperty(PROPERTY_ITEMS_TAXTOTAL, value);
+	}
+
+	/**
+	 * 属性名称-运送费用总计
+	 */
+	private static final String PROPERTY_SHIPPINGS_EXPENSETOTAL_NAME = "ShippingsExpenseTotal";
+
+	/**
+	 * 运送费用总计 属性
+	 */
+	public static final IPropertyInfo<Decimal> PROPERTY_SHIPPINGS_EXPENSETOTAL = registerProperty(
+			PROPERTY_SHIPPINGS_EXPENSETOTAL_NAME, Decimal.class, MY_CLASS);
+
+	/**
+	 * 获取-运送费用总计
+	 * 
+	 * @return 值
+	 */
+	public final Decimal getShippingsExpenseTotal() {
+		return this.getProperty(PROPERTY_SHIPPINGS_EXPENSETOTAL);
+	}
+
+	/**
+	 * 设置-运送费用总计
+	 * 
+	 * @param value
+	 *            值
+	 */
+	final void setShippingsExpenseTotal(Decimal value) {
+		this.setProperty(PROPERTY_SHIPPINGS_EXPENSETOTAL, value);
 	}
 
 	@Override
 	protected IBusinessRule[] registerRules() {
 		return new IBusinessRule[] { // 注册的业务规则
 				new BusinessRuleRequired(PROPERTY_CUSTOMERCODE), // 要求有值
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DISCOUNT), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DOCUMENTTOTAL), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DOCUMENTRATE), // 不能低于0
 				new BusinessRuleRequiredElements(PROPERTY_SALESDELIVERYITEMS), // 要求有元素
+				new BusinessRuleSumElements(PROPERTY_ITEMS_LINETOTAL, PROPERTY_SALESDELIVERYITEMS,
+						SalesDeliveryItem.PROPERTY_LINETOTAL), // 计算项目-行总计
+				new BusinessRuleSumElements(PROPERTY_ITEMS_TAXTOTAL, PROPERTY_SALESDELIVERYITEMS,
+						SalesDeliveryItem.PROPERTY_TAXTOTAL), // 计算项目-税总计
+				new BusinessRuleSumElements(PROPERTY_SHIPPINGS_EXPENSETOTAL, PROPERTY_SHIPPINGADDRESSS,
+						ShippingAddress.PROPERTY_EXPENSE), // 计算运输-费用总计
+				// 折扣后总计 = 项目-行总计 * 折扣
+				new BusinessRuleMultiplication(PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMS_LINETOTAL, PROPERTY_DISCOUNT),
+				// 单据总计 = 折扣后总计 + 运输费用 + 税总额
+				new BusinessRuleSummation(PROPERTY_DOCUMENTTOTAL, PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMS_TAXTOTAL,
+						PROPERTY_SHIPPINGS_EXPENSETOTAL),
+
 		};
 	}
 }

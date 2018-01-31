@@ -24,3 +24,5 @@ import { SalesOrder } from "./SalesOrder";
 ibas.boFactory.register(SalesOrder.BUSINESS_OBJECT_CODE, SalesOrder);
 import { SalesReturn } from "./SalesReturn";
 ibas.boFactory.register(SalesReturn.BUSINESS_OBJECT_CODE, SalesReturn);
+import { ShippingAddress } from "./ShippingAddress";
+ibas.boFactory.register(ShippingAddress.BUSINESS_OBJECT_CODE, ShippingAddress);

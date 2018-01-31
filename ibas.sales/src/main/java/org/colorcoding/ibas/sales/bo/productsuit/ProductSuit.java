@@ -22,6 +22,7 @@ import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.sales.MyConfiguration;
 
 /**
@@ -1065,6 +1066,8 @@ public class ProductSuit extends BusinessObject<ProductSuit> implements IProduct
 				new BusinessRuleRequired(PROPERTY_PRODUCT), // 要求有值
 				new BusinessRuleRequiredElements(PROPERTY_PRODUCTSUITITEMS), // 要求有元素
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_UNITQUANTITY), // 不能低于0
+				new BusinessRuleSumElements(PROPERTY_TOTAL, PROPERTY_PRODUCTSUITITEMS,
+						ProductSuitItem.PROPERTY_LINETOTAL), // 计算单据总计
 		};
 	}
 }

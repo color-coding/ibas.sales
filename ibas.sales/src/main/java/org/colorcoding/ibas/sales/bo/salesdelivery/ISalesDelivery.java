@@ -550,14 +550,14 @@ public interface ISalesDelivery extends IBODocument {
 	void setDiscount(double value);
 
 	/**
-	 * 获取-折扣总计
+	 * 获取-折扣后总计
 	 * 
 	 * @return 值
 	 */
 	Decimal getDiscountTotal();
 
 	/**
-	 * 设置-折扣总计
+	 * 设置-折扣后总计
 	 * 
 	 * @param value
 	 *            值
@@ -565,7 +565,7 @@ public interface ISalesDelivery extends IBODocument {
 	void setDiscountTotal(Decimal value);
 
 	/**
-	 * 设置-折扣总计
+	 * 设置-折扣后总计
 	 * 
 	 * @param value
 	 *            值
@@ -573,7 +573,7 @@ public interface ISalesDelivery extends IBODocument {
 	void setDiscountTotal(String value);
 
 	/**
-	 * 设置-折扣总计
+	 * 设置-折扣后总计
 	 * 
 	 * @param value
 	 *            值
@@ -581,7 +581,7 @@ public interface ISalesDelivery extends IBODocument {
 	void setDiscountTotal(int value);
 
 	/**
-	 * 设置-折扣总计
+	 * 设置-折扣后总计
 	 * 
 	 * @param value
 	 *            值
@@ -887,4 +887,22 @@ public interface ISalesDelivery extends IBODocument {
 	 *            值
 	 */
 	void setShippingAddresss(IShippingAddresss value);
+
+	/**
+	 * 获取-项目的行总计
+	 * 
+	 */
+	Decimal getItemsLineTotal();
+
+	/**
+	 * 获取-项目的税总计
+	 * 
+	 */
+	Decimal getItemsTaxTotal();
+
+	/**
+	 * 获取-运送项目的总计
+	 * 
+	 */
+	Decimal getShippingsExpenseTotal();
 }

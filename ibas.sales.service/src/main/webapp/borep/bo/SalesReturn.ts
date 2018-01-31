@@ -41,7 +41,6 @@ import {
 import {
     MaterialSerialItems,
     MaterialBatchItems,
-    emItemType
 } from "3rdparty/materials/index";
 /** 销售退货 */
 export class SalesReturn extends BODocument<SalesReturn> implements ISalesReturn {
@@ -426,13 +425,13 @@ export class SalesReturn extends BODocument<SalesReturn> implements ISalesReturn
         this.setProperty(SalesReturn.PROPERTY_DISCOUNT_NAME, value);
     }
 
-    /** 映射的属性名称-折扣总计 */
+    /** 映射的属性名称-折扣后总计 */
     static PROPERTY_DISCOUNTTOTAL_NAME: string = "DiscountTotal";
-    /** 获取-折扣总计 */
+    /** 获取-折扣后总计 */
     get discountTotal(): number {
         return this.getProperty<number>(SalesReturn.PROPERTY_DISCOUNTTOTAL_NAME);
     }
-    /** 设置-折扣总计 */
+    /** 设置-折扣后总计 */
     set discountTotal(value: number) {
         this.setProperty(SalesReturn.PROPERTY_DISCOUNTTOTAL_NAME, value);
     }
@@ -914,17 +913,6 @@ export class SalesReturnItem extends BODocumentLine<SalesReturnItem> implements 
     /** 设置-产品/服务描述 */
     set itemDescription(value: string) {
         this.setProperty(SalesReturnItem.PROPERTY_ITEMDESCRIPTION_NAME, value);
-    }
-
-    /** 映射的属性名称-产品类型 */
-    static PROPERTY_ITEMTYPE_NAME: string = "ItemType";
-    /** 获取-产品类型 */
-    get itemType(): emItemType {
-        return this.getProperty<emItemType>(SalesReturnItem.PROPERTY_ITEMTYPE_NAME);
-    }
-    /** 设置-产品类型 */
-    set itemType(value: emItemType) {
-        this.setProperty(SalesReturnItem.PROPERTY_ITEMTYPE_NAME, value);
     }
 
     /** 映射的属性名称-序号管理 */

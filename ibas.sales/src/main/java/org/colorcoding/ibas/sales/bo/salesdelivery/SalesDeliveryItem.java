@@ -17,6 +17,7 @@ import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.bobas.rule.BusinessRuleException;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleDivision;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
@@ -28,7 +29,6 @@ import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItems;
 import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItems;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
-import org.colorcoding.ibas.materials.data.emItemType;
 import org.colorcoding.ibas.materials.logic.IMaterialIssueContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
@@ -993,38 +993,6 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 	 */
 	public final void setItemDescription(String value) {
 		this.setProperty(PROPERTY_ITEMDESCRIPTION, value);
-	}
-
-	/**
-	 * 属性名称-产品类型
-	 */
-	private static final String PROPERTY_ITEMTYPE_NAME = "ItemType";
-
-	/**
-	 * 产品类型 属性
-	 */
-	@DbField(name = "ItemType", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<emItemType> PROPERTY_ITEMTYPE = registerProperty(PROPERTY_ITEMTYPE_NAME,
-			emItemType.class, MY_CLASS);
-
-	/**
-	 * 获取-产品类型
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_ITEMTYPE_NAME)
-	public final emItemType getItemType() {
-		return this.getProperty(PROPERTY_ITEMTYPE);
-	}
-
-	/**
-	 * 设置-产品类型
-	 * 
-	 * @param value
-	 *            值
-	 */
-	public final void setItemType(emItemType value) {
-		this.setProperty(PROPERTY_ITEMTYPE, value);
 	}
 
 	/**
@@ -2525,6 +2493,10 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_PRICE), // 不能低于0
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DISCOUNT), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_UNITPRICE), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_GROSSPRICE), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_RATE), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_TAXRATE), // 不能低于0
 				// 计算折扣前价格 = 价格 / 折扣
 				new BusinessRuleDivision(PROPERTY_UNITPRICE, PROPERTY_PRICE, PROPERTY_DISCOUNT),
 				// 计算价格 = 折扣前价格 * 折扣
@@ -2541,6 +2513,14 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 				new BusinessRuleSubtraction(PROPERTY_TAXTOTAL, PROPERTY_GROSSTOTAL, PROPERTY_LINETOTAL),
 
 		};
+	}
+
+	@Override
+	public void check() throws BusinessRuleException {
+		// 批次检查
+		this.getMaterialBatches().check();
+		// 序列检查
+		this.getMaterialSerials().check();
 	}
 
 	/**

@@ -13,6 +13,8 @@ import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.mapping.BOCode;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.bobas.rule.IBusinessRule;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emShippingStatus;
 
@@ -1081,6 +1083,14 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 		super.initialize();// 基类初始化，不可去除
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 		this.setShippingStatus(emShippingStatus.WAITING);
+	}
+
+	@Override
+	protected IBusinessRule[] registerRules() {
+		return new IBusinessRule[] { // 注册的业务规则
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_EXPENSE), // 不能低于0
+
+		};
 	}
 
 }

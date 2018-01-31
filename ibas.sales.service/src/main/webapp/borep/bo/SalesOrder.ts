@@ -37,7 +37,8 @@ import {
     ShippingAddresss,
 } from "./ShippingAddress";
 import {
-    emItemType, MaterialBatchItems, MaterialSerialItems
+    MaterialBatchItems,
+    MaterialSerialItems,
 } from "3rdparty/materials/index";
 
 /** 销售订单 */
@@ -423,13 +424,13 @@ export class SalesOrder extends BODocument<SalesOrder> implements ISalesOrder {
         this.setProperty(SalesOrder.PROPERTY_DISCOUNT_NAME, value);
     }
 
-    /** 映射的属性名称-折扣总计 */
+    /** 映射的属性名称-折扣后总计 */
     static PROPERTY_DISCOUNTTOTAL_NAME: string = "DiscountTotal";
-    /** 获取-折扣总计 */
+    /** 获取-折扣后总计 */
     get discountTotal(): number {
         return this.getProperty<number>(SalesOrder.PROPERTY_DISCOUNTTOTAL_NAME);
     }
-    /** 设置-折扣总计 */
+    /** 设置-折扣后总计 */
     set discountTotal(value: number) {
         this.setProperty(SalesOrder.PROPERTY_DISCOUNTTOTAL_NAME, value);
     }
@@ -911,17 +912,6 @@ export class SalesOrderItem extends BODocumentLine<SalesOrderItem> implements IS
     /** 设置-产品/服务描述 */
     set itemDescription(value: string) {
         this.setProperty(SalesOrderItem.PROPERTY_ITEMDESCRIPTION_NAME, value);
-    }
-
-    /** 映射的属性名称-产品类型 */
-    static PROPERTY_ITEMTYPE_NAME: string = "ItemType";
-    /** 获取-产品类型 */
-    get itemType(): emItemType {
-        return this.getProperty<emItemType>(SalesOrderItem.PROPERTY_ITEMTYPE_NAME);
-    }
-    /** 设置-产品类型 */
-    set itemType(value: emItemType) {
-        this.setProperty(SalesOrderItem.PROPERTY_ITEMTYPE_NAME, value);
     }
 
     /** 映射的属性名称-序号管理 */

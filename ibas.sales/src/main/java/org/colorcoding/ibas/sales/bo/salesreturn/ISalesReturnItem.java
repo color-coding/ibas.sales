@@ -8,7 +8,6 @@ import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchReceiptParent;
 import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialReceiptParent;
-import org.colorcoding.ibas.materials.data.emItemType;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
 
 /**
@@ -451,21 +450,6 @@ public interface ISalesReturnItem extends IBODocumentLine, IMaterialBatchReceipt
 	 *            值
 	 */
 	void setItemDescription(String value);
-
-	/**
-	 * 获取-产品类型
-	 * 
-	 * @return 值
-	 */
-	emItemType getItemType();
-
-	/**
-	 * 设置-产品类型
-	 * 
-	 * @param value
-	 *            值
-	 */
-	void setItemType(emItemType value);
 
 	/**
 	 * 获取-序号管理
