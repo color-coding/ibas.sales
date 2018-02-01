@@ -1804,13 +1804,13 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	/**
 	 * 属性名称-项目的行总计
 	 */
-	private static final String PROPERTY_ITEMS_LINETOTAL_NAME = "ItemsLineTotal";
+	private static final String PROPERTY_ITEMSLINETOTAL_NAME = "ItemsLineTotal";
 
 	/**
 	 * 项目的行总计 属性
 	 */
-	public static final IPropertyInfo<Decimal> PROPERTY_ITEMS_LINETOTAL = registerProperty(
-			PROPERTY_ITEMS_LINETOTAL_NAME, Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<Decimal> PROPERTY_ITEMSLINETOTAL = registerProperty(
+			PROPERTY_ITEMSLINETOTAL_NAME, Decimal.class, MY_CLASS);
 
 	/**
 	 * 获取-项目的行总计
@@ -1818,7 +1818,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	 * @return 值
 	 */
 	public final Decimal getItemsLineTotal() {
-		return this.getProperty(PROPERTY_ITEMS_LINETOTAL);
+		return this.getProperty(PROPERTY_ITEMSLINETOTAL);
 	}
 
 	/**
@@ -1828,18 +1828,18 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	 *            值
 	 */
 	final void setItemsLineTotal(Decimal value) {
-		this.setProperty(PROPERTY_ITEMS_LINETOTAL, value);
+		this.setProperty(PROPERTY_ITEMSLINETOTAL, value);
 	}
 
 	/**
 	 * 属性名称-项目的税总计
 	 */
-	private static final String PROPERTY_ITEMS_TAXTOTAL_NAME = "ItemsTaxTotal";
+	private static final String PROPERTY_ITEMSTAXTOTAL_NAME = "ItemsTaxTotal";
 
 	/**
 	 * 项目的税总计 属性
 	 */
-	public static final IPropertyInfo<Decimal> PROPERTY_ITEMS_TAXTOTAL = registerProperty(PROPERTY_ITEMS_TAXTOTAL_NAME,
+	public static final IPropertyInfo<Decimal> PROPERTY_ITEMSTAXTOTAL = registerProperty(PROPERTY_ITEMSTAXTOTAL_NAME,
 			Decimal.class, MY_CLASS);
 
 	/**
@@ -1848,7 +1848,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	 * @return 值
 	 */
 	public final Decimal getItemsTaxTotal() {
-		return this.getProperty(PROPERTY_ITEMS_TAXTOTAL);
+		return this.getProperty(PROPERTY_ITEMSTAXTOTAL);
 	}
 
 	/**
@@ -1858,19 +1858,19 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	 *            值
 	 */
 	final void setItemsTaxTotal(Decimal value) {
-		this.setProperty(PROPERTY_ITEMS_TAXTOTAL, value);
+		this.setProperty(PROPERTY_ITEMSTAXTOTAL, value);
 	}
 
 	/**
 	 * 属性名称-运送费用总计
 	 */
-	private static final String PROPERTY_SHIPPINGS_EXPENSETOTAL_NAME = "ShippingsExpenseTotal";
+	private static final String PROPERTY_SHIPPINGSEXPENSETOTAL_NAME = "ShippingsExpenseTotal";
 
 	/**
 	 * 运送费用总计 属性
 	 */
-	public static final IPropertyInfo<Decimal> PROPERTY_SHIPPINGS_EXPENSETOTAL = registerProperty(
-			PROPERTY_SHIPPINGS_EXPENSETOTAL_NAME, Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<Decimal> PROPERTY_SHIPPINGSEXPENSETOTAL = registerProperty(
+			PROPERTY_SHIPPINGSEXPENSETOTAL_NAME, Decimal.class, MY_CLASS);
 
 	/**
 	 * 获取-运送费用总计
@@ -1878,7 +1878,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	 * @return 值
 	 */
 	public final Decimal getShippingsExpenseTotal() {
-		return this.getProperty(PROPERTY_SHIPPINGS_EXPENSETOTAL);
+		return this.getProperty(PROPERTY_SHIPPINGSEXPENSETOTAL);
 	}
 
 	/**
@@ -1888,7 +1888,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	 *            值
 	 */
 	final void setShippingsExpenseTotal(Decimal value) {
-		this.setProperty(PROPERTY_SHIPPINGS_EXPENSETOTAL, value);
+		this.setProperty(PROPERTY_SHIPPINGSEXPENSETOTAL, value);
 	}
 
 	@Override
@@ -1899,17 +1899,17 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DOCUMENTTOTAL), // 不能低于0
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DOCUMENTRATE), // 不能低于0
 				new BusinessRuleRequiredElements(PROPERTY_SALESDELIVERYITEMS), // 要求有元素
-				new BusinessRuleSumElements(PROPERTY_ITEMS_LINETOTAL, PROPERTY_SALESDELIVERYITEMS,
+				new BusinessRuleSumElements(PROPERTY_ITEMSLINETOTAL, PROPERTY_SALESDELIVERYITEMS,
 						SalesDeliveryItem.PROPERTY_LINETOTAL), // 计算项目-行总计
-				new BusinessRuleSumElements(PROPERTY_ITEMS_TAXTOTAL, PROPERTY_SALESDELIVERYITEMS,
+				new BusinessRuleSumElements(PROPERTY_ITEMSTAXTOTAL, PROPERTY_SALESDELIVERYITEMS,
 						SalesDeliveryItem.PROPERTY_TAXTOTAL), // 计算项目-税总计
-				new BusinessRuleSumElements(PROPERTY_SHIPPINGS_EXPENSETOTAL, PROPERTY_SHIPPINGADDRESSS,
+				new BusinessRuleSumElements(PROPERTY_SHIPPINGSEXPENSETOTAL, PROPERTY_SHIPPINGADDRESSS,
 						ShippingAddress.PROPERTY_EXPENSE), // 计算运输-费用总计
 				// 折扣后总计 = 项目-行总计 * 折扣
-				new BusinessRuleMultiplication(PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMS_LINETOTAL, PROPERTY_DISCOUNT),
+				new BusinessRuleMultiplication(PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMSLINETOTAL, PROPERTY_DISCOUNT),
 				// 单据总计 = 折扣后总计 + 运输费用 + 税总额
-				new BusinessRuleSummation(PROPERTY_DOCUMENTTOTAL, PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMS_TAXTOTAL,
-						PROPERTY_SHIPPINGS_EXPENSETOTAL),
+				new BusinessRuleSummation(PROPERTY_DOCUMENTTOTAL, PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMSTAXTOTAL,
+						PROPERTY_SHIPPINGSEXPENSETOTAL),
 
 		};
 	}
