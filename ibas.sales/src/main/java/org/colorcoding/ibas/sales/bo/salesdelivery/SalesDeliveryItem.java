@@ -1436,65 +1436,65 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 	}
 
 	/**
-	 * 属性名称-剩余未清数量
+	 * 属性名称-已清数量
 	 */
-	private static final String PROPERTY_OPENQUANTITY_NAME = "OpenQuantity";
+	private static final String PROPERTY_CLOSEDQUANTITY_NAME = "ClosedQuantity";
 
 	/**
-	 * 剩余未清数量 属性
+	 * 已清数量 属性
 	 */
-	@DbField(name = "OpenQty", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_OPENQUANTITY = registerProperty(PROPERTY_OPENQUANTITY_NAME,
+	@DbField(name = "ClosedQty", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<Decimal> PROPERTY_CLOSEDQUANTITY = registerProperty(PROPERTY_CLOSEDQUANTITY_NAME,
 			Decimal.class, MY_CLASS);
 
 	/**
-	 * 获取-剩余未清数量
+	 * 获取-已清数量
 	 * 
 	 * @return 值
 	 */
-	@XmlElement(name = PROPERTY_OPENQUANTITY_NAME)
-	public final Decimal getOpenQuantity() {
-		return this.getProperty(PROPERTY_OPENQUANTITY);
+	@XmlElement(name = PROPERTY_CLOSEDQUANTITY_NAME)
+	public final Decimal getClosedQuantity() {
+		return this.getProperty(PROPERTY_CLOSEDQUANTITY);
 	}
 
 	/**
-	 * 设置-剩余未清数量
+	 * 设置-已清数量
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setOpenQuantity(Decimal value) {
-		this.setProperty(PROPERTY_OPENQUANTITY, value);
+	public final void setClosedQuantity(Decimal value) {
+		this.setProperty(PROPERTY_CLOSEDQUANTITY, value);
 	}
 
 	/**
-	 * 设置-剩余未清数量
+	 * 设置-已清数量
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setOpenQuantity(String value) {
-		this.setOpenQuantity(new Decimal(value));
+	public final void setClosedQuantity(String value) {
+		this.setClosedQuantity(new Decimal(value));
 	}
 
 	/**
-	 * 设置-剩余未清数量
+	 * 设置-已清数量
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setOpenQuantity(int value) {
-		this.setOpenQuantity(new Decimal(value));
+	public final void setClosedQuantity(int value) {
+		this.setClosedQuantity(new Decimal(value));
 	}
 
 	/**
-	 * 设置-剩余未清数量
+	 * 设置-已清数量
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setOpenQuantity(double value) {
-		this.setOpenQuantity(new Decimal(value));
+	public final void setClosedQuantity(double value) {
+		this.setClosedQuantity(new Decimal(value));
 	}
 
 	/**
@@ -1560,65 +1560,65 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 	}
 
 	/**
-	 * 属性名称-未清金额
+	 * 属性名称-已清金额
 	 */
-	private static final String PROPERTY_OPENAMOUNT_NAME = "OpenAmount";
+	private static final String PROPERTY_CLOSEDAMOUNT_NAME = "ClosedAmount";
 
 	/**
-	 * 未清金额 属性
+	 * 已清金额 属性
 	 */
-	@DbField(name = "OpenSum", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_OPENAMOUNT = registerProperty(PROPERTY_OPENAMOUNT_NAME,
+	@DbField(name = "ClosedAmt", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<Decimal> PROPERTY_CLOSEDAMOUNT = registerProperty(PROPERTY_CLOSEDAMOUNT_NAME,
 			Decimal.class, MY_CLASS);
 
 	/**
-	 * 获取-未清金额
+	 * 获取-已清金额
 	 * 
 	 * @return 值
 	 */
-	@XmlElement(name = PROPERTY_OPENAMOUNT_NAME)
-	public final Decimal getOpenAmount() {
-		return this.getProperty(PROPERTY_OPENAMOUNT);
+	@XmlElement(name = PROPERTY_CLOSEDAMOUNT_NAME)
+	public final Decimal getClosedAmount() {
+		return this.getProperty(PROPERTY_CLOSEDAMOUNT);
 	}
 
 	/**
-	 * 设置-未清金额
+	 * 设置-已清金额
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setOpenAmount(Decimal value) {
-		this.setProperty(PROPERTY_OPENAMOUNT, value);
+	public final void setClosedAmount(Decimal value) {
+		this.setProperty(PROPERTY_CLOSEDAMOUNT, value);
 	}
 
 	/**
-	 * 设置-未清金额
+	 * 设置-已清金额
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setOpenAmount(String value) {
-		this.setOpenAmount(new Decimal(value));
+	public final void setClosedAmount(String value) {
+		this.setClosedAmount(new Decimal(value));
 	}
 
 	/**
-	 * 设置-未清金额
+	 * 设置-已清金额
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setOpenAmount(int value) {
-		this.setOpenAmount(new Decimal(value));
+	public final void setClosedAmount(int value) {
+		this.setClosedAmount(new Decimal(value));
 	}
 
 	/**
-	 * 设置-未清金额
+	 * 设置-已清金额
 	 * 
 	 * @param value
 	 *            值
 	 */
-	public final void setOpenAmount(double value) {
-		this.setOpenAmount(new Decimal(value));
+	public final void setClosedAmount(double value) {
+		this.setClosedAmount(new Decimal(value));
 	}
 
 	/**

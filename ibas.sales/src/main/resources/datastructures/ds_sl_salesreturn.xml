@@ -88,9 +88,9 @@
     <Property Name="Rate" Description="汇率" DataType="Decimal" DataSubType="Rate" EditSize="8" Mapped="Rate"/>
     <Property Name="LineTotal" Description="行总计" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="LineTotal"/>
     <Property Name="DeliveryDate" Description="行交货日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="ShipDate"/>
-    <Property Name="OpenQuantity" Description="剩余未清数量" DataType="Decimal" DataSubType="Quantity" EditSize="8" Mapped="OpenQty"/>
+    <Property Name="ClosedQuantity" Description="已清数量" DataType="Decimal" DataSubType="Quantity" EditSize="8" Mapped="ClosedQty"/>
     <Property Name="Discount" Description="行折扣" DataType="Decimal" DataSubType="Percentage" EditSize="8" Mapped="DiscPrcnt"/>
-    <Property Name="OpenAmount" Description="未清金额" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="OpenSum"/>
+    <Property Name="ClosedAmount" Description="已清金额" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="ClosedAmt"/>
     <Property Name="TreeType" Description="产品类型" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emProductTreeType" Mapped="TreeType"/>
     <Property Name="BasisQuantity" Description="基础数量" DataType="Decimal" DataSubType="Quantity" EditSize="8" Mapped="BasisQty"/>
     <Property Name="LineSign" Description="行标志号" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="LineSign"/>

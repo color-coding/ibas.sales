@@ -304,14 +304,14 @@ export interface ISalesDeliveryItem extends IBODocumentLine, IMaterialBatchItemP
     /** 行交货日期 */
     deliveryDate: Date;
 
-    /** 剩余未清数量 */
-    openQuantity: number;
+    /** 已清数量 */
+    closedQuantity: number;
 
     /** 行折扣 */
     discount: number;
 
-    /** 未清金额 */
-    openAmount: number;
+    /** 已清金额 */
+    closedAmount: number;
 
     /** 产品类型 */
     treeType: emProductTreeType;

@@ -1024,15 +1024,15 @@ export class SalesOrderItem extends BODocumentLine<SalesOrderItem> implements IS
         this.setProperty(SalesOrderItem.PROPERTY_DELIVERYDATE_NAME, value);
     }
 
-    /** 映射的属性名称-剩余未清数量 */
-    static PROPERTY_OPENQUANTITY_NAME: string = "OpenQuantity";
-    /** 获取-剩余未清数量 */
-    get openQuantity(): number {
-        return this.getProperty<number>(SalesOrderItem.PROPERTY_OPENQUANTITY_NAME);
+    /** 映射的属性名称-已清数量 */
+    static PROPERTY_CLOSEDQUANTITY_NAME: string = "ClosedQuantity";
+    /** 获取-已清数量 */
+    get closedQuantity(): number {
+        return this.getProperty<number>(SalesOrderItem.PROPERTY_CLOSEDQUANTITY_NAME);
     }
-    /** 设置-剩余未清数量 */
-    set openQuantity(value: number) {
-        this.setProperty(SalesOrderItem.PROPERTY_OPENQUANTITY_NAME, value);
+    /** 设置-已清数量 */
+    set closedQuantity(value: number) {
+        this.setProperty(SalesOrderItem.PROPERTY_CLOSEDQUANTITY_NAME, value);
     }
 
     /** 映射的属性名称-行折扣 */
@@ -1046,15 +1046,15 @@ export class SalesOrderItem extends BODocumentLine<SalesOrderItem> implements IS
         this.setProperty(SalesOrderItem.PROPERTY_DISCOUNT_NAME, value);
     }
 
-    /** 映射的属性名称-未清金额 */
-    static PROPERTY_OPENAMOUNT_NAME: string = "OpenAmount";
-    /** 获取-未清金额 */
-    get openAmount(): number {
-        return this.getProperty<number>(SalesOrderItem.PROPERTY_OPENAMOUNT_NAME);
+    /** 映射的属性名称-已清金额 */
+    static PROPERTY_CLOSEDAMOUNT_NAME: string = "ClosedAmount";
+    /** 获取-已清金额 */
+    get closedAmount(): number {
+        return this.getProperty<number>(SalesOrderItem.PROPERTY_CLOSEDAMOUNT_NAME);
     }
-    /** 设置-未清金额 */
-    set openAmount(value: number) {
-        this.setProperty(SalesOrderItem.PROPERTY_OPENAMOUNT_NAME, value);
+    /** 设置-已清金额 */
+    set closedAmount(value: number) {
+        this.setProperty(SalesOrderItem.PROPERTY_CLOSEDAMOUNT_NAME, value);
     }
 
     /** 映射的属性名称-产品类型 */

@@ -698,43 +698,43 @@ public interface ISalesReturnItem extends IBODocumentLine, IMaterialBatchReceipt
 	void setDeliveryDate(DateTime value);
 
 	/**
-	 * 获取-剩余未清数量
+	 * 获取-已清数量
 	 * 
 	 * @return 值
 	 */
-	Decimal getOpenQuantity();
+	Decimal getClosedQuantity();
 
 	/**
-	 * 设置-剩余未清数量
+	 * 设置-已清数量
 	 * 
 	 * @param value
 	 *            值
 	 */
-	void setOpenQuantity(Decimal value);
+	void setClosedQuantity(Decimal value);
 
 	/**
-	 * 设置-剩余未清数量
+	 * 设置-已清数量
 	 * 
 	 * @param value
 	 *            值
 	 */
-	void setOpenQuantity(String value);
+	void setClosedQuantity(String value);
 
 	/**
-	 * 设置-剩余未清数量
+	 * 设置-已清数量
 	 * 
 	 * @param value
 	 *            值
 	 */
-	void setOpenQuantity(int value);
+	void setClosedQuantity(int value);
 
 	/**
-	 * 设置-剩余未清数量
+	 * 设置-已清数量
 	 * 
 	 * @param value
 	 *            值
 	 */
-	void setOpenQuantity(double value);
+	void setClosedQuantity(double value);
 
 	/**
 	 * 获取-行折扣
@@ -776,43 +776,43 @@ public interface ISalesReturnItem extends IBODocumentLine, IMaterialBatchReceipt
 	void setDiscount(double value);
 
 	/**
-	 * 获取-未清金额
+	 * 获取-已清金额
 	 * 
 	 * @return 值
 	 */
-	Decimal getOpenAmount();
+	Decimal getClosedAmount();
 
 	/**
-	 * 设置-未清金额
+	 * 设置-已清金额
 	 * 
 	 * @param value
 	 *            值
 	 */
-	void setOpenAmount(Decimal value);
+	void setClosedAmount(Decimal value);
 
 	/**
-	 * 设置-未清金额
+	 * 设置-已清金额
 	 * 
 	 * @param value
 	 *            值
 	 */
-	void setOpenAmount(String value);
+	void setClosedAmount(String value);
 
 	/**
-	 * 设置-未清金额
+	 * 设置-已清金额
 	 * 
 	 * @param value
 	 *            值
 	 */
-	void setOpenAmount(int value);
+	void setClosedAmount(int value);
 
 	/**
-	 * 设置-未清金额
+	 * 设置-已清金额
 	 * 
 	 * @param value
 	 *            值
 	 */
-	void setOpenAmount(double value);
+	void setClosedAmount(double value);
 
 	/**
 	 * 获取-产品类型
