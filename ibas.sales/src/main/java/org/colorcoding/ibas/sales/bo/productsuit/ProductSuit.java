@@ -1068,6 +1068,7 @@ public class ProductSuit extends BusinessObject<ProductSuit> implements IProduct
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_UNITQUANTITY), // 不能低于0
 				new BusinessRuleSumElements(PROPERTY_TOTAL, PROPERTY_PRODUCTSUITITEMS,
 						ProductSuitItem.PROPERTY_LINETOTAL), // 计算单据总计
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_TOTAL), // 不能低于0
 		};
 	}
 }

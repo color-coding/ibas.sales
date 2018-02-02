@@ -174,7 +174,8 @@ export class SalesDeliveryViewView extends ibas.BOViewView implements ISalesDeli
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_salesdeliveryitem_linetotal"),
                     template: new sap.m.Text("", {
-                        type: sap.m.InputType.Number,
+                        width: "100%",
+                        wrapping: false
                     }).bindProperty("text", {
                         path: "lineTotal"
                     })

@@ -19,9 +19,9 @@ import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleException;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
-import org.colorcoding.ibas.bobas.rule.common.BusinessRuleDivision;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMultiplication;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMultiplicativeDeduction;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSubtraction;
 import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchItems;
 import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItem;
@@ -2491,26 +2491,26 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 		return new IBusinessRule[] { // 注册的业务规则
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_QUANTITY), // 不能低于0
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_PRICE), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DISCOUNT), // 不能低于0
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_UNITPRICE), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DISCOUNT), // 不能低于0
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_GROSSPRICE), // 不能低于0
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_RATE), // 不能低于0
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_TAXRATE), // 不能低于0
-				// 计算折扣前价格 = 价格 / 折扣
-				new BusinessRuleDivision(PROPERTY_UNITPRICE, PROPERTY_PRICE, PROPERTY_DISCOUNT),
+				// 推导 价格 = 折扣前价格 * 折扣
+				new BusinessRuleMultiplicativeDeduction(PROPERTY_DISCOUNT, PROPERTY_UNITPRICE, PROPERTY_PRICE),
 				// 计算价格 = 折扣前价格 * 折扣
 				new BusinessRuleMultiplication(PROPERTY_PRICE, PROPERTY_UNITPRICE, PROPERTY_DISCOUNT),
 				// 计算总计 = 数量 * 价格
 				new BusinessRuleMultiplication(PROPERTY_LINETOTAL, PROPERTY_QUANTITY, PROPERTY_PRICE),
-				// 计算价格 = 总计 / 数量
-				new BusinessRuleDivision(PROPERTY_PRICE, PROPERTY_LINETOTAL, PROPERTY_QUANTITY),
 				// 计算毛价 = 价格 * 税率
 				new BusinessRuleMultiplication(PROPERTY_GROSSPRICE, PROPERTY_PRICE, PROPERTY_TAXRATE),
 				// 计算毛总额 = 数量 * 毛价
 				new BusinessRuleMultiplication(PROPERTY_GROSSTOTAL, PROPERTY_QUANTITY, PROPERTY_GROSSPRICE),
 				// 计算税总额 = 毛总额 - 总计
 				new BusinessRuleSubtraction(PROPERTY_TAXTOTAL, PROPERTY_GROSSTOTAL, PROPERTY_LINETOTAL),
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_GROSSTOTAL), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_TAXTOTAL), // 不能低于0
 
 		};
 	}

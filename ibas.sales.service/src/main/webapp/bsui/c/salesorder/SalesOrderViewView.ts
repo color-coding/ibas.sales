@@ -174,7 +174,8 @@ export class SalesOrderViewView extends ibas.BOViewView implements ISalesOrderVi
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_salesorderitem_linetotal"),
                     template: new sap.m.Text("", {
-                        type: sap.m.InputType.Number,
+                        width: "100%",
+                        wrapping: false
                     }).bindProperty("text", {
                         path: "lineTotal"
                     })

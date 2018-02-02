@@ -1809,8 +1809,8 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	/**
 	 * 项目的行总计 属性
 	 */
-	public static final IPropertyInfo<Decimal> PROPERTY_ITEMSLINETOTAL = registerProperty(
-			PROPERTY_ITEMSLINETOTAL_NAME, Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<Decimal> PROPERTY_ITEMSLINETOTAL = registerProperty(PROPERTY_ITEMSLINETOTAL_NAME,
+			Decimal.class, MY_CLASS);
 
 	/**
 	 * 获取-项目的行总计
@@ -1896,7 +1896,6 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 		return new IBusinessRule[] { // 注册的业务规则
 				new BusinessRuleRequired(PROPERTY_CUSTOMERCODE), // 要求有值
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DISCOUNT), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DOCUMENTTOTAL), // 不能低于0
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DOCUMENTRATE), // 不能低于0
 				new BusinessRuleRequiredElements(PROPERTY_SALESDELIVERYITEMS), // 要求有元素
 				new BusinessRuleSumElements(PROPERTY_ITEMSLINETOTAL, PROPERTY_SALESDELIVERYITEMS,
@@ -1910,6 +1909,8 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 				// 单据总计 = 折扣后总计 + 运输费用 + 税总额
 				new BusinessRuleSummation(PROPERTY_DOCUMENTTOTAL, PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMSTAXTOTAL,
 						PROPERTY_SHIPPINGSEXPENSETOTAL),
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DISCOUNTTOTAL), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DOCUMENTTOTAL), // 不能低于0
 
 		};
 	}
