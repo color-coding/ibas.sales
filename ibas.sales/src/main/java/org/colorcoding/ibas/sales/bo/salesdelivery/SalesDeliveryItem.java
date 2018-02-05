@@ -32,6 +32,7 @@ import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.logic.IMaterialIssueContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
+import org.colorcoding.ibas.sales.logic.ISalesOrderReceiptContract;
 
 /**
  * 获取-销售交货-行
@@ -2595,6 +2596,34 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 			public emYesNo getSerialManagement() {
 				return SalesDeliveryItem.this.getSerialManagement();
 			}
-		} };
+		}, new ISalesOrderReceiptContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesDeliveryItem.this.getIdentifiers();
+			}
+
+			@Override
+			public Decimal getQuantity() {
+				return SalesDeliveryItem.this.getQuantity();
+			}
+
+			@Override
+			public String getDocumentType() {
+				return SalesDeliveryItem.this.getObjectCode();
+			}
+
+			@Override
+			public Integer getDocumentLineId() {
+				return SalesDeliveryItem.this.getDocEntry();
+			}
+
+			@Override
+			public Integer getDocumentEntry() {
+				return SalesDeliveryItem.this.getLineId();
+			}
+		}
+
+		};
 	}
 }
