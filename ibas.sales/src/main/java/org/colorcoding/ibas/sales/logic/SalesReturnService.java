@@ -10,6 +10,9 @@ import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.logic.BusinessLogic;
 import org.colorcoding.ibas.bobas.logic.BusinessLogicException;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
+import org.colorcoding.ibas.bobas.message.Logger;
+import org.colorcoding.ibas.bobas.message.MessageLevel;
+import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.salesreturn.ISalesReturn;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
 import org.colorcoding.ibas.sales.repository.BORepositorySales;
@@ -21,6 +24,20 @@ import org.colorcoding.ibas.sales.repository.BORepositorySales;
  *
  */
 public abstract class SalesReturnService<L extends IBusinessLogicContract> extends BusinessLogic<L, ISalesReturn> {
+
+	@Override
+	protected boolean checkDataStatus(Object data) {
+		if (data instanceof ISalesBaseDoucment) {
+			ISalesBaseDoucment contract = (ISalesBaseDoucment) data;
+			if (!MyConfiguration.applyVariables(SalesReturn.BUSINESS_OBJECT_CODE)
+					.equals(contract.getBaseDocumentType())) {
+				Logger.log(MessageLevel.DEBUG, MSG_LOGICS_SKIP_LOGIC_EXECUTION, this.getClass().getName(),
+						"BaseDocumentType", contract.getBaseDocumentType());
+				return false;
+			}
+		}
+		return super.checkDataStatus(data);
+	}
 
 	protected ISalesReturn fetchBeAffected(String docType, Integer docEntry) {
 		// 必须要差完整对象，不然业务逻辑会出错

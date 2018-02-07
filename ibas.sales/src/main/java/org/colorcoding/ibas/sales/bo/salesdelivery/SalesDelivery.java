@@ -1897,6 +1897,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 				new BusinessRuleRequired(PROPERTY_CUSTOMERCODE), // 要求有值
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DISCOUNT), // 不能低于0
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DOCUMENTRATE), // 不能低于0
+				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_PAIDTOTAL), // 不能低于0
 				new BusinessRuleRequiredElements(PROPERTY_SALESDELIVERYITEMS), // 要求有元素
 				new BusinessRuleSumElements(PROPERTY_ITEMSLINETOTAL, PROPERTY_SALESDELIVERYITEMS,
 						SalesDeliveryItem.PROPERTY_LINETOTAL), // 计算项目-行总计

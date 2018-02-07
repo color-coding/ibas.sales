@@ -30,6 +30,12 @@ import {
 import {
     IShippingAddresss
 } from "./ShippingAddress.d";
+import {
+    ISalesOrder, ISalesOrderItem,
+} from "./SalesOrder.d";
+import {
+    ISalesDelivery, ISalesDeliveryItem,
+} from "./SalesDelivery.d";
 
 
 /** 销售退货 */
@@ -176,6 +182,11 @@ export interface ISalesReturn extends IBODocument {
     /** 送货地址集合 */
     shippingAddresss: IShippingAddresss;
 
+    /** 基于销售订单 */
+    baseDocument(document: ISalesOrder): void;
+
+    /** 基于销售收货 */
+    baseDocument(document: ISalesDelivery): void;
 
 }
 

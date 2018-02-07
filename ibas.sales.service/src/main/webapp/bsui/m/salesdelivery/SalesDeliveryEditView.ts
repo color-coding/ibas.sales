@@ -41,8 +41,8 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
     chooseSalesDeliveryItemMaterialSerialEvent: Function;
     /** 选择销售交货仓库事件 */
     chooseSalesDeliveryItemWarehouseEvent: Function;
-    /** 收款销售交货 */
-    paymentSalesDeliveryEvent: Function;
+    /** 选择销售交货项目-销售订单事件 */
+    chooseSalesDeliverySalesOrderEvent: Function;
     /** 绘制视图 */
     draw(): any {
         let that: this = this;

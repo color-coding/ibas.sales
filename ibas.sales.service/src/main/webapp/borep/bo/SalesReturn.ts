@@ -33,15 +33,27 @@ import {
     IShippingAddresss,
     BO_CODE_SALESRETURN,
     emProductTreeType,
+    ISalesOrder,
+    ISalesOrderItem,
+    ISalesDelivery,
+    ISalesDeliveryItem,
 } from "../../api/index";
 import {
     ShippingAddress,
     ShippingAddresss,
 } from "./ShippingAddress";
 import {
+    IMaterialBatchItem,
     MaterialSerialItems,
+    IMaterialSerialItem,
     MaterialBatchItems,
 } from "3rdparty/materials/index";
+import {
+    SalesOrder,
+} from "./SalesOrder";
+import {
+    SalesDelivery,
+} from "./SalesDelivery";
 /** 销售退货 */
 export class SalesReturn extends BODocument<SalesReturn> implements ISalesReturn {
 
@@ -574,6 +586,112 @@ export class SalesReturn extends BODocument<SalesReturn> implements ISalesReturn
         this.shippingAddresss = new ShippingAddresss(this);
         this.objectCode = config.applyVariables(SalesReturn.BUSINESS_OBJECT_CODE);
         this.documentStatus = emDocumentStatus.RELEASED;
+    }
+
+    /** 基于销售订单 */
+    baseDocument(document: ISalesOrder): void;
+    /** 基于销售收货 */
+    baseDocument(document: ISalesDelivery): void;
+    /** 基于单据 */
+    baseDocument(): void {
+        // 基于销售订单
+        if (objects.instanceOf(arguments[0], SalesOrder)) {
+            let document: SalesOrder = arguments[0];
+            if (!strings.equals(this.customerCode, document.customerCode)) {
+                return;
+            }
+            // 复制行项目
+            for (let item of document.salesOrderItems) {
+                let myItem: SalesReturnItem = this.salesReturnItems.create();
+                myItem.baseDocumentType = item.objectCode;
+                myItem.baseDocumentEntry = item.docEntry;
+                myItem.baseDocumentLineId = item.lineId;
+                myItem.originalDocumentType = item.baseDocumentType;
+                myItem.originalDocumentEntry = item.baseDocumentEntry;
+                myItem.originalDocumentLineId = item.baseDocumentLineId;
+                myItem.distributionRule1 = item.distributionRule1;
+                myItem.distributionRule2 = item.distributionRule2;
+                myItem.distributionRule3 = item.distributionRule3;
+                myItem.distributionRule4 = item.distributionRule4;
+                myItem.distributionRule5 = item.distributionRule5;
+                myItem.project = item.project;
+                myItem.itemCode = item.itemCode;
+                myItem.itemDescription = item.itemDescription;
+                myItem.batchManagement = item.batchManagement;
+                myItem.serialManagement = item.serialManagement;
+                myItem.price = item.price;
+                myItem.quantity = item.quantity;
+                myItem.uom = item.uom;
+                myItem.warehouse = item.warehouse;
+                myItem.reference1 = item.reference1;
+                myItem.reference2 = item.reference2;
+                // 复制批次
+                for (let batch of item.materialBatches) {
+                    let myBatch: IMaterialBatchItem = myItem.materialBatches.create();
+                    myBatch.batchCode = batch.batchCode;
+                    myBatch.quantity = batch.quantity;
+                }
+                // 复制序列
+                for (let serial of item.materialSerials) {
+                    let mySerial: IMaterialSerialItem = myItem.materialSerials.create();
+                    mySerial.serialCode = serial.serialCode;
+                }
+            }
+            // 复制地址
+            for (let address of document.shippingAddresss) {
+                let myAddress: IShippingAddress = objects.clone(address);
+                this.shippingAddresss.add(<ShippingAddress>myAddress);
+            }
+        }
+        // 基于销售收货
+        if (objects.instanceOf(arguments[0], SalesDelivery)) {
+            let document: SalesDelivery = arguments[0];
+            if (!strings.equals(this.customerCode, document.customerCode)) {
+                return;
+            }
+            // 复制行项目
+            for (let item of document.salesDeliveryItems) {
+                let myItem: SalesReturnItem = this.salesReturnItems.create();
+                myItem.baseDocumentType = item.objectCode;
+                myItem.baseDocumentEntry = item.docEntry;
+                myItem.baseDocumentLineId = item.lineId;
+                myItem.originalDocumentType = item.baseDocumentType;
+                myItem.originalDocumentEntry = item.baseDocumentEntry;
+                myItem.originalDocumentLineId = item.baseDocumentLineId;
+                myItem.distributionRule1 = item.distributionRule1;
+                myItem.distributionRule2 = item.distributionRule2;
+                myItem.distributionRule3 = item.distributionRule3;
+                myItem.distributionRule4 = item.distributionRule4;
+                myItem.distributionRule5 = item.distributionRule5;
+                myItem.project = item.project;
+                myItem.itemCode = item.itemCode;
+                myItem.itemDescription = item.itemDescription;
+                myItem.batchManagement = item.batchManagement;
+                myItem.serialManagement = item.serialManagement;
+                myItem.price = item.price;
+                myItem.quantity = item.quantity;
+                myItem.uom = item.uom;
+                myItem.warehouse = item.warehouse;
+                myItem.reference1 = item.reference1;
+                myItem.reference2 = item.reference2;
+                // 复制批次
+                for (let batch of item.materialBatches) {
+                    let myBatch: IMaterialBatchItem = myItem.materialBatches.create();
+                    myBatch.batchCode = batch.batchCode;
+                    myBatch.quantity = batch.quantity;
+                }
+                // 复制序列
+                for (let serial of item.materialSerials) {
+                    let mySerial: IMaterialSerialItem = myItem.materialSerials.create();
+                    mySerial.serialCode = serial.serialCode;
+                }
+            }
+            // 复制地址
+            for (let address of document.shippingAddresss) {
+                let myAddress: IShippingAddress = objects.clone(address);
+                this.shippingAddresss.add(<ShippingAddress>myAddress);
+            }
+        }
     }
 }
 

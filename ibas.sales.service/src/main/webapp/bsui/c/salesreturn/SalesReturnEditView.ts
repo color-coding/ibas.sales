@@ -37,8 +37,10 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
     chooseSalesReturnItemMaterialSerialEvent: Function;
     /** 选择销售退货单行物料批次事件 */
     chooseSalesReturnItemMaterialBatchEvent: Function;
-    /** 付款销售退货 */
-    paymentSalesReturnEvent: Function;
+    /** 选择销售退货项目-销售订单事件 */
+    chooseSalesReturnSalesOrderEvent: Function;
+    /** 选择销售退货项目-销售交货事件 */
+    chooseSalesReturnSalesDeliveryEvent: Function;
 
     /** 绘制视图 */
     draw(): any {
@@ -127,13 +129,32 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
         this.tableSalesReturnItem = new sap.ui.table.Table("", {
             toolbar: new sap.m.Toolbar("", {
                 content: [
-                    new sap.m.Button("", {
-                        text: ibas.i18n.prop("shell_data_add"),
+                    new sap.m.MenuButton("", {
                         type: sap.m.ButtonType.Transparent,
                         icon: "sap-icon://add",
-                        press: function (): void {
-                            that.fireViewEvents(that.addSalesReturnItemEvent);
-                        }
+                        text: ibas.i18n.prop("shell_data_add"),
+                        menu: new sap.m.Menu("", {
+                            items: [
+                                new sap.m.MenuItem("", {
+                                    text: ibas.i18n.prop("shell_data_add_line"),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.addSalesReturnItemEvent);
+                                    }
+                                }),
+                                new sap.m.MenuItem("", {
+                                    text: ibas.i18n.prop("bo_salesorder"),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.chooseSalesReturnSalesOrderEvent);
+                                    }
+                                }),
+                                new sap.m.MenuItem("", {
+                                    text: ibas.i18n.prop("bo_salesdelivery"),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.chooseSalesReturnSalesDeliveryEvent);
+                                    }
+                                }),
+                            ]
+                        })
                     }),
                     new sap.m.Button("", {
                         text: ibas.i18n.prop("shell_data_remove"),
@@ -150,24 +171,22 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                     new sap.m.MenuButton("", {
                         text: ibas.strings.format("{0}/{1}",
                             ibas.i18n.prop("sales_material_batch"), ibas.i18n.prop("sales_material_serial")),
-                        menu: [
-                            new sap.m.Menu("", {
-                                items: [
-                                    new sap.m.MenuItem("", {
-                                        text: ibas.i18n.prop("sales_material_batch"),
-                                        press: function (): void {
-                                            that.fireViewEvents(that.chooseSalesReturnItemMaterialBatchEvent);
-                                        }
-                                    }),
-                                    new sap.m.MenuItem("", {
-                                        text: ibas.i18n.prop("sales_material_serial"),
-                                        press: function (): void {
-                                            that.fireViewEvents(that.chooseSalesReturnItemMaterialSerialEvent);
-                                        }
-                                    }),
-                                ]
-                            })
-                        ]
+                        menu: new sap.m.Menu("", {
+                            items: [
+                                new sap.m.MenuItem("", {
+                                    text: ibas.i18n.prop("sales_material_batch"),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.chooseSalesReturnItemMaterialBatchEvent);
+                                    }
+                                }),
+                                new sap.m.MenuItem("", {
+                                    text: ibas.i18n.prop("sales_material_serial"),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.chooseSalesReturnItemMaterialSerialEvent);
+                                    }
+                                }),
+                            ]
+                        })
                     })
                 ]
             }),
@@ -287,24 +306,6 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                     path: "remarks",
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_total") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_documenttotal") }),
-                new sap.m.Input("", {
-                    editable: false,
-                }).bindProperty("value", {
-                    path: "documentTotal"
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_taxrate") }),
-                new sap.m.Input("", {
-                    editable: false,
-                }).bindProperty("value", {
-                    path: "taxRate"
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_taxtotal") }),
-                new sap.m.Input("", {
-                    editable: false,
-                }).bindProperty("value", {
-                    path: "taxTotal"
-                }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_discount") }),
                 new sap.m.Input("", {
                     editable: false,
@@ -316,6 +317,17 @@ export class SalesReturnEditView extends ibas.BOEditView implements ISalesReturn
                     editable: false,
                 }).bindProperty("value", {
                     path: "discountTotal"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_documenttotal") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "documentTotal"
+                }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "documentCurrency"
                 }),
             ]
         });

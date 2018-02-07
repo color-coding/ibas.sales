@@ -37,8 +37,6 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
     chooseSalesOrderItemMaterialSerialEvent: Function;
     /** 选择销售订单行物料批次事件 */
     chooseSalesOrderItemMaterialBatchEvent: Function;
-    /** 收款销售订单 */
-    paymentSalesOrderEvent: Function;
 
     /** 绘制视图 */
     draw(): any {
@@ -150,24 +148,22 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                     new sap.m.MenuButton("", {
                         text: ibas.strings.format("{0}/{1}",
                             ibas.i18n.prop("sales_material_batch"), ibas.i18n.prop("sales_material_serial")),
-                        menu: [
-                            new sap.m.Menu("", {
-                                items: [
-                                    new sap.m.MenuItem("", {
-                                        text: ibas.i18n.prop("sales_material_batch"),
-                                        press: function (): void {
-                                            that.fireViewEvents(that.chooseSalesOrderItemMaterialBatchEvent);
-                                        }
-                                    }),
-                                    new sap.m.MenuItem("", {
-                                        text: ibas.i18n.prop("sales_material_serial"),
-                                        press: function (): void {
-                                            that.fireViewEvents(that.chooseSalesOrderItemMaterialSerialEvent);
-                                        }
-                                    }),
-                                ]
-                            })
-                        ]
+                        menu: new sap.m.Menu("", {
+                            items: [
+                                new sap.m.MenuItem("", {
+                                    text: ibas.i18n.prop("sales_material_batch"),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.chooseSalesOrderItemMaterialBatchEvent);
+                                    }
+                                }),
+                                new sap.m.MenuItem("", {
+                                    text: ibas.i18n.prop("sales_material_serial"),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.chooseSalesOrderItemMaterialSerialEvent);
+                                    }
+                                }),
+                            ]
+                        })
                     })
                 ]
             }),
@@ -287,24 +283,6 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                     path: "remarks",
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_total") }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documenttotal") }),
-                new sap.m.Input("", {
-                    editable: false,
-                }).bindProperty("value", {
-                    path: "documentTotal"
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_taxrate") }),
-                new sap.m.Input("", {
-                    editable: false,
-                }).bindProperty("value", {
-                    path: "taxRate"
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_taxtotal") }),
-                new sap.m.Input("", {
-                    editable: false,
-                }).bindProperty("value", {
-                    path: "taxTotal"
-                }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_discount") }),
                 new sap.m.Input("", {
                     editable: false,
@@ -316,6 +294,17 @@ export class SalesOrderEditView extends ibas.BOEditView implements ISalesOrderEd
                     editable: false,
                 }).bindProperty("value", {
                     path: "discountTotal"
+                }),
+                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documenttotal") }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "documentTotal"
+                }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "documentCurrency"
                 }),
             ]
         });

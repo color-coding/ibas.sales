@@ -30,6 +30,9 @@ import {
 import {
     IShippingAddresss
 } from "./ShippingAddress.d";
+import {
+    ISalesOrder, ISalesOrderItem,
+} from "./SalesOrder.d";
 
 /** 销售交货 */
 export interface ISalesDelivery extends IBODocument {
@@ -175,6 +178,8 @@ export interface ISalesDelivery extends IBODocument {
     /** 送货地址集合 */
     shippingAddresss: IShippingAddresss;
 
+    /** 基于销售订单 */
+    baseDocument(document: ISalesOrder): void;
 }
 
 /** 销售交货-行 集合 */

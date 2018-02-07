@@ -4,26 +4,12 @@ import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
 
 /**
- * 采购订单-付款契约（收款单据）
+ * 销售订单-付款契约（收款单据）
  * 
  * @author Niuren.Zhu
  *
  */
-public interface ISalesOrderPaymentContract extends IBusinessLogicContract {
-
-	/**
-	 * 单据类型
-	 * 
-	 * @return
-	 */
-	String getDocumentType();
-
-	/**
-	 * 单据编号
-	 * 
-	 * @return
-	 */
-	Integer getDocumentEntry();
+public interface ISalesOrderPaymentContract extends IBusinessLogicContract, ISalesBaseDoucment {
 
 	/**
 	 * 金额

@@ -43,6 +43,8 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         this.view.chooseSalesReturnItemWarehouseEvent = this.chooseSalesReturnItemWarehouse;
         this.view.chooseSalesReturnItemMaterialBatchEvent = this.createSalesReturnLineMaterialBatch;
         this.view.chooseSalesReturnItemMaterialSerialEvent = this.createSalesReturnLineMaterialSerial;
+        this.view.chooseSalesReturnSalesOrderEvent = this.chooseSalesReturnSalesOrder;
+        this.view.chooseSalesReturnSalesDeliveryEvent = this.chooseSalesReturnSalesDelivery;
     }
     /** 视图显示后 */
     protected viewShowed(): void {
@@ -306,13 +308,13 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         });
     }
     /** 添加销售退货-行事件 */
-    addSalesReturnItem(): void {
+    private addSalesReturnItem(): void {
         this.editData.salesReturnItems.create();
         // 仅显示没有标记删除的
         this.view.showSalesReturnItems(this.editData.salesReturnItems.filterDeleted());
     }
     /** 删除销售退货-行事件 */
-    removeSalesReturnItem(items: bo.SalesReturnItem[]): void {
+    private removeSalesReturnItem(items: bo.SalesReturnItem[]): void {
         // 非数组，转为数组
         if (!(items instanceof Array)) {
             items = [items];
@@ -336,7 +338,7 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         this.view.showSalesReturnItems(this.editData.salesReturnItems.filterDeleted());
     }
     /** 选择物料批次信息 */
-    createSalesReturnLineMaterialBatch(): void {
+    private createSalesReturnLineMaterialBatch(): void {
         let contracts: ibas.ArrayList<mm.IMaterialBatchContract> = new ibas.ArrayList<mm.IMaterialBatchContract>();
         for (let item of this.editData.salesReturnItems) {
             contracts.add({
@@ -354,7 +356,7 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         });
     }
     /** 选择物料序列信息 */
-    createSalesReturnLineMaterialSerial(): void {
+    private createSalesReturnLineMaterialSerial(): void {
         let contracts: ibas.ArrayList<mm.IMaterialSerialContract> = new ibas.ArrayList<mm.IMaterialSerialContract>();
         for (let item of this.editData.salesReturnItems) {
             contracts.add({
@@ -369,6 +371,86 @@ export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditV
         }
         ibas.servicesManager.runApplicationService<mm.IMaterialSerialContract[]>({
             proxy: new mm.MaterialSerialReceiptServiceProxy(contracts)
+        });
+    }
+    /** 选择销售退货项目-销售订单事件 */
+    private chooseSalesReturnSalesOrder(): void {
+        if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
+            this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                ibas.i18n.prop("bo_salesdelivery_customercode")
+            ));
+            return;
+        }
+        let criteria: ibas.ICriteria = new ibas.Criteria();
+        let condition: ibas.ICondition = criteria.conditions.create();
+        // 未取消的
+        condition.alias = ibas.BO_PROPERTY_NAME_CANCELED;
+        condition.operation = ibas.emConditionOperation.EQUAL;
+        condition.value = ibas.emYesNo.NO.toString();
+        // 未删除的
+        condition = criteria.conditions.create();
+        condition.alias = ibas.BO_PROPERTY_NAME_DELETED;
+        condition.operation = ibas.emConditionOperation.EQUAL;
+        condition.value = ibas.emYesNo.NO.toString();
+        // 当前供应商的
+        condition.alias = bo.SalesOrder.PROPERTY_CUSTOMERCODE_NAME;
+        condition.operation = ibas.emConditionOperation.EQUAL;
+        condition.value = this.editData.customerCode;
+        // 调用选择服务
+        let that: this = this;
+        ibas.servicesManager.runChooseService<bo.SalesOrder>({
+            boCode: bo.SalesOrder.BUSINESS_OBJECT_CODE,
+            chooseType: ibas.emChooseType.MULTIPLE,
+            criteria: criteria,
+            onCompleted(selecteds: ibas.List<bo.SalesOrder>): void {
+                for (let selected of selecteds) {
+                    if (!ibas.strings.equals(that.editData.customerCode, selected.customerCode)) {
+                        continue;
+                    }
+                    that.editData.baseDocument(selected);
+                }
+                that.view.showSalesReturnItems(that.editData.salesReturnItems.filterDeleted());
+            }
+        });
+    }
+    /** 选择销售退货项目-销售收货事件 */
+    private chooseSalesReturnSalesDelivery(): void {
+        if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
+            this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                ibas.i18n.prop("bo_salesdelivery_customercode")
+            ));
+            return;
+        }
+        let criteria: ibas.ICriteria = new ibas.Criteria();
+        let condition: ibas.ICondition = criteria.conditions.create();
+        // 未取消的
+        condition.alias = ibas.BO_PROPERTY_NAME_CANCELED;
+        condition.operation = ibas.emConditionOperation.EQUAL;
+        condition.value = ibas.emYesNo.NO.toString();
+        // 未删除的
+        condition = criteria.conditions.create();
+        condition.alias = ibas.BO_PROPERTY_NAME_DELETED;
+        condition.operation = ibas.emConditionOperation.EQUAL;
+        condition.value = ibas.emYesNo.NO.toString();
+        // 当前供应商的
+        condition.alias = bo.SalesDelivery.PROPERTY_CUSTOMERCODE_NAME;
+        condition.operation = ibas.emConditionOperation.EQUAL;
+        condition.value = this.editData.customerCode;
+        // 调用选择服务
+        let that: this = this;
+        ibas.servicesManager.runChooseService<bo.SalesDelivery>({
+            boCode: bo.SalesDelivery.BUSINESS_OBJECT_CODE,
+            chooseType: ibas.emChooseType.MULTIPLE,
+            criteria: criteria,
+            onCompleted(selecteds: ibas.List<bo.SalesDelivery>): void {
+                for (let selected of selecteds) {
+                    if (!ibas.strings.equals(that.editData.customerCode, selected.customerCode)) {
+                        continue;
+                    }
+                    that.editData.baseDocument(selected);
+                }
+                that.view.showSalesReturnItems(that.editData.salesReturnItems.filterDeleted());
+            }
         });
     }
 }
@@ -398,6 +480,8 @@ export interface ISalesReturnEditView extends ibas.IBOEditView {
     chooseSalesReturnItemMaterialBatchEvent: Function;
     /** 选择销售退货行物料序列事件 */
     chooseSalesReturnItemMaterialSerialEvent: Function;
-    /** 付款销售退货 */
-    paymentSalesReturnEvent: Function;
+    /** 选择销售退货项目-销售订单事件 */
+    chooseSalesReturnSalesOrderEvent: Function;
+    /** 选择销售退货项目-销售交货事件 */
+    chooseSalesReturnSalesDeliveryEvent: Function;
 }

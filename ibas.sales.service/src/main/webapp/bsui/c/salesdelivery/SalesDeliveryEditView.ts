@@ -37,8 +37,8 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
     chooseSalesDeliveryItemMaterialSerialEvent: Function;
     /** 选择销售交货仓库事件 */
     chooseSalesDeliveryItemWarehouseEvent: Function;
-    /** 收款销售交货 */
-    paymentSalesDeliveryEvent: Function;
+    /** 选择销售交货项目-销售订单事件 */
+    chooseSalesDeliverySalesOrderEvent: Function;
 
     /** 绘制视图 */
     draw(): any {
@@ -127,13 +127,26 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
         this.tableSalesDeliveryItem = new sap.ui.table.Table("", {
             toolbar: new sap.m.Toolbar("", {
                 content: [
-                    new sap.m.Button("", {
-                        text: ibas.i18n.prop("shell_data_add"),
+                    new sap.m.MenuButton("", {
                         type: sap.m.ButtonType.Transparent,
                         icon: "sap-icon://add",
-                        press: function (): void {
-                            that.fireViewEvents(that.addSalesDeliveryItemEvent);
-                        }
+                        text: ibas.i18n.prop("shell_data_add"),
+                        menu: new sap.m.Menu("", {
+                            items: [
+                                new sap.m.MenuItem("", {
+                                    text: ibas.i18n.prop("shell_data_add_line"),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.addSalesDeliveryItemEvent);
+                                    }
+                                }),
+                                new sap.m.MenuItem("", {
+                                    text: ibas.i18n.prop("bo_salesorder"),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.chooseSalesDeliverySalesOrderEvent);
+                                    }
+                                }),
+                            ]
+                        })
                     }),
                     new sap.m.Button("", {
                         text: ibas.i18n.prop("shell_data_remove"),
@@ -150,24 +163,22 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                     new sap.m.MenuButton("", {
                         text: ibas.strings.format("{0}/{1}",
                             ibas.i18n.prop("sales_material_batch"), ibas.i18n.prop("sales_material_serial")),
-                        menu: [
-                            new sap.m.Menu("", {
-                                items: [
-                                    new sap.m.MenuItem("", {
-                                        text: ibas.i18n.prop("sales_material_batch"),
-                                        press: function (): void {
-                                            that.fireViewEvents(that.chooseSalesDeliveryItemMaterialBatchEvent);
-                                        }
-                                    }),
-                                    new sap.m.MenuItem("", {
-                                        text: ibas.i18n.prop("sales_material_serial"),
-                                        press: function (): void {
-                                            that.fireViewEvents(that.chooseSalesDeliveryItemMaterialSerialEvent);
-                                        }
-                                    }),
-                                ]
-                            })
-                        ]
+                        menu: new sap.m.Menu("", {
+                            items: [
+                                new sap.m.MenuItem("", {
+                                    text: ibas.i18n.prop("sales_material_batch"),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.chooseSalesDeliveryItemMaterialBatchEvent);
+                                    }
+                                }),
+                                new sap.m.MenuItem("", {
+                                    text: ibas.i18n.prop("sales_material_serial"),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.chooseSalesDeliveryItemMaterialSerialEvent);
+                                    }
+                                }),
+                            ]
+                        })
                     })
                 ]
             }),
@@ -288,23 +299,6 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                 }),
                 new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_total") }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documenttotal") }),
-                new sap.m.Input("", {
-                    editable: false,
-                }).bindProperty("value", {
-                    path: "documentTotal"
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_taxrate") }),
-                new sap.m.Input("", {
-                    editable: false,
-                }).bindProperty("value", {
-                    path: "taxRate"
-                }),
-                new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_taxtotal") }),
-                new sap.m.Input("", {
-                    editable: false,
-                }).bindProperty("value", {
-                    path: "taxTotal"
-                }),
                 new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_discount") }),
                 new sap.m.Input("", {
                     editable: false,
@@ -316,6 +310,16 @@ export class SalesDeliveryEditView extends ibas.BOEditView implements ISalesDeli
                     editable: false,
                 }).bindProperty("value", {
                     path: "discountTotal"
+                }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "documentTotal"
+                }),
+                new sap.m.Input("", {
+                    editable: false,
+                }).bindProperty("value", {
+                    path: "documentCurrency"
                 }),
             ]
         });

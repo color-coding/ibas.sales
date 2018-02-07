@@ -44,6 +44,17 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                     })
                 }),
                 new sap.ui.table.Column("", {
+                    label: ibas.i18n.prop("bo_salesdelivery_approvalstatus"),
+                    template: new sap.m.Text("", {
+                        wrapping: false
+                    }).bindProperty("text", {
+                        path: "approvalStatus",
+                        formatter(data: any): any {
+                            return ibas.enums.describe(ibas.emApprovalStatus, data);
+                        }
+                    })
+                }),
+                new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_salesdelivery_documentstatus"),
                     template: new sap.m.Text("", {
                         wrapping: false
@@ -77,7 +88,7 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                 new sap.ui.table.Column("", {
                     label: ibas.i18n.prop("bo_salesdelivery_documenttotal"),
                     template: new sap.m.Text("", {
-                        wrapping: false
+                        wrapping: false,
                     }).bindProperty("text", {
                         path: "documentTotal",
                     })
@@ -91,19 +102,11 @@ export class SalesDeliveryListView extends ibas.BOListView implements ISalesDeli
                     })
                 }),
                 new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesdelivery_discount"),
+                    label: ibas.i18n.prop("bo_salesdelivery_documentcurrency"),
                     template: new sap.m.Text("", {
-                        wrapping: false
+                        wrapping: false,
                     }).bindProperty("text", {
-                        path: "discount",
-                    })
-                }),
-                new sap.ui.table.Column("", {
-                    label: ibas.i18n.prop("bo_salesdelivery_discounttotal"),
-                    template: new sap.m.Text("", {
-                        wrapping: false
-                    }).bindProperty("text", {
-                        path: "discountTotal",
+                        path: "documentCurrency",
                     })
                 }),
                 new sap.ui.table.Column("", {
