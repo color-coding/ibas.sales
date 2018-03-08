@@ -1,14 +1,12 @@
 /**
  * @license
- * Copyright color-coding studio. All Rights Reserved.
+ * Copyright Color-Coding Studio. All Rights Reserved.
  *
  * Use of this source code is governed by an Apache License, Version 2.0
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
  */
-
-// 模块索引文件，此文件集中导出类
-export * from "./SalesReturnFunc";
-export * from "./SalesReturnListApp";
-export * from "./SalesReturnChooseApp";
-export * from "./SalesReturnViewApp";
-export * from "./SalesReturnEditApp";
+/// <reference path="./SalesReturnChooseApp.ts" />
+/// <reference path="./SalesReturnEditApp.ts" />
+/// <reference path="./SalesReturnFunc.ts" />
+/// <reference path="./SalesReturnListApp.ts" />
+/// <reference path="./SalesReturnViewApp.ts" />

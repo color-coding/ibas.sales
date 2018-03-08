@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright color-coding studio. All Rights Reserved.
+ * Copyright Color-Coding Studio. All Rights Reserved.
  *
  * Use of this source code is governed by an Apache License, Version 2.0
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
@@ -69,7 +69,7 @@ export class SalesReturnListView extends ibas.BOListView implements ISalesReturn
                         icon: "sap-icon://delete",
                         press(oEvent: any): void {
                             let parentControl: any = oEvent.getSource().getParent().getParent();
-                            let selecteds: ibas.List<bo.SalesReturn> = new ibas.ArrayList<bo.SalesReturn>();
+                            let selecteds: ibas.IList<bo.SalesReturn> = new ibas.ArrayList<bo.SalesReturn>();
                             selecteds.push(parentControl.getSwipedItem().getBindingContext().getObject());
                             that.fireViewEvents(that.deleteDataEvent,
                                 selecteds
@@ -86,7 +86,7 @@ export class SalesReturnListView extends ibas.BOListView implements ISalesReturn
                 );
             },
         });
-        let list_item_object: sap.m.ObjectListItem = new sap.m.ObjectListItem("", {
+        let ibas.IList_item_object: sap.m.ObjectListItem = new sap.m.ObjectListItem("", {
             title: "{customerName}",
             type: sap.m.ListType.Active,
             numberUnit: "{DocumentCurrency}",
@@ -117,14 +117,14 @@ export class SalesReturnListView extends ibas.BOListView implements ISalesReturn
                 }),
             ]
         });
-        list_item_object.bindProperty("number", {
+        ibas.IList_item_object.bindProperty("number", {
             parts: [{ path: "documentTotal" }],
             type: sap.ui.model.type.Currency,
             formatOptions: { showMeasure: false }
         });
         this.table.bindItems({
             path: "/rows",
-            template: list_item_object,
+            template: ibas.IList_item_object,
         });
         this.page = new sap.m.Page("", {
             showHeader: false,
@@ -178,7 +178,7 @@ export class SalesReturnListView extends ibas.BOListView implements ISalesReturn
         this.id = this.page.getId();
         // 添加列表自动查询事件
         openui5.utils.triggerNextResults({
-            listener: this.table,
+            ibas.IListener: this.table,
             next(data: any): void {
                 if (ibas.objects.isNull(that.lastCriteria)) {
                     return;

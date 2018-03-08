@@ -1,14 +1,12 @@
 /**
  * @license
- * Copyright color-coding studio. All Rights Reserved.
+ * Copyright Color-Coding Studio. All Rights Reserved.
  *
  * Use of this source code is governed by an Apache License, Version 2.0
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
  */
-
-// 模块索引文件，此文件集中导出类
-export * from "./ProductSuitFunc";
-export * from "./ProductSuitListApp";
-export * from "./ProductSuitChooseApp";
-export * from "./ProductSuitViewApp";
-export * from "./ProductSuitEditApp";
+/// <reference path="./ProductSuitChooseApp.ts" />
+/// <reference path="./ProductSuitEditApp.ts" />
+/// <reference path="./ProductSuitFunc.ts" />
+/// <reference path="./ProductSuitListApp.ts" />
+/// <reference path="./ProductSuitViewApp.ts" />

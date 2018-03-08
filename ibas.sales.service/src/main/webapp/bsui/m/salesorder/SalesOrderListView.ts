@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright color-coding studio. All Rights Reserved.
+ * Copyright Color-Coding Studio. All Rights Reserved.
  *
  * Use of this source code is governed by an Apache License, Version 2.0
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
@@ -67,7 +67,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                         icon: "sap-icon://delete",
                         press(oEvent: any): void {
                             let parentControl: any = oEvent.getSource().getParent().getParent();
-                            let selecteds: ibas.List<bo.SalesOrder> = new ibas.ArrayList<bo.SalesOrder>();
+                            let selecteds: ibas.IList<bo.SalesOrder> = new ibas.ArrayList<bo.SalesOrder>();
                             selecteds.push(parentControl.getSwipedItem().getBindingContext().getObject());
                             that.fireViewEvents(that.deleteDataEvent,
                                 selecteds
@@ -84,7 +84,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                 );
             },
         });
-        let list_item_object: sap.m.ObjectListItem = new sap.m.ObjectListItem("", {
+        let ibas.IList_item_object: sap.m.ObjectListItem = new sap.m.ObjectListItem("", {
             title: "{customerName}",
             type: sap.m.ListType.Active,
             numberUnit: "{DocumentCurrency}",
@@ -115,14 +115,14 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
                 }),
             ]
         });
-        list_item_object.bindProperty("number", {
+        ibas.IList_item_object.bindProperty("number", {
             parts: [{ path: "documentTotal" }],
             type: sap.ui.model.type.Currency,
             formatOptions: { showMeasure: false }
         });
         this.list.bindItems({
             path: "/rows",
-            template: list_item_object,
+            template: ibas.IList_item_object,
         });
         this.page = new sap.m.Page("", {
             showHeader: false,
@@ -175,7 +175,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
         });
         this.id = this.page.getId();
         openui5.utils.triggerNextResults({
-            listener: this.list,
+            ibas.IListener: this.list,
             next(data: any): void {
                 if (ibas.objects.isNull(that.lastCriteria)) {
                     return;
@@ -192,7 +192,7 @@ export class SalesOrderListView extends ibas.BOListView implements ISalesOrderLi
     }
     private page: sap.m.Page;
     private form: sap.ui.layout.VerticalLayout;
-    private list: sap.m.List;
+    private ibas.IList: sap.m.List;
     /** 显示数据 */
     showData(datas: bo.SalesOrder[]): void {
         let done: boolean = false;
