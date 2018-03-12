@@ -20,12 +20,12 @@
 namespace sales {
     export namespace bo {
         // 注册业务对象仓库到工厂
-        ibas.boFactory.register(BO_REPOSITORY_SALES, BORepositorySales);
+        boFactory.register(BO_REPOSITORY_SALES, BORepositorySales);
         // 注册业务对象到工厂
-        ibas.boFactory.register(ProductSuit.BUSINESS_OBJECT_CODE, ProductSuit);
-        ibas.boFactory.register(SalesDelivery.BUSINESS_OBJECT_CODE, SalesDelivery);
-        ibas.boFactory.register(SalesOrder.BUSINESS_OBJECT_CODE, SalesOrder);
-        ibas.boFactory.register(SalesReturn.BUSINESS_OBJECT_CODE, SalesReturn);
-        ibas.boFactory.register(ShippingAddress.BUSINESS_OBJECT_CODE, ShippingAddress);
+        boFactory.register(ProductSuit.BUSINESS_OBJECT_CODE, ProductSuit);
+        boFactory.register(SalesDelivery.BUSINESS_OBJECT_CODE, SalesDelivery);
+        boFactory.register(SalesOrder.BUSINESS_OBJECT_CODE, SalesOrder);
+        boFactory.register(SalesReturn.BUSINESS_OBJECT_CODE, SalesReturn);
+        boFactory.register(ShippingAddress.BUSINESS_OBJECT_CODE, ShippingAddress);
     }
 }
