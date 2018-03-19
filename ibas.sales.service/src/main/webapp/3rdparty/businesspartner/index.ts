@@ -11,4 +11,7 @@
 /// <reference path="./bo/ContactPerson.ts" />
 /// <reference path="./bo/Customer.ts" />
 /// <reference path="./bo/Supplier.ts" />
+/// <reference path="./bo/AssetItem.ts" />
+/// <reference path="./bo/BusinessPartnerAsset.ts" />
+/// <reference path="./bo/BusinessPartnerAssetJournal.ts" />
 /// <reference path="./BORepository.ts" />

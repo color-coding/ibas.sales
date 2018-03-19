@@ -26,6 +26,12 @@ namespace businesspartner {
         export const BO_CODE_CUSTOMER: string = "${Company}_BP_CUSTOMER";
         /** 业务对象编码-供应商 */
         export const BO_CODE_SUPPLIER: string = "${Company}_BP_SUPPLIER";
+        /** 业务对象编码-资产项目 */
+        export const BO_CODE_ASSETITEM: string = "${Company}_BP_ASSETITEM";
+        /** 业务对象编码-业务伙伴资产 */
+        export const BO_CODE_BUSINESSPARTNERASSET: string = "${Company}_BP_BPASSET";
+        /** 业务对象编码-业务伙伴资产日记账 */
+        export const BO_CODE_BUSINESSPARTNERASSETJOURNAL: string = "${Company}_BP_BPASSETJOURNAL";
 
 
         /** 业务伙伴性质 */
