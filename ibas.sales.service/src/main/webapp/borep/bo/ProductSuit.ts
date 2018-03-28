@@ -342,6 +342,7 @@ namespace sales {
                 this.productSuitItems = new ProductSuitItems(this);
                 this.objectCode = ibas.config.applyVariables(ProductSuit.BUSINESS_OBJECT_CODE);
                 this.activated = ibas.emYesNo.YES;
+                this.currency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
             }
         }
 
@@ -587,6 +588,7 @@ namespace sales {
 
             /** 初始化数据 */
             protected init(): void {
+                this.currency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
             }
         }
     }

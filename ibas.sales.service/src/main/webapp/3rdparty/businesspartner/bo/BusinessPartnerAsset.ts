@@ -35,6 +35,10 @@ namespace businesspartner {
             createActionId: string;
             /** 更新动作标识 */
             updateActionId: string;
+            /** 已引用 */
+            referenced: ibas.emYesNo;
+            /** 已删除 */
+            deleted: ibas.emYesNo;
             /** 业务伙伴类型 */
             businessPartnerType: emBusinessPartnerType;
             /** 业务伙伴编码 */
@@ -49,8 +53,10 @@ namespace businesspartner {
             validDate: Date;
             /** 失效日期 */
             invalidDate: Date;
-            /** 余量 */
+            /** 剩余价值 */
             amount: number;
+            /** 剩余次数 */
+            times: number;
             /** 基于类型 */
             baseDocumentType: string;
             /** 基于标识 */
@@ -61,6 +67,10 @@ namespace businesspartner {
             tradingAmount: number;
             /** 交易货币 */
             tradingCurrency: string;
+            /** 备注 1 */
+            remark1: string;
+            /** 备注 2 */
+            remark2: string;
 
         }
 
