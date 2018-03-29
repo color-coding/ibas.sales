@@ -206,6 +206,7 @@ namespace sales {
                     onCompleted(selecteds: ibas.IList<materials.bo.IMaterialPriceList>): void {
                         let selected: materials.bo.IMaterialPriceList = selecteds.firstOrDefault();
                         that.editData.priceList = selected.objectKey;
+                        that.editData.documentCurrency = selected.currency;
                     }
                 });
             }

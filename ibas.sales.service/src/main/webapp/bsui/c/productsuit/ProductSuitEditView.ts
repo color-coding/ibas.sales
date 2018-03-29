@@ -79,11 +79,15 @@ namespace sales {
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_validdate") }),
                             new sap.m.DatePicker("", {
+                                valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                             }).bindProperty("dateValue", {
                                 path: "validDate",
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_invaliddate") }),
                             new sap.m.DatePicker("", {
+                                valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                             }).bindProperty("dateValue", {
                                 path: "invalidDate",
                             }),
