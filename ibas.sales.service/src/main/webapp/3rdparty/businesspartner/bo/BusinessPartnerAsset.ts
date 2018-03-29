@@ -8,33 +8,43 @@
 namespace businesspartner {
     export namespace bo {
         /** 业务伙伴资产 */
-        export interface IBusinessPartnerAsset extends ibas.IBOSimple {
+        export interface IBusinessPartnerAsset extends ibas.IBOMasterData {
+            /** 编号 */
+            code: string;
+            /** 名称 */
+            name: string;
             /** 对象编号 */
-            objectKey: number;
+            docEntry: number;
             /** 对象类型 */
             objectCode: string;
-            /** 实例号 */
+            /** 创建日期 */
+            createDate: Date;
+            /** 创建时间 */
+            createTime: number;
+            /** 修改日期 */
+            updateDate: Date;
+            /** 修改时间 */
+            updateTime: number;
+            /** 版本 */
             logInst: number;
             /** 服务系列 */
             series: number;
             /** 数据源 */
             dataSource: string;
-            /** 创建日期 */
-            createDate: Date;
-            /** 创建时间 */
-            createTime: number;
-            /** 更新日期 */
-            updateDate: Date;
-            /** 更新时间 */
-            updateTime: number;
             /** 创建用户 */
             createUserSign: number;
-            /** 更新用户 */
+            /** 修改用户 */
             updateUserSign: number;
             /** 创建动作标识 */
             createActionId: string;
             /** 更新动作标识 */
             updateActionId: string;
+            /** 审批状态 */
+            approvalStatus: ibas.emApprovalStatus;
+            /** 数据所有者 */
+            dataOwner: number;
+            /** 数据所属组织 */
+            organization: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
             /** 已删除 */
@@ -45,10 +55,10 @@ namespace businesspartner {
             businessPartnerCode: string;
             /** 资产项目 */
             assetCode: string;
-            /** 服务码 */
-            serviceCode: string;
             /** 激活 */
             activated: ibas.emYesNo;
+            /** 获得日期 */
+            acquiredDate: Date;
             /** 生效日期 */
             validDate: Date;
             /** 失效日期 */

@@ -33,7 +33,7 @@ namespace businesspartner {
             createActionId: string;
             /** 更新动作标识 */
             updateActionId: string;
-            /** 服务码 */
+            /** 业务伙伴资产码 */
             serviceCode: string;
             /** 方向 */
             direction: ibas.emDirection;

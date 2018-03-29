@@ -32,7 +32,12 @@ namespace businesspartner {
         export const BO_CODE_BUSINESSPARTNERASSET: string = "${Company}_BP_BPASSET";
         /** 业务对象编码-业务伙伴资产日记账 */
         export const BO_CODE_BUSINESSPARTNERASSETJOURNAL: string = "${Company}_BP_BPASSETJOURNAL";
-
+        /** 资产方式-业务伙伴资产 */
+        export const ASSET_MODE_INTERNAL_BP_ASSET: string = "AINT_BP0";
+        /** 资产方式-现金 */
+        export const ASSET_MODE_EXTERNAL_CASH: string = "AEXT_CAS";
+        /** 资产方式-银行 */
+        export const ASSET_MODE_EXTERNAL_BANK: string = "AEXT_BAK";
 
         /** 业务伙伴性质 */
         export enum emBusinessPartnerNature {
@@ -335,7 +340,7 @@ namespace businesspartner {
             }
             export namespace businesspartnerasset {
                 /** 默认查询条件 */
-                export function create(): ibas.IList<ibas.ICondition> {
+                export function create(type: bo.emBusinessPartnerType, bpCode: string): ibas.IList<ibas.ICondition> {
                     let today: string = ibas.dates.toString(ibas.dates.today(), "yyyy-MM-dd");
                     let condition: ibas.ICondition;
                     let conditions: ibas.IList<ibas.ICondition> = new ibas.ArrayList<ibas.ICondition>();
@@ -388,6 +393,25 @@ namespace businesspartner {
                     condition.alias = "deleted";
                     condition.operation = ibas.emConditionOperation.EQUAL;
                     condition.value = ibas.emYesNo.NO.toString();
+                    conditions.add(condition);
+                    // 业务伙伴
+                    condition = new ibas.Condition();
+                    condition.bracketOpen = 1;
+                    condition.alias = "businessPartnerType";
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = type.toString();
+                    conditions.add(condition);
+                    condition = new ibas.Condition();
+                    condition.bracketClose = 1;
+                    condition.alias = "businessPartnerCode";
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = bpCode;
+                    conditions.add(condition);
+                    // 使用次数
+                    condition = new ibas.Condition();
+                    condition.alias = "times";
+                    condition.operation = ibas.emConditionOperation.GRATER_THAN;
+                    condition.value = "0";
                     conditions.add(condition);
                     return conditions;
                 }
