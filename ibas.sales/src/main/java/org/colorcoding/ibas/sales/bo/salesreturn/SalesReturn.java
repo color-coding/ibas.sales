@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
+import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
@@ -40,7 +41,8 @@ import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
 @XmlType(name = SalesReturn.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = SalesReturn.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BOCode(SalesReturn.BUSINESS_OBJECT_CODE)
-public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesReturn, IDataOwnership, IApprovalData {
+public class SalesReturn extends BusinessObject<SalesReturn>
+		implements ISalesReturn, IDataOwnership, IApprovalData, IBOTagDeleted {
 
 	/**
 	 * 序列化版本标记
