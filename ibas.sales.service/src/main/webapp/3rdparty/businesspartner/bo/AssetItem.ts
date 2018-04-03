@@ -67,6 +67,8 @@ namespace businesspartner {
             overdraft: number;
             /** 有效天数 */
             validDays: number;
+            /** 可充值的 */
+            rechargeable: ibas.emYesNo;
             /** 备注 */
             remarks: string;
 

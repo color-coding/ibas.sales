@@ -403,6 +403,7 @@
         "bo_shippingaddress_remark2": "备注 2",
         "bo_shippingaddress_expense": "费用",
         "bo_shippingaddress_currency": "货币",
+        "bo_shippingaddress_trackingnumber": "快递单号",
         "bo_shippingaddress_objectkey": "对象编号",
         "bo_shippingaddress_objectcode": "对象类型",
         "bo_shippingaddress_createdate": "创建日期",
