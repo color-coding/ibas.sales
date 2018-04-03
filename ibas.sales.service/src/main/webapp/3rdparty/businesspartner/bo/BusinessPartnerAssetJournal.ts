@@ -39,6 +39,8 @@ namespace businesspartner {
             direction: ibas.emDirection;
             /** 交易量 */
             amount: number;
+            /** 交易次数 */
+            times: number;
             /** 基于类型 */
             baseDocumentType: string;
             /** 基于标识 */
