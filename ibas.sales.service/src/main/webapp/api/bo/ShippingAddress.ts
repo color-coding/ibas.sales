@@ -65,6 +65,9 @@ namespace sales {
             /** 货币 */
             currency: string;
 
+            /** 快递单号 */
+            trackingNumber: string;
+
             /** 对象编号 */
             objectKey: number;
 

@@ -214,6 +214,17 @@ namespace sales {
                 this.setProperty(ShippingAddress.PROPERTY_CURRENCY_NAME, value);
             }
 
+            /** 映射的属性名称-快递单号 */
+            static PROPERTY_TRACKINGNUMBER_NAME: string = "TrackingNumber";
+            /** 获取-快递单号 */
+            get trackingNumber(): string {
+                return this.getProperty<string>(ShippingAddress.PROPERTY_TRACKINGNUMBER_NAME);
+            }
+            /** 设置-快递单号 */
+            set trackingNumber(value: string) {
+                this.setProperty(ShippingAddress.PROPERTY_TRACKINGNUMBER_NAME, value);
+            }
+
             /** 映射的属性名称-对象编号 */
             static PROPERTY_OBJECTKEY_NAME: string = "ObjectKey";
             /** 获取-对象编号 */

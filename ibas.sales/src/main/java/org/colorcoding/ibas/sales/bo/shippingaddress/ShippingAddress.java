@@ -660,6 +660,38 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	}
 
 	/**
+	 * 属性名称-快递单号
+	 */
+	private static final String PROPERTY_TRACKINGNUMBER_NAME = "TrackingNumber";
+
+	/**
+	 * 快递单号 属性
+	 */
+	@DbField(name = "Tracking", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_TRACKINGNUMBER = registerProperty(PROPERTY_TRACKINGNUMBER_NAME,
+			String.class, MY_CLASS);
+
+	/**
+	 * 获取-快递单号
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_TRACKINGNUMBER_NAME)
+	public final String getTrackingNumber() {
+		return this.getProperty(PROPERTY_TRACKINGNUMBER);
+	}
+
+	/**
+	 * 设置-快递单号
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setTrackingNumber(String value) {
+		this.setProperty(PROPERTY_TRACKINGNUMBER, value);
+	}
+
+	/**
 	 * 属性名称-对象编号
 	 */
 	private static final String PROPERTY_OBJECTKEY_NAME = "ObjectKey";

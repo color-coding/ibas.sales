@@ -306,6 +306,21 @@ public interface IShippingAddress extends IBOSimple {
 	void setCurrency(String value);
 
 	/**
+	 * 获取-快递单号
+	 * 
+	 * @return 值
+	 */
+	String getTrackingNumber();
+
+	/**
+	 * 设置-快递单号
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setTrackingNumber(String value);
+
+	/**
 	 * 获取-对象编号
 	 * 
 	 * @return 值
