@@ -14,6 +14,8 @@ import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
+import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
@@ -27,6 +29,8 @@ import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItems;
 import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItems;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
+import org.colorcoding.ibas.materials.logic.IMaterialCommitedContract;
+import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCommitedContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
 
@@ -36,7 +40,8 @@ import org.colorcoding.ibas.sales.data.emProductTreeType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = SalesOrderItem.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-public class SalesOrderItem extends BusinessObject<SalesOrderItem> implements ISalesOrderItem, IBOTagDeleted {
+public class SalesOrderItem extends BusinessObject<SalesOrderItem>
+		implements ISalesOrderItem, IBOTagDeleted, IBusinessLogicsHost {
 
 	/**
 	 * 序列化版本标记
@@ -2518,4 +2523,54 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem> implements IS
 	 */
 	ISalesOrder parent;
 
+	@Override
+	public IBusinessLogicContract[] getContracts() {
+		if (this.getLineStatus() == emDocumentStatus.RELEASED) {
+			return new IBusinessLogicContract[] {
+
+					new IMaterialCommitedContract() {
+
+						@Override
+						public String getIdentifiers() {
+							return SalesOrderItem.this.getIdentifiers();
+						}
+
+						@Override
+						public String getItemCode() {
+							return SalesOrderItem.this.getItemCode();
+						}
+
+						@Override
+						public Decimal getQuantity() {
+							return SalesOrderItem.this.getQuantity();
+						}
+
+					}, new IMaterialWarehouseCommitedContract() {
+
+						@Override
+						public String getIdentifiers() {
+							return SalesOrderItem.this.getIdentifiers();
+						}
+
+						@Override
+						public String getItemCode() {
+							return SalesOrderItem.this.getItemCode();
+						}
+
+						@Override
+						public String getWarehouse() {
+							return SalesOrderItem.this.getWarehouse();
+						}
+
+						@Override
+						public Decimal getQuantity() {
+							return SalesOrderItem.this.getQuantity();
+						}
+
+					}
+
+			};
+		}
+		return new IBusinessLogicContract[] {};
+	}
 }
