@@ -17,6 +17,8 @@ import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
+import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
 import org.colorcoding.ibas.bobas.mapping.BOCode;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
@@ -28,6 +30,7 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSummation;
+import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
@@ -42,7 +45,7 @@ import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
 @XmlRootElement(name = SalesOrder.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BOCode(SalesOrder.BUSINESS_OBJECT_CODE)
 public class SalesOrder extends BusinessObject<SalesOrder>
-		implements ISalesOrder, IDataOwnership, IApprovalData, IBOTagDeleted {
+		implements ISalesOrder, IDataOwnership, IApprovalData, IBOTagDeleted, IBusinessLogicsHost {
 
 	/**
 	 * 序列化版本标记
@@ -1913,6 +1916,25 @@ public class SalesOrder extends BusinessObject<SalesOrder>
 						PROPERTY_SHIPPINGSEXPENSETOTAL),
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DISCOUNTTOTAL), // 不能低于0
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DOCUMENTTOTAL), // 不能低于0
+
+		};
+	}
+
+	@Override
+	public IBusinessLogicContract[] getContracts() {
+		return new IBusinessLogicContract[] {
+
+				new ICustomerCheckContract() {
+					@Override
+					public String getIdentifiers() {
+						return SalesOrder.this.getIdentifiers();
+					}
+
+					@Override
+					public String getCustomerCode() {
+						return SalesOrder.this.getCustomerCode();
+					}
+				}
 
 		};
 	}
