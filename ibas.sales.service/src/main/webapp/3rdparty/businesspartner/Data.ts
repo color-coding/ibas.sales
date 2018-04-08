@@ -32,12 +32,6 @@ namespace businesspartner {
         export const BO_CODE_BUSINESSPARTNERASSET: string = "${Company}_BP_BPASSET";
         /** 业务对象编码-业务伙伴资产日记账 */
         export const BO_CODE_BUSINESSPARTNERASSETJOURNAL: string = "${Company}_BP_BPASSETJOURNAL";
-        /** 资产方式-业务伙伴资产 */
-        export const ASSET_MODE_INTERNAL_BP_ASSET: string = "AINT_BP0";
-        /** 资产方式-现金 */
-        export const ASSET_MODE_EXTERNAL_CASH: string = "AEXT_CAS";
-        /** 资产方式-银行 */
-        export const ASSET_MODE_EXTERNAL_BANK: string = "AEXT_BAK";
 
         /** 业务伙伴性质 */
         export enum emBusinessPartnerNature {
@@ -63,48 +57,6 @@ namespace businesspartner {
     }
 
     export namespace app {
-        /** 单据收款服务契约 */
-        export interface IReceiptContract extends ibas.IServiceContract {
-            /** 业务伙伴类型 */
-            businessPartnerType: bo.emBusinessPartnerType;
-            /** 业务伙伴代码 */
-            businessPartnerCode: string;
-            /** 总计 */
-            total: number;
-            /** 货币 */
-            currency: string;
-            /** 单据类型 */
-            documentType?: string;
-            /** 单据标识 */
-            documentEntry?: number;
-            /** 单据行号 */
-            documentLineId?: number;
-        }
-        /** 单据收款服务服务代理 */
-        export class ReceiptServiceProxy extends ibas.ServiceProxy<IReceiptContract[]> {
-
-        }
-        /** 单据付款服务契约 */
-        export interface IPaymentContract extends ibas.IServiceContract {
-            /** 业务伙伴类型 */
-            businessPartnerType: bo.emBusinessPartnerType;
-            /** 业务伙伴代码 */
-            businessPartnerCode: string;
-            /** 总计 */
-            total: number;
-            /** 货币 */
-            currency: string;
-            /** 单据类型 */
-            documentType?: string;
-            /** 单据标识 */
-            documentEntry?: number;
-            /** 单据行号 */
-            documentLineId?: number;
-        }
-        /** 单据付款服务服务代理 */
-        export class PaymentServiceProxy extends ibas.ServiceProxy<IPaymentContract[]> {
-
-        }
         /** 查询条件 */
         export namespace conditions {
             export namespace customer {
