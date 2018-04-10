@@ -167,15 +167,6 @@ namespace sales {
                     }
                 });
             }
-            /** 获取服务的契约 */
-            protected getServiceProxies(): ibas.IServiceProxy<ibas.IServiceContract>[] {
-                return [
-                    new ibas.BOListServiceProxy({
-                        data: this.view.getSelecteds(),
-                        converter: new bo.DataConverter()
-                    })
-                ];
-            }
         }
         /** 视图-销售订单 */
         export interface ISalesOrderListView extends ibas.IBOListView {
@@ -185,8 +176,6 @@ namespace sales {
             deleteDataEvent: Function;
             /** 显示数据 */
             showData(datas: bo.SalesOrder[]): void;
-            /** 获取选择的数据 */
-            getSelecteds(): bo.SalesOrder[];
         }
     }
 }
