@@ -104,6 +104,19 @@ namespace businesspartner {
              */
             saveBusinessPartnerAssetJournal(saver: ibas.ISaveCaller<bo.IBusinessPartnerAssetJournal>): void;
 
+            /**
+             * 查询 客户资产
+             * @param fetcher 查询者
+             */
+            fetchCustomerAsset(fetcher: IAssetRequester): void;
+        }
+
+        /**
+         * 查询调用者
+         */
+        export interface IAssetRequester extends ibas.IMethodCaller<bo.IBusinessPartnerAsset> {
+            /** 请求 */
+            request: IAssetRequest;
         }
     }
 }

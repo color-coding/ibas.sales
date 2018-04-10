@@ -54,6 +54,21 @@ namespace businesspartner {
             /** 女 */
             FEMALE,
         }
+        /** 资产请求 */
+        export class IAssetRequest {
+            /** 业务伙伴 */
+            businessPartner: string;
+            /** 单据类型 */
+            documentType?: string;
+            /** 单据编号 */
+            documentEntry?: number;
+            /** 单据行号 */
+            documentLineId?: number;
+            /** 总计 */
+            total?: number;
+            /** 货币 */
+            currency: string;
+        }
     }
 
     export namespace app {
