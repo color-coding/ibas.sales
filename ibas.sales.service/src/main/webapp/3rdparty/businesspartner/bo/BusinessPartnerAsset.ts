@@ -84,6 +84,28 @@ namespace businesspartner {
 
         }
 
-
+        /** 客户资产 */
+        export class ICustomerAsset {
+            /** 资产编码 */
+            code: string;
+            /** 资产名称 */
+            name: string;
+            /** 图片 */
+            picture: string;
+            /** 生效日期 */
+            validDate: Date;
+            /** 失效日期 */
+            invalidDate: Date;
+            /** 可用值 */
+            amount: number;
+            /** 值单位 */
+            unit: string;
+            /** 可用次数 */
+            times: number;
+            /** 折扣 */
+            discount: number;
+            /** 客户 */
+            customer: string;
+        }
     }
 }

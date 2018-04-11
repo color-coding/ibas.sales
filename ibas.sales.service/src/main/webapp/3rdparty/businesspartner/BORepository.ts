@@ -114,7 +114,7 @@ namespace businesspartner {
         /**
          * 查询调用者
          */
-        export interface IAssetRequester extends ibas.IMethodCaller<bo.IBusinessPartnerAsset> {
+        export interface IAssetRequester extends ibas.IMethodCaller<bo.ICustomerAsset> {
             /** 请求 */
             request: IAssetRequest;
         }

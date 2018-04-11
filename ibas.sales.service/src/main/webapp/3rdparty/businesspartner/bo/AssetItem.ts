@@ -69,6 +69,8 @@ namespace businesspartner {
             validDays: number;
             /** 可充值的 */
             rechargeable: ibas.emYesNo;
+            /** 图片 */
+            picture: string;
             /** 备注 */
             remarks: string;
 
