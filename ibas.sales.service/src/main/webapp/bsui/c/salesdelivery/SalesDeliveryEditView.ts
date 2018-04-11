@@ -34,6 +34,8 @@ namespace sales {
                 chooseSalesDeliveryItemWarehouseEvent: Function;
                 /** 选择销售交货项目-销售订单事件 */
                 chooseSalesDeliverySalesOrderEvent: Function;
+                /** 销售交货收款事件 */
+                receiptSalesDeliveryEvent: Function;
 
                 /** 绘制视图 */
                 draw(): any {
@@ -371,6 +373,15 @@ namespace sales {
                                             }),
                                         ],
                                     })
+                                }),
+                                new sap.m.ToolbarSeparator(""),
+                                new sap.m.Button("", {
+                                    text: ibas.i18n.prop("sales_receipt"),
+                                    type: sap.m.ButtonType.Transparent,
+                                    icon: "sap-icon://lead",
+                                    press: function (): void {
+                                        that.fireViewEvents(that.receiptSalesDeliveryEvent);
+                                    }
                                 }),
                             ]
                         }),

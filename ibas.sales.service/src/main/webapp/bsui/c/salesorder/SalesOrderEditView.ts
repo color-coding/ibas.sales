@@ -32,6 +32,8 @@ namespace sales {
                 chooseSalesOrderItemMaterialSerialEvent: Function;
                 /** 选择销售订单行物料批次事件 */
                 chooseSalesOrderItemMaterialBatchEvent: Function;
+                /** 销售订单收款事件 */
+                receiptSalesOrderEvent: Function;
 
                 /** 绘制视图 */
                 draw(): any {
@@ -356,6 +358,15 @@ namespace sales {
                                             }),
                                         ],
                                     })
+                                }),
+                                new sap.m.ToolbarSeparator(""),
+                                new sap.m.Button("", {
+                                    text: ibas.i18n.prop("sales_receipt"),
+                                    type: sap.m.ButtonType.Transparent,
+                                    icon: "sap-icon://lead",
+                                    press: function (): void {
+                                        that.fireViewEvents(that.receiptSalesOrderEvent);
+                                    }
                                 }),
                             ]
                         }),

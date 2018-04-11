@@ -177,13 +177,13 @@ namespace sales {
                 }
             }
             /** 添加产品套装-项目事件 */
-            addProductSuitItem(): void {
+            private addProductSuitItem(): void {
                 this.editData.productSuitItems.create();
                 // 仅显示没有标记删除的
                 this.view.showProductSuitItems(this.editData.productSuitItems.filterDeleted());
             }
             /** 删除产品套装-项目事件 */
-            removeProductSuitItem(items: bo.ProductSuitItem[]): void {
+            private removeProductSuitItem(items: bo.ProductSuitItem[]): void {
                 // 非数组，转为数组
                 if (!(items instanceof Array)) {
                     items = [items];

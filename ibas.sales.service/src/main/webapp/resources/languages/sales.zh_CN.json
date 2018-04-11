@@ -28,6 +28,8 @@
   "sales_material_batch": "物料批次",
   "sales_material_serial": "物料序列",
   "sales_payment": "付款",
+  "sales_paymented": "付款已完成",
   "sales_receipt": "收款",
+  "sales_receipted": "收款已完成",
   "sales_closing_delimiter": "----结束----"
 }

@@ -72,6 +72,53 @@ namespace businesspartner {
     }
 
     export namespace app {
+        /** 收款契约 */
+        export interface IReceiptContract extends ibas.IServiceContract {
+            /** 业务伙伴类型 */
+            businessPartnerType: bo.emBusinessPartnerType;
+            /** 业务伙伴编码 */
+            businessPartnerCode: string;
+            /** 单据类型 */
+            documentType: string;
+            /** 单据编号 */
+            documentEntry: number;
+            /** 单据行号 */
+            documentLineId?: number;
+            /** 单据总计 */
+            documentTotal: number;
+            /** 单据货币 */
+            documentCurrency: string;
+            /** 单据摘要 */
+            documentSummary?: string;
+        }
+        /** 收款服务代理 */
+        export class ReceiptServiceProxy extends ibas.ServiceProxy<IReceiptContract> {
+
+        }
+        /** 付款契约 */
+        export interface IPaymentContract extends ibas.IServiceContract {
+            /** 业务伙伴类型 */
+            businessPartnerType: bo.emBusinessPartnerType;
+            /** 业务伙伴编码 */
+            businessPartnerCode: string;
+            /** 单据类型 */
+            documentType: string;
+            /** 单据编号 */
+            documentEntry: number;
+            /** 单据行号 */
+            documentLineId?: number;
+            /** 单据总计 */
+            documentTotal: number;
+            /** 单据货币 */
+            documentCurrency: string;
+            /** 单据摘要 */
+            documentSummary?: string;
+        }
+        /** 付款服务代理 */
+        export class PaymentServiceProxy extends ibas.ServiceProxy<IPaymentContract> {
+
+        }
+
         /** 查询条件 */
         export namespace conditions {
             export namespace customer {

@@ -37,6 +37,7 @@ namespace sales {
                 this.view.chooseSalesOrderItemWarehouseEvent = this.chooseSalesOrderItemWarehouse;
                 this.view.chooseSalesOrderItemMaterialBatchEvent = this.chooseSalesOrderItemMaterialBatch;
                 this.view.chooseSalesOrderItemMaterialSerialEvent = this.chooseSalesOrderItemMaterialSerial;
+                this.view.receiptSalesOrderEvent = this.receiptSalesOrder;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -274,13 +275,13 @@ namespace sales {
                 });
             }
             /** 添加销售订单-行事件 */
-            addSalesOrderItem(): void {
+            private addSalesOrderItem(): void {
                 this.editData.salesOrderItems.create();
                 // 仅显示没有标记删除的
                 this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
             }
             /** 删除销售订单-行事件 */
-            removeSalesOrderItem(items: bo.SalesOrderItem[]): void {
+            private removeSalesOrderItem(items: bo.SalesOrderItem[]): void {
                 // 非数组，转为数组
                 if (!(items instanceof Array)) {
                     items = [items];
@@ -331,7 +332,7 @@ namespace sales {
                 });
             }
             /** 选择销售交货行批次事件 */
-            chooseSalesOrderItemMaterialBatch(): void {
+            private chooseSalesOrderItemMaterialBatch(): void {
                 let contracts: ibas.ArrayList<materials.app.IMaterialBatchContract> = new ibas.ArrayList<materials.app.IMaterialBatchContract>();
                 for (let item of this.editData.salesOrderItems) {
                     contracts.add({
@@ -349,7 +350,7 @@ namespace sales {
                 });
             }
             /** 选择销售交货序列事件 */
-            chooseSalesOrderItemMaterialSerial(): void {
+            private chooseSalesOrderItemMaterialSerial(): void {
                 let contracts: ibas.ArrayList<materials.app.IMaterialSerialContract> = new ibas.ArrayList<materials.app.IMaterialSerialContract>();
                 for (let item of this.editData.salesOrderItems) {
                     contracts.add({
@@ -364,6 +365,25 @@ namespace sales {
                 }
                 ibas.servicesManager.runApplicationService<materials.app.IMaterialSerialContract[]>({
                     proxy: new materials.app.MaterialSerialIssueServiceProxy(contracts)
+                });
+            }
+            private receiptSalesOrder(): void {
+                if (ibas.objects.isNull(this.editData) || this.editData.isDirty) {
+                    throw new Error(ibas.i18n.prop("shell_data_saved_first"));
+                }
+                let amount: number = this.editData.documentTotal - this.editData.paidTotal;
+                if (amount <= 0) {
+                    throw new Error(ibas.i18n.prop("sales_receipted"));
+                }
+                ibas.servicesManager.runApplicationService<businesspartner.app.IReceiptContract>({
+                    proxy: new businesspartner.app.ReceiptServiceProxy({
+                        businessPartnerType: businesspartner.bo.emBusinessPartnerType.CUSTOMER,
+                        businessPartnerCode: this.editData.customerCode,
+                        documentType: this.editData.objectCode,
+                        documentEntry: this.editData.docEntry,
+                        documentCurrency: this.editData.documentCurrency,
+                        documentTotal: amount,
+                    })
                 });
             }
 
@@ -394,6 +414,8 @@ namespace sales {
             chooseSalesOrderItemMaterialSerialEvent: Function;
             /** 新建销售订单行物料批次事件 */
             chooseSalesOrderItemMaterialBatchEvent: Function;
+            /** 销售订单收款事件 */
+            receiptSalesOrderEvent: Function;
         }
     }
 }

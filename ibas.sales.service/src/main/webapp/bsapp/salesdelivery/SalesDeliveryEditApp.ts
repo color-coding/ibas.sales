@@ -38,6 +38,7 @@ namespace sales {
                 this.view.chooseSalesDeliveryItemMaterialSerialEvent = this.chooseSalesDeliveryLineMaterialSerial;
                 this.view.chooseSalesDeliveryItemWarehouseEvent = this.chooseSalesDeliveryItemWarehouse;
                 this.view.chooseSalesDeliverySalesOrderEvent = this.chooseSalesDeliverySalesOrder;
+                this.view.receiptSalesDeliveryEvent = this.receiptSalesDelivery;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -412,6 +413,25 @@ namespace sales {
                     }
                 });
             }
+            private receiptSalesDelivery(): void {
+                if (ibas.objects.isNull(this.editData) || this.editData.isDirty) {
+                    throw new Error(ibas.i18n.prop("shell_data_saved_first"));
+                }
+                let amount: number = this.editData.documentTotal - this.editData.paidTotal;
+                if (amount <= 0) {
+                    throw new Error(ibas.i18n.prop("sales_receipted"));
+                }
+                ibas.servicesManager.runApplicationService<businesspartner.app.IReceiptContract>({
+                    proxy: new businesspartner.app.ReceiptServiceProxy({
+                        businessPartnerType: businesspartner.bo.emBusinessPartnerType.CUSTOMER,
+                        businessPartnerCode: this.editData.customerCode,
+                        documentType: this.editData.objectCode,
+                        documentEntry: this.editData.docEntry,
+                        documentCurrency: this.editData.documentCurrency,
+                        documentTotal: amount,
+                    })
+                });
+            }
         }
         /** 视图-销售交货 */
         export interface ISalesDeliveryEditView extends ibas.IBOEditView {
@@ -441,6 +461,8 @@ namespace sales {
             chooseSalesDeliveryItemMaterialSerialEvent: Function;
             /** 选择销售交货项目-销售订单事件 */
             chooseSalesDeliverySalesOrderEvent: Function;
+            /** 销售交货收款事件 */
+            receiptSalesDeliveryEvent: Function;
 
         }
     }
