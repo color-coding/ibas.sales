@@ -11,6 +11,7 @@
 /// <reference path="./salesdelivery/index.ts" />
 /// <reference path="./salesorder/index.ts" />
 /// <reference path="./salesreturn/index.ts" />
+/// <reference path="./salesquote/index.ts" />
 
 namespace sales {
     export namespace app {
@@ -32,6 +33,7 @@ namespace sales {
             /** 初始化 */
             protected registers(): void {
                 // 注册功能
+                this.register(new SalesQuoteFunc());
                 this.register(new SalesOrderFunc());
                 this.register(new SalesDeliveryFunc());
                 this.register(new SalesReturnFunc());
@@ -45,6 +47,8 @@ namespace sales {
                 this.register(new SalesOrderLinkServiceMapping());
                 this.register(new SalesReturnChooseServiceMapping());
                 this.register(new SalesReturnLinkServiceMapping());
+                this.register(new SalesQuoteChooseServiceMapping());
+                this.register(new SalesQuoteLinkServiceMapping());
                 // 注册常驻应用
 
             }

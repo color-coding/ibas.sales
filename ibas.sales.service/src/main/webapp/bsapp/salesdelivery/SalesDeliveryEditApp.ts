@@ -368,7 +368,7 @@ namespace sales {
                     proxy: new materials.app.MaterialSerialIssueServiceProxy(contracts)
                 });
             }
-            /** 选择销售收货项目-销售订单事件 */
+            /** 选择销售收货-销售订单事件 */
             private chooseSalesDeliverySalesOrder(): void {
                 if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
@@ -459,7 +459,7 @@ namespace sales {
             chooseSalesDeliveryItemMaterialBatchEvent: Function;
             /** 选择销售交货行物料序列事件 */
             chooseSalesDeliveryItemMaterialSerialEvent: Function;
-            /** 选择销售交货项目-销售订单事件 */
+            /** 选择销售交货-销售订单事件 */
             chooseSalesDeliverySalesOrderEvent: Function;
             /** 销售交货收款事件 */
             receiptSalesDeliveryEvent: Function;

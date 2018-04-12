@@ -99,6 +99,20 @@ namespace sales {
                 super.save(bo.SalesReturn.name, saver);
             }
 
+            /**
+             * 查询 销售报价
+             * @param fetcher 查询者
+             */
+            fetchSalesQuote(fetcher: ibas.IFetchCaller<bo.SalesQuote>): void {
+                super.fetch(bo.SalesQuote.name, fetcher);
+            }
+            /**
+             * 保存 销售报价
+             * @param saver 保存者
+             */
+            saveSalesQuote(saver: ibas.ISaveCaller<bo.SalesQuote>): void {
+                super.save(bo.SalesQuote.name, saver);
+            }
         }
     }
 }

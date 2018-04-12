@@ -11,31 +11,23 @@ namespace sales {
             /**
              * 编辑视图-销售订单
              */
-            export class SalesOrderEditView extends ibas.BOEditView implements app.ISalesOrderEditView {
+            export class SalesQuoteEditView extends ibas.BOEditView implements app.ISalesQuoteEditView {
                 /** 删除数据事件 */
                 deleteDataEvent: Function;
                 /** 新建数据事件，参数1：是否克隆 */
                 createDataEvent: Function;
                 /** 添加销售订单-行事件 */
-                addSalesOrderItemEvent: Function;
+                addSalesQuoteItemEvent: Function;
                 /** 删除销售订单-行事件 */
-                removeSalesOrderItemEvent: Function;
+                removeSalesQuoteItemEvent: Function;
                 /** 选择销售订单客户事件 */
-                chooseSalesOrderCustomerEvent: Function;
+                chooseSalesQuoteCustomerEvent: Function;
                 /** 选择销售订单价格清单事件 */
-                chooseSalesOrderPriceListEvent: Function;
+                chooseSalesQuotePriceListEvent: Function;
                 /** 选择销售订单行物料事件 */
-                chooseSalesOrderItemMaterialEvent: Function;
+                chooseSalesQuoteItemMaterialEvent: Function;
                 /** 选择销售订单仓库事件 */
-                chooseSalesOrderItemWarehouseEvent: Function;
-                /** 选择销售订单行物料序列事件 */
-                chooseSalesOrderItemMaterialSerialEvent: Function;
-                /** 选择销售订单行物料批次事件 */
-                chooseSalesOrderItemMaterialBatchEvent: Function;
-                /** 选择销售订单-销售报价事件 */
-                chooseSalesOrderSalesQuoteEvent: Function;
-                /** 销售订单收款事件 */
-                receiptSalesOrderEvent: Function;
+                chooseSalesQuoteItemWarehouseEvent: Function;
 
                 /** 绘制视图 */
                 draw(): any {
@@ -44,22 +36,22 @@ namespace sales {
                         editable: true,
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_general") }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_customercode") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_customercode") }),
                             new sap.m.Input("", {
                                 showValueHelp: true,
                                 valueHelpRequest: function (): void {
-                                    that.fireViewEvents(that.chooseSalesOrderCustomerEvent);
+                                    that.fireViewEvents(that.chooseSalesQuoteCustomerEvent);
                                 }
                             }).bindProperty("value", {
                                 path: "customerCode"
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_customername") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_customername") }),
                             new sap.m.Input("", {
                                 editable: false,
                             }).bindProperty("value", {
                                 path: "customerName"
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_contactperson") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_contactperson") }),
                             new sap.m.ex.BOChooseInput("", {
                                 boText: "name",
                                 boKey: "objectKey",
@@ -77,43 +69,43 @@ namespace sales {
                                 boCode: ibas.config.applyVariables(materials.bo.BO_CODE_MATERIALPRICELIST),
                                 repositoryName: materials.bo.BO_REPOSITORY_MATERIALS,
                                 valueHelpRequest: function (): void {
-                                    that.fireViewEvents(that.chooseSalesOrderPriceListEvent);
+                                    that.fireViewEvents(that.chooseSalesQuotePriceListEvent);
                                 },
                                 bindingValue: {
                                     path: "priceList"
                                 }
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_reference1") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_reference1") }),
                             new sap.m.Input("", {}).bindProperty("value", {
                                 path: "reference1"
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_reference2") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_reference2") }),
                             new sap.m.Input("", {}).bindProperty("value", {
                                 path: "reference2"
                             }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_status") }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentstatus") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_documentstatus") }),
                             new sap.m.Select("", {
                                 items: openui5.utils.createComboBoxItems(ibas.emDocumentStatus),
                             }).bindProperty("selectedKey", {
                                 path: "documentStatus",
                                 type: "sap.ui.model.type.Integer",
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_canceled") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_canceled") }),
                             new sap.m.Select("", {
                                 items: openui5.utils.createComboBoxItems(ibas.emYesNo),
                             }).bindProperty("selectedKey", {
                                 path: "canceled",
                                 type: "sap.ui.model.type.Integer",
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentdate") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_documentdate") }),
                             new sap.m.DatePicker("", {
                                 valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                                 displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                             }).bindProperty("dateValue", {
                                 path: "documentDate",
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_dataowner") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_dataowner") }),
                             new sap.m.ex.DataOwnerInput("", {
                                 bindingValue: {
                                     path: "dataOwner"
@@ -121,62 +113,28 @@ namespace sales {
                             }),
                         ]
                     });
-                    this.tableSalesOrderItem = new sap.ui.table.Table("", {
+                    this.tableSalesQuoteItem = new sap.ui.table.Table("", {
                         toolbar: new sap.m.Toolbar("", {
                             content: [
-                                new sap.m.MenuButton("", {
+                                new sap.m.Button("", {
+                                    text: ibas.i18n.prop("shell_data_add"),
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://add",
-                                    text: ibas.i18n.prop("shell_data_add"),
-                                    menu: new sap.m.Menu("", {
-                                        items: [
-                                            new sap.m.MenuItem("", {
-                                                text: ibas.i18n.prop("shell_data_add"),
-                                                press: function (): void {
-                                                    that.fireViewEvents(that.addSalesOrderItemEvent);
-                                                }
-                                            }),
-                                            new sap.m.MenuItem("", {
-                                                text: ibas.i18n.prop("bo_salesquote"),
-                                                press: function (): void {
-                                                    that.fireViewEvents(that.chooseSalesOrderSalesQuoteEvent);
-                                                }
-                                            }),
-                                        ]
-                                    })
+                                    press: function (): void {
+                                        that.fireViewEvents(that.addSalesQuoteItemEvent);
+                                    }
                                 }),
                                 new sap.m.Button("", {
                                     text: ibas.i18n.prop("shell_data_remove"),
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://less",
                                     press: function (): void {
-                                        that.fireViewEvents(that.removeSalesOrderItemEvent,
+                                        that.fireViewEvents(that.removeSalesQuoteItemEvent,
                                             // 获取表格选中的对象
-                                            openui5.utils.getSelecteds<bo.SalesOrderItem>(that.tableSalesOrderItem)
+                                            openui5.utils.getSelecteds<bo.SalesQuoteItem>(that.tableSalesQuoteItem)
                                         );
                                     }
                                 }),
-                                new sap.m.ToolbarSeparator(""),
-                                new sap.m.MenuButton("", {
-                                    text: ibas.strings.format("{0}/{1}",
-                                        ibas.i18n.prop("sales_material_batch"), ibas.i18n.prop("sales_material_serial")),
-                                    menu: new sap.m.Menu("", {
-                                        items: [
-                                            new sap.m.MenuItem("", {
-                                                text: ibas.i18n.prop("sales_material_batch"),
-                                                press: function (): void {
-                                                    that.fireViewEvents(that.chooseSalesOrderItemMaterialBatchEvent);
-                                                }
-                                            }),
-                                            new sap.m.MenuItem("", {
-                                                text: ibas.i18n.prop("sales_material_serial"),
-                                                press: function (): void {
-                                                    that.fireViewEvents(that.chooseSalesOrderItemMaterialSerialEvent);
-                                                }
-                                            }),
-                                        ]
-                                    })
-                                })
                             ]
                         }),
                         enableSelectAll: false,
@@ -185,7 +143,7 @@ namespace sales {
                         rows: "{/rows}",
                         columns: [
                             new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_salesorderitem_lineid"),
+                                label: ibas.i18n.prop("bo_salesquoteitem_lineid"),
                                 template: new sap.m.Text("", {
                                     wrapping: false,
                                 }).bindProperty("text", {
@@ -193,7 +151,7 @@ namespace sales {
                                 }),
                             }),
                             new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_salesorderitem_linestatus"),
+                                label: ibas.i18n.prop("bo_salesquoteitem_linestatus"),
                                 template: new sap.m.Select("", {
                                     width: "100%",
                                     items: openui5.utils.createComboBoxItems(ibas.emDocumentStatus),
@@ -203,12 +161,12 @@ namespace sales {
                                 })
                             }),
                             new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_salesorderitem_itemcode"),
+                                label: ibas.i18n.prop("bo_salesquoteitem_itemcode"),
                                 template: new sap.m.Input("", {
                                     width: "100%",
                                     showValueHelp: true,
                                     valueHelpRequest: function (): void {
-                                        that.fireViewEvents(that.chooseSalesOrderItemMaterialEvent,
+                                        that.fireViewEvents(that.chooseSalesQuoteItemMaterialEvent,
                                             // 获取当前对象
                                             this.getBindingContext().getObject()
                                         );
@@ -218,7 +176,7 @@ namespace sales {
                                 })
                             }),
                             new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_salesorderitem_itemdescription"),
+                                label: ibas.i18n.prop("bo_salesquoteitem_itemdescription"),
                                 template: new sap.m.Text("", {
                                     wrapping: false,
                                 }).bindProperty("text", {
@@ -226,12 +184,12 @@ namespace sales {
                                 })
                             }),
                             new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_salesorderitem_warehouse"),
+                                label: ibas.i18n.prop("bo_salesquoteitem_warehouse"),
                                 template: new sap.m.Input("", {
                                     width: "100%",
                                     showValueHelp: true,
                                     valueHelpRequest: function (): void {
-                                        that.fireViewEvents(that.chooseSalesOrderItemWarehouseEvent,
+                                        that.fireViewEvents(that.chooseSalesQuoteItemWarehouseEvent,
                                             // 获取当前对象
                                             this.getBindingContext().getObject()
                                         );
@@ -241,7 +199,7 @@ namespace sales {
                                 })
                             }),
                             new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_salesorderitem_quantity"),
+                                label: ibas.i18n.prop("bo_salesquoteitem_quantity"),
                                 template: new sap.m.Input("", {
                                     width: "100%",
                                     type: sap.m.InputType.Number
@@ -250,7 +208,7 @@ namespace sales {
                                 })
                             }),
                             new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_salesorderitem_uom"),
+                                label: ibas.i18n.prop("bo_salesquoteitem_uom"),
                                 template: new sap.m.Text("", {
                                     width: "100%",
                                     wrapping: false
@@ -259,7 +217,7 @@ namespace sales {
                                 })
                             }),
                             new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_salesorderitem_price"),
+                                label: ibas.i18n.prop("bo_salesquoteitem_price"),
                                 template: new sap.m.Input("", {
                                     width: "100%",
                                     type: sap.m.InputType.Number
@@ -268,7 +226,7 @@ namespace sales {
                                 })
                             }),
                             new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_salesorderitem_linetotal"),
+                                label: ibas.i18n.prop("bo_salesquoteitem_linetotal"),
                                 template: new sap.m.Text("", {
                                     width: "100%",
                                     wrapping: false
@@ -281,8 +239,8 @@ namespace sales {
                     let formMiddle: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
                         editable: true,
                         content: [
-                            new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_salesorderitem") }),
-                            this.tableSalesOrderItem,
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_salesquoteitem") }),
+                            this.tableSalesQuoteItem,
                         ]
                     });
                     let formBottom: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
@@ -295,19 +253,19 @@ namespace sales {
                                 path: "remarks",
                             }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_total") }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_discount") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_discount") }),
                             new sap.m.Input("", {
                                 editable: false,
                             }).bindProperty("value", {
                                 path: "discount"
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_discounttotal") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_discounttotal") }),
                             new sap.m.Input("", {
                                 editable: false,
                             }).bindProperty("value", {
                                 path: "discountTotal"
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documenttotal") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_documenttotal") }),
                             new sap.m.Input("", {
                                 editable: false,
                             }).bindProperty("value", {
@@ -374,15 +332,6 @@ namespace sales {
                                         ],
                                     })
                                 }),
-                                new sap.m.ToolbarSeparator(""),
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("sales_receipt"),
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://lead",
-                                    press: function (): void {
-                                        that.fireViewEvents(that.receiptSalesOrderEvent);
-                                    }
-                                }),
                             ]
                         }),
                         content: [this.layoutMain]
@@ -392,10 +341,10 @@ namespace sales {
 
                 private page: sap.m.Page;
                 private layoutMain: sap.ui.layout.VerticalLayout;
-                private tableSalesOrderItem: sap.ui.table.Table;
+                private tableSalesQuoteItem: sap.ui.table.Table;
 
                 /** 改变视图状态 */
-                private changeViewStatus(data: bo.SalesOrder): void {
+                private changeViewStatus(data: bo.SalesQuote): void {
                     if (ibas.objects.isNull(data)) {
                         return;
                     }
@@ -417,7 +366,7 @@ namespace sales {
                     }
                 }
                 /** 显示数据 */
-                showSalesOrder(data: bo.SalesOrder): void {
+                showSalesQuote(data: bo.SalesQuote): void {
                     this.layoutMain.setModel(new sap.ui.model.json.JSONModel(data));
                     this.layoutMain.bindObject("/");
                     // 监听属性改变，并更新控件
@@ -426,10 +375,10 @@ namespace sales {
                     this.changeViewStatus(data);
                 }
                 /** 显示数据 */
-                showSalesOrderItems(datas: bo.SalesOrderItem[]): void {
-                    this.tableSalesOrderItem.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
+                showSalesQuoteItems(datas: bo.SalesQuoteItem[]): void {
+                    this.tableSalesQuoteItem.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
                     // 监听属性改变，并更新控件
-                    openui5.utils.refreshModelChanged(this.tableSalesOrderItem, datas);
+                    openui5.utils.refreshModelChanged(this.tableSalesQuoteItem, datas);
                 }
             }
         }

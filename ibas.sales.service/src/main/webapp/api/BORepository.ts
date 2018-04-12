@@ -64,6 +64,17 @@ namespace sales {
              * @param saver 保存者
              */
             saveSalesReturn(saver: ibas.ISaveCaller<bo.ISalesReturn>): void;
+
+            /**
+             * 查询 销售报价
+             * @param fetcher 查询者
+             */
+            fetchSalesQuote(fetcher: ibas.IFetchCaller<bo.ISalesQuote>): void;
+            /**
+             * 保存 销售报价
+             * @param saver 保存者
+             */
+            saveSalesQuote(saver: ibas.ISaveCaller<bo.ISalesQuote>): void;
         }
     }
 

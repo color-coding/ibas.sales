@@ -10,5 +10,6 @@
 /// <reference path="./bo/SalesDelivery.ts" />
 /// <reference path="./bo/SalesOrder.ts" />
 /// <reference path="./bo/SalesReturn.ts" />
+/// <reference path="./bo/SalesQuote.ts" />
 /// <reference path="./bo/ShippingAddress.ts" />
 /// <reference path="./BORepository.ts" />

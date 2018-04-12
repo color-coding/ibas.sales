@@ -8,8 +8,8 @@
 namespace sales {
     export namespace bo {
 
-        /** 销售订单 */
-        export interface ISalesOrder extends ibas.IBODocument {
+        /** 销售报价 */
+        export interface ISalesQuote extends ibas.IBODocument {
 
             /** 凭证编号 */
             docEntry: number;
@@ -146,26 +146,20 @@ namespace sales {
             /** 项目代码 */
             project: string;
 
-            /** 销售订单-行集合 */
-            salesOrderItems: ISalesOrderItems;
+            /** 销售报价-行集合 */
+            salesQuoteItems: ISalesQuoteItems;
 
-            /** 送货地址集合 */
-            shippingAddresss: IShippingAddresss;
-
-
-            /** 基于销售报价 */
-            baseDocument(document: ISalesQuote): void;
         }
 
-        /** 销售订单-行 集合 */
-        export interface ISalesOrderItems extends ibas.IBusinessObjects<ISalesOrderItem> {
+        /** 销售报价-行 集合 */
+        export interface ISalesQuoteItems extends ibas.IBusinessObjects<ISalesQuoteItem> {
 
             /** 创建并添加子项 */
-            create(): ISalesOrderItem;
+            create(): ISalesQuoteItem;
         }
 
-        /** 销售订单-行 */
-        export interface ISalesOrderItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent {
+        /** 销售报价-行 */
+        export interface ISalesQuoteItem extends ibas.IBODocumentLine {
 
             /** 编码 */
             docEntry: number;

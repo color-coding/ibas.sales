@@ -8,19 +8,19 @@
 namespace sales {
     export namespace app {
         /** 编辑应用-销售订单 */
-        export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditView, bo.SalesOrder> {
+        export class SalesQuoteEditApp extends ibas.BOEditApplication<ISalesQuoteEditView, bo.SalesQuote> {
             /** 应用标识 */
-            static APPLICATION_ID: string = "87362150-9238-42de-b227-6e9086c660d6";
+            static APPLICATION_ID: string = "4d08905a-76de-4b64-be11-334305e76dfa";
             /** 应用名称 */
-            static APPLICATION_NAME: string = "sales_app_salesorder_edit";
+            static APPLICATION_NAME: string = "sales_app_salesquote_edit";
             /** 业务对象编码 */
-            static BUSINESS_OBJECT_CODE: string = bo.SalesOrder.BUSINESS_OBJECT_CODE;
+            static BUSINESS_OBJECT_CODE: string = bo.SalesQuote.BUSINESS_OBJECT_CODE;
             /** 构造函数 */
             constructor() {
                 super();
-                this.id = SalesOrderEditApp.APPLICATION_ID;
-                this.name = SalesOrderEditApp.APPLICATION_NAME;
-                this.boCode = SalesOrderEditApp.BUSINESS_OBJECT_CODE;
+                this.id = SalesQuoteEditApp.APPLICATION_ID;
+                this.name = SalesQuoteEditApp.APPLICATION_NAME;
+                this.boCode = SalesQuoteEditApp.BUSINESS_OBJECT_CODE;
                 this.description = ibas.i18n.prop(this.name);
             }
             /** 注册视图 */
@@ -29,35 +29,31 @@ namespace sales {
                 // 其他事件
                 this.view.deleteDataEvent = this.deleteData;
                 this.view.createDataEvent = this.createData;
-                this.view.addSalesOrderItemEvent = this.addSalesOrderItem;
-                this.view.removeSalesOrderItemEvent = this.removeSalesOrderItem;
-                this.view.chooseSalesOrderItemMaterialEvent = this.chooseSalesOrderItemMaterial;
-                this.view.chooseSalesOrderCustomerEvent = this.chooseSalesOrderCustomer;
-                this.view.chooseSalesOrderPriceListEvent = this.chooseSalesOrderPriceList;
-                this.view.chooseSalesOrderItemWarehouseEvent = this.chooseSalesOrderItemWarehouse;
-                this.view.chooseSalesOrderItemMaterialBatchEvent = this.chooseSalesOrderItemMaterialBatch;
-                this.view.chooseSalesOrderItemMaterialSerialEvent = this.chooseSalesOrderItemMaterialSerial;
-                this.view.chooseSalesOrderSalesQuoteEvent = this.chooseSalesOrderSalesQuote;
-                this.view.receiptSalesOrderEvent = this.receiptSalesOrder;
+                this.view.addSalesQuoteItemEvent = this.addSalesQuoteItem;
+                this.view.removeSalesQuoteItemEvent = this.removeSalesQuoteItem;
+                this.view.chooseSalesQuoteItemMaterialEvent = this.chooseSalesQuoteItemMaterial;
+                this.view.chooseSalesQuoteCustomerEvent = this.chooseSalesQuoteCustomer;
+                this.view.chooseSalesQuotePriceListEvent = this.chooseSalesQuotePriceList;
+                this.view.chooseSalesQuoteItemWarehouseEvent = this.chooseSalesQuoteItemWarehouse;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
                 // 视图加载完成
                 if (ibas.objects.isNull(this.editData)) {
                     // 创建编辑对象实例
-                    this.editData = new bo.SalesOrder();
+                    this.editData = new bo.SalesQuote();
                     this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_created_new"));
                 }
-                this.view.showSalesOrder(this.editData);
-                this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
+                this.view.showSalesQuote(this.editData);
+                this.view.showSalesQuoteItems(this.editData.salesQuoteItems.filterDeleted());
             }
             /** 运行,覆盖原方法 */
             run(): void;
-            run(data: bo.SalesOrder): void;
+            run(data: bo.SalesQuote): void;
             run(): void {
                 let that: this = this;
-                if (ibas.objects.instanceOf(arguments[0], bo.SalesOrder)) {
-                    let data: bo.SalesOrder = arguments[0];
+                if (ibas.objects.instanceOf(arguments[0], bo.SalesQuote)) {
+                    let data: bo.SalesQuote = arguments[0];
                     // 新对象直接编辑
                     if (data.isNew) {
                         that.editData = data;
@@ -69,14 +65,14 @@ namespace sales {
                     if (!ibas.objects.isNull(criteria) && criteria.conditions.length > 0) {
                         // 有效的查询对象查询
                         let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
-                        boRepository.fetchSalesOrder({
+                        boRepository.fetchSalesQuote({
                             criteria: criteria,
-                            onCompleted(opRslt: ibas.IOperationResult<bo.SalesOrder>): void {
-                                let data: bo.SalesOrder;
+                            onCompleted(opRslt: ibas.IOperationResult<bo.SalesQuote>): void {
+                                let data: bo.SalesQuote;
                                 if (opRslt.resultCode === 0) {
                                     data = opRslt.resultObjects.firstOrDefault();
                                 }
-                                if (ibas.objects.instanceOf(data, bo.SalesOrder)) {
+                                if (ibas.objects.instanceOf(data, bo.SalesQuote)) {
                                     // 查询到了有效数据
                                     that.editData = data;
                                     that.show();
@@ -99,15 +95,15 @@ namespace sales {
                 super.run.apply(this, arguments);
             }
             /** 待编辑的数据 */
-            protected editData: bo.SalesOrder;
-            protected lineEditData: bo.SalesOrderItem;
+            protected editData: bo.SalesQuote;
+            protected lineEditData: bo.SalesQuoteItem;
             /** 保存数据 */
             protected saveData(): void {
                 let that: this = this;
                 let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
-                boRepository.saveSalesOrder({
+                boRepository.saveSalesQuote({
                     beSaved: this.editData,
-                    onCompleted(opRslt: ibas.IOperationResult<bo.SalesOrder>): void {
+                    onCompleted(opRslt: ibas.IOperationResult<bo.SalesQuote>): void {
                         try {
                             that.busy(false);
                             if (opRslt.resultCode !== 0) {
@@ -161,7 +157,7 @@ namespace sales {
                         that.viewShowed();
                     } else {
                         // 新建对象
-                        that.editData = new bo.SalesOrder();
+                        that.editData = new bo.SalesQuote();
                         that.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_created_new"));
                         that.viewShowed();
                     }
@@ -183,7 +179,7 @@ namespace sales {
                 }
             }
             /** 选择销售订单客户事件 */
-            private chooseSalesOrderCustomer(): void {
+            private chooseSalesQuoteCustomer(): void {
                 let that: this = this;
                 ibas.servicesManager.runChooseService<businesspartner.bo.ICustomer>({
                     boCode: businesspartner.bo.BO_CODE_CUSTOMER,
@@ -199,7 +195,7 @@ namespace sales {
                 });
             }
             /** 选择销售订单价格清单事件 */
-            private chooseSalesOrderPriceList(): void {
+            private chooseSalesQuotePriceList(): void {
                 let that: this = this;
                 ibas.servicesManager.runChooseService<materials.bo.IMaterialPriceList>({
                     boCode: materials.bo.BO_CODE_MATERIALPRICELIST,
@@ -213,7 +209,7 @@ namespace sales {
                 });
             }
             /** 选择销售订单物料事件 */
-            private chooseSalesOrderItemMaterial(caller: bo.SalesOrderItem): void {
+            private chooseSalesQuoteItemMaterial(caller: bo.SalesQuoteItem): void {
                 let that: this = this;
                 let condition: ibas.ICondition;
                 let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.product.create();
@@ -248,13 +244,13 @@ namespace sales {
                     criteria: conditions,
                     onCompleted(selecteds: ibas.IList<materials.bo.IProduct>): void {
                         // 获取触发的对象
-                        let index: number = that.editData.salesOrderItems.indexOf(caller);
-                        let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];
+                        let index: number = that.editData.salesQuoteItems.indexOf(caller);
+                        let item: bo.SalesQuoteItem = that.editData.salesQuoteItems[index];
                         // 选择返回数量多余触发数量时,自动创建新的项目
                         let created: boolean = false;
                         for (let selected of selecteds) {
                             if (ibas.objects.isNull(item)) {
-                                item = that.editData.salesOrderItems.create();
+                                item = that.editData.salesQuoteItems.create();
                                 created = true;
                             }
                             item.itemCode = selected.code;
@@ -270,19 +266,19 @@ namespace sales {
                         }
                         if (created) {
                             // 创建了新的行项目
-                            that.view.showSalesOrderItems(that.editData.salesOrderItems.filterDeleted());
+                            that.view.showSalesQuoteItems(that.editData.salesQuoteItems.filterDeleted());
                         }
                     }
                 });
             }
             /** 添加销售订单-行事件 */
-            private addSalesOrderItem(): void {
-                this.editData.salesOrderItems.create();
+            private addSalesQuoteItem(): void {
+                this.editData.salesQuoteItems.create();
                 // 仅显示没有标记删除的
-                this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
+                this.view.showSalesQuoteItems(this.editData.salesQuoteItems.filterDeleted());
             }
             /** 删除销售订单-行事件 */
-            private removeSalesOrderItem(items: bo.SalesOrderItem[]): void {
+            private removeSalesQuoteItem(items: bo.SalesQuoteItem[]): void {
                 // 非数组，转为数组
                 if (!(items instanceof Array)) {
                     items = [items];
@@ -292,10 +288,10 @@ namespace sales {
                 }
                 // 移除项目
                 for (let item of items) {
-                    if (this.editData.salesOrderItems.indexOf(item) >= 0) {
+                    if (this.editData.salesQuoteItems.indexOf(item) >= 0) {
                         if (item.isNew) {
                             // 新建的移除集合
-                            this.editData.salesOrderItems.remove(item);
+                            this.editData.salesQuoteItems.remove(item);
                         } else {
                             // 非新建标记删除
                             item.delete();
@@ -303,23 +299,23 @@ namespace sales {
                     }
                 }
                 // 仅显示没有标记删除的
-                this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
+                this.view.showSalesQuoteItems(this.editData.salesQuoteItems.filterDeleted());
             }
             /** 选择销售交货行仓库事件 */
-            private chooseSalesOrderItemWarehouse(caller: bo.SalesOrderItem): void {
+            private chooseSalesQuoteItemWarehouse(caller: bo.SalesQuoteItem): void {
                 let that: this = this;
                 ibas.servicesManager.runChooseService<materials.bo.IWarehouse>({
                     boCode: materials.bo.BO_CODE_WAREHOUSE,
                     chooseType: ibas.emChooseType.SINGLE,
                     criteria: materials.app.conditions.warehouse.create(),
                     onCompleted(selecteds: ibas.IList<materials.bo.IWarehouse>): void {
-                        let index: number = that.editData.salesOrderItems.indexOf(caller);
-                        let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];
+                        let index: number = that.editData.salesQuoteItems.indexOf(caller);
+                        let item: bo.SalesQuoteItem = that.editData.salesQuoteItems[index];
                         // 选择返回数量多余触发数量时,自动创建新的项目
                         let created: boolean = false;
                         for (let selected of selecteds) {
                             if (ibas.objects.isNull(item)) {
-                                item = that.editData.salesOrderItems.create();
+                                item = that.editData.salesQuoteItems.create();
                                 created = true;
                             }
                             item.warehouse = selected.code;
@@ -327,143 +323,34 @@ namespace sales {
                         }
                         if (created) {
                             // 创建了新的行项目
-                            that.view.showSalesOrderItems(that.editData.salesOrderItems.filterDeleted());
+                            that.view.showSalesQuoteItems(that.editData.salesQuoteItems.filterDeleted());
                         }
                     }
                 });
             }
-            /** 选择销售交货行批次事件 */
-            private chooseSalesOrderItemMaterialBatch(): void {
-                let contracts: ibas.ArrayList<materials.app.IMaterialBatchContract> = new ibas.ArrayList<materials.app.IMaterialBatchContract>();
-                for (let item of this.editData.salesOrderItems) {
-                    contracts.add({
-                        batchManagement: item.batchManagement,
-                        itemCode: item.itemCode,
-                        itemDescription: item.itemDescription,
-                        warehouse: item.warehouse,
-                        quantity: item.quantity,
-                        uom: item.uom,
-                        materialBatches: item.materialBatches,
-                    });
-                }
-                ibas.servicesManager.runApplicationService<materials.app.IMaterialBatchContract[]>({
-                    proxy: new materials.app.MaterialBatchIssueServiceProxy(contracts)
-                });
-            }
-            /** 选择销售交货序列事件 */
-            private chooseSalesOrderItemMaterialSerial(): void {
-                let contracts: ibas.ArrayList<materials.app.IMaterialSerialContract> = new ibas.ArrayList<materials.app.IMaterialSerialContract>();
-                for (let item of this.editData.salesOrderItems) {
-                    contracts.add({
-                        serialManagement: item.serialManagement,
-                        itemCode: item.itemCode,
-                        itemDescription: item.itemDescription,
-                        warehouse: item.warehouse,
-                        quantity: item.quantity,
-                        uom: item.uom,
-                        materialSerials: item.materialSerials
-                    });
-                }
-                ibas.servicesManager.runApplicationService<materials.app.IMaterialSerialContract[]>({
-                    proxy: new materials.app.MaterialSerialIssueServiceProxy(contracts)
-                });
-            }
-            /** 选择销售订单-销售报价事件 */
-            private chooseSalesOrderSalesQuote(): void {
-                if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
-                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
-                        ibas.i18n.prop("bo_salesorder_customercode")
-                    ));
-                    return;
-                }
-                let criteria: ibas.ICriteria = new ibas.Criteria();
-                let condition: ibas.ICondition = criteria.conditions.create();
-                // 未取消的
-                condition.alias = ibas.BO_PROPERTY_NAME_CANCELED;
-                condition.operation = ibas.emConditionOperation.EQUAL;
-                condition.value = ibas.emYesNo.NO.toString();
-                // 未删除的
-                condition = criteria.conditions.create();
-                condition.alias = ibas.BO_PROPERTY_NAME_DELETED;
-                condition.operation = ibas.emConditionOperation.EQUAL;
-                condition.value = ibas.emYesNo.NO.toString();
-                // 未结算的
-                condition = criteria.conditions.create();
-                condition.alias = ibas.BO_PROPERTY_NAME_DOCUMENTSTATUS;
-                condition.operation = ibas.emConditionOperation.NOT_EQUAL;
-                condition.value = ibas.emDocumentStatus.CLOSED.toString();
-                // 当前客户的
-                condition.alias = bo.SalesQuote.PROPERTY_CUSTOMERCODE_NAME;
-                condition.operation = ibas.emConditionOperation.EQUAL;
-                condition.value = this.editData.customerCode;
-                // 调用选择服务
-                let that: this = this;
-                ibas.servicesManager.runChooseService<bo.SalesQuote>({
-                    boCode: bo.SalesQuote.BUSINESS_OBJECT_CODE,
-                    chooseType: ibas.emChooseType.MULTIPLE,
-                    criteria: criteria,
-                    onCompleted(selecteds: ibas.IList<bo.SalesQuote>): void {
-                        for (let selected of selecteds) {
-                            if (!ibas.strings.equals(that.editData.customerCode, selected.customerCode)) {
-                                continue;
-                            }
-                            that.editData.baseDocument(selected);
-                        }
-                        that.view.showSalesOrderItems(that.editData.salesOrderItems.filterDeleted());
-                    }
-                });
-            }
-            private receiptSalesOrder(): void {
-                if (ibas.objects.isNull(this.editData) || this.editData.isDirty) {
-                    throw new Error(ibas.i18n.prop("shell_data_saved_first"));
-                }
-                let amount: number = this.editData.documentTotal - this.editData.paidTotal;
-                if (amount <= 0) {
-                    throw new Error(ibas.i18n.prop("sales_receipted"));
-                }
-                ibas.servicesManager.runApplicationService<businesspartner.app.IReceiptContract>({
-                    proxy: new businesspartner.app.ReceiptServiceProxy({
-                        businessPartnerType: businesspartner.bo.emBusinessPartnerType.CUSTOMER,
-                        businessPartnerCode: this.editData.customerCode,
-                        documentType: this.editData.objectCode,
-                        documentEntry: this.editData.docEntry,
-                        documentCurrency: this.editData.documentCurrency,
-                        documentTotal: amount,
-                    })
-                });
-            }
-
         }
         /** 视图-销售订单 */
-        export interface ISalesOrderEditView extends ibas.IBOEditView {
+        export interface ISalesQuoteEditView extends ibas.IBOEditView {
             /** 显示数据 */
-            showSalesOrder(data: bo.SalesOrder): void;
+            showSalesQuote(data: bo.SalesQuote): void;
             /** 删除数据事件 */
             deleteDataEvent: Function;
             /** 新建数据事件，参数1：是否克隆 */
             createDataEvent: Function;
             /** 添加销售订单-行事件 */
-            addSalesOrderItemEvent: Function;
+            addSalesQuoteItemEvent: Function;
             /** 删除销售订单-行事件 */
-            removeSalesOrderItemEvent: Function;
+            removeSalesQuoteItemEvent: Function;
             /** 显示数据 */
-            showSalesOrderItems(datas: bo.SalesOrderItem[]): void;
+            showSalesQuoteItems(datas: bo.SalesQuoteItem[]): void;
             /** 选择销售订单客户事件 */
-            chooseSalesOrderCustomerEvent: Function;
+            chooseSalesQuoteCustomerEvent: Function;
             /** 选择销售订单价格清单事件 */
-            chooseSalesOrderPriceListEvent: Function;
+            chooseSalesQuotePriceListEvent: Function;
             /** 选择销售订单行物料事件 */
-            chooseSalesOrderItemMaterialEvent: Function;
+            chooseSalesQuoteItemMaterialEvent: Function;
             /** 选择销售订单仓库事件 */
-            chooseSalesOrderItemWarehouseEvent: Function;
-            /** 新建销售订单行物料序列事件 */
-            chooseSalesOrderItemMaterialSerialEvent: Function;
-            /** 新建销售订单行物料批次事件 */
-            chooseSalesOrderItemMaterialBatchEvent: Function;
-            /** 选择销售订单-销售报价事件 */
-            chooseSalesOrderSalesQuoteEvent: Function;
-            /** 销售订单收款事件 */
-            receiptSalesOrderEvent: Function;
+            chooseSalesQuoteItemWarehouseEvent: Function;
         }
     }
 }

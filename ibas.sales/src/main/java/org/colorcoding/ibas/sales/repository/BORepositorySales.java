@@ -10,6 +10,8 @@ import org.colorcoding.ibas.sales.bo.salesdelivery.ISalesDelivery;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
 import org.colorcoding.ibas.sales.bo.salesorder.ISalesOrder;
 import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
+import org.colorcoding.ibas.sales.bo.salesquote.ISalesQuote;
+import org.colorcoding.ibas.sales.bo.salesquote.SalesQuote;
 import org.colorcoding.ibas.sales.bo.salesreturn.ISalesReturn;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
 
@@ -215,6 +217,54 @@ public class BORepositorySales extends BORepositoryServiceApplication
 		return new OperationResult<ISalesReturn>(this.saveSalesReturn((SalesReturn) bo, this.getUserToken()));
 	}
 
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-销售报价
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	public OperationResult<SalesQuote> fetchSalesQuote(ICriteria criteria, String token) {
+		return super.fetch(criteria, token, SalesQuote.class);
+	}
+
+	/**
+	 * 查询-销售报价（提前设置用户口令）
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @return 操作结果
+	 */
+	public IOperationResult<ISalesQuote> fetchSalesQuote(ICriteria criteria) {
+		return new OperationResult<ISalesQuote>(this.fetchSalesQuote(criteria, this.getUserToken()));
+	}
+
+	/**
+	 * 保存-销售报价
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	public OperationResult<SalesQuote> saveSalesQuote(SalesQuote bo, String token) {
+		return super.save(bo, token);
+	}
+
+	/**
+	 * 保存-销售报价（提前设置用户口令）
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @return 操作结果
+	 */
+	public IOperationResult<ISalesQuote> saveSalesQuote(ISalesQuote bo) {
+		return new OperationResult<ISalesQuote>(this.saveSalesQuote((SalesQuote) bo, this.getUserToken()));
+	}
 	// --------------------------------------------------------------------------------------------//
 
 }

@@ -24,6 +24,8 @@ namespace sales {
         export const BO_CODE_SALESORDER: string = "${Company}_SL_SALESORDER";
         /** 业务对象编码-销售退货 */
         export const BO_CODE_SALESRETURN: string = "${Company}_SL_SALESRETURN";
+        /** 业务对象编码-销售报价 */
+        export const BO_CODE_SALESQUOTE: string = "${Company}_SL_SALESQUOTE";
         /** 业务对象编码-送货地址 */
         export const BO_CODE_SHIPPINGADDRESS: string = "${Company}_SL_SHIPADDRESS";
 

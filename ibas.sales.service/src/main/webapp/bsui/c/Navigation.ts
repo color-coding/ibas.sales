@@ -12,6 +12,7 @@
 /// <reference path="./salesdelivery/index.ts" />
 /// <reference path="./salesorder/index.ts" />
 /// <reference path="./salesreturn/index.ts" />
+/// <reference path="./salesquote/index.ts" />
 namespace sales {
     export namespace ui {
         /**
@@ -60,6 +61,18 @@ namespace sales {
                         break;
                     case app.SalesOrderEditApp.APPLICATION_ID:
                         view = new c.SalesOrderEditView();
+                        break;
+                    case app.SalesQuoteListApp.APPLICATION_ID:
+                        view = new c.SalesQuoteListView();
+                        break;
+                    case app.SalesQuoteChooseApp.APPLICATION_ID:
+                        view = new c.SalesQuoteChooseView();
+                        break;
+                    case app.SalesQuoteViewApp.APPLICATION_ID:
+                        view = new c.SalesQuoteViewView();
+                        break;
+                    case app.SalesQuoteEditApp.APPLICATION_ID:
+                        view = new c.SalesQuoteEditView();
                         break;
                     case app.SalesReturnListApp.APPLICATION_ID:
                         view = new c.SalesReturnListView();
