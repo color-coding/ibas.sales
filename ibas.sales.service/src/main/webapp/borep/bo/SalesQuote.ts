@@ -528,6 +528,7 @@ namespace sales {
                 this.objectCode = ibas.config.applyVariables(SalesQuote.BUSINESS_OBJECT_CODE);
                 this.documentStatus = ibas.emDocumentStatus.RELEASED;
                 this.documentCurrency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
+                this.discount = 1;
             }
             /** 映射的属性名称-项目的税总计 */
             static PROPERTY_ITEMSTAXTOTAL_NAME: string = "ItemsTaxTotal";
@@ -1250,6 +1251,8 @@ namespace sales {
             /** 初始化数据 */
             protected init(): void {
                 this.currency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
+                this.discount = 1;
+                this.taxRate = 1;
             }
 
 
