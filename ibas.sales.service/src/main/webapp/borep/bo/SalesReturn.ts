@@ -542,6 +542,58 @@ namespace sales {
                 this.documentCurrency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
             }
 
+            /** 映射的属性名称-项目的税总计 */
+            static PROPERTY_ITEMSTAXTOTAL_NAME: string = "ItemsTaxTotal";
+            /** 获取-项目的税总计 */
+            get itemsTaxTotal(): number {
+                return this.getProperty<number>(SalesReturn.PROPERTY_ITEMSTAXTOTAL_NAME);
+            }
+            /** 设置-项目的税总计 */
+            set itemsTaxTotal(value: number) {
+                this.setProperty(SalesReturn.PROPERTY_ITEMSTAXTOTAL_NAME, value);
+            }
+
+            /** 映射的属性名称-项目的行总计 */
+            static PROPERTY_ITEMSLINETOTAL_NAME: string = "ItemsLineTotal";
+            /** 获取-项目的行总计 */
+            get itemsLineTotal(): number {
+                return this.getProperty<number>(SalesReturn.PROPERTY_ITEMSLINETOTAL_NAME);
+            }
+            /** 设置-项目的行总计 */
+            set itemsLineTotal(value: number) {
+                this.setProperty(SalesReturn.PROPERTY_ITEMSLINETOTAL_NAME, value);
+            }
+
+            /** 映射的属性名称-运送费用总计 */
+            static PROPERTY_SHIPPINGSEXPENSETOTAL_NAME: string = "ShippingsExpenseTotal";
+            /** 获取-运送费用总计 */
+            get shippingsExpenseTotal(): number {
+                return this.getProperty<number>(SalesReturn.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME);
+            }
+            /** 设置-运送费用总计 */
+            set shippingsExpenseTotal(value: number) {
+                this.setProperty(SalesReturn.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME, value);
+            }
+            protected registerRules(): ibas.IBusinessRule[] {
+                return [
+                    // 计算项目-行总计
+                    new ibas.BusinessRuleSumElements(
+                        SalesReturn.PROPERTY_ITEMSLINETOTAL_NAME, SalesReturn.PROPERTY_SALESRETURNITEMS_NAME, SalesReturnItem.PROPERTY_LINETOTAL_NAME),
+                    // 计算项目-税总计
+                    new ibas.BusinessRuleSumElements(
+                        SalesReturn.PROPERTY_ITEMSTAXTOTAL_NAME, SalesReturn.PROPERTY_SALESRETURNITEMS_NAME, SalesReturnItem.PROPERTY_TAXTOTAL_NAME),
+                    // 计算运输-费用总计
+                    new ibas.BusinessRuleSumElements(
+                        SalesReturn.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME, SalesReturn.PROPERTY_SHIPPINGADDRESSS_NAME, ShippingAddress.PROPERTY_EXPENSE_NAME),
+                    // 折扣后总计 = 项目-行总计 * 折扣
+                    new ibas.BusinessRuleMultiplication(
+                        SalesReturn.PROPERTY_DISCOUNTTOTAL_NAME, SalesReturn.PROPERTY_ITEMSLINETOTAL_NAME, SalesReturn.PROPERTY_DISCOUNT_NAME),
+                    // 单据总计 = 折扣后总计 + 运输费用 + 税总额
+                    new ibas.BusinessRuleSummation(
+                        SalesReturn.PROPERTY_DOCUMENTTOTAL_NAME, SalesReturn.PROPERTY_DISCOUNTTOTAL_NAME,
+                        SalesReturn.PROPERTY_ITEMSTAXTOTAL_NAME, SalesReturn.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME),
+                ];
+            }
             /** 基于销售订单 */
             baseDocument(document: ISalesOrder): void;
             /** 基于销售收货 */
@@ -1355,6 +1407,29 @@ namespace sales {
                 this.materialBatches = new materials.bo.MaterialBatchItems(this);
                 this.materialSerials = new materials.bo.MaterialSerialItems(this);
                 this.currency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
+            }
+
+            protected registerRules(): ibas.IBusinessRule[] {
+                return [
+                    // 推导 价格 = 折扣前价格 * 折扣
+                    new ibas.BusinessRuleMultiplicativeDeduction(
+                        SalesReturnItem.PROPERTY_DISCOUNT_NAME, SalesReturnItem.PROPERTY_UNITPRICE_NAME, SalesReturnItem.PROPERTY_PRICE_NAME),
+                    // 计算价格 = 折扣前价格 * 折扣
+                    new ibas.BusinessRuleMultiplication(
+                        SalesReturnItem.PROPERTY_PRICE_NAME, SalesReturnItem.PROPERTY_UNITPRICE_NAME, SalesReturnItem.PROPERTY_DISCOUNT_NAME),
+                    // 计算总计 = 数量 * 价格
+                    new ibas.BusinessRuleMultiplication(
+                        SalesReturnItem.PROPERTY_LINETOTAL_NAME, SalesReturnItem.PROPERTY_QUANTITY_NAME, SalesReturnItem.PROPERTY_PRICE_NAME),
+                    // 计算毛价 = 价格 * 税率
+                    new ibas.BusinessRuleMultiplication(
+                        SalesReturnItem.PROPERTY_GROSSPRICE_NAME, SalesReturnItem.PROPERTY_PRICE_NAME, SalesReturnItem.PROPERTY_TAXRATE_NAME),
+                    // 计算毛总额 = 数量 * 毛价
+                    new ibas.BusinessRuleMultiplication(
+                        SalesReturnItem.PROPERTY_GROSSTOTAL_NAME, SalesReturnItem.PROPERTY_QUANTITY_NAME, SalesReturnItem.PROPERTY_GROSSPRICE_NAME),
+                    // 计算税总额 = 毛总额 - 总计
+                    new ibas.BusinessRuleSubtraction(
+                        SalesReturnItem.PROPERTY_TAXTOTAL_NAME, SalesReturnItem.PROPERTY_GROSSTOTAL_NAME, SalesReturnItem.PROPERTY_LINETOTAL_NAME),
+                ];
             }
         }
     }

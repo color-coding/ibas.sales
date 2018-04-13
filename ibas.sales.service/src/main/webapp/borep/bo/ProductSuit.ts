@@ -335,14 +335,19 @@ namespace sales {
             set productSuitItems(value: ProductSuitItems) {
                 this.setProperty(ProductSuit.PROPERTY_PRODUCTSUITITEMS_NAME, value);
             }
-
-
             /** 初始化数据 */
             protected init(): void {
                 this.productSuitItems = new ProductSuitItems(this);
                 this.objectCode = ibas.config.applyVariables(ProductSuit.BUSINESS_OBJECT_CODE);
                 this.activated = ibas.emYesNo.YES;
                 this.currency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
+            }
+            protected registerRules(): ibas.IBusinessRule[] {
+                return [
+                    // 计算项目-行总计
+                    new ibas.BusinessRuleSumElements(
+                        ProductSuit.PROPERTY_TOTAL_NAME, ProductSuit.PROPERTY_PRODUCTSUITITEMS_NAME, ProductSuitItem.PROPERTY_LINETOTAL_NAME),
+                ];
             }
         }
 
@@ -584,11 +589,17 @@ namespace sales {
                 this.setProperty(ProductSuitItem.PROPERTY_LINETOTAL_NAME, value);
             }
 
-
-
             /** 初始化数据 */
             protected init(): void {
                 this.currency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
+            }
+
+            protected registerRules(): ibas.IBusinessRule[] {
+                return [
+                    // 计算总计 = 数量 * 价格
+                    new ibas.BusinessRuleMultiplication(
+                        ProductSuitItem.PROPERTY_LINETOTAL_NAME, ProductSuitItem.PROPERTY_QUANTITY_NAME, ProductSuitItem.PROPERTY_PRICE_NAME),
+                ];
             }
         }
     }
