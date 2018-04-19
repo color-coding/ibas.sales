@@ -1115,6 +1115,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 		super.initialize();// 基类初始化，不可去除
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 		this.setShippingStatus(emShippingStatus.WAITING);
+		this.setName("--");
 	}
 
 	@Override
