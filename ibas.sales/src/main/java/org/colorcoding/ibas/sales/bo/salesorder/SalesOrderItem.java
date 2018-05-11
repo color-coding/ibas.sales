@@ -2542,7 +2542,8 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 
 						@Override
 						public Decimal getQuantity() {
-							return SalesOrderItem.this.getQuantity();
+							// 承诺数量 = 订单数量 - 已交货数量
+							return SalesOrderItem.this.getQuantity().subtract(SalesOrderItem.this.getClosedQuantity());
 						}
 
 					}, new IMaterialWarehouseCommitedContract() {
@@ -2564,7 +2565,8 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 
 						@Override
 						public Decimal getQuantity() {
-							return SalesOrderItem.this.getQuantity();
+							// 承诺数量 = 订单数量 - 已交货数量
+							return SalesOrderItem.this.getQuantity().subtract(SalesOrderItem.this.getClosedQuantity());
 						}
 
 					}
