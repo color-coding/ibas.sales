@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
+import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
@@ -33,7 +34,8 @@ import org.colorcoding.ibas.sales.MyConfiguration;
 @XmlType(name = ProductSuit.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = ProductSuit.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BOCode(ProductSuit.BUSINESS_OBJECT_CODE)
-public class ProductSuit extends BusinessObject<ProductSuit> implements IProductSuit, IDataOwnership, IApprovalData {
+public class ProductSuit extends BusinessObject<ProductSuit>
+		implements IProductSuit, IDataOwnership, IApprovalData, IBOUserFields {
 
 	/**
 	 * 序列化版本标记

@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
+import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
@@ -23,7 +24,7 @@ import org.colorcoding.ibas.sales.MyConfiguration;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ProductSuitItem.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements IProductSuitItem {
+public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements IProductSuitItem, IBOUserFields {
 
 	/**
 	 * 序列化版本标记
