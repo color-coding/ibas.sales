@@ -113,6 +113,13 @@ namespace sales {
                             }).bindProperty("dateValue", {
                                 path: "documentDate",
                             }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_deliverydate") }),
+                            new sap.m.DatePicker("", {
+                                valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                            }).bindProperty("dateValue", {
+                                path: "deliveryDate",
+                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_dataowner") }),
                             new sap.m.ex.DataOwnerInput("", {
                                 bindingValue: {
