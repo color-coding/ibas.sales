@@ -99,6 +99,7 @@ namespace sales {
             protected lineEditData: bo.SalesQuoteItem;
             /** 保存数据 */
             protected saveData(): void {
+                this.busy(true);
                 let that: this = this;
                 let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
                 boRepository.saveSalesQuote({
@@ -127,7 +128,6 @@ namespace sales {
                         }
                     }
                 });
-                this.busy(true);
                 this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_saving_data"));
             }
             /** 删除数据 */

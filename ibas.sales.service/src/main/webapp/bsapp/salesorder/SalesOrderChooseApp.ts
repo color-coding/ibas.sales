@@ -42,6 +42,7 @@ namespace sales {
                     criteria: criteria,
                     onCompleted(opRslt: ibas.IOperationResult<bo.SalesOrder>): void {
                         try {
+                                that.busy(false);
                             if (opRslt.resultCode !== 0) {
                                 throw new Error(opRslt.message);
                             }
@@ -58,7 +59,6 @@ namespace sales {
                                     that.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_data_fetched_none"));
                                 }
                                 that.view.showData(opRslt.resultObjects);
-                                that.busy(false);
                             }
                         } catch (error) {
                             that.messages(error);

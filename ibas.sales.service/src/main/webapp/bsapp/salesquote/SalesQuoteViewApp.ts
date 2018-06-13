@@ -8,7 +8,7 @@
 namespace sales {
     export namespace app {
         /** 查看应用-销售订单 */
-        export class SalesQuoteViewApp extends ibas.BOViewService<ISalesQuoteViewView> {
+        export class SalesQuoteViewApp extends ibas.BOViewService<ISalesQuoteViewView, bo.SalesQuote> {
             /** 应用标识 */
             static APPLICATION_ID: string = "1d3ded4a-b567-4410-b484-f3c87f585dbf";
             /** 应用名称 */
@@ -94,13 +94,15 @@ namespace sales {
                 }
                 super.run.apply(this, arguments);
             }
-            private viewData: bo.SalesQuote;
+            protected viewData: bo.SalesQuote;
             /** 查询数据 */
             protected fetchData(criteria: ibas.ICriteria | string): void {
                 this.busy(true);
                 let that: this = this;
                 if (typeof criteria === "string") {
+                    let value: string = criteria;
                     criteria = new ibas.Criteria();
+                    criteria.result = 1;
                     // 添加查询条件
                 }
                 let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
@@ -112,7 +114,11 @@ namespace sales {
                                 throw new Error(opRslt.message);
                             }
                             that.viewData = opRslt.resultObjects.firstOrDefault();
-                            that.viewShowed();
+                            if (!that.isViewShowed()) {
+                                that.show();
+                            } else {
+                                that.viewShowed();
+                            }
                         } catch (error) {
                             that.messages(error);
                         }
