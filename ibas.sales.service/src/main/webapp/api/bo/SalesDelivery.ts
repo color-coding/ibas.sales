@@ -146,6 +146,12 @@ namespace sales {
             /** 项目代码 */
             project: string;
 
+            /** 消费者 */
+            consumer: string;
+
+            /** 单据类型 */
+            orderType: string;
+
             /** 销售交货-行集合 */
             salesDeliveryItems: ISalesDeliveryItems;
 

@@ -118,6 +118,11 @@ namespace sales {
                                     path: "dataOwner"
                                 }
                             }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_consumer") }),
+                            new sap.m.Input("", {
+                            }).bindProperty("value", {
+                                path: "consumer"
+                            }),
                         ]
                     });
                     this.tableSalesQuoteItem = new sap.ui.table.Table("", {

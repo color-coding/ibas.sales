@@ -511,6 +511,28 @@ namespace sales {
                 this.setProperty(SalesReturn.PROPERTY_PROJECT_NAME, value);
             }
 
+            /** 映射的属性名称-消费者 */
+            static PROPERTY_CONSUMER_NAME: string = "Consumer";
+            /** 获取-消费者 */
+            get consumer(): string {
+                return this.getProperty<string>(SalesReturn.PROPERTY_CONSUMER_NAME);
+            }
+            /** 设置-消费者 */
+            set consumer(value: string) {
+                this.setProperty(SalesReturn.PROPERTY_CONSUMER_NAME, value);
+            }
+
+            /** 映射的属性名称-单据类型 */
+            static PROPERTY_ORDERTYPE_NAME: string = "OrderType";
+            /** 获取-单据类型 */
+            get orderType(): string {
+                return this.getProperty<string>(SalesReturn.PROPERTY_ORDERTYPE_NAME);
+            }
+            /** 设置-单据类型 */
+            set orderType(value: string) {
+                this.setProperty(SalesReturn.PROPERTY_ORDERTYPE_NAME, value);
+            }
+
             /** 映射的属性名称-销售退货-行集合 */
             static PROPERTY_SALESRETURNITEMS_NAME: string = "SalesReturnItems";
             /** 获取-销售退货-行集合 */

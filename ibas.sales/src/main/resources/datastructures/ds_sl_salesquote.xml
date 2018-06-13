@@ -47,6 +47,8 @@
     <Property Name="Rounding" Description="舍入" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emYesNo" Mapped="Rounding"/>
     <Property Name="DiffAmount" Description="舍入差额" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="RoundDiff"/>
     <Property Name="Project" Description="项目代码" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Project"/>
+    <Property Name="Consumer" Description="消费者" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="Consumer"/>
+    <Property Name="OrderType" Description="单据类型" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OrderType"/>
   </Model>
   <Model Name="SalesQuoteItem" Description="销售报价-行" ModelType="DocumentLine" Mapped="${Company}_SL_QUT1">
     <Property Name="DocEntry" Description="编码" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="DocEntry" PrimaryKey="Yes"/>

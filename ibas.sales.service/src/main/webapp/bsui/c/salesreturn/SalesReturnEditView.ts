@@ -126,6 +126,11 @@ namespace sales {
                                     path: "dataOwner"
                                 }
                             }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_consumer") }),
+                            new sap.m.Input("", {
+                            }).bindProperty("value", {
+                                path: "consumer"
+                            }),
                         ]
                     });
                     this.tableSalesReturnItem = new sap.ui.table.Table("", {
