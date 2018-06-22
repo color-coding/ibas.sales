@@ -87,6 +87,7 @@ namespace sales {
                                     wrapping: false,
                                 }).bindProperty("text", {
                                     path: "documentTotal",
+                                    type: new openui5.datatype.Sum(),
                                 })
                             }),
                             new sap.ui.table.Column("", {
@@ -95,6 +96,7 @@ namespace sales {
                                     wrapping: false
                                 }).bindProperty("text", {
                                     path: "paidTotal",
+                                    type: new openui5.datatype.Sum(),
                                 })
                             }),
                             new sap.ui.table.Column("", {

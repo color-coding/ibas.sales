@@ -102,12 +102,14 @@ namespace sales {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documenttotal") }),
                             new sap.m.Text("", {
                             }).bindProperty("text", {
-                                path: "documentTotal"
+                                path: "documentTotal",
+                                type: new openui5.datatype.Sum(),
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_discounttotal") }),
                             new sap.m.Text("", {
                             }).bindProperty("text", {
-                                path: "discountTotal"
+                                path: "discountTotal",
+                                type: new openui5.datatype.Sum(),
                             }),
                         ]
                     });
@@ -149,7 +151,8 @@ namespace sales {
                                 template: new sap.m.Text("", {
                                     type: sap.m.InputType.Number
                                 }).bindProperty("text", {
-                                    path: "price"
+                                    path: "price",
+                                    type: new openui5.datatype.Price(),
                                 })
                             }),
                             new sap.ui.table.Column("", {
@@ -157,7 +160,8 @@ namespace sales {
                                 template: new sap.m.Text("", {
                                     type: sap.m.InputType.Number
                                 }).bindProperty("text", {
-                                    path: "quantity"
+                                    path: "quantity",
+                                    type: new openui5.datatype.Quantity(),
                                 })
                             }),
                             new sap.ui.table.Column("", {
@@ -165,7 +169,8 @@ namespace sales {
                                 template: new sap.m.Text("", {
                                     type: sap.m.InputType.Number
                                 }).bindProperty("text", {
-                                    path: "discount"
+                                    path: "discount",
+                                    type: new openui5.datatype.Percentage(),
                                 })
                             }),
                             new sap.ui.table.Column("", {
@@ -174,7 +179,8 @@ namespace sales {
                                     width: "100%",
                                     wrapping: false
                                 }).bindProperty("text", {
-                                    path: "lineTotal"
+                                    path: "lineTotal",
+                                    type: new openui5.datatype.Sum(),
                                 })
                             })
                         ]

@@ -49,7 +49,8 @@ namespace sales {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_unitquantity") }),
                             new sap.m.Input("", {
                             }).bindProperty("value", {
-                                path: "unitQuantity"
+                                path: "unitQuantity",
+                                type: new openui5.datatype.Quantity(),
                             }),
                             new sap.m.Text("", {
                             }).bindProperty("text", {
@@ -58,7 +59,8 @@ namespace sales {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_total") }),
                             new sap.m.Input("", {
                             }).bindProperty("value", {
-                                path: "total"
+                                path: "total",
+                                type: new openui5.datatype.Sum(),
                             }),
                             new sap.m.Text("", {
                             }).bindProperty("text", {
@@ -159,7 +161,8 @@ namespace sales {
                                     width: "100%",
                                     type: sap.m.InputType.Number
                                 }).bindProperty("value", {
-                                    path: "quantity"
+                                    path: "quantity",
+                                    type: new openui5.datatype.Quantity(),
                                 })
                             }),
                             new sap.ui.table.Column("", {
@@ -177,7 +180,8 @@ namespace sales {
                                     width: "100%",
                                     type: sap.m.InputType.Number
                                 }).bindProperty("value", {
-                                    path: "price"
+                                    path: "price",
+                                    type: new openui5.datatype.Price(),
                                 })
                             }),
                             new sap.ui.table.Column("", {
@@ -186,7 +190,8 @@ namespace sales {
                                     width: "100%",
                                     wrapping: false
                                 }).bindProperty("text", {
-                                    path: "lineTotal"
+                                    path: "lineTotal",
+                                    type: new openui5.datatype.Sum(),
                                 })
                             }),
                         ]
@@ -201,9 +206,10 @@ namespace sales {
                     let formBottom: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
                         editable: true,
                         content: [
-                            new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_remarks") }),
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_others") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_remarks") }),
                             new sap.m.TextArea("", {
-                                rows: 5,
+                                rows: 3,
                             }).bindProperty("value", {
                                 path: "remarks",
                             }),
