@@ -229,6 +229,8 @@ namespace sales {
                             that.fireViewEvents(that.fetchDataEvent, criteria);
                         }
                     });
+                    // 列表加载自定义字段
+                    openui5.utils.loadUserFields(this.table, bo.SalesDelivery, true);
                     return this.page;
                 }
                 private page: sap.m.Page;

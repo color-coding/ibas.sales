@@ -170,6 +170,8 @@ namespace sales {
                             that.fireViewEvents(that.fetchDataEvent, criteria);
                         }
                     });
+                    // 列表加载自定义字段
+                    openui5.utils.loadUserFields(this.table, bo.SalesQuote, true);
                     return new sap.m.Dialog("", {
                         title: this.title,
                         type: sap.m.DialogType.Standard,

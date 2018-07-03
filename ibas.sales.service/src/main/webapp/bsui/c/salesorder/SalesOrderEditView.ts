@@ -412,6 +412,12 @@ namespace sales {
                         }),
                         content: [this.layoutMain]
                     });
+                    // 绘制自定义字段显示布局
+                    openui5.utils.drawUserFieldPage(this.page, this.layoutMain);
+                    // 主布局加载自定义自段
+                    openui5.utils.loadUserFields(this.page, bo.SalesOrder);
+                    // 列表加载自定义自段
+                    openui5.utils.loadUserFields(this.tableSalesOrderItem, bo.SalesOrderItem);
                     return this.page;
                 }
 
@@ -443,10 +449,10 @@ namespace sales {
                 }
                 /** 显示数据 */
                 showSalesOrder(data: bo.SalesOrder): void {
-                    this.layoutMain.setModel(new sap.ui.model.json.JSONModel(data));
-                    this.layoutMain.bindObject("/");
+                    this.page.setModel(new sap.ui.model.json.JSONModel(data));
+                    this.page.bindObject("/");
                     // 监听属性改变，并更新控件
-                    openui5.utils.refreshModelChanged(this.layoutMain, data);
+                    openui5.utils.refreshModelChanged(this.page, data);
                     // 改变视图状态
                     this.changeViewStatus(data);
                 }
