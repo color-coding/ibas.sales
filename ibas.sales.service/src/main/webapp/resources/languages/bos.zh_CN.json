@@ -99,6 +99,8 @@
         "bo_salesdelivery_project": "项目代码",
         "bo_salesdelivery_consumer": "消费者",
         "bo_salesdelivery_ordertype": "单据类型",
+        "bo_salesdelivery_shippingsexpensetotal": "运费总计",
+        "bo_salesdelivery_itemstaxtotal": "税总计",
         "bo_salesdelivery_salesdeliveryitems": "销售交货-行集合",
         "bo_salesdeliveryitem": "销售交货-行",
         "bo_salesdeliveryitem_docentry": "编码",
@@ -212,6 +214,8 @@
         "bo_salesorder_project": "项目代码",
         "bo_salesorder_consumer": "消费者",
         "bo_salesorder_ordertype": "单据类型",
+        "bo_salesorder_shippingsexpensetotal": "运费总计",
+        "bo_salesorder_itemstaxtotal": "税总计",
         "bo_salesorder_salesorderitems": "销售订单-行集合",
         "bo_salesorderitem": "销售订单-行",
         "bo_salesorderitem_docentry": "编码",
@@ -325,6 +329,8 @@
         "bo_salesreturn_project": "项目代码",
         "bo_salesreturn_consumer": "消费者",
         "bo_salesreturn_ordertype": "单据类型",
+        "bo_salesreturn_shippingsexpensetotal": "运费总计",
+        "bo_salesreturn_itemstaxtotal": "税总计",
         "bo_salesreturn_salesreturnitems": "销售退货-行集合",
         "bo_salesreturnitem": "销售退货-行",
         "bo_salesreturnitem_docentry": "编码",
@@ -438,6 +444,8 @@
         "bo_salesquote_project": "项目代码",
         "bo_salesquote_consumer": "消费者",
         "bo_salesquote_ordertype": "单据类型",
+        "bo_salesquote_shippingsexpensetotal": "运费总计",
+        "bo_salesquote_itemstaxtotal": "税总计",
         "bo_salesquote_salesquoteitems": "销售订单-行集合",
         "bo_salesquoteitem": "销售报价-行",
         "bo_salesquoteitem_docentry": "编码",
@@ -537,5 +545,10 @@
         "bo_shippingaddress_createactionid": "创建动作标识",
         "bo_shippingaddress_updateactionid": "更新动作标识",
         "bo_shippingaddress_closing_delimiter": "----结束----"
+    },
+    {
+        "em_waiting": "等待",
+        "em_shipping": "运输中",
+        "em_shipped": "已送达"
     }
 ]

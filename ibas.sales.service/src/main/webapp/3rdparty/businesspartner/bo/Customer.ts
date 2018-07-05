@@ -117,6 +117,9 @@ namespace businesspartner {
 
             /** 数据所属组织 */
             organization: string;
+
+            /** 所属渠道 */
+            channel: string;
         }
     }
 

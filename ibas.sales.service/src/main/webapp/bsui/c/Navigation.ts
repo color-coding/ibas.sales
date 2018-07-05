@@ -13,6 +13,7 @@
 /// <reference path="./salesorder/index.ts" />
 /// <reference path="./salesreturn/index.ts" />
 /// <reference path="./salesquote/index.ts" />
+/// <reference path="./shippingaddress/index.ts" />
 namespace sales {
     export namespace ui {
         /**
@@ -85,6 +86,9 @@ namespace sales {
                         break;
                     case app.SalesReturnEditApp.APPLICATION_ID:
                         view = new c.SalesReturnEditView();
+                        break;
+                    case app.ShippingAddressesEditApp.APPLICATION_ID:
+                        view = new c.ShippingAddressesEditView();
                         break;
                     default:
                         break;

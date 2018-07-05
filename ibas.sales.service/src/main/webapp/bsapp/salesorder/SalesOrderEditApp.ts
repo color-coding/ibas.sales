@@ -39,6 +39,7 @@ namespace sales {
                 this.view.chooseSalesOrderItemMaterialSerialEvent = this.chooseSalesOrderItemMaterialSerial;
                 this.view.chooseSalesOrderSalesQuoteEvent = this.chooseSalesOrderSalesQuote;
                 this.view.receiptSalesOrderEvent = this.receiptSalesOrder;
+                this.view.editShippingAddressesEvent = this.editShippingAddresses;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -433,6 +434,16 @@ namespace sales {
                 });
             }
 
+            private editShippingAddresses(): void {
+                let that: this = this;
+                let app: ShippingAddressesEditApp = new ShippingAddressesEditApp();
+                app.navigation = this.navigation;
+                app.viewShower = this.viewShower;
+                app.onClosed = function (): void {
+                    that.viewShowed();
+                };
+                app.run(this.editData.shippingAddresss);
+            }
         }
         /** 视图-销售订单 */
         export interface ISalesOrderEditView extends ibas.IBOEditView {
@@ -464,6 +475,8 @@ namespace sales {
             chooseSalesOrderSalesQuoteEvent: Function;
             /** 销售订单收款事件 */
             receiptSalesOrderEvent: Function;
+            /** 编辑地址事件 */
+            editShippingAddressesEvent: Function;
         }
     }
 }

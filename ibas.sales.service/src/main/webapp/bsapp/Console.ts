@@ -12,6 +12,7 @@
 /// <reference path="./salesorder/index.ts" />
 /// <reference path="./salesreturn/index.ts" />
 /// <reference path="./salesquote/index.ts" />
+/// <reference path="./shippingaddress/index.ts" />
 
 namespace sales {
     export namespace app {

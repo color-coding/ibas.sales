@@ -39,6 +39,7 @@ namespace sales {
                 this.view.chooseSalesDeliveryItemWarehouseEvent = this.chooseSalesDeliveryItemWarehouse;
                 this.view.chooseSalesDeliverySalesOrderEvent = this.chooseSalesDeliverySalesOrder;
                 this.view.receiptSalesDeliveryEvent = this.receiptSalesDelivery;
+                this.view.editShippingAddressesEvent = this.editShippingAddresses;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -432,6 +433,16 @@ namespace sales {
                     })
                 });
             }
+            private editShippingAddresses(): void {
+                let that: this = this;
+                let app: ShippingAddressesEditApp = new ShippingAddressesEditApp();
+                app.navigation = this.navigation;
+                app.viewShower = this.viewShower;
+                app.onClosed = function (): void {
+                    that.viewShowed();
+                };
+                app.run(this.editData.shippingAddresss);
+            }
         }
         /** 视图-销售交货 */
         export interface ISalesDeliveryEditView extends ibas.IBOEditView {
@@ -463,6 +474,8 @@ namespace sales {
             chooseSalesDeliverySalesOrderEvent: Function;
             /** 销售交货收款事件 */
             receiptSalesDeliveryEvent: Function;
+            /** 编辑地址事件 */
+            editShippingAddressesEvent: Function;
 
         }
     }

@@ -39,6 +39,7 @@ namespace sales {
                 this.view.chooseSalesReturnItemMaterialSerialEvent = this.createSalesReturnLineMaterialSerial;
                 this.view.chooseSalesReturnSalesOrderEvent = this.chooseSalesReturnSalesOrder;
                 this.view.chooseSalesReturnSalesDeliveryEvent = this.chooseSalesReturnSalesDelivery;
+                this.view.editShippingAddressesEvent = this.editShippingAddresses;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -448,6 +449,16 @@ namespace sales {
                     }
                 });
             }
+            private editShippingAddresses(): void {
+                let that: this = this;
+                let app: ShippingAddressesEditApp = new ShippingAddressesEditApp();
+                app.navigation = this.navigation;
+                app.viewShower = this.viewShower;
+                app.onClosed = function (): void {
+                    that.viewShowed();
+                };
+                app.run(this.editData.shippingAddresss);
+            }
         }
         /** 视图-销售退货 */
         export interface ISalesReturnEditView extends ibas.IBOEditView {
@@ -479,6 +490,8 @@ namespace sales {
             chooseSalesReturnSalesOrderEvent: Function;
             /** 选择销售退货项目-销售交货事件 */
             chooseSalesReturnSalesDeliveryEvent: Function;
+            /** 编辑地址事件 */
+            editShippingAddressesEvent: Function;
         }
     }
 }

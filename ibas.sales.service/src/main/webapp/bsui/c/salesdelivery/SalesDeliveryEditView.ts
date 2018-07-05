@@ -36,10 +36,16 @@ namespace sales {
                 chooseSalesDeliverySalesOrderEvent: Function;
                 /** 销售交货收款事件 */
                 receiptSalesDeliveryEvent: Function;
+                /** 编辑地址事件 */
+                editShippingAddressesEvent: Function;
 
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
+                    this.textAddress = new sap.m.TextArea("", {
+                        rows: 3,
+                        editable: false,
+                    });
                     let formTop: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
                         editable: true,
                         content: [
@@ -47,7 +53,7 @@ namespace sales {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_customercode") }),
                             new sap.m.Input("", {
                                 showValueHelp: true,
-                                valueHelpRequest: function (): void {
+                                valueHelpRequest: function(): void {
                                     that.fireViewEvents(that.chooseSalesDeliveryCustomerEvent);
                                 }
                             }).bindProperty("value", {
@@ -76,7 +82,7 @@ namespace sales {
                                 boKey: "objectKey",
                                 boCode: ibas.config.applyVariables(materials.bo.BO_CODE_MATERIALPRICELIST),
                                 repositoryName: materials.bo.BO_REPOSITORY_MATERIALS,
-                                valueHelpRequest: function (): void {
+                                valueHelpRequest: function(): void {
                                     that.fireViewEvents(that.chooseSalesDeliveryPriceListEvent);
                                 },
                                 bindingValue: {
@@ -150,13 +156,13 @@ namespace sales {
                                         items: [
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("shell_data_add_line"),
-                                                press: function (): void {
+                                                press: function(): void {
                                                     that.fireViewEvents(that.addSalesDeliveryItemEvent);
                                                 }
                                             }),
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("bo_salesorder"),
-                                                press: function (): void {
+                                                press: function(): void {
                                                     that.fireViewEvents(that.chooseSalesDeliverySalesOrderEvent);
                                                 }
                                             }),
@@ -167,7 +173,7 @@ namespace sales {
                                     text: ibas.i18n.prop("shell_data_remove"),
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://less",
-                                    press: function (): void {
+                                    press: function(): void {
                                         that.fireViewEvents(that.removeSalesDeliveryItemEvent,
                                             // 获取表格选中的对象
                                             openui5.utils.getSelecteds<bo.SalesDeliveryItem>(that.tableSalesDeliveryItem)
@@ -182,13 +188,13 @@ namespace sales {
                                         items: [
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("sales_material_batch"),
-                                                press: function (): void {
+                                                press: function(): void {
                                                     that.fireViewEvents(that.chooseSalesDeliveryItemMaterialBatchEvent);
                                                 }
                                             }),
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("sales_material_serial"),
-                                                press: function (): void {
+                                                press: function(): void {
                                                     that.fireViewEvents(that.chooseSalesDeliveryItemMaterialSerialEvent);
                                                 }
                                             }),
@@ -225,7 +231,7 @@ namespace sales {
                                 template: new sap.m.Input("", {
                                     width: "100%",
                                     showValueHelp: true,
-                                    valueHelpRequest: function (): void {
+                                    valueHelpRequest: function(): void {
                                         that.fireViewEvents(that.chooseSalesDeliveryItemMaterialEvent,
                                             // 获取当前对象
                                             this.getBindingContext().getObject()
@@ -248,7 +254,7 @@ namespace sales {
                                 template: new sap.m.Input("", {
                                     width: "100%",
                                     showValueHelp: true,
-                                    valueHelpRequest: function (): void {
+                                    valueHelpRequest: function(): void {
                                         that.fireViewEvents(that.chooseSalesDeliveryItemWarehouseEvent,
                                             // 获取当前对象
                                             this.getBindingContext().getObject()
@@ -316,6 +322,73 @@ namespace sales {
                                     path: "dataOwner"
                                 }
                             }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress") }),
+                            new sap.m.HBox("", {
+                                width: "100%",
+                                items: [
+                                    new sap.m.Select("", {
+                                        width: "100%",
+                                        layoutData: new sap.m.FlexItemData("", {
+                                            growFactor: 12
+                                        }),
+                                        change(oControlEvent: sap.ui.base.Event): void {
+                                            let item: sap.ui.core.Item = oControlEvent.getParameters().selectedItem;
+                                            let index: number = (<any>oControlEvent.getSource()).indexOfItem(item);
+                                            let data: bo.ShippingAddress = (<any>item.getModel()).getData().shippingAddresss[index];
+                                            if (!ibas.objects.isNull(data)) {
+                                                // 显示摘要
+                                                let builder: ibas.StringBuilder = new ibas.StringBuilder();
+                                                builder.valueUndefined = "";
+                                                builder.valueNull = "";
+                                                builder.append(ibas.i18n.prop("bo_shippingaddress_consignee") + ": ");
+                                                builder.append(data.consignee);
+                                                builder.append(" ");
+                                                builder.append(data.mobilePhone);
+                                                builder.append("\n");
+                                                builder.append(ibas.i18n.prop("bo_shippingaddress") + ": ");
+                                                builder.append(data.country);
+                                                builder.append(data.province);
+                                                builder.append(data.city);
+                                                builder.append(data.district);
+                                                builder.append(data.street);
+                                                builder.append("\n");
+                                                builder.append(ibas.i18n.prop("bo_shippingaddress_trackingnumber") + ": ");
+                                                builder.append(data.trackingNumber);
+                                                builder.append(" ");
+                                                builder.append(ibas.i18n.prop("bo_shippingaddress_expense") + ": ");
+                                                builder.append(data.expense);
+                                                builder.append(" ");
+                                                builder.append(data.currency);
+                                                that.textAddress.setValue(builder.toString());
+                                            } else {
+                                                that.textAddress.setValue(null);
+                                            }
+                                        }
+                                    }).bindItems({
+                                        path: "shippingAddresss",
+                                        template: new sap.ui.core.ListItem("", {
+                                            key: {
+                                                path: "objectKey"
+                                            },
+                                            text: {
+                                                path: "name"
+                                            }
+                                        })
+                                    }),
+                                    new sap.m.Button("", {
+                                        type: sap.m.ButtonType.Transparent,
+                                        icon: "sap-icon://value-help",
+                                        layoutData: new sap.m.FlexItemData("", {
+                                            maxWidth: "32px"
+                                        }),
+                                        press: function(): void {
+                                            that.fireViewEvents(that.editShippingAddressesEvent);
+                                        }
+                                    }),
+                                ]
+                            }),
+                            new sap.m.Label("", {}),
+                            this.textAddress,
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_remarks") }),
                             new sap.m.TextArea("", {
                                 rows: 3,
@@ -338,6 +411,14 @@ namespace sales {
                                 path: "discountTotal",
                                 type: new openui5.datatype.Sum(),
                             }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_shippingsexpensetotal") }),
+                            new sap.m.Input("", {
+                                editable: false,
+                            }).bindProperty("value", {
+                                path: "shippingsExpenseTotal",
+                                type: new openui5.datatype.Sum(),
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documenttotal") }),
                             new sap.m.Input("", {
                                 editable: false,
                             }).bindProperty("value", {
@@ -366,7 +447,7 @@ namespace sales {
                                     text: ibas.i18n.prop("shell_data_save"),
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://save",
-                                    press: function (): void {
+                                    press: function(): void {
                                         that.fireViewEvents(that.saveDataEvent);
                                     }
                                 }),
@@ -374,7 +455,7 @@ namespace sales {
                                     text: ibas.i18n.prop("shell_data_delete"),
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://delete",
-                                    press: function (): void {
+                                    press: function(): void {
                                         that.fireViewEvents(that.deleteDataEvent);
                                     }
                                 }),
@@ -389,7 +470,7 @@ namespace sales {
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("shell_data_new"),
                                                 icon: "sap-icon://create",
-                                                press: function (): void {
+                                                press: function(): void {
                                                     // 创建新的对象
                                                     that.fireViewEvents(that.createDataEvent, false);
                                                 }
@@ -397,7 +478,7 @@ namespace sales {
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("shell_data_clone"),
                                                 icon: "sap-icon://copy",
-                                                press: function (): void {
+                                                press: function(): void {
                                                     // 复制当前对象
                                                     that.fireViewEvents(that.createDataEvent, true);
                                                 }
@@ -410,7 +491,7 @@ namespace sales {
                                     text: ibas.i18n.prop("sales_receipt"),
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://lead",
-                                    press: function (): void {
+                                    press: function(): void {
                                         that.fireViewEvents(that.receiptSalesDeliveryEvent);
                                     }
                                 }),
@@ -429,6 +510,7 @@ namespace sales {
                 private page: sap.m.Page;
                 private layoutMain: sap.ui.layout.VerticalLayout;
                 private tableSalesDeliveryItem: sap.ui.table.Table;
+                private textAddress: sap.m.TextArea;
                 /** 改变视图状态 */
                 private changeViewStatus(data: bo.SalesDelivery): void {
                     if (ibas.objects.isNull(data)) {
