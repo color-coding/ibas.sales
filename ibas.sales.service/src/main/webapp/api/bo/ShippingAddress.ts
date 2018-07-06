@@ -9,7 +9,7 @@ namespace sales {
     export namespace bo {
 
         /** 送货地址 */
-        export interface IShippingAddress extends ibas.IBOSimple {
+        export interface IShippingAddress extends ibas.IBOSimple, ibas.IBOUserFields {
 
             /** 基于类型 */
             baseDocumentType: string;

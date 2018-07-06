@@ -9,7 +9,7 @@ namespace sales {
     export namespace bo {
 
         /** 销售报价 */
-        export interface ISalesQuote extends ibas.IBODocument {
+        export interface ISalesQuote extends ibas.IBODocument, ibas.IBOUserFields {
 
             /** 凭证编号 */
             docEntry: number;
@@ -165,7 +165,7 @@ namespace sales {
         }
 
         /** 销售报价-行 */
-        export interface ISalesQuoteItem extends ibas.IBODocumentLine {
+        export interface ISalesQuoteItem extends ibas.IBODocumentLine, ibas.IBOUserFields {
 
             /** 编码 */
             docEntry: number;

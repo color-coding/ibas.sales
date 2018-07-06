@@ -8,7 +8,7 @@
 namespace businesspartner {
     export namespace bo {
         /** 资产项目 */
-        export interface IAssetItem extends ibas.IBOMasterData {
+        export interface IAssetItem extends ibas.IBOMasterData, ibas.IBOUserFields {
             /** 编号 */
             code: string;
             /** 名称 */

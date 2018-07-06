@@ -9,7 +9,7 @@ namespace sales {
     export namespace bo {
 
         /** 销售交货 */
-        export interface ISalesDelivery extends ibas.IBODocument {
+        export interface ISalesDelivery extends ibas.IBODocument, ibas.IBOUserFields {
 
             /** 凭证编号 */
             docEntry: number;
@@ -170,7 +170,7 @@ namespace sales {
         }
 
         /** 销售交货-行 */
-        export interface ISalesDeliveryItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent {
+        export interface ISalesDeliveryItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent, ibas.IBOUserFields {
 
             /** 编码 */
             docEntry: number;

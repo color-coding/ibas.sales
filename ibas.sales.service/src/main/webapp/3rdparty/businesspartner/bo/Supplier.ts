@@ -8,7 +8,7 @@
 namespace businesspartner {
     export namespace bo {
         /** 供应商 */
-        export interface ISupplier extends ibas.IBOMasterData {
+        export interface ISupplier extends ibas.IBOMasterData, ibas.IBOUserFields {
 
             /** 编码 */
             code: string;

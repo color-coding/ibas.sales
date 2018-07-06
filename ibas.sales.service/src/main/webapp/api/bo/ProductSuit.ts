@@ -9,7 +9,7 @@ namespace sales {
     export namespace bo {
 
         /** 产品套装 */
-        export interface IProductSuit extends ibas.IBOSimple {
+        export interface IProductSuit extends ibas.IBOSimple, ibas.IBOUserFields {
 
             /** 产品编码 */
             product: string;
@@ -110,7 +110,7 @@ namespace sales {
         }
 
         /** 产品套装-项目 */
-        export interface IProductSuitItem extends ibas.IBOSimpleLine {
+        export interface IProductSuitItem extends ibas.IBOSimpleLine, ibas.IBOUserFields {
 
             /** 对象编号 */
             objectKey: number;

@@ -10,7 +10,7 @@ namespace sales {
 
 
         /** 销售退货 */
-        export interface ISalesReturn extends ibas.IBODocument {
+        export interface ISalesReturn extends ibas.IBODocument, ibas.IBOUserFields {
 
             /** 凭证编号 */
             docEntry: number;
@@ -175,7 +175,7 @@ namespace sales {
         }
 
         /** 销售退货-行 */
-        export interface ISalesReturnItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent {
+        export interface ISalesReturnItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent, ibas.IBOUserFields {
 
             /** 编码 */
             docEntry: number;

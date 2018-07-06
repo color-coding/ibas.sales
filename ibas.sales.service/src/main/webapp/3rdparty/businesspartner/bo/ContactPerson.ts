@@ -9,7 +9,7 @@ namespace businesspartner {
     export namespace bo {
 
         /** 业务伙伴联系人 */
-        export interface IContactPerson extends ibas.IBOSimple {
+        export interface IContactPerson extends ibas.IBOSimple, ibas.IBOUserFields {
 
             /** 业务伙伴 */
             businessPartner: string;
