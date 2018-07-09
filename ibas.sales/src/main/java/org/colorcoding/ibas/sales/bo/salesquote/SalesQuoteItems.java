@@ -71,6 +71,23 @@ public class SalesQuoteItems extends BusinessObjects<ISalesQuoteItem, ISalesQuot
 	}
 
 	@Override
+	protected void afterRemoveItem(ISalesQuoteItem item) {
+		super.afterRemoveItem(item);
+		if (item.getLineSign() != null) {
+			for (int i = this.size() - 1; i >= 0; i--) {
+				ISalesQuoteItem tItem = this.get(i);
+				if (item.getLineSign().equals(tItem.getParentLineSign())) {
+					if (tItem.isNew()) {
+						this.remove(i);
+					} else {
+						tItem.delete();
+					}
+				}
+			}
+		}
+	}
+
+	@Override
 	public ICriteria getElementCriteria() {
 		ICriteria criteria = super.getElementCriteria();
 		return criteria;

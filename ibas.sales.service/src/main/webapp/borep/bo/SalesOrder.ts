@@ -661,6 +661,24 @@ namespace sales {
                 this.add(item);
                 return item;
             }
+
+            /** 移出项目之后 */
+            protected afterRemove(item: SalesOrderItem): void {
+                super.afterRemove(item);
+                if (!ibas.strings.isEmpty(item.lineSign)) {
+                    // 移出子项
+                    for (let i: number = this.length - 1; i >= 0; i--) {
+                        let tItem: SalesOrderItem = this[i];
+                        if (item.lineSign === tItem.parentLineSign) {
+                            if (tItem.isNew) {
+                                this.removeAt(i);
+                            } else {
+                                tItem.delete();
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /** 销售订单-行 */

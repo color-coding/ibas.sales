@@ -678,6 +678,23 @@ namespace sales {
                 item.lineStatus = this.parent.documentStatus;
                 return item;
             }
+            /** 移出项目之后 */
+            protected afterRemove(item: SalesDeliveryItem): void {
+                super.afterRemove(item);
+                if (!ibas.strings.isEmpty(item.lineSign)) {
+                    // 移出子项
+                    for (let i: number = this.length - 1; i >= 0; i--) {
+                        let tItem: SalesDeliveryItem = this[i];
+                        if (item.lineSign === tItem.parentLineSign) {
+                            if (tItem.isNew) {
+                                this.removeAt(i);
+                            } else {
+                                tItem.delete();
+                            }
+                        }
+                    }
+                }
+            }
         }
 
 

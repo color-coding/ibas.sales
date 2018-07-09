@@ -76,6 +76,23 @@ public class SalesDeliveryItems extends BusinessObjects<ISalesDeliveryItem, ISal
 	}
 
 	@Override
+	protected void afterRemoveItem(ISalesDeliveryItem item) {
+		super.afterRemoveItem(item);
+		if (item.getLineSign() != null) {
+			for (int i = this.size() - 1; i >= 0; i--) {
+				ISalesDeliveryItem tItem = this.get(i);
+				if (item.getLineSign().equals(tItem.getParentLineSign())) {
+					if (tItem.isNew()) {
+						this.remove(i);
+					} else {
+						tItem.delete();
+					}
+				}
+			}
+		}
+	}
+
+	@Override
 	public ICriteria getElementCriteria() {
 		ICriteria criteria = super.getElementCriteria();
 		return criteria;

@@ -75,6 +75,23 @@ public class SalesReturnItems extends BusinessObjects<ISalesReturnItem, ISalesRe
 	}
 
 	@Override
+	protected void afterRemoveItem(ISalesReturnItem item) {
+		super.afterRemoveItem(item);
+		if (item.getLineSign() != null) {
+			for (int i = this.size() - 1; i >= 0; i--) {
+				ISalesReturnItem tItem = this.get(i);
+				if (item.getLineSign().equals(tItem.getParentLineSign())) {
+					if (tItem.isNew()) {
+						this.remove(i);
+					} else {
+						tItem.delete();
+					}
+				}
+			}
+		}
+	}
+
+	@Override
 	public ICriteria getElementCriteria() {
 		ICriteria criteria = super.getElementCriteria();
 		return criteria;
