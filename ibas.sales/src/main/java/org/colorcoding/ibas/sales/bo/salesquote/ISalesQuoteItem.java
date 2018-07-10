@@ -1250,4 +1250,18 @@ public interface ISalesQuoteItem extends IBODocumentLine {
 	 */
 	void setDistributionRule5(String value);
 
+	/**
+	 * 获取-销售报价-行-额外信息集合
+	 * 
+	 * @return 值
+	 */
+	ISalesQuoteItemExtras getSalesQuoteItemExtras();
+
+	/**
+	 * 设置-销售报价-行-额外信息集合
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setSalesQuoteItemExtras(ISalesQuoteItemExtras value);
 }

@@ -3,6 +3,7 @@ package org.colorcoding.ibas.sales.bo.salesquote;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
@@ -2395,11 +2396,45 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	}
 
 	/**
+	 * 属性名称-销售报价-行-额外信息
+	 */
+	private static final String PROPERTY_SALESQUOTEITEMEXTRAS_NAME = "SalesQuoteItemExtras";
+
+	/**
+	 * 销售报价-行-额外信息的集合属性
+	 * 
+	 */
+	public static final IPropertyInfo<ISalesQuoteItemExtras> PROPERTY_SALESQUOTEITEMEXTRAS = registerProperty(
+			PROPERTY_SALESQUOTEITEMEXTRAS_NAME, ISalesQuoteItemExtras.class, MY_CLASS);
+
+	/**
+	 * 获取-销售报价-行-额外信息集合
+	 * 
+	 * @return 值
+	 */
+	@XmlElementWrapper(name = PROPERTY_SALESQUOTEITEMEXTRAS_NAME)
+	@XmlElement(name = SalesQuoteItemExtra.BUSINESS_OBJECT_NAME, type = SalesQuoteItemExtra.class)
+	public final ISalesQuoteItemExtras getSalesQuoteItemExtras() {
+		return this.getProperty(PROPERTY_SALESQUOTEITEMEXTRAS);
+	}
+
+	/**
+	 * 设置-销售报价-行-额外信息集合
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setSalesQuoteItemExtras(ISalesQuoteItemExtras value) {
+		this.setProperty(PROPERTY_SALESQUOTEITEMEXTRAS, value);
+	}
+
+	/**
 	 * 初始化数据
 	 */
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
+		this.setSalesQuoteItemExtras(new SalesQuoteItemExtras(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 		this.setDiscount(Decimal.ONE);
 		this.setTaxRate(Decimal.ONE);

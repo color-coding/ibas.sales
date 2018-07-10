@@ -15,6 +15,8 @@
 /// <reference path="./bo/SalesQuote.ts" />
 /// <reference path="./bo/SalesReturn.ts" />
 /// <reference path="./bo/ShippingAddress.ts" />
+/// <reference path="./bo/ProductSpecification.ts" />
+/// <reference path="./bo/Specification.ts" />
 /// <reference path="./DataConverter.ts" />
 /// <reference path="./BORepository.ts" />
 
@@ -29,5 +31,7 @@ namespace sales {
         boFactory.register(SalesReturn.BUSINESS_OBJECT_CODE, SalesReturn);
         boFactory.register(SalesQuote.BUSINESS_OBJECT_CODE, SalesQuote);
         boFactory.register(ShippingAddress.BUSINESS_OBJECT_CODE, ShippingAddress);
+        boFactory.register(ProductSpecification.BUSINESS_OBJECT_CODE, ProductSpecification);
+        boFactory.register(Specification.BUSINESS_OBJECT_CODE, Specification);
     }
 }

@@ -346,7 +346,71 @@ namespace sales {
 
             /** 分配规则5 */
             distributionRule5: string;
+
+            /** 销售报价-行-额外信息集合 */
+            salesQuoteItemExtras: ISalesQuoteItemExtras;
+
         }
+
+        /** 销售报价-行-额外信息 集合 */
+        export interface ISalesQuoteItemExtras extends ibas.IBusinessObjects<ISalesQuoteItemExtra> {
+            /** 创建并添加子项 */
+            create(): ISalesQuoteItemExtra;
+        }
+
+        /** 销售报价-行-额外信息 */
+        export interface ISalesQuoteItemExtra extends ibas.IBODocumentLine {
+            /** 编码 */
+            docEntry: number;
+            /** 行号 */
+            lineId: number;
+            /** 显示顺序 */
+            visOrder: number;
+            /** 类型 */
+            objectCode: string;
+            /** 实例号（版本） */
+            logInst: number;
+            /** 数据源 */
+            dataSource: string;
+            /** 取消 */
+            canceled: ibas.emYesNo;
+            /** 状态 */
+            status: ibas.emBOStatus;
+            /** 单据状态 */
+            lineStatus: ibas.emDocumentStatus;
+            /** 创建日期 */
+            createDate: Date;
+            /** 创建时间 */
+            createTime: number;
+            /** 修改日期 */
+            updateDate: Date;
+            /** 修改时间 */
+            updateTime: number;
+            /** 创建用户 */
+            createUserSign: number;
+            /** 修改用户 */
+            updateUserSign: number;
+            /** 创建动作标识 */
+            createActionId: string;
+            /** 更新动作标识 */
+            updateActionId: string;
+            /** 参考1 */
+            reference1: string;
+            /** 参考2 */
+            reference2: string;
+            /** 项目行号 */
+            itemId: number;
+            /** 额外类型 */
+            extraType: string;
+            /** 额外标识 */
+            extraKey: number;
+            /** 数量 */
+            quantity: number;
+            /** 备注 */
+            note: string;
+
+        }
+
     }
 }
 

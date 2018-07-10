@@ -82,6 +82,10 @@ namespace sales {
                     if (property === bo.ShippingAddress.PROPERTY_SHIPPINGSTATUS_NAME) {
                         return ibas.enums.toString(emShippingStatus, value);
                     }
+                } else if (boName === bo.Specification.name) {
+                    if (property === bo.Specification.PROPERTY_TARGETTYPE_NAME) {
+                        return ibas.enums.toString(emSpecificationTarget, value);
+                    }
                 }
                 return super.convertData(boName, property, value);
             }
@@ -133,6 +137,10 @@ namespace sales {
                 } else if (boName === bo.ShippingAddress.name) {
                     if (property === bo.ShippingAddress.PROPERTY_SHIPPINGSTATUS_NAME) {
                         return ibas.enums.valueOf(emShippingStatus, value);
+                    }
+                } else if (boName === bo.Specification.name) {
+                    if (property === bo.Specification.PROPERTY_TARGETTYPE_NAME) {
+                        return ibas.enums.valueOf(emSpecificationTarget, value);
                     }
                 }
                 return super.parsingData(boName, property, value);

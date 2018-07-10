@@ -22,6 +22,16 @@ namespace sales {
              */
             download(caller: ibas.IDownloadFileCaller<Blob>): void;
             /**
+             * 查询 产品规格
+             * @param fetcher 查询者
+             */
+            fetchProductSpecification(fetcher: ibas.IFetchCaller<bo.IProductSpecification>): void;
+            /**
+             * 保存 产品规格
+             * @param saver 保存者
+             */
+            saveProductSpecification(saver: ibas.ISaveCaller<bo.IProductSpecification>): void;
+            /**
              * 查询 产品套装
              * @param fetcher 查询者
              */
@@ -75,6 +85,16 @@ namespace sales {
              * @param saver 保存者
              */
             saveSalesQuote(saver: ibas.ISaveCaller<bo.ISalesQuote>): void;
+            /**
+             * 查询 产品规格
+             * @param fetcher 查询者
+             */
+            fetchProductSpecification(fetcher: ibas.IFetchCaller<bo.IProductSpecification>): void;
+            /**
+             * 保存 产品规格
+             * @param saver 保存者
+             */
+            saveProductSpecification(saver: ibas.ISaveCaller<bo.IProductSpecification>): void;
         }
     }
 

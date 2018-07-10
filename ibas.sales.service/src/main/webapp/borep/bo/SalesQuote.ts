@@ -1287,13 +1287,24 @@ namespace sales {
                 this.setProperty(SalesQuoteItem.PROPERTY_DISTRIBUTIONRULE5_NAME, value);
             }
 
+            /** 映射的属性名称-销售报价-行-额外信息集合 */
+            static PROPERTY_SALESQUOTEITEMEXTRAS_NAME: string = "SalesQuoteItemExtras";
+            /** 获取-销售报价-行-额外信息集合 */
+            get salesQuoteItemExtras(): SalesQuoteItemExtras {
+                return this.getProperty<SalesQuoteItemExtras>(SalesQuoteItem.PROPERTY_SALESQUOTEITEMEXTRAS_NAME);
+            }
+            /** 设置-销售报价-行-额外信息集合 */
+            set salesQuoteItemExtras(value: SalesQuoteItemExtras) {
+                this.setProperty(SalesQuoteItem.PROPERTY_SALESQUOTEITEMEXTRAS_NAME, value);
+            }
+
             /** 初始化数据 */
             protected init(): void {
+                this.salesQuoteItemExtras = new SalesQuoteItemExtras(this);
                 this.currency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
                 this.discount = 1;
                 this.taxRate = 1;
             }
-
 
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
@@ -1316,6 +1327,290 @@ namespace sales {
                     new ibas.BusinessRuleSubtraction(
                         SalesQuoteItem.PROPERTY_TAXTOTAL_NAME, SalesQuoteItem.PROPERTY_GROSSTOTAL_NAME, SalesQuoteItem.PROPERTY_LINETOTAL_NAME),
                 ];
+            }
+        }
+        /** 销售报价-行-额外信息 集合 */
+        export class SalesQuoteItemExtras extends ibas.BusinessObjects<SalesQuoteItemExtra, SalesQuoteItem> implements ISalesQuoteItemExtras {
+            /** 创建并添加子项 */
+            create(): SalesQuoteItemExtra {
+                let item: SalesQuoteItemExtra = new SalesQuoteItemExtra();
+                this.add(item);
+                item.itemId = this.parent.lineId;
+                return item;
+            }
+        }
+        /** 销售报价-行-额外信息 */
+        export class SalesQuoteItemExtra extends ibas.BODocumentLine<SalesQuoteItemExtra> implements ISalesQuoteItemExtra {
+            /** 构造函数 */
+            constructor() {
+                super();
+            }
+            /** 映射的属性名称-编码 */
+            static PROPERTY_DOCENTRY_NAME: string = "DocEntry";
+            /** 获取-编码 */
+            get docEntry(): number {
+                return this.getProperty<number>(SalesQuoteItemExtra.PROPERTY_DOCENTRY_NAME);
+            }
+            /** 设置-编码 */
+            set docEntry(value: number) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_DOCENTRY_NAME, value);
+            }
+
+            /** 映射的属性名称-行号 */
+            static PROPERTY_LINEID_NAME: string = "LineId";
+            /** 获取-行号 */
+            get lineId(): number {
+                return this.getProperty<number>(SalesQuoteItemExtra.PROPERTY_LINEID_NAME);
+            }
+            /** 设置-行号 */
+            set lineId(value: number) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_LINEID_NAME, value);
+            }
+
+            /** 映射的属性名称-显示顺序 */
+            static PROPERTY_VISORDER_NAME: string = "VisOrder";
+            /** 获取-显示顺序 */
+            get visOrder(): number {
+                return this.getProperty<number>(SalesQuoteItemExtra.PROPERTY_VISORDER_NAME);
+            }
+            /** 设置-显示顺序 */
+            set visOrder(value: number) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_VISORDER_NAME, value);
+            }
+
+            /** 映射的属性名称-类型 */
+            static PROPERTY_OBJECTCODE_NAME: string = "ObjectCode";
+            /** 获取-类型 */
+            get objectCode(): string {
+                return this.getProperty<string>(SalesQuoteItemExtra.PROPERTY_OBJECTCODE_NAME);
+            }
+            /** 设置-类型 */
+            set objectCode(value: string) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_OBJECTCODE_NAME, value);
+            }
+
+            /** 映射的属性名称-实例号（版本） */
+            static PROPERTY_LOGINST_NAME: string = "LogInst";
+            /** 获取-实例号（版本） */
+            get logInst(): number {
+                return this.getProperty<number>(SalesQuoteItemExtra.PROPERTY_LOGINST_NAME);
+            }
+            /** 设置-实例号（版本） */
+            set logInst(value: number) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_LOGINST_NAME, value);
+            }
+
+            /** 映射的属性名称-数据源 */
+            static PROPERTY_DATASOURCE_NAME: string = "DataSource";
+            /** 获取-数据源 */
+            get dataSource(): string {
+                return this.getProperty<string>(SalesQuoteItemExtra.PROPERTY_DATASOURCE_NAME);
+            }
+            /** 设置-数据源 */
+            set dataSource(value: string) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_DATASOURCE_NAME, value);
+            }
+
+            /** 映射的属性名称-取消 */
+            static PROPERTY_CANCELED_NAME: string = "Canceled";
+            /** 获取-取消 */
+            get canceled(): ibas.emYesNo {
+                return this.getProperty<ibas.emYesNo>(SalesQuoteItemExtra.PROPERTY_CANCELED_NAME);
+            }
+            /** 设置-取消 */
+            set canceled(value: ibas.emYesNo) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_CANCELED_NAME, value);
+            }
+
+            /** 映射的属性名称-状态 */
+            static PROPERTY_STATUS_NAME: string = "Status";
+            /** 获取-状态 */
+            get status(): ibas.emBOStatus {
+                return this.getProperty<ibas.emBOStatus>(SalesQuoteItemExtra.PROPERTY_STATUS_NAME);
+            }
+            /** 设置-状态 */
+            set status(value: ibas.emBOStatus) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_STATUS_NAME, value);
+            }
+
+            /** 映射的属性名称-单据状态 */
+            static PROPERTY_LINESTATUS_NAME: string = "LineStatus";
+            /** 获取-单据状态 */
+            get lineStatus(): ibas.emDocumentStatus {
+                return this.getProperty<ibas.emDocumentStatus>(SalesQuoteItemExtra.PROPERTY_LINESTATUS_NAME);
+            }
+            /** 设置-单据状态 */
+            set lineStatus(value: ibas.emDocumentStatus) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_LINESTATUS_NAME, value);
+            }
+
+            /** 映射的属性名称-创建日期 */
+            static PROPERTY_CREATEDATE_NAME: string = "CreateDate";
+            /** 获取-创建日期 */
+            get createDate(): Date {
+                return this.getProperty<Date>(SalesQuoteItemExtra.PROPERTY_CREATEDATE_NAME);
+            }
+            /** 设置-创建日期 */
+            set createDate(value: Date) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_CREATEDATE_NAME, value);
+            }
+
+            /** 映射的属性名称-创建时间 */
+            static PROPERTY_CREATETIME_NAME: string = "CreateTime";
+            /** 获取-创建时间 */
+            get createTime(): number {
+                return this.getProperty<number>(SalesQuoteItemExtra.PROPERTY_CREATETIME_NAME);
+            }
+            /** 设置-创建时间 */
+            set createTime(value: number) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_CREATETIME_NAME, value);
+            }
+
+            /** 映射的属性名称-修改日期 */
+            static PROPERTY_UPDATEDATE_NAME: string = "UpdateDate";
+            /** 获取-修改日期 */
+            get updateDate(): Date {
+                return this.getProperty<Date>(SalesQuoteItemExtra.PROPERTY_UPDATEDATE_NAME);
+            }
+            /** 设置-修改日期 */
+            set updateDate(value: Date) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_UPDATEDATE_NAME, value);
+            }
+
+            /** 映射的属性名称-修改时间 */
+            static PROPERTY_UPDATETIME_NAME: string = "UpdateTime";
+            /** 获取-修改时间 */
+            get updateTime(): number {
+                return this.getProperty<number>(SalesQuoteItemExtra.PROPERTY_UPDATETIME_NAME);
+            }
+            /** 设置-修改时间 */
+            set updateTime(value: number) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_UPDATETIME_NAME, value);
+            }
+
+            /** 映射的属性名称-创建用户 */
+            static PROPERTY_CREATEUSERSIGN_NAME: string = "CreateUserSign";
+            /** 获取-创建用户 */
+            get createUserSign(): number {
+                return this.getProperty<number>(SalesQuoteItemExtra.PROPERTY_CREATEUSERSIGN_NAME);
+            }
+            /** 设置-创建用户 */
+            set createUserSign(value: number) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_CREATEUSERSIGN_NAME, value);
+            }
+
+            /** 映射的属性名称-修改用户 */
+            static PROPERTY_UPDATEUSERSIGN_NAME: string = "UpdateUserSign";
+            /** 获取-修改用户 */
+            get updateUserSign(): number {
+                return this.getProperty<number>(SalesQuoteItemExtra.PROPERTY_UPDATEUSERSIGN_NAME);
+            }
+            /** 设置-修改用户 */
+            set updateUserSign(value: number) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_UPDATEUSERSIGN_NAME, value);
+            }
+
+            /** 映射的属性名称-创建动作标识 */
+            static PROPERTY_CREATEACTIONID_NAME: string = "CreateActionId";
+            /** 获取-创建动作标识 */
+            get createActionId(): string {
+                return this.getProperty<string>(SalesQuoteItemExtra.PROPERTY_CREATEACTIONID_NAME);
+            }
+            /** 设置-创建动作标识 */
+            set createActionId(value: string) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_CREATEACTIONID_NAME, value);
+            }
+
+            /** 映射的属性名称-更新动作标识 */
+            static PROPERTY_UPDATEACTIONID_NAME: string = "UpdateActionId";
+            /** 获取-更新动作标识 */
+            get updateActionId(): string {
+                return this.getProperty<string>(SalesQuoteItemExtra.PROPERTY_UPDATEACTIONID_NAME);
+            }
+            /** 设置-更新动作标识 */
+            set updateActionId(value: string) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_UPDATEACTIONID_NAME, value);
+            }
+
+            /** 映射的属性名称-参考1 */
+            static PROPERTY_REFERENCE1_NAME: string = "Reference1";
+            /** 获取-参考1 */
+            get reference1(): string {
+                return this.getProperty<string>(SalesQuoteItemExtra.PROPERTY_REFERENCE1_NAME);
+            }
+            /** 设置-参考1 */
+            set reference1(value: string) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_REFERENCE1_NAME, value);
+            }
+
+            /** 映射的属性名称-参考2 */
+            static PROPERTY_REFERENCE2_NAME: string = "Reference2";
+            /** 获取-参考2 */
+            get reference2(): string {
+                return this.getProperty<string>(SalesQuoteItemExtra.PROPERTY_REFERENCE2_NAME);
+            }
+            /** 设置-参考2 */
+            set reference2(value: string) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_REFERENCE2_NAME, value);
+            }
+
+            /** 映射的属性名称-项目行号 */
+            static PROPERTY_ITEMID_NAME: string = "ItemId";
+            /** 获取-项目行号 */
+            get itemId(): number {
+                return this.getProperty<number>(SalesQuoteItemExtra.PROPERTY_ITEMID_NAME);
+            }
+            /** 设置-项目行号 */
+            set itemId(value: number) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_ITEMID_NAME, value);
+            }
+
+            /** 映射的属性名称-额外类型 */
+            static PROPERTY_EXTRATYPE_NAME: string = "ExtraType";
+            /** 获取-额外类型 */
+            get extraType(): string {
+                return this.getProperty<string>(SalesQuoteItemExtra.PROPERTY_EXTRATYPE_NAME);
+            }
+            /** 设置-额外类型 */
+            set extraType(value: string) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_EXTRATYPE_NAME, value);
+            }
+
+            /** 映射的属性名称-额外标识 */
+            static PROPERTY_EXTRAKEY_NAME: string = "ExtraKey";
+            /** 获取-额外标识 */
+            get extraKey(): number {
+                return this.getProperty<number>(SalesQuoteItemExtra.PROPERTY_EXTRAKEY_NAME);
+            }
+            /** 设置-额外标识 */
+            set extraKey(value: number) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_EXTRAKEY_NAME, value);
+            }
+
+            /** 映射的属性名称-数量 */
+            static PROPERTY_QUANTITY_NAME: string = "Quantity";
+            /** 获取-数量 */
+            get quantity(): number {
+                return this.getProperty<number>(SalesQuoteItemExtra.PROPERTY_QUANTITY_NAME);
+            }
+            /** 设置-数量 */
+            set quantity(value: number) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_QUANTITY_NAME, value);
+            }
+
+            /** 映射的属性名称-备注 */
+            static PROPERTY_NOTE_NAME: string = "Note";
+            /** 获取-备注 */
+            get note(): string {
+                return this.getProperty<string>(SalesQuoteItemExtra.PROPERTY_NOTE_NAME);
+            }
+            /** 设置-备注 */
+            set note(value: string) {
+                this.setProperty(SalesQuoteItemExtra.PROPERTY_NOTE_NAME, value);
+            }
+
+            /** 初始化数据 */
+            protected init(): void {
             }
         }
     }

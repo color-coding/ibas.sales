@@ -2411,6 +2411,39 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 	}
 
 	/**
+	 * 属性名称-销售订单-行-额外信息
+	 */
+	private static final String PROPERTY_SALESORDERITEMEXTRAS_NAME = "SalesOrderItemExtras";
+
+	/**
+	 * 销售订单-行-额外信息的集合属性
+	 * 
+	 */
+	public static final IPropertyInfo<ISalesOrderItemExtras> PROPERTY_SALESORDERITEMEXTRAS = registerProperty(
+			PROPERTY_SALESORDERITEMEXTRAS_NAME, ISalesOrderItemExtras.class, MY_CLASS);
+
+	/**
+	 * 获取-销售订单-行-额外信息集合
+	 * 
+	 * @return 值
+	 */
+	@XmlElementWrapper(name = PROPERTY_SALESORDERITEMEXTRAS_NAME)
+	@XmlElement(name = SalesOrderItemExtra.BUSINESS_OBJECT_NAME, type = SalesOrderItemExtra.class)
+	public final ISalesOrderItemExtras getSalesOrderItemExtras() {
+		return this.getProperty(PROPERTY_SALESORDERITEMEXTRAS);
+	}
+
+	/**
+	 * 设置-销售订单-行-额外信息集合
+	 * 
+	 * @param value
+	 *            值
+	 */
+	public final void setSalesOrderItemExtras(ISalesOrderItemExtras value) {
+		this.setProperty(PROPERTY_SALESORDERITEMEXTRAS, value);
+	}
+
+	/**
 	 * 属性名称-物料批次
 	 */
 	private static final String PROPERTY_MATERIALBATCHES_NAME = "MaterialBatches";
@@ -2482,6 +2515,7 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 	@Override
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
+		this.setSalesOrderItemExtras(new SalesOrderItemExtras(this));
 		this.setMaterialBatches(new MaterialBatchItems(this));
 		this.setMaterialSerials(new MaterialSerialItems(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));

@@ -1252,4 +1252,18 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	 */
 	void setDistributionRule5(String value);
 
+	/**
+	 * 获取-销售订单-行-额外信息集合
+	 * 
+	 * @return 值
+	 */
+	ISalesOrderItemExtras getSalesOrderItemExtras();
+
+	/**
+	 * 设置-销售订单-行-额外信息集合
+	 * 
+	 * @param value
+	 *            值
+	 */
+	void setSalesOrderItemExtras(ISalesOrderItemExtras value);
 }

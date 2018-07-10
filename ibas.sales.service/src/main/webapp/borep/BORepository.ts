@@ -40,6 +40,20 @@ namespace sales {
                 fileRepository.download("download", caller);
             }
             /**
+             * 查询 产品规格
+             * @param fetcher 查询者
+             */
+            fetchProductSpecification(fetcher: ibas.IFetchCaller<bo.ProductSpecification>): void {
+                super.fetch(bo.ProductSpecification.name, fetcher);
+            }
+            /**
+             * 保存 产品规格
+             * @param saver 保存者
+             */
+            saveProductSpecification(saver: ibas.ISaveCaller<bo.ProductSpecification>): void {
+                super.save(bo.ProductSpecification.name, saver);
+            }
+            /**
              * 查询 产品套装
              * @param fetcher 查询者
              */
@@ -112,6 +126,20 @@ namespace sales {
              */
             saveSalesQuote(saver: ibas.ISaveCaller<bo.SalesQuote>): void {
                 super.save(bo.SalesQuote.name, saver);
+            }
+            /**
+             * 查询 规格模板
+             * @param fetcher 查询者
+             */
+            fetchSpecification(fetcher: ibas.IFetchCaller<bo.Specification>): void {
+                super.fetch(bo.Specification.name, fetcher);
+            }
+            /**
+             * 保存 规格模板
+             * @param saver 保存者
+             */
+            saveSpecification(saver: ibas.ISaveCaller<bo.Specification>): void {
+                super.save(bo.Specification.name, saver);
             }
         }
     }

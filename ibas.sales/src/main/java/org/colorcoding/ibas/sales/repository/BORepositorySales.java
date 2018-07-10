@@ -4,6 +4,8 @@ import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.repository.BORepositoryServiceApplication;
+import org.colorcoding.ibas.sales.bo.productspecification.IProductSpecification;
+import org.colorcoding.ibas.sales.bo.productspecification.ProductSpecification;
 import org.colorcoding.ibas.sales.bo.productsuit.IProductSuit;
 import org.colorcoding.ibas.sales.bo.productsuit.ProductSuit;
 import org.colorcoding.ibas.sales.bo.salesdelivery.ISalesDelivery;
@@ -14,12 +16,65 @@ import org.colorcoding.ibas.sales.bo.salesquote.ISalesQuote;
 import org.colorcoding.ibas.sales.bo.salesquote.SalesQuote;
 import org.colorcoding.ibas.sales.bo.salesreturn.ISalesReturn;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
+import org.colorcoding.ibas.sales.bo.specification.ISpecification;
+import org.colorcoding.ibas.sales.bo.specification.Specification;
 
 /**
  * Sales仓库
  */
 public class BORepositorySales extends BORepositoryServiceApplication
 		implements IBORepositorySalesSvc, IBORepositorySalesApp {
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-产品规格
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	public OperationResult<ProductSpecification> fetchProductSpecification(ICriteria criteria, String token) {
+		return super.fetch(criteria, token, ProductSpecification.class);
+	}
+
+	/**
+	 * 查询-产品规格（提前设置用户口令）
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @return 操作结果
+	 */
+	public IOperationResult<IProductSpecification> fetchProductSpecification(ICriteria criteria) {
+		return new OperationResult<IProductSpecification>(
+				this.fetchProductSpecification(criteria, this.getUserToken()));
+	}
+
+	/**
+	 * 保存-产品规格
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	public OperationResult<ProductSpecification> saveProductSpecification(ProductSpecification bo, String token) {
+		return super.save(bo, token);
+	}
+
+	/**
+	 * 保存-产品规格（提前设置用户口令）
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @return 操作结果
+	 */
+	public IOperationResult<IProductSpecification> saveProductSpecification(IProductSpecification bo) {
+		return new OperationResult<IProductSpecification>(
+				this.saveProductSpecification((ProductSpecification) bo, this.getUserToken()));
+	}
 
 	// --------------------------------------------------------------------------------------------//
 	/**
@@ -264,6 +319,55 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 */
 	public IOperationResult<ISalesQuote> saveSalesQuote(ISalesQuote bo) {
 		return new OperationResult<ISalesQuote>(this.saveSalesQuote((SalesQuote) bo, this.getUserToken()));
+	}
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-规格模板
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	public OperationResult<Specification> fetchSpecification(ICriteria criteria, String token) {
+		return super.fetch(criteria, token, Specification.class);
+	}
+
+	/**
+	 * 查询-规格模板（提前设置用户口令）
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @return 操作结果
+	 */
+	public IOperationResult<ISpecification> fetchSpecification(ICriteria criteria) {
+		return new OperationResult<ISpecification>(this.fetchSpecification(criteria, this.getUserToken()));
+	}
+
+	/**
+	 * 保存-规格模板
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	public OperationResult<Specification> saveSpecification(Specification bo, String token) {
+		return super.save(bo, token);
+	}
+
+	/**
+	 * 保存-规格模板（提前设置用户口令）
+	 * 
+	 * @param bo
+	 *            对象实例
+	 * @return 操作结果
+	 */
+	public IOperationResult<ISpecification> saveSpecification(ISpecification bo) {
+		return new OperationResult<ISpecification>(this.saveSpecification((Specification) bo, this.getUserToken()));
 	}
 	// --------------------------------------------------------------------------------------------//
 
