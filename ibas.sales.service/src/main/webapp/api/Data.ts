@@ -63,5 +63,16 @@ namespace sales {
              */
             MATERIAL_GROUP,
         }
+        /**
+         * 查询调用者
+         */
+        export interface ISpecificationTreeFetcher extends ibas.IMethodCaller<ISpecificationTree> {
+            /** 模板编号 */
+            template?: number;
+            /** 物料 */
+            material?: string;
+            /** 物料组 */
+            materialGroup?: string;
+        }
     }
 }

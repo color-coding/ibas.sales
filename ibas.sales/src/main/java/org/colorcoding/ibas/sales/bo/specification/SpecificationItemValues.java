@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.bobas.bo.BusinessObjects;
+import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.sales.MyConfiguration;
@@ -73,8 +74,11 @@ public class SpecificationItemValues extends BusinessObjects<ISpecificationItemV
 
 	@Override
 	public ICriteria getElementCriteria() {
-		ICriteria criteria = super.getElementCriteria();
+		ICriteria criteria = new Criteria();
 		ICondition condition = criteria.getConditions().create();
+		condition.setAlias(SpecificationItemValue.PROPERTY_OBJECTKEY.getName());
+		condition.setValue(this.getParent().getObjectKey());
+		condition = criteria.getConditions().create();
 		condition.setAlias(SpecificationItemValue.PROPERTY_ITEMID.getName());
 		condition.setValue(this.getParent().getLineId());
 		return criteria;
@@ -83,11 +87,11 @@ public class SpecificationItemValues extends BusinessObjects<ISpecificationItemV
 	@Override
 	public void onParentPropertyChanged(PropertyChangeEvent evt) {
 		super.onParentPropertyChanged(evt);
-		if (evt.getPropertyName().equals(SpecificationItemValue.PROPERTY_LINEID.getName())) {
+		if (evt.getPropertyName().equals(SpecificationItem.PROPERTY_LINEID.getName())) {
 			for (ISpecificationItemValue item : this) {
-				item.setLineId(this.getParent().getLineId());
+				item.setItemId(this.getParent().getLineId());
 			}
-		} else if (evt.getPropertyName().equals(SpecificationItemValue.PROPERTY_OBJECTKEY.getName())) {
+		} else if (evt.getPropertyName().equals(SpecificationItem.PROPERTY_OBJECTKEY.getName())) {
 			for (ISpecificationItemValue item : this) {
 				item.setObjectKey(this.getParent().getObjectKey());
 			}

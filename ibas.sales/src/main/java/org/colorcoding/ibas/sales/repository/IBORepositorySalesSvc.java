@@ -10,6 +10,7 @@ import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.bo.salesquote.SalesQuote;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
 import org.colorcoding.ibas.sales.bo.specification.Specification;
+import org.colorcoding.ibas.sales.bo.specification.SpecificationTree;
 
 /**
  * Sales仓库服务
@@ -176,6 +177,17 @@ public interface IBORepositorySalesSvc extends IBORepositorySmartService {
 	 * @return 操作结果
 	 */
 	OperationResult<Specification> saveSpecification(Specification bo, String token);
+
+	/**
+	 * 查询-规格树
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	OperationResult<SpecificationTree> fetchSpecificationTree(ICriteria criteria, String token);
 	// --------------------------------------------------------------------------------------------//
 
 }

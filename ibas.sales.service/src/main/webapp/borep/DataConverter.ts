@@ -14,8 +14,43 @@ namespace sales {
             protected createConverter(): ibas.BOConverter {
                 return new BOConverter;
             }
+            /**
+             * 解析业务对象数据
+             * @param data 目标类型
+             * @param sign 特殊标记
+             * @returns 本地类型
+             */
+            parsing(data: any, sign: string): any {
+                if (data.type === bo.SpecificationTree.name) {
+                    let remote: bo4j.ISpecificationTree = data;
+                    let newData: bo.SpecificationTree = new bo.SpecificationTree();
+                    newData.name = remote.Name;
+                    newData.remarks = remote.Remarks;
+                    newData.template = remote.Template;
+                    for (let item of remote.Items) {
+                        newData.items.add(this.parsing(item, sign));
+                    }
+                    return newData;
+                } else if (data.type === bo.SpecificationTreeItem.name) {
+                    let remote: bo4j.ISpecificationTreeItem = data;
+                    let newData: bo.SpecificationTreeItem = new bo.SpecificationTreeItem();
+                    newData.sign = remote.Sign;
+                    newData.description = remote.Description;
+                    newData.content = remote.Content;
+                    newData.note = remote.Note;
+                    newData.editable = remote.Editable;
+                    for (let item of remote.VaildValues) {
+                        newData.vaildValues.add(this.parsing(item, sign));
+                    }
+                    for (let item of remote.Items) {
+                        newData.items.add(this.parsing(item, sign));
+                    }
+                    return newData;
+                } else {
+                    return super.parsing(data, sign);
+                }
+            }
         }
-
         /** 模块业务对象工厂 */
         export const boFactory: ibas.BOFactory = new ibas.BOFactory();
         /** 业务对象转换者 */
@@ -145,6 +180,36 @@ namespace sales {
                 }
                 return super.parsingData(boName, property, value);
             }
+        }
+    }
+    export namespace bo4j {
+        /** 规格树 */
+        export interface ISpecificationTree {
+            /** 模板 */
+            Template: number;
+            /** 名称 */
+            Name: string;
+            /** 备注 */
+            Remarks: string;
+            /** 规格模板-项目集合 */
+            Items: ISpecificationTreeItem[];
+        }
+        /** 规格模板-项目 */
+        export interface ISpecificationTreeItem {
+            /** 标记 */
+            Sign: string;
+            /** 描述 */
+            Description: string;
+            /** 内容 */
+            Content: string;
+            /** 备注 */
+            Note: string;
+            /** 可编辑 */
+            Editable: boolean;
+            /** 可选值 */
+            VaildValues: ibas.KeyText[];
+            /** 规格模板-项目集合 */
+            Items: ISpecificationTreeItem[];
         }
     }
 }

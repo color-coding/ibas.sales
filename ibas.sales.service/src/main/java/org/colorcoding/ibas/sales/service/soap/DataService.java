@@ -14,6 +14,7 @@ import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.bo.salesquote.SalesQuote;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
 import org.colorcoding.ibas.sales.bo.specification.Specification;
+import org.colorcoding.ibas.sales.bo.specification.SpecificationTree;
 import org.colorcoding.ibas.sales.repository.BORepositorySales;
 
 /**
@@ -237,6 +238,21 @@ public class DataService extends BORepositorySales {
 	public OperationResult<Specification> saveSpecification(@WebParam(name = "bo") Specification bo,
 			@WebParam(name = "token") String token) {
 		return super.saveSpecification(bo, token);
+	}
+
+	/**
+	 * 查询-规格树
+	 * 
+	 * @param criteria
+	 *            查询
+	 * @param token
+	 *            口令
+	 * @return 操作结果
+	 */
+	@WebMethod
+	public OperationResult<SpecificationTree> fetchSpecificationTree(@WebParam(name = "criteria") Criteria criteria,
+			@WebParam(name = "token") String token) {
+		return super.fetchSpecificationTree(criteria, token);
 	}
 	// --------------------------------------------------------------------------------------------//
 

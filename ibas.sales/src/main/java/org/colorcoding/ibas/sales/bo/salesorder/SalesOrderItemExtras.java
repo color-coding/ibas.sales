@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.bobas.bo.BusinessObjects;
+import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.sales.MyConfiguration;
@@ -73,8 +74,11 @@ public class SalesOrderItemExtras extends BusinessObjects<ISalesOrderItemExtra, 
 
 	@Override
 	public ICriteria getElementCriteria() {
-		ICriteria criteria = super.getElementCriteria();
+		ICriteria criteria = new Criteria();
 		ICondition condition = criteria.getConditions().create();
+		condition.setAlias(SalesOrderItemExtra.PROPERTY_DOCENTRY.getName());
+		condition.setValue(this.getParent().getDocEntry());
+		condition = criteria.getConditions().create();
 		condition.setAlias(SalesOrderItemExtra.PROPERTY_ITEMID.getName());
 		condition.setValue(this.getParent().getLineId());
 		return criteria;
@@ -85,7 +89,7 @@ public class SalesOrderItemExtras extends BusinessObjects<ISalesOrderItemExtra, 
 		super.onParentPropertyChanged(evt);
 		if (evt.getPropertyName().equals(SalesOrderItem.PROPERTY_LINEID.getName())) {
 			for (ISalesOrderItemExtra item : this) {
-				item.setLineId(this.getParent().getLineId());
+				item.setItemId(this.getParent().getLineId());
 			}
 		} else if (evt.getPropertyName().equals(SalesOrderItem.PROPERTY_DOCENTRY.getName())) {
 			for (ISalesOrderItemExtra item : this) {

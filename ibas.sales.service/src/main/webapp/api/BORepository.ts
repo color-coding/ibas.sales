@@ -86,15 +86,20 @@ namespace sales {
              */
             saveSalesQuote(saver: ibas.ISaveCaller<bo.ISalesQuote>): void;
             /**
-             * 查询 产品规格
+             * 查询 规格模板
              * @param fetcher 查询者
              */
-            fetchProductSpecification(fetcher: ibas.IFetchCaller<bo.IProductSpecification>): void;
+            fetchSpecification(fetcher: ibas.IFetchCaller<bo.ISpecification>): void;
             /**
-             * 保存 产品规格
+             * 保存 规格模板
              * @param saver 保存者
              */
-            saveProductSpecification(saver: ibas.ISaveCaller<bo.IProductSpecification>): void;
+            saveSpecification(saver: ibas.ISaveCaller<bo.ISpecification>): void;
+            /**
+             * 查询 规格树
+             * @param fetcher 查询者
+             */
+            fetchSpecificationTree(fetcher: ISpecificationTreeFetcher): void;
         }
     }
 

@@ -141,6 +141,33 @@ namespace sales {
             saveSpecification(saver: ibas.ISaveCaller<bo.Specification>): void {
                 super.save(bo.Specification.name, saver);
             }
+            /**
+             * 查询 规格树
+             * @param fetcher 查询者
+             */
+            fetchSpecificationTree(fetcher: ISpecificationTreeFetcher): void {
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                if (!ibas.objects.isNull(fetcher.template)) {
+                    let condition: ibas.ICondition = criteria.conditions.create();
+                    condition.alias = "template";
+                    condition.value = fetcher.template.toString();
+                } else {
+                    if (!ibas.objects.isNull(fetcher.material)) {
+                        let condition: ibas.ICondition = criteria.conditions.create();
+                        condition.alias = "material";
+                        condition.value = fetcher.material.toString();
+                    } else if (!ibas.objects.isNull(fetcher.materialGroup)) {
+                        let condition: ibas.ICondition = criteria.conditions.create();
+                        condition.alias = "materialGroup";
+                        condition.value = fetcher.materialGroup.toString();
+                    }
+                }
+                let caller: ibas.IFetchCaller<bo.ISpecificationTree> = {
+                    criteria: criteria,
+                    onCompleted: fetcher.onCompleted
+                };
+                super.fetch(bo.SpecificationTree.name, caller);
+            }
         }
     }
 }

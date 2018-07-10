@@ -14,4 +14,5 @@
 /// <reference path="./bo/SalesQuote.ts" />
 /// <reference path="./bo/ShippingAddress.ts" />
 /// <reference path="./bo/Specification.ts" />
+/// <reference path="./bo/SpecificationTree.ts" />
 /// <reference path="./BORepository.ts" />
