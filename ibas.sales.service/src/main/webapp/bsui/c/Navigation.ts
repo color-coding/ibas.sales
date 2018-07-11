@@ -77,6 +77,9 @@ namespace sales {
                     case app.SalesOrderEditApp.APPLICATION_ID:
                         view = new c.SalesOrderEditView();
                         break;
+                    case app.SalesOrderItemExtraApp.APPLICATION_ID:
+                        view = new c.SalesOrderItemExtraView();
+                        break;
                     case app.SalesQuoteListApp.APPLICATION_ID:
                         view = new c.SalesQuoteListView();
                         break;
@@ -88,6 +91,9 @@ namespace sales {
                         break;
                     case app.SalesQuoteEditApp.APPLICATION_ID:
                         view = new c.SalesQuoteEditView();
+                        break;
+                    case app.SalesQuoteItemExtraApp.APPLICATION_ID:
+                        view = new c.SalesQuoteItemExtraView();
                         break;
                     case app.SalesReturnListApp.APPLICATION_ID:
                         view = new c.SalesReturnListView();

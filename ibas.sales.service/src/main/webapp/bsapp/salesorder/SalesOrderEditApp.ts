@@ -40,6 +40,7 @@ namespace sales {
                 this.view.chooseSalesOrderSalesQuoteEvent = this.chooseSalesOrderSalesQuote;
                 this.view.receiptSalesOrderEvent = this.receiptSalesOrder;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
+                this.view.showSalesOrderItemExtraEvent = this.showSaleOrderItemExtra;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -433,7 +434,6 @@ namespace sales {
                     })
                 });
             }
-
             private editShippingAddresses(): void {
                 let that: this = this;
                 let app: ShippingAddressesEditApp = new ShippingAddressesEditApp();
@@ -443,6 +443,19 @@ namespace sales {
                     that.viewShowed();
                 };
                 app.run(this.editData.shippingAddresss);
+            }
+            private showSaleOrderItemExtra(data: bo.SalesOrderItem): void {
+                // 检查目标数据
+                if (ibas.objects.isNull(data)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("shell_data_view")
+                    ));
+                    return;
+                }
+                let app: SalesOrderItemExtraApp = new SalesOrderItemExtraApp();
+                app.navigation = this.navigation;
+                app.viewShower = this.viewShower;
+                app.run(data);
             }
         }
         /** 视图-销售订单 */
@@ -467,10 +480,12 @@ namespace sales {
             chooseSalesOrderItemMaterialEvent: Function;
             /** 选择销售订单仓库事件 */
             chooseSalesOrderItemWarehouseEvent: Function;
-            /** 新建销售订单行物料序列事件 */
+            /** 选择销售订单行物料序列事件 */
             chooseSalesOrderItemMaterialSerialEvent: Function;
-            /** 新建销售订单行物料批次事件 */
+            /** 选择销售订单行物料批次事件 */
             chooseSalesOrderItemMaterialBatchEvent: Function;
+            /** 显示销售订单行额外信息事件 */
+            showSalesOrderItemExtraEvent: Function;
             /** 选择销售订单-销售报价事件 */
             chooseSalesOrderSalesQuoteEvent: Function;
             /** 销售订单收款事件 */

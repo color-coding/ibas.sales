@@ -9,3 +9,4 @@
 /// <reference path="./SalesQuoteEditView.ts" />
 /// <reference path="./SalesQuoteListView.ts" />
 /// <reference path="./SalesQuoteViewView.ts" />
+/// <reference path="./SalesQuoteItemExtraView.ts" />

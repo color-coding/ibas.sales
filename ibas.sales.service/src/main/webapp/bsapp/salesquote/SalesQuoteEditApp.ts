@@ -7,7 +7,7 @@
  */
 namespace sales {
     export namespace app {
-        /** 编辑应用-销售订单 */
+        /** 编辑应用-销售报价 */
         export class SalesQuoteEditApp extends ibas.BOEditApplication<ISalesQuoteEditView, bo.SalesQuote> {
             /** 应用标识 */
             static APPLICATION_ID: string = "4d08905a-76de-4b64-be11-334305e76dfa";
@@ -35,6 +35,7 @@ namespace sales {
                 this.view.chooseSalesQuoteCustomerEvent = this.chooseSalesQuoteCustomer;
                 this.view.chooseSalesQuotePriceListEvent = this.chooseSalesQuotePriceList;
                 this.view.chooseSalesQuoteItemWarehouseEvent = this.chooseSalesQuoteItemWarehouse;
+                this.view.showSalesQuoteItemExtraEvent = this.showSalesQuoteItemExtra;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -178,7 +179,7 @@ namespace sales {
                     createData();
                 }
             }
-            /** 选择销售订单客户事件 */
+            /** 选择销售报价客户事件 */
             private chooseSalesQuoteCustomer(): void {
                 let that: this = this;
                 ibas.servicesManager.runChooseService<businesspartner.bo.ICustomer>({
@@ -194,7 +195,7 @@ namespace sales {
                     }
                 });
             }
-            /** 选择销售订单价格清单事件 */
+            /** 选择销售报价价格清单事件 */
             private chooseSalesQuotePriceList(): void {
                 let that: this = this;
                 ibas.servicesManager.runChooseService<materials.bo.IMaterialPriceList>({
@@ -208,7 +209,7 @@ namespace sales {
                     }
                 });
             }
-            /** 选择销售订单物料事件 */
+            /** 选择销售报价物料事件 */
             private chooseSalesQuoteItemMaterial(caller: bo.SalesQuoteItem): void {
                 let that: this = this;
                 let condition: ibas.ICondition;
@@ -271,13 +272,13 @@ namespace sales {
                     }
                 });
             }
-            /** 添加销售订单-行事件 */
+            /** 添加销售报价-行事件 */
             private addSalesQuoteItem(): void {
                 this.editData.salesQuoteItems.create();
                 // 仅显示没有标记删除的
                 this.view.showSalesQuoteItems(this.editData.salesQuoteItems.filterDeleted());
             }
-            /** 删除销售订单-行事件 */
+            /** 删除销售报价-行事件 */
             private removeSalesQuoteItem(items: bo.SalesQuoteItem[]): void {
                 // 非数组，转为数组
                 if (!(items instanceof Array)) {
@@ -328,8 +329,21 @@ namespace sales {
                     }
                 });
             }
+            private showSalesQuoteItemExtra(data: bo.SalesQuoteItem): void {
+                // 检查目标数据
+                if (ibas.objects.isNull(data)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("shell_data_view")
+                    ));
+                    return;
+                }
+                let app: SalesQuoteItemExtraApp = new SalesQuoteItemExtraApp();
+                app.navigation = this.navigation;
+                app.viewShower = this.viewShower;
+                app.run(data);
+            }
         }
-        /** 视图-销售订单 */
+        /** 视图-销售报价 */
         export interface ISalesQuoteEditView extends ibas.IBOEditView {
             /** 显示数据 */
             showSalesQuote(data: bo.SalesQuote): void;
@@ -337,20 +351,22 @@ namespace sales {
             deleteDataEvent: Function;
             /** 新建数据事件，参数1：是否克隆 */
             createDataEvent: Function;
-            /** 添加销售订单-行事件 */
+            /** 添加销售报价-行事件 */
             addSalesQuoteItemEvent: Function;
-            /** 删除销售订单-行事件 */
+            /** 删除销售报价-行事件 */
             removeSalesQuoteItemEvent: Function;
             /** 显示数据 */
             showSalesQuoteItems(datas: bo.SalesQuoteItem[]): void;
-            /** 选择销售订单客户事件 */
+            /** 选择销售报价客户事件 */
             chooseSalesQuoteCustomerEvent: Function;
-            /** 选择销售订单价格清单事件 */
+            /** 选择销售报价价格清单事件 */
             chooseSalesQuotePriceListEvent: Function;
-            /** 选择销售订单行物料事件 */
+            /** 选择销售报价行物料事件 */
             chooseSalesQuoteItemMaterialEvent: Function;
-            /** 选择销售订单仓库事件 */
+            /** 选择销售报价仓库事件 */
             chooseSalesQuoteItemWarehouseEvent: Function;
+            /** 显示销售报价额外信息事件 */
+            showSalesQuoteItemExtraEvent: Function;
         }
     }
 }

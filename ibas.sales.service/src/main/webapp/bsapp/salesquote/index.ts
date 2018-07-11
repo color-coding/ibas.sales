@@ -10,3 +10,4 @@
 /// <reference path="./SalesQuoteFunc.ts" />
 /// <reference path="./SalesQuoteListApp.ts" />
 /// <reference path="./SalesQuoteViewApp.ts" />
+/// <reference path="./SalesQuoteItemExtraApp.ts" />

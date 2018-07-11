@@ -55,6 +55,9 @@ namespace businesspartner {
             /** 货币 */
             currency: string;
 
+            /** 仓库 */
+            warehouse: string;
+
             /** 生效日期 */
             validDate: Date;
 

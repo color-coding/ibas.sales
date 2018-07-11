@@ -9,25 +9,27 @@ namespace sales {
     export namespace ui {
         export namespace c {
             /**
-             * 编辑视图-销售订单
+             * 编辑视图-销售报价
              */
             export class SalesQuoteEditView extends ibas.BOEditView implements app.ISalesQuoteEditView {
                 /** 删除数据事件 */
                 deleteDataEvent: Function;
                 /** 新建数据事件，参数1：是否克隆 */
                 createDataEvent: Function;
-                /** 添加销售订单-行事件 */
+                /** 添加销售报价-行事件 */
                 addSalesQuoteItemEvent: Function;
-                /** 删除销售订单-行事件 */
+                /** 删除销售报价-行事件 */
                 removeSalesQuoteItemEvent: Function;
-                /** 选择销售订单客户事件 */
+                /** 选择销售报价客户事件 */
                 chooseSalesQuoteCustomerEvent: Function;
-                /** 选择销售订单价格清单事件 */
+                /** 选择销售报价价格清单事件 */
                 chooseSalesQuotePriceListEvent: Function;
-                /** 选择销售订单行物料事件 */
+                /** 选择销售报价行物料事件 */
                 chooseSalesQuoteItemMaterialEvent: Function;
-                /** 选择销售订单仓库事件 */
+                /** 选择销售报价仓库事件 */
                 chooseSalesQuoteItemWarehouseEvent: Function;
+                /** 显示销售报价额外信息事件 */
+                showSalesQuoteItemExtraEvent: Function;
 
                 /** 绘制视图 */
                 draw(): any {
@@ -118,12 +120,6 @@ namespace sales {
                             }).bindProperty("dateValue", {
                                 path: "deliveryDate",
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_dataowner") }),
-                            new sap.m.ex.DataOwnerInput("", {
-                                bindingValue: {
-                                    path: "dataOwner"
-                                }
-                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_consumer") }),
                             new sap.m.Input("", {
                             }).bindProperty("value", {
@@ -153,6 +149,23 @@ namespace sales {
                                         );
                                     }
                                 }),
+                                new sap.m.ToolbarSeparator(""),
+                                new sap.m.MenuButton("", {
+                                    text: ibas.i18n.prop("sales_extra_information"),
+                                    menu: new sap.m.Menu("", {
+                                        items: [
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("bo_productspecification"),
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.showSalesQuoteItemExtraEvent,
+                                                        // 获取表格选中的对象
+                                                        openui5.utils.getSelecteds<bo.SalesQuoteItem>(that.tableSalesQuoteItem).firstOrDefault()
+                                                    );
+                                                }
+                                            }),
+                                        ]
+                                    })
+                                })
                             ]
                         }),
                         enableSelectAll: false,
@@ -201,6 +214,7 @@ namespace sales {
                                     path: "itemDescription"
                                 })
                             }),
+                            /*
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_salesquoteitem_warehouse"),
                                 template: new sap.m.Input("", {
@@ -216,6 +230,7 @@ namespace sales {
                                     path: "warehouse"
                                 })
                             }),
+                            */
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_salesquoteitem_quantity"),
                                 template: new sap.m.Input("", {
@@ -293,13 +308,6 @@ namespace sales {
                                 editable: false,
                             }).bindProperty("value", {
                                 path: "discountTotal",
-                                type: new openui5.datatype.Sum(),
-                            }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_shippingsexpensetotal") }),
-                            new sap.m.Input("", {
-                                editable: false,
-                            }).bindProperty("value", {
-                                path: "shippingsExpenseTotal",
                                 type: new openui5.datatype.Sum(),
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_documenttotal") }),

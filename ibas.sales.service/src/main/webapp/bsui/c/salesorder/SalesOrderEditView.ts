@@ -32,6 +32,8 @@ namespace sales {
                 chooseSalesOrderItemMaterialSerialEvent: Function;
                 /** 选择销售订单行物料批次事件 */
                 chooseSalesOrderItemMaterialBatchEvent: Function;
+                /** 显示销售订单行额外信息事件 */
+                showSalesOrderItemExtraEvent: Function;
                 /** 选择销售订单-销售报价事件 */
                 chooseSalesOrderSalesQuoteEvent: Function;
                 /** 销售订单收款事件 */
@@ -190,6 +192,23 @@ namespace sales {
                                                 text: ibas.i18n.prop("sales_material_serial"),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.chooseSalesOrderItemMaterialSerialEvent);
+                                                }
+                                            }),
+                                        ]
+                                    })
+                                }),
+                                new sap.m.ToolbarSeparator(""),
+                                new sap.m.MenuButton("", {
+                                    text: ibas.i18n.prop("sales_extra_information"),
+                                    menu: new sap.m.Menu("", {
+                                        items: [
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("bo_productspecification"),
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.showSalesOrderItemExtraEvent,
+                                                        // 获取表格选中的对象
+                                                        openui5.utils.getSelecteds<bo.SalesOrderItem>(that.tableSalesOrderItem).firstOrDefault()
+                                                    );
                                                 }
                                             }),
                                         ]

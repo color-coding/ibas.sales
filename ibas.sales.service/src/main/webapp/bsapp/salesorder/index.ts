@@ -10,3 +10,4 @@
 /// <reference path="./SalesOrderFunc.ts" />
 /// <reference path="./SalesOrderListApp.ts" />
 /// <reference path="./SalesOrderViewApp.ts" />
+/// <reference path="./SalesOrderItemExtraApp.ts" />

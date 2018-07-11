@@ -9,3 +9,4 @@
 /// <reference path="./SalesOrderEditView.ts" />
 /// <reference path="./SalesOrderListView.ts" />
 /// <reference path="./SalesOrderViewView.ts" />
+/// <reference path="./SalesOrderItemExtraView.ts" />

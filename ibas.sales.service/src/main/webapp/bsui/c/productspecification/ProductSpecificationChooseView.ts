@@ -84,6 +84,7 @@ namespace sales {
                         verticalScrolling: true,
                         content: [this.table],
                         buttons: [
+                            /*
                             new sap.m.Button("", {
                                 text: ibas.i18n.prop("shell_data_new"),
                                 type: sap.m.ButtonType.Transparent,
@@ -91,6 +92,7 @@ namespace sales {
                                     that.fireViewEvents(that.newDataEvent);
                                 }
                             }),
+                            */
                             new sap.m.Button("", {
                                 text: ibas.i18n.prop("shell_data_choose"),
                                 type: sap.m.ButtonType.Transparent,

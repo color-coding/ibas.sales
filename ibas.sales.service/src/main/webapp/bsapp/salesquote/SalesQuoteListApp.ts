@@ -7,7 +7,7 @@
  */
 namespace sales {
     export namespace app {
-        /** 列表应用-销售订单 */
+        /** 列表应用-销售报价 */
         export class SalesQuoteListApp extends ibas.BOListApplication<ISalesQuoteListView, bo.SalesQuote> {
             /** 应用标识 */
             static APPLICATION_ID: string = "18f1655d-a3a8-4f6b-b6bb-7db91e6167ce";
@@ -168,7 +168,7 @@ namespace sales {
                 });
             }
         }
-        /** 视图-销售订单 */
+        /** 视图-销售报价 */
         export interface ISalesQuoteListView extends ibas.IBOListView {
             /** 编辑数据事件，参数：编辑对象 */
             editDataEvent: Function;

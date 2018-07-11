@@ -7,7 +7,7 @@
  */
 namespace sales {
     export namespace app {
-        /** 查看应用-销售订单 */
+        /** 查看应用-销售报价 */
         export class SalesQuoteViewApp extends ibas.BOViewService<ISalesQuoteViewView, bo.SalesQuote> {
             /** 应用标识 */
             static APPLICATION_ID: string = "1d3ded4a-b567-4410-b484-f3c87f585dbf";
@@ -127,12 +127,12 @@ namespace sales {
                 this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("shell_fetching_data"));
             }
         }
-        /** 视图-销售订单 */
+        /** 视图-销售报价 */
         export interface ISalesQuoteViewView extends ibas.IBOViewView {
             showSalesQuote(viewData: bo.SalesQuote): void;
             showSalesQuoteItems(salesQuoteItems: bo.SalesQuoteItem[]): void;
         }
-        /** 销售订单连接服务映射 */
+        /** 销售报价连接服务映射 */
         export class SalesQuoteLinkServiceMapping extends ibas.BOLinkServiceMapping {
             /** 构造函数 */
             constructor() {

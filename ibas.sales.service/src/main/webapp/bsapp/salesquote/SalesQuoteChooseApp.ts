@@ -7,7 +7,7 @@
  */
 namespace sales {
     export namespace app {
-        /** 选择应用-销售订单 */
+        /** 选择应用-销售报价 */
         export class SalesQuoteChooseApp extends ibas.BOChooseService<ISalesQuoteChooseView, bo.SalesQuote> {
 
             /** 应用标识 */
@@ -78,12 +78,12 @@ namespace sales {
                 app.run();
             }
         }
-        /** 视图-销售订单 */
+        /** 视图-销售报价 */
         export interface ISalesQuoteChooseView extends ibas.IBOChooseView {
             /** 显示数据 */
             showData(datas: bo.SalesQuote[]): void;
         }
-        /** 销售订单选择服务映射 */
+        /** 销售报价选择服务映射 */
         export class SalesQuoteChooseServiceMapping extends ibas.BOChooseServiceMapping {
             /** 构造函数 */
             constructor() {

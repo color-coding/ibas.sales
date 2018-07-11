@@ -52,6 +52,9 @@ namespace businesspartner {
             /** 价格清单 */
             priceList: number;
 
+            /** 仓库 */
+            warehouse: string;
+
             /** 货币 */
             currency: string;
 

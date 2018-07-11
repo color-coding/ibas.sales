@@ -586,7 +586,16 @@ namespace sales {
                         myItem.warehouse = item.warehouse;
                         myItem.reference1 = item.reference1;
                         myItem.reference2 = item.reference2;
+                        // 复制额外信息
+                        for (let extra of item.salesQuoteItemExtras) {
+                            let myExtra: SalesOrderItemExtra = myItem.salesOrderItemExtras.create();
+                            myExtra.extraType = extra.extraType;
+                            myExtra.extraKey = extra.extraKey;
+                            myExtra.note = extra.note;
+                            myExtra.quantity = extra.quantity;
+                        }
                     }
+
                 }
             }
             /** 初始化数据 */

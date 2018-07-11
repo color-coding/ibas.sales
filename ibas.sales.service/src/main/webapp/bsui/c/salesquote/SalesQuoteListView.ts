@@ -9,7 +9,7 @@ namespace sales {
     export namespace ui {
         export namespace c {
             /**
-             * 列表视图-销售订单
+             * 列表视图-销售报价
              */
             export class SalesQuoteListView extends ibas.BOListView implements app.ISalesQuoteListView {
                 /** 返回查询的对象 */
