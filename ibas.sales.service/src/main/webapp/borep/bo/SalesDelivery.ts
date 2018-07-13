@@ -666,6 +666,16 @@ namespace sales {
                     }
                 }
             }
+            /** 基于地址 */
+            baseAddress(address: businesspartner.bo.IAddress): void {
+                if (ibas.objects.isNull(address)) {
+                    return;
+                }
+                if (ibas.objects.getType(address).BUSINESS_OBJECT_CODE === businesspartner.bo.BO_CODE_ADDRESS) {
+                    let myAddress: IShippingAddress = this.shippingAddresss.create();
+                    myAddress.baseAddress(address);
+                }
+            }
         }
 
         /** 销售交货-行 集合 */

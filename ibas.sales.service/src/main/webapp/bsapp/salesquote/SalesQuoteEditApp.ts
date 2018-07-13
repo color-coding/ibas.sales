@@ -258,7 +258,6 @@ namespace sales {
                             item.itemDescription = selected.name;
                             item.serialManagement = selected.serialManagement;
                             item.batchManagement = selected.batchManagement;
-                            item.warehouse = selected.warehouse;
                             item.quantity = 1;
                             item.uom = selected.inventoryUOM;
                             item.price = selected.price;

@@ -160,6 +160,8 @@ namespace sales {
 
             /** 基于销售订单 */
             baseDocument(document: ISalesOrder): void;
+            /** 基于地址 */
+            baseAddress(address: businesspartner.bo.IAddress): void;
         }
 
         /** 销售交货-行 集合 */

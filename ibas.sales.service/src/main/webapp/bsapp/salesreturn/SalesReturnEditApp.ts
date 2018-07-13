@@ -235,6 +235,13 @@ namespace sales {
                     condition.operation = ibas.emConditionOperation.EQUAL;
                     condition.relationship = ibas.emConditionRelationship.AND;
                     conditions.add(condition);
+                } else if (!ibas.strings.isEmpty(this.view.defaultWarehouse)) {
+                    condition = new ibas.Condition();
+                    condition.alias = materials.app.conditions.product.CONDITION_ALIAS_WAREHOUSE;
+                    condition.value = this.view.defaultWarehouse;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.relationship = ibas.emConditionRelationship.AND;
+                    conditions.add(condition);
                 }
                 // 销售物料
                 condition = new ibas.Condition();
@@ -267,6 +274,9 @@ namespace sales {
                             item.uom = selected.inventoryUOM;
                             item.price = selected.price;
                             item.currency = selected.currency;
+                            if (ibas.strings.isEmpty(item.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
+                                item.warehouse = that.view.defaultWarehouse;
+                            }
                             item = null;
                         }
                         if (created) {
@@ -294,6 +304,7 @@ namespace sales {
                                 created = true;
                             }
                             item.warehouse = selected.code;
+                            that.view.defaultWarehouse = item.warehouse;
                             item = null;
                         }
                         if (created) {
@@ -492,6 +503,8 @@ namespace sales {
             chooseSalesReturnSalesDeliveryEvent: Function;
             /** 编辑地址事件 */
             editShippingAddressesEvent: Function;
+            /** 默认仓库 */
+            defaultWarehouse: string;
         }
     }
 }

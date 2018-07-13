@@ -107,7 +107,8 @@ namespace sales {
             /** 更新动作标识 */
             updateActionId: string;
 
-
+            /** 基于地址 */
+            baseAddress(address: businesspartner.bo.IAddress):void;
         }
 
 

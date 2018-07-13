@@ -158,9 +158,10 @@ namespace sales {
             /** 送货地址集合 */
             shippingAddresss: IShippingAddresss;
 
-
             /** 基于销售报价 */
             baseDocument(document: ISalesQuote): void;
+            /** 基于地址 */
+            baseAddress(address: businesspartner.bo.IAddress): void;
         }
 
         /** 销售订单-行 集合 */

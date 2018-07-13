@@ -53,5 +53,6 @@
   "sales_receipted": "收款已完成",
   "sales_delete_continue": "{0}[{1}]将被彻底删除，是否继续？",
   "sales_create_continue": "新建{0}，是否继续？",
+  "sales_copy_data_continue": "复制{0}，是否继续？",
   "sales_closing_delimiter": "----结束----"
 }

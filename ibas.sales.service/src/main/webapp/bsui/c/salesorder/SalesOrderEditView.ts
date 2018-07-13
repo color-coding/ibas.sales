@@ -141,6 +141,14 @@ namespace sales {
                             }),
                         ]
                     });
+                    this.selectWarehouse = new sap.m.ex.BOSelect("", {
+                        boText: "name",
+                        boKey: "code",
+                        blank: true,
+                        boCode: ibas.config.applyVariables(materials.bo.BO_CODE_WAREHOUSE),
+                        repositoryName: materials.bo.BO_REPOSITORY_MATERIALS,
+                        criteria: materials.app.conditions.warehouse.create(),
+                    });
                     this.tableSalesOrderItem = new sap.ui.table.Table("", {
                         toolbar: new sap.m.Toolbar("", {
                             content: [
@@ -213,7 +221,13 @@ namespace sales {
                                             }),
                                         ]
                                     })
-                                })
+                                }),
+                                new sap.m.ToolbarSpacer(""),
+                                new sap.m.Label("", {
+                                    wrapping: false,
+                                    text: ibas.i18n.prop("bo_supplier_warehouse")
+                                }),
+                                this.selectWarehouse,
                             ]
                         }),
                         enableSelectAll: false,
@@ -524,7 +538,13 @@ namespace sales {
                 private layoutMain: sap.ui.layout.VerticalLayout;
                 private tableSalesOrderItem: sap.ui.table.Table;
                 private textAddress: sap.m.TextArea;
-
+                private selectWarehouse: sap.m.Select;
+                get defaultWarehouse(): string {
+                    return this.selectWarehouse.getSelectedKey();
+                }
+                set defaultWarehouse(value: string) {
+                    this.selectWarehouse.setSelectedKey(value);
+                }
                 /** 改变视图状态 */
                 private changeViewStatus(data: bo.SalesOrder): void {
                     if (ibas.objects.isNull(data)) {

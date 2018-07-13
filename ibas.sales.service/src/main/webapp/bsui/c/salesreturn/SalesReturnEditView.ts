@@ -139,6 +139,14 @@ namespace sales {
                             }),
                         ]
                     });
+                    this.selectWarehouse = new sap.m.ex.BOSelect("", {
+                        boText: "name",
+                        boKey: "code",
+                        blank: true,
+                        boCode: ibas.config.applyVariables(materials.bo.BO_CODE_WAREHOUSE),
+                        repositoryName: materials.bo.BO_REPOSITORY_MATERIALS,
+                        criteria: materials.app.conditions.warehouse.create(),
+                    });
                     this.tableSalesReturnItem = new sap.ui.table.Table("", {
                         toolbar: new sap.m.Toolbar("", {
                             content: [
@@ -200,7 +208,13 @@ namespace sales {
                                             }),
                                         ]
                                     })
-                                })
+                                }),
+                                new sap.m.ToolbarSpacer(""),
+                                new sap.m.Label("", {
+                                    wrapping: false,
+                                    text: ibas.i18n.prop("bo_supplier_warehouse")
+                                }),
+                                this.selectWarehouse,
                             ]
                         }),
                         enableSelectAll: false,
@@ -500,10 +514,15 @@ namespace sales {
 
                 private page: sap.m.Page;
                 private layoutMain: sap.ui.layout.VerticalLayout;
-                private viewTopForm: sap.ui.layout.form.SimpleForm;
-                private viewBottomForm: sap.ui.layout.form.SimpleForm;
                 private tableSalesReturnItem: sap.ui.table.Table;
                 private textAddress: sap.m.TextArea;
+                private selectWarehouse: sap.m.Select;
+                get defaultWarehouse(): string {
+                    return this.selectWarehouse.getSelectedKey();
+                }
+                set defaultWarehouse(value: string) {
+                    this.selectWarehouse.setSelectedKey(value);
+                }
                 /** 改变视图状态 */
                 private changeViewStatus(data: bo.SalesReturn): void {
                     if (ibas.objects.isNull(data)) {

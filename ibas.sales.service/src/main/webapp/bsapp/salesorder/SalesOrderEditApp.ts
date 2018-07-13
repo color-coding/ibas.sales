@@ -197,6 +197,52 @@ namespace sales {
                         that.editData.customerName = selected.name;
                         that.editData.priceList = selected.priceList;
                         that.editData.contactPerson = selected.contactPerson;
+                        that.view.defaultWarehouse = selected.warehouse;
+                        // 复制地址
+                        if (!ibas.objects.isNull(selected.shipAddress) && selected.shipAddress > 0) {
+                            that.messages({
+                                type: ibas.emMessageType.QUESTION,
+                                message: ibas.i18n.prop("sales_copy_data_continue", ibas.i18n.prop("bo_shippingaddress")),
+                                actions: [
+                                    ibas.emMessageAction.YES,
+                                    ibas.emMessageAction.NO
+                                ],
+                                onCompleted(action: ibas.emMessageAction): void {
+                                    if (action !== ibas.emMessageAction.YES) {
+                                        return;
+                                    }
+                                    for (let index: number = that.editData.shippingAddresss.length - 1; index >= 0; index--) {
+                                        let item: bo.ShippingAddress = that.editData.shippingAddresss[index];
+                                        if (item.isNew) {
+                                            that.editData.shippingAddresss.remove(item);
+                                        }
+                                    }
+                                    let criteria: ibas.ICriteria = new ibas.Criteria();
+                                    criteria.result = 1;
+                                    let condition: ibas.ICondition = criteria.conditions.create();
+                                    condition.alias = "ObjectKey";
+                                    condition.value = selected.shipAddress.toString();
+                                    let boRepository: businesspartner.bo.IBORepositoryBusinessPartner = ibas.boFactory.create(businesspartner.bo.BO_REPOSITORY_BUSINESSPARTNER);
+                                    boRepository.fetchAddress({
+                                        criteria: criteria,
+                                        onCompleted(opRslt: ibas.IOperationResult<businesspartner.bo.IAddress>): void {
+                                            try {
+                                                if (opRslt.resultCode !== 0) {
+                                                    throw new Error(opRslt.message);
+                                                }
+                                                if (opRslt.resultObjects.length === 0) {
+                                                    return;
+                                                }
+                                                that.editData.baseAddress(opRslt.resultObjects.firstOrDefault());
+                                                that.view.showSalesOrder(that.editData);
+                                            } catch (error) {
+                                                that.proceeding(error);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     }
                 });
             }
@@ -236,6 +282,13 @@ namespace sales {
                     condition.operation = ibas.emConditionOperation.EQUAL;
                     condition.relationship = ibas.emConditionRelationship.AND;
                     conditions.add(condition);
+                } else if (!ibas.strings.isEmpty(this.view.defaultWarehouse)) {
+                    condition = new ibas.Condition();
+                    condition.alias = materials.app.conditions.product.CONDITION_ALIAS_WAREHOUSE;
+                    condition.value = this.view.defaultWarehouse;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.relationship = ibas.emConditionRelationship.AND;
+                    conditions.add(condition);
                 }
                 // 销售物料
                 condition = new ibas.Condition();
@@ -268,6 +321,9 @@ namespace sales {
                             item.uom = selected.inventoryUOM;
                             item.price = selected.price;
                             item.currency = selected.currency;
+                            if (ibas.strings.isEmpty(item.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
+                                item.warehouse = that.view.defaultWarehouse;
+                            }
                             item = null;
                         }
                         if (created) {
@@ -325,6 +381,7 @@ namespace sales {
                                 created = true;
                             }
                             item.warehouse = selected.code;
+                            that.view.defaultWarehouse = item.warehouse;
                             item = null;
                         }
                         if (created) {
@@ -492,6 +549,8 @@ namespace sales {
             receiptSalesOrderEvent: Function;
             /** 编辑地址事件 */
             editShippingAddressesEvent: Function;
+            /** 默认仓库 */
+            defaultWarehouse: string;
         }
     }
 }

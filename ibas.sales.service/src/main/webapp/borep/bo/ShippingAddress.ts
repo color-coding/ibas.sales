@@ -368,6 +368,23 @@ namespace sales {
                 this.setProperty(ShippingAddress.PROPERTY_UPDATEACTIONID_NAME, value);
             }
 
+            /** 基于地址 */
+            baseAddress(address: businesspartner.bo.IAddress): void {
+                if (ibas.objects.isNull(address)) {
+                    return;
+                }
+                if (ibas.objects.getType(address).BUSINESS_OBJECT_CODE !== businesspartner.bo.BO_CODE_ADDRESS) {
+                    return;
+                }
+                this.name = address.name;
+                this.street = address.street;
+                this.district = address.district;
+                this.city = address.city;
+                this.province = address.province;
+                this.country = address.country;
+                this.zipCode = address.zipCode;
+                this.mobilePhone = address.mobilePhone;
+            }
 
 
             /** 初始化数据 */
