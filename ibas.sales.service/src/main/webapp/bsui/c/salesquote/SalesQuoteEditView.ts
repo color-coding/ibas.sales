@@ -64,7 +64,7 @@ namespace sales {
                                     path: "contactPerson"
                                 }
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_pricelist") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_pricelist") }),
                             new sap.m.ex.BOInput("", {
                                 boText: "name",
                                 boKey: "objectKey",
@@ -75,6 +75,15 @@ namespace sales {
                                 },
                                 bindingValue: {
                                     path: "priceList"
+                                }
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_ordertype") }),
+                            new sap.m.ex.SmartField("", {
+                                width: "100%",
+                                boType: bo.SalesQuote.name,
+                                propertyName: "orderType",
+                                bindingValue: {
+                                    path: "orderType"
                                 }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_reference1") }),

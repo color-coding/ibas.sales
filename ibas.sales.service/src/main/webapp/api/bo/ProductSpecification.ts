@@ -8,7 +8,7 @@
 namespace sales {
     export namespace bo {
         /** 产品规格 */
-        export interface IProductSpecification extends ibas.IBOSimple {
+        export interface IProductSpecification extends ibas.IBOSimple, ibas.IBOUserFields {
             /** 对象编号 */
             objectKey: number;
             /** 对象类型 */

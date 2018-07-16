@@ -121,6 +121,10 @@ namespace sales {
                     if (property === bo.Specification.PROPERTY_TARGETTYPE_NAME) {
                         return ibas.enums.toString(emSpecificationTarget, value);
                     }
+                } else if (boName === bo.SpecificationItem.name) {
+                    if (property === bo.SpecificationItem.PROPERTY_EDITABLE_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    }
                 }
                 return super.convertData(boName, property, value);
             }
@@ -176,6 +180,10 @@ namespace sales {
                 } else if (boName === bo.Specification.name) {
                     if (property === bo.Specification.PROPERTY_TARGETTYPE_NAME) {
                         return ibas.enums.valueOf(emSpecificationTarget, value);
+                    }
+                } else if (boName === bo.SpecificationItem.name) {
+                    if (property === bo.SpecificationItem.PROPERTY_EDITABLE_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
                     }
                 }
                 return super.parsingData(boName, property, value);

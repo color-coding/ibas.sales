@@ -64,7 +64,9 @@ namespace sales {
                             } else {
                                 ibas.servicesManager.runChooseService<bo.IProductSpecification>({
                                     boCode: bo.BO_CODE_PRODUCTSPECIFICATION,
-                                    criteria: [],
+                                    criteria: [
+                                        new ibas.Condition(bo.ProductSpecification.PROPERTY_NAME_NAME, ibas.emConditionOperation.IS_NULL, null),
+                                    ],
                                     onCompleted(selecteds: ibas.IList<bo.IProductSpecification>): void {
                                         for (let selected of selecteds) {
                                             let item: bo.SalesOrderItemExtra = that.editData.salesOrderItemExtras.create();

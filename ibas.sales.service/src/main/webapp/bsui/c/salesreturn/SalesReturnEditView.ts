@@ -76,7 +76,7 @@ namespace sales {
                                     path: "contactPerson"
                                 }
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_pricelist") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_pricelist") }),
                             new sap.m.ex.BOInput("", {
                                 boText: "name",
                                 boKey: "objectKey",
@@ -87,6 +87,15 @@ namespace sales {
                                 },
                                 bindingValue: {
                                     path: "priceList"
+                                }
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_ordertype") }),
+                            new sap.m.ex.SmartField("", {
+                                width: "100%",
+                                boType: bo.SalesReturn.name,
+                                propertyName: "orderType",
+                                bindingValue: {
+                                    path: "orderType"
                                 }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_reference1") }),
@@ -352,8 +361,8 @@ namespace sales {
                                             if (!ibas.objects.isNull(data)) {
                                                 // 显示摘要
                                                 let builder: ibas.StringBuilder = new ibas.StringBuilder();
-                                                builder.valueUndefined = "";
-                                                builder.valueNull = "";
+                                                builder.map(undefined, "");
+                                                builder.map(null, "");
                                                 builder.append(ibas.i18n.prop("bo_shippingaddress_consignee") + ": ");
                                                 builder.append(data.consignee);
                                                 builder.append(" ");
