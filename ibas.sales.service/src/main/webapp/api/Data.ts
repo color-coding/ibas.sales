@@ -63,16 +63,19 @@ namespace sales {
              */
             MATERIAL_GROUP,
         }
-        /**
-         * 查询调用者
-         */
-        export interface ISpecificationTreeFetcher extends ibas.IMethodCaller<ISpecificationTree> {
-            /** 模板编号 */
-            template?: number;
-            /** 物料 */
-            material?: string;
-            /** 物料组 */
-            materialGroup?: string;
+    }
+
+    export namespace app {
+        /** 规格服务契约 */
+        export interface ISpecificationTreeContract extends ibas.IServiceContract {
+            /** 目标（物料编号或产品规格） */
+            target: string | bo.IProductSpecification;
+            /** 备注 */
+            remarks?: string;
+        }
+        /** 规格服务代理 */
+        export class SpecificationTreeServiceProxy extends ibas.ServiceProxy<ISpecificationTreeContract> {
+
         }
     }
 }

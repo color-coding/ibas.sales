@@ -116,8 +116,8 @@ namespace sales {
                     case app.SpecificationChooseApp.APPLICATION_ID:
                         view = new c.SpecificationChooseView();
                         break;
-                    case app.SpecificationViewApp.APPLICATION_ID:
-                        view = new c.SpecificationViewView();
+                    case app.SpecificationTreeService.APPLICATION_ID:
+                        view = new c.SpecificationTreeView();
                         break;
                     case app.SpecificationEditApp.APPLICATION_ID:
                         view = new c.SpecificationEditView();

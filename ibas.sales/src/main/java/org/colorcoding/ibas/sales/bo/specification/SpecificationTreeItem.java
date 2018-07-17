@@ -39,6 +39,7 @@ public class SpecificationTreeItem extends Serializable {
 
 	private static final long serialVersionUID = -7472789448879938099L;
 
+	@XmlElement(name = "Sign")
 	private String sign;
 
 	public final String getSign() {
@@ -49,6 +50,7 @@ public class SpecificationTreeItem extends Serializable {
 		this.sign = sign;
 	}
 
+	@XmlElement(name = "Description")
 	private String description;
 
 	public final String getDescription() {
@@ -59,6 +61,7 @@ public class SpecificationTreeItem extends Serializable {
 		this.description = description;
 	}
 
+	@XmlElement(name = "Content")
 	private String content;
 
 	public final String getContent() {
@@ -69,6 +72,7 @@ public class SpecificationTreeItem extends Serializable {
 		this.content = content;
 	}
 
+	@XmlElement(name = "Note")
 	private String note;
 
 	public final String getNote() {
@@ -79,6 +83,7 @@ public class SpecificationTreeItem extends Serializable {
 		this.note = note;
 	}
 
+	@XmlElement(name = "Editable")
 	private boolean editable;
 
 	public final boolean isEditable() {

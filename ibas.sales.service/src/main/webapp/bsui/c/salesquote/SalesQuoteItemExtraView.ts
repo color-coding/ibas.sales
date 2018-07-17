@@ -98,6 +98,7 @@ namespace sales {
                             }),
                         ]
                     });
+                    openui5.utils.changeSelectionStyle(this.table, ibas.emChooseType.SINGLE);
                     this.input = new sap.m.Input("", {
                         editable: false,
                     });

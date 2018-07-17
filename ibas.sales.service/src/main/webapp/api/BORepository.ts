@@ -99,7 +99,7 @@ namespace sales {
              * 查询 规格树
              * @param fetcher 查询者
              */
-            fetchSpecificationTree(fetcher: ISpecificationTreeFetcher): void;
+            fetchSpecificationTree(fetcher: ibas.IFetchCaller<bo.ISpecificationTree>): void;
         }
     }
 

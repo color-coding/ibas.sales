@@ -60,20 +60,32 @@ namespace sales {
                         /** 调用完成 */
                         onCompleted(action: ibas.emMessageAction): void {
                             if (action === ibas.emMessageAction.YES) {
-
+                                ibas.servicesManager.runApplicationService<ISpecificationTreeContract, bo.ProductSpecification>({
+                                    proxy: new SpecificationTreeServiceProxy({
+                                        target: that.editData.itemCode,
+                                    }),
+                                    onCompleted(result: bo.ProductSpecification): void {
+                                        let item: bo.SalesQuoteItemExtra = that.editData.salesQuoteItemExtras.create();
+                                        item.extraType = result.objectCode;
+                                        item.extraKey = result.objectKey;
+                                        item.quantity = that.editData.quantity;
+                                        that.view.showExtraDatas(that.editData.salesQuoteItemExtras.filterDeleted());
+                                    }
+                                });
                             } else {
                                 ibas.servicesManager.runChooseService<bo.IProductSpecification>({
                                     boCode: bo.BO_CODE_PRODUCTSPECIFICATION,
                                     criteria: [
-                                        new ibas.Condition(bo.ProductSpecification.PROPERTY_NAME_NAME, ibas.emConditionOperation.IS_NULL, null),
+                                        new ibas.Condition(bo.ProductSpecification.PROPERTY_OBJECTKEY_NAME, ibas.emConditionOperation.GRATER_THAN, "0"),
                                     ],
                                     onCompleted(selecteds: ibas.IList<bo.IProductSpecification>): void {
                                         for (let selected of selecteds) {
                                             let item: bo.SalesQuoteItemExtra = that.editData.salesQuoteItemExtras.create();
                                             item.extraType = selected.objectCode;
                                             item.extraKey = selected.objectKey;
+                                            item.quantity = that.editData.quantity;
                                         }
-                                        this.view.showExtraDatas(this.editData.salesQuoteItemExtras.filterDeleted());
+                                        that.view.showExtraDatas(that.editData.salesQuoteItemExtras.filterDeleted());
                                     }
                                 });
 
@@ -118,7 +130,7 @@ namespace sales {
                     return;
                 }
                 if (!ibas.objects.isNull(data.extraKey)) {
-                    if (data.extraType === bo.ProductSpecification.BUSINESS_OBJECT_CODE) {
+                    if (data.extraType === ibas.config.applyVariables(bo.ProductSpecification.BUSINESS_OBJECT_CODE)) {
                         this.busy(true);
                         let criteria: ibas.ICriteria = new ibas.Criteria();
                         criteria.result = 1;
@@ -138,7 +150,8 @@ namespace sales {
                                     for (let item of opRslt.resultObjects) {
                                         that.messages({
                                             type: ibas.emMessageType.QUESTION,
-                                            message: ibas.i18n.prop("sales_delete_continue", ibas.i18n.prop("bo_productspecification"), item.name),
+                                            message: ibas.i18n.prop("sales_delete_continue",
+                                                ibas.i18n.prop("bo_productspecification"), ibas.strings.isEmpty(item.name) ? item.objectKey : item.name),
                                             actions: [
                                                 ibas.emMessageAction.YES,
                                                 ibas.emMessageAction.NO

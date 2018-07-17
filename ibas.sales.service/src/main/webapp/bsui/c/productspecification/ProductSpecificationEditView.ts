@@ -52,7 +52,13 @@ namespace sales {
                             }).bindProperty("value", {
                                 path: "reference2"
                             }),
-                            new sap.ui.core.Title("", {}),
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_productspecification_remarks") }),
+                            new sap.m.TextArea("", {
+                                rows: 4,
+                                width: "80%",
+                            }).bindProperty("value", {
+                                path: "remarks",
+                            }),
                         ]
                     });
                     this.tableProductSpecificationItem = new sap.ui.table.Table("", {

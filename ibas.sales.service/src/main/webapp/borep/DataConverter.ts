@@ -27,8 +27,11 @@ namespace sales {
                     newData.name = remote.Name;
                     newData.remarks = remote.Remarks;
                     newData.template = remote.Template;
-                    for (let item of remote.Items) {
-                        newData.items.add(this.parsing(item, sign));
+                    if (remote.Items instanceof Array) {
+                        for (let item of remote.Items) {
+                            item.type = bo.SpecificationTreeItem.name;
+                            newData.items.add(this.parsing(item, sign));
+                        }
                     }
                     return newData;
                 } else if (data.type === bo.SpecificationTreeItem.name) {
@@ -39,11 +42,17 @@ namespace sales {
                     newData.content = remote.Content;
                     newData.note = remote.Note;
                     newData.editable = remote.Editable;
-                    for (let item of remote.VaildValues) {
-                        newData.vaildValues.add(this.parsing(item, sign));
+                    if (remote.VaildValues instanceof Array) {
+                        for (let item of remote.VaildValues) {
+                            (<any>item).type = ibas.KeyText.name;
+                            newData.vaildValues.add(this.parsing(item, sign));
+                        }
                     }
-                    for (let item of remote.Items) {
-                        newData.items.add(this.parsing(item, sign));
+                    if (remote.Items instanceof Array) {
+                        for (let item of remote.Items) {
+                            item.type = bo.SpecificationTreeItem.name;
+                            newData.items.add(this.parsing(item, sign));
+                        }
                     }
                     return newData;
                 } else {
@@ -191,8 +200,13 @@ namespace sales {
         }
     }
     export namespace bo4j {
+        /** 操作消息 */
+        export interface IDataDeclaration {
+            /** 数据类型 */
+            type: string;
+        }
         /** 规格树 */
-        export interface ISpecificationTree {
+        export interface ISpecificationTree extends IDataDeclaration {
             /** 模板 */
             Template: number;
             /** 名称 */
@@ -203,7 +217,7 @@ namespace sales {
             Items: ISpecificationTreeItem[];
         }
         /** 规格模板-项目 */
-        export interface ISpecificationTreeItem {
+        export interface ISpecificationTreeItem extends IDataDeclaration {
             /** 标记 */
             Sign: string;
             /** 描述 */

@@ -39,6 +39,7 @@
   "sales_app_specification_choose": "规格模板选择",
   "sales_app_specification_view": "规格模板查看",
   "sales_app_specification_edit": "规格模板编辑",
+  "sales_app_specification_service": "产品规格服务",
   "sales_title_general": "常规信息",
   "sales_title_status": "状态信息",
   "sales_title_total": "总计信息",
@@ -54,5 +55,6 @@
   "sales_delete_continue": "{0}[{1}]将被彻底删除，是否继续？",
   "sales_create_continue": "新建{0}，是否继续？",
   "sales_copy_data_continue": "复制{0}，是否继续？",
+  "sales_please_specification": "请选择规格模板",
   "sales_closing_delimiter": "----结束----"
 }

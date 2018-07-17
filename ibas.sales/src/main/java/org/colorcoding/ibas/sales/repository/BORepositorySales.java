@@ -1,11 +1,13 @@
 package org.colorcoding.ibas.sales.repository;
 
+import org.colorcoding.ibas.bobas.common.ConditionRelationship;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.i18n.I18N;
+import org.colorcoding.ibas.bobas.message.Logger;
 import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 import org.colorcoding.ibas.bobas.repository.BORepositoryServiceApplication;
 import org.colorcoding.ibas.materials.bo.material.IMaterial;
@@ -407,24 +409,29 @@ public class BORepositorySales extends BORepositoryServiceApplication
 					if (item.getAlias().equalsIgnoreCase("Material")) {
 						// 物料条件
 						ICondition condition = tCriteria.getConditions().create();
+						condition.setBracketOpen(1);
 						condition.setAlias(Specification.PROPERTY_TARGETTYPE.getName());
 						condition.setValue(emSpecificationTarget.MATERIAL);
 						condition = tCriteria.getConditions().create();
+						condition.setBracketClose(1);
 						condition.setAlias(Specification.PROPERTY_TARGET.getName());
 						condition.setValue(item.getValue());
 						// 物料的组
 						ICriteria mCriteria = new Criteria();
-						ICondition mCondition = criteria.getConditions().create();
+						ICondition mCondition = mCriteria.getConditions().create();
 						mCondition.setAlias(Material.PROPERTY_CODE.getName());
 						mCondition.setValue(item.getValue());
 						BORepositoryMaterials boRepository = new BORepositoryMaterials();
 						boRepository.setUserToken(OrganizationFactory.SYSTEM_USER.getToken());
 						IMaterial material = boRepository.fetchMaterial(mCriteria).getResultObjects().firstOrDefault();
-						if (material != null) {
+						if (material != null && material.getGroup() != null) {
 							condition = tCriteria.getConditions().create();
+							condition.setBracketOpen(1);
 							condition.setAlias(Specification.PROPERTY_TARGETTYPE.getName());
 							condition.setValue(emSpecificationTarget.MATERIAL_GROUP);
+							condition.setRelationship(ConditionRelationship.OR);
 							condition = tCriteria.getConditions().create();
+							condition.setBracketClose(1);
 							condition.setAlias(Specification.PROPERTY_TARGET.getName());
 							condition.setValue(material.getGroup());
 						}
@@ -448,6 +455,7 @@ public class BORepositorySales extends BORepositoryServiceApplication
 			}
 			return operationResult;
 		} catch (Exception e) {
+			Logger.log(e);
 			return new OperationResult<>(e);
 		}
 	}

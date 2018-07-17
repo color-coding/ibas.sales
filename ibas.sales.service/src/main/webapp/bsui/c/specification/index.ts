@@ -7,5 +7,5 @@
  */
 /// <reference path="./SpecificationListView.ts" />
 /// <reference path="./SpecificationChooseView.ts" />
-/// <reference path="./SpecificationViewView.ts" />
+/// <reference path="./SpecificationTreeView.ts" />
 /// <reference path="./SpecificationEditView.ts" />

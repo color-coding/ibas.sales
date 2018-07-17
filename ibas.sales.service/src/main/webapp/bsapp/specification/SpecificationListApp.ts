@@ -79,11 +79,6 @@ namespace sales {
                     ));
                     return;
                 }
-                let app: SpecificationViewApp = new SpecificationViewApp();
-                app.navigation = this.navigation;
-                app.viewShower = this.viewShower;
-                app.run(data);
-
             }
             /** 编辑数据，参数：目标数据 */
             protected editData(data: bo.Specification): void {
@@ -109,7 +104,7 @@ namespace sales {
                     return;
                 }
                 let beDeleteds: ibas.ArrayList<bo.Specification> = new ibas.ArrayList<bo.Specification>();
-                if (data instanceof Array ) {
+                if (data instanceof Array) {
                     for (let item of data) {
                         item.delete();
                         beDeleteds.add(item);
@@ -135,7 +130,7 @@ namespace sales {
                         if (action === ibas.emMessageAction.YES) {
                             try {
                                 let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
-                                let saveMethod: Function = function(beSaved: bo.Specification):void {
+                                let saveMethod: Function = function (beSaved: bo.Specification): void {
                                     boRepository.saveSpecification({
                                         beSaved: beSaved,
                                         onCompleted(opRslt: ibas.IOperationResult<bo.Specification>): void {
@@ -151,7 +146,7 @@ namespace sales {
                                                     // 处理完成
                                                     that.busy(false);
                                                     that.messages(ibas.emMessageType.SUCCESS,
-                                                    ibas.i18n.prop("shell_data_delete") + ibas.i18n.prop("shell_sucessful"));
+                                                        ibas.i18n.prop("shell_data_delete") + ibas.i18n.prop("shell_sucessful"));
                                                 }
                                             } catch (error) {
                                                 that.messages(ibas.emMessageType.ERROR,

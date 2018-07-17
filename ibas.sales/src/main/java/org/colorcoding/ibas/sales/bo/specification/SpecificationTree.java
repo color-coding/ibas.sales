@@ -77,9 +77,9 @@ public class SpecificationTree extends Serializable {
 
 	private static final long serialVersionUID = -7286801947194491473L;
 
+	@XmlElement(name = "Template")
 	private int template;
 
-	@XmlElement(name = "Template")
 	public final int getTemplate() {
 		return template;
 	}
@@ -88,9 +88,9 @@ public class SpecificationTree extends Serializable {
 		this.template = template;
 	}
 
+	@XmlElement(name = "Name")
 	private String name;
 
-	@XmlElement(name = "Name")
 	public final String getName() {
 		return name;
 	}
@@ -99,9 +99,9 @@ public class SpecificationTree extends Serializable {
 		this.name = name;
 	}
 
+	@XmlElement(name = "Remarks")
 	private String remarks;
 
-	@XmlElement(name = "Remarks")
 	public final String getRemarks() {
 		return remarks;
 	}

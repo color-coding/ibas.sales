@@ -41,6 +41,14 @@ namespace sales {
                                 })
                             }),
                             new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_productspecification_remarks"),
+                                template: new sap.m.Text("", {
+                                    wrapping: false
+                                }).bindProperty("text", {
+                                    path: "remarks",
+                                })
+                            }),
+                            new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_productspecification_reference1"),
                                 template: new sap.m.Text("", {
                                     wrapping: false

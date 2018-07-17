@@ -40,6 +40,7 @@ namespace sales {
                 this.register(new SalesOrderFunc());
                 this.register(new SalesDeliveryFunc());
                 this.register(new SalesReturnFunc());
+                this.register(new ProductSpecificationFunc());
                 this.register(new ProductSuitFunc());
                 this.register(new SpecificationFunc());
                 // 注册服务应用
@@ -55,6 +56,7 @@ namespace sales {
                 this.register(new SalesQuoteLinkServiceMapping());
                 this.register(new ProductSpecificationChooseServiceMapping());
                 this.register(new SpecificationChooseServiceMapping());
+                this.register(new SpecificationTreeServiceMapping());
                 // 注册常驻应用
 
             }

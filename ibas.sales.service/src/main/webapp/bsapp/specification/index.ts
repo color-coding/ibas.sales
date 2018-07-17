@@ -8,5 +8,5 @@
 /// <reference path="./SpecificationFunc.ts" />
 /// <reference path="./SpecificationListApp.ts" />
 /// <reference path="./SpecificationChooseApp.ts" />
-/// <reference path="./SpecificationViewApp.ts" />
 /// <reference path="./SpecificationEditApp.ts" />
+/// <reference path="./SpecificationTreeService.ts" />

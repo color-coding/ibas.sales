@@ -45,6 +45,14 @@ namespace sales {
                                 })
                             }),
                             new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_productspecification_remarks"),
+                                template: new sap.m.Text("", {
+                                    wrapping: false
+                                }).bindProperty("text", {
+                                    path: "remarks",
+                                })
+                            }),
+                            new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_productspecification_reference1"),
                                 template: new sap.m.Text("", {
                                     wrapping: false
@@ -89,6 +97,7 @@ namespace sales {
                                         that.fireViewEvents(that.newDataEvent);
                                     }
                                 }),
+                                /*
                                 new sap.m.Button("", {
                                     text: ibas.i18n.prop("shell_data_view"),
                                     type: sap.m.ButtonType.Transparent,
@@ -100,6 +109,7 @@ namespace sales {
                                         );
                                     }
                                 }),
+                                */
                                 new sap.m.Button("", {
                                     text: ibas.i18n.prop("shell_data_edit"),
                                     type: sap.m.ButtonType.Transparent,
