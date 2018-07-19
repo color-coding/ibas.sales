@@ -134,6 +134,7 @@ namespace sales {
                                     width: "100%"
                                 }).bindItems({
                                     path: "vaildValues",
+                                    templateShareable: false,
                                     template: new sap.ui.core.ListItem("", {
                                         key: "{key}",
                                         text: "{text}",

@@ -93,7 +93,7 @@ namespace sales {
                             new sap.m.ex.SmartField("", {
                                 width: "100%",
                                 boType: bo.SalesDelivery.name,
-                                propertyName: "orderType",
+                                propertyName: "OrderType",
                                 bindingValue: {
                                     path: "orderType"
                                 }
