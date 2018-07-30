@@ -18,6 +18,8 @@ namespace sales {
                 editDataEvent: Function;
                 /** 删除数据事件，参数：删除对象集合 */
                 deleteDataEvent: Function;
+                /** 规格模板事件 */
+                specificationEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
@@ -131,6 +133,15 @@ namespace sales {
                                             // 获取表格选中的对象
                                             openui5.utils.getSelecteds<bo.ProductSpecification>(that.table)
                                         );
+                                    }
+                                }),
+                                new sap.m.ToolbarSeparator(""),
+                                new sap.m.Button("", {
+                                    text: ibas.i18n.prop("sales_func_specification"),
+                                    type: sap.m.ButtonType.Transparent,
+                                    icon: "sap-icon://attachment-text-file",
+                                    press: function (): void {
+                                        that.fireViewEvents(that.specificationEvent);
                                     }
                                 }),
                                 new sap.m.ToolbarSpacer(""),

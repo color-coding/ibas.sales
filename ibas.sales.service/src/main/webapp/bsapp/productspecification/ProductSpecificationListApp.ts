@@ -30,6 +30,7 @@ namespace sales {
                 // 其他事件
                 this.view.editDataEvent = this.editData;
                 this.view.deleteDataEvent = this.deleteData;
+                this.view.specificationEvent = this.specification;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -109,7 +110,7 @@ namespace sales {
                     return;
                 }
                 let beDeleteds: ibas.ArrayList<bo.ProductSpecification> = new ibas.ArrayList<bo.ProductSpecification>();
-                if (data instanceof Array ) {
+                if (data instanceof Array) {
                     for (let item of data) {
                         item.delete();
                         beDeleteds.add(item);
@@ -135,7 +136,7 @@ namespace sales {
                         if (action === ibas.emMessageAction.YES) {
                             try {
                                 let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
-                                let saveMethod: Function = function(beSaved: bo.ProductSpecification):void {
+                                let saveMethod: Function = function (beSaved: bo.ProductSpecification): void {
                                     boRepository.saveProductSpecification({
                                         beSaved: beSaved,
                                         onCompleted(opRslt: ibas.IOperationResult<bo.ProductSpecification>): void {
@@ -151,7 +152,7 @@ namespace sales {
                                                     // 处理完成
                                                     that.busy(false);
                                                     that.messages(ibas.emMessageType.SUCCESS,
-                                                    ibas.i18n.prop("shell_data_delete") + ibas.i18n.prop("shell_sucessful"));
+                                                        ibas.i18n.prop("shell_data_delete") + ibas.i18n.prop("shell_sucessful"));
                                                 }
                                             } catch (error) {
                                                 that.messages(ibas.emMessageType.ERROR,
@@ -172,6 +173,13 @@ namespace sales {
                     }
                 });
             }
+            /** 规格模板 */
+            protected specification(): void {
+                let app: SpecificationListApp = new SpecificationListApp();
+                app.navigation = this.navigation;
+                app.viewShower = this.viewShower;
+                app.run();
+            }
         }
         /** 视图-产品规格 */
         export interface IProductSpecificationListView extends ibas.IBOListView {
@@ -179,6 +187,8 @@ namespace sales {
             editDataEvent: Function;
             /** 删除数据事件，参数：删除对象集合 */
             deleteDataEvent: Function;
+            /** 规格模板事件 */
+            specificationEvent: Function;
             /** 显示数据 */
             showData(datas: bo.ProductSpecification[]): void;
         }
