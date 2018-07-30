@@ -27,6 +27,7 @@ namespace sales {
                 this.view.addSalesQuoteItemExtraEvent = this.addSalesQuoteItemExtra;
                 this.view.removeSalesQuoteItemExtraEvent = this.removeSalesQuoteItemExtra;
                 this.view.deleteSalesQuoteItemExtraEvent = this.deleteSalesQuoteItemExtra;
+                this.view.viewSalesOrderItemExtraEvent = this.viewSalesOrderItemExtra;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -187,6 +188,22 @@ namespace sales {
                 }
                 this.removeSalesQuoteItemExtra([data]);
             }
+            private viewSalesOrderItemExtra(data: bo.SalesOrderItemExtra): void {
+                if (ibas.objects.isNull(data)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("shell_data_view")
+                    ));
+                    return;
+                }
+                if (data.extraType === ibas.config.applyVariables(bo.ProductSpecification.BUSINESS_OBJECT_CODE)) {
+                    let app: ProductSpecificationViewApp = new ProductSpecificationViewApp();
+                    app.navigation = this.navigation;
+                    app.viewShower = this.viewShower;
+                    app.run(data.extraKey.toString());
+                } else {
+                    throw new Error(ibas.i18n.prop("sales_unrecognized_extra_information"));
+                }
+            }
         }
         /** 视图-销售报价项目-额外 */
         export interface ISalesQuoteItemExtraView extends ibas.IBOView {
@@ -200,6 +217,8 @@ namespace sales {
             removeSalesQuoteItemExtraEvent: Function;
             /** 删除销售报价-行额外 事件 */
             deleteSalesQuoteItemExtraEvent: Function;
+            /** 查看销售订单-行额外 事件 */
+            viewSalesOrderItemExtraEvent: Function;
         }
     }
 }

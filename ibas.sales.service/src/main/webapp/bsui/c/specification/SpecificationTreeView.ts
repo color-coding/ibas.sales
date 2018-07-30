@@ -92,7 +92,6 @@ namespace sales {
                     this.tree = new sap.ui.table.TreeTable("", {
                         toolbar: new sap.m.Toolbar("", {
                             content: [
-                                new sap.m.ToolbarSpacer("", { width: "5px" }),
                                 new sap.m.Label("", {
                                     text: ibas.i18n.prop("bo_specification_name"),
                                 }),

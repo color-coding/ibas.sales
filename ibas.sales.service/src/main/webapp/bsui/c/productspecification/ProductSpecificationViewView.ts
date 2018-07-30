@@ -9,104 +9,109 @@ namespace sales {
     export namespace ui {
         export namespace c {
             /** 查看视图-产品规格 */
-            export class ProductSpecificationViewView extends ibas.BOViewView implements app.IProductSpecificationViewView {
-
+            export class ProductSpecificationViewView extends ibas.BODialogView implements app.IProductSpecificationViewView {
+                /** 保存事件 */
+                saveEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
-                    let formTop: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
-                        editable: true,
-                        content: [
-                        ]
-                    });
-                    this.tableProductSpecificationItem = new sap.ui.table.Table("", {
-                        enableSelectAll: false,
-                        selectionBehavior: sap.ui.table.SelectionBehavior.Row,
-                        visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 8),
-                        rows: "{/rows}",
-                        columns: [
-                        ]
-                    });
-                    let formProductSpecificationItem: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
-                        editable: true,
-                        content: [
-                            new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_productspecificationitem") }),
-                            this.tableProductSpecificationItem,
-                        ]
-                    });
-                    this.layoutMain = new sap.ui.layout.VerticalLayout("", {
-                        width: "100%",
-                        height: "100%",
-                        content: [
-                            formTop,
-                            formProductSpecificationItem,
-                        ]
-                    });
-                    let page: sap.m.Page = new sap.m.Page("", {
-                        showHeader: false,
-                        subHeader: new sap.m.Bar("", {
-                            contentLeft: [
+                    this.tree = new sap.ui.table.TreeTable("", {
+                        toolbar: new sap.m.Toolbar("", {
+                            content: [
+                                new sap.m.Label("", {
+                                    text: ibas.i18n.prop("bo_specification_name"),
+                                }),
+                                new sap.m.Input("", {
+                                }).bindProperty("value", {
+                                    path: "/data/name"
+                                }),
+                                new sap.m.ToolbarSpacer(""),
                                 new sap.m.Button("", {
-                                    text: ibas.i18n.prop("shell_data_edit"),
                                     type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://edit",
+                                    icon: "sap-icon://collapse",
                                     press: function (): void {
-                                        that.fireViewEvents(that.editDataEvent);
+                                        that.tree.collapseAll();
                                     }
-                                })
-                            ],
-                            contentRight: [
-                                new sap.m.Button("", {
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://action",
-                                    press: function (event: any): void {
-                                        ibas.servicesManager.showServices({
-                                            proxy: new ibas.BOServiceProxy({
-                                                data: (<any>that.layoutMain.getModel()).getObject(),
-                                                converter: new bo.DataConverter(),
-                                            }),
-                                            displayServices(services: ibas.IServiceAgent[]): void {
-                                                if (ibas.objects.isNull(services) || services.length === 0) {
-                                                    return;
-                                                }
-                                                let popover: sap.m.Popover = new sap.m.Popover("", {
-                                                    showHeader: false,
-                                                    placement: sap.m.PlacementType.Bottom,
-                                                });
-                                                for (let service of services) {
-                                                    popover.addContent(new sap.m.Button({
-                                                        text: ibas.i18n.prop(service.name),
-                                                        type: sap.m.ButtonType.Transparent,
-                                                        icon: service.icon,
-                                                        press: function (): void {
-                                                            service.run();
-                                                            popover.close();
-                                                        }
-                                                    }));
-                                                }
-                                                (<any>popover).addStyleClass("sapMOTAPopover sapTntToolHeaderPopover");
-                                                popover.openBy(event.getSource(), true);
-                                            }
-                                        });
-                                    }
-                                })
+                                }),
                             ]
                         }),
-                        content: [this.layoutMain]
+                        enableSelectAll: false,
+                        selectionBehavior: sap.ui.table.SelectionBehavior.Row,
+                        selectionMode: sap.ui.table.SelectionMode.None,
+                        rows: {
+                            path: "/data/items",
+                            parameters: {
+                                arrayNames: ["items"]
+                            }
+                        },
+                        columns: [
+                            new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_specificationitem_description"),
+                                template: new sap.m.Text("", {
+                                    wrapping: false
+                                }).bindProperty("text", {
+                                    path: "description",
+                                })
+                            }),
+                            new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_specificationitem_content"),
+                                template: new sap.m.ComboBox("", {
+                                    width: "100%"
+                                }).bindItems({
+                                    path: "vaildValues",
+                                    templateShareable: false,
+                                    template: new sap.ui.core.ListItem("", {
+                                        key: "{key}",
+                                        text: "{text}",
+                                    })
+                                }).bindProperty("value", {
+                                    path: "content",
+                                }).bindProperty("editable", {
+                                    path: "editable",
+                                })
+                            }),
+                            new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_specificationitem_note"),
+                                template: new sap.m.Input("", {
+                                    width: "100%"
+                                }).bindProperty("value", {
+                                    path: "note",
+                                })
+                            }),
+                        ]
                     });
-                    return page;
+                    return new sap.m.Dialog("", {
+                        title: this.title,
+                        type: sap.m.DialogType.Standard,
+                        state: sap.ui.core.ValueState.None,
+                        stretchOnPhone: true,
+                        horizontalScrolling: true,
+                        verticalScrolling: true,
+                        content: [
+                            this.tree
+                        ],
+                        buttons: [
+                            new sap.m.Button("", {
+                                text: ibas.i18n.prop("shell_data_save"),
+                                type: sap.m.ButtonType.Transparent,
+                                press: function (): void {
+                                    that.fireViewEvents(that.saveEvent);
+                                }
+                            }),
+                            new sap.m.Button("", {
+                                text: ibas.i18n.prop("shell_exit"),
+                                type: sap.m.ButtonType.Transparent,
+                                press: function (): void {
+                                    that.fireViewEvents(that.closeEvent);
+                                }
+                            }),
+                        ],
+                    });
                 }
-                private layoutMain: sap.ui.layout.VerticalLayout;
-                private tableProductSpecificationItem: sap.ui.table.Table;
-
-                /** 显示数据 */
-                showProductSpecification(data: bo.ProductSpecification): void {
-                    this.layoutMain.setModel(new sap.ui.model.json.JSONModel(data));
-                    this.layoutMain.bindObject("/");
-                }
-                /** 显示数据 */
-                showProductSpecificationItems(datas: bo.ProductSpecificationItem[]): void {
-                    this.tableProductSpecificationItem.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
+                private tree: sap.ui.table.TreeTable;
+                /** 显示规格 */
+                showSpecificationTree(data: app.ProductSpecificationTree): void {
+                    this.tree.setModel(new sap.ui.model.json.JSONModel({ data: data }));
                 }
             }
         }

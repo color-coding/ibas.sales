@@ -18,6 +18,8 @@ namespace sales {
                 removeSalesOrderItemExtraEvent: Function;
                 /** 删除销售订单-行额外 事件 */
                 deleteSalesOrderItemExtraEvent: Function;
+                /** 查看销售订单-行额外 事件 */
+                viewSalesOrderItemExtraEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
@@ -80,8 +82,14 @@ namespace sales {
                             }),
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_salesorderitemextra_extrakey"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false
+                                template: new sap.m.Link("", {
+                                    wrapping: false,
+                                    press(event: any): void {
+                                        that.fireViewEvents(that.viewSalesOrderItemExtraEvent,
+                                            // 获取当前对象
+                                            this.getBindingContext().getObject()
+                                        );
+                                    }
                                 }).bindProperty("text", {
                                     path: "extraKey",
                                 })

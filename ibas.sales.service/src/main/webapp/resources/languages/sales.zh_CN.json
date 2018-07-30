@@ -56,5 +56,6 @@
   "sales_create_continue": "新建{0}，是否继续？",
   "sales_copy_data_continue": "复制{0}，是否继续？",
   "sales_please_specification": "请选择规格模板",
+  "sales_unrecognized_extra_information": "不能识别的信息[{0}]",
   "sales_closing_delimiter": "----结束----"
 }
