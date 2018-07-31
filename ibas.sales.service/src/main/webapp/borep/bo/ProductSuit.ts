@@ -341,6 +341,7 @@ namespace sales {
                 this.objectCode = ibas.config.applyVariables(ProductSuit.BUSINESS_OBJECT_CODE);
                 this.activated = ibas.emYesNo.YES;
                 this.currency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
+                this.version = "--";
             }
             protected registerRules(): ibas.IBusinessRule[] {
                 return [

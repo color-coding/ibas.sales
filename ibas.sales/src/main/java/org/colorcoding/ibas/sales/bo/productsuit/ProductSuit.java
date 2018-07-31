@@ -1059,7 +1059,7 @@ public class ProductSuit extends BusinessObject<ProductSuit>
 		super.initialize();// 基类初始化，不可去除
 		this.setProductSuitItems(new ProductSuitItems(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
-
+		this.setVersion("--");
 	}
 
 	@Override

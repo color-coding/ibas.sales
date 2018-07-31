@@ -70,6 +70,20 @@ namespace sales {
                         selectionBehavior: sap.ui.table.SelectionBehavior.Row,
                         selectionMode: openui5.utils.toSelectionMode(ibas.emChooseType.SINGLE),
                         visibleRowCount: 6,
+                        rowActionCount: 1,
+                        rowActionTemplate: new sap.ui.table.RowAction({
+                            items: [
+                                new sap.ui.table.RowActionItem({
+                                    icon: "sap-icon://display",
+                                    press: function (oEvent: any): void {
+                                        that.fireViewEvents(that.viewSalesOrderItemExtraEvent,
+                                            // 获取当前对象
+                                            this.getBindingContext().getObject()
+                                        );
+                                    },
+                                }),
+                            ]
+                        }),
                         rows: "{/rows}",
                         columns: [
                             new sap.ui.table.Column("", {
@@ -78,18 +92,15 @@ namespace sales {
                                     wrapping: false
                                 }).bindProperty("text", {
                                     path: "extraType",
+                                    formatter(data: any): any {
+                                        return openui5.utils.describeBOCode(data);
+                                    }
                                 })
                             }),
                             new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_salesorderitemextra_extrakey"),
-                                template: new sap.m.Link("", {
+                                template: new sap.m.Text("", {
                                     wrapping: false,
-                                    press(event: any): void {
-                                        that.fireViewEvents(that.viewSalesOrderItemExtraEvent,
-                                            // 获取当前对象
-                                            this.getBindingContext().getObject()
-                                        );
-                                    }
                                 }).bindProperty("text", {
                                     path: "extraKey",
                                 })

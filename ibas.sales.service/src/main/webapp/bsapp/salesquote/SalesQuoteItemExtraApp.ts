@@ -27,7 +27,7 @@ namespace sales {
                 this.view.addSalesQuoteItemExtraEvent = this.addSalesQuoteItemExtra;
                 this.view.removeSalesQuoteItemExtraEvent = this.removeSalesQuoteItemExtra;
                 this.view.deleteSalesQuoteItemExtraEvent = this.deleteSalesQuoteItemExtra;
-                this.view.viewSalesOrderItemExtraEvent = this.viewSalesOrderItemExtra;
+                this.view.viewSalesQuoteItemExtraEvent = this.viewSalesQuoteItemExtra;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -188,7 +188,7 @@ namespace sales {
                 }
                 this.removeSalesQuoteItemExtra([data]);
             }
-            private viewSalesOrderItemExtra(data: bo.SalesOrderItemExtra): void {
+            private viewSalesQuoteItemExtra(data: bo.SalesOrderItemExtra): void {
                 if (ibas.objects.isNull(data)) {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
                         ibas.i18n.prop("shell_data_view")
@@ -217,8 +217,8 @@ namespace sales {
             removeSalesQuoteItemExtraEvent: Function;
             /** 删除销售报价-行额外 事件 */
             deleteSalesQuoteItemExtraEvent: Function;
-            /** 查看销售订单-行额外 事件 */
-            viewSalesOrderItemExtraEvent: Function;
+            /** 查看销售报价-行额外 事件 */
+            viewSalesQuoteItemExtraEvent: Function;
         }
     }
 }
