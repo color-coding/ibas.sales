@@ -211,14 +211,6 @@ namespace sales {
             }
             /** 选择销售报价物料事件 */
             private chooseSalesQuoteItemMaterial(caller: bo.SalesQuoteItem): void {
-                if (!ibas.objects.isNull(caller) && !ibas.strings.isEmpty(caller.parentLineSign)) {
-                    this.messages({
-                        type: ibas.emMessageType.WARNING,
-                        title: ibas.i18n.prop(this.name),
-                        message: ibas.i18n.prop("sales_subitems_not_allowed_operation"),
-                    });
-                    return;
-                }
                 let that: this = this;
                 let condition: ibas.ICondition;
                 let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.product.create();
@@ -377,6 +369,8 @@ namespace sales {
                                             }
                                         }
                                     });
+                                    that.proceeding(ibas.emMessageType.WARNING,
+                                        ibas.i18n.prop("sales_loading_product_suit", ibas.strings.isEmpty(selected.name) ? selected.code : selected.name));
                                 } else {
                                     // 普通物料
                                     if (!ibas.objects.isNull(item)) {
@@ -436,6 +430,16 @@ namespace sales {
                 if (items.length === 0) {
                     return;
                 }
+                for (let item of items) {
+                    if (!ibas.strings.isEmpty(item.parentLineSign)) {
+                        this.messages({
+                            type: ibas.emMessageType.WARNING,
+                            title: ibas.i18n.prop(this.name),
+                            message: ibas.i18n.prop("sales_subitems_not_allowed_operation"),
+                        });
+                        return;
+                    }
+                }
                 // 移除项目
                 for (let item of items) {
                     if (this.editData.salesQuoteItems.indexOf(item) >= 0) {
@@ -445,6 +449,19 @@ namespace sales {
                         } else {
                             // 非新建标记删除
                             item.delete();
+                        }
+                        // 删除子项
+                        if (!ibas.strings.isEmpty(item.lineSign)) {
+                            for (let i: number = this.editData.salesQuoteItems.length - 1; i >= 0; i--) {
+                                let tItem: bo.SalesQuoteItem = this.editData.salesQuoteItems[i];
+                                if (tItem.parentLineSign === item.lineSign) {
+                                    if (tItem.isNew) {
+                                        this.editData.salesQuoteItems.remove(tItem);
+                                    } else {
+                                        tItem.delete();
+                                    }
+                                }
+                            }
                         }
                     }
                 }

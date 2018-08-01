@@ -624,6 +624,11 @@ namespace sales {
                     }
                     // 复制行项目
                     for (let item of document.salesOrderItems) {
+                        // 计算未交货数量
+                        let openQty: number = item.quantity - item.closedQuantity;
+                        if (openQty <= 0) {
+                            continue;
+                        }
                         let myItem: SalesDeliveryItem = this.salesDeliveryItems.create();
                         myItem.baseDocumentType = item.objectCode;
                         myItem.baseDocumentEntry = item.docEntry;
@@ -642,7 +647,7 @@ namespace sales {
                         myItem.batchManagement = item.batchManagement;
                         myItem.serialManagement = item.serialManagement;
                         myItem.price = item.price;
-                        myItem.quantity = item.quantity;
+                        myItem.quantity = openQty;
                         myItem.uom = item.uom;
                         myItem.warehouse = item.warehouse;
                         myItem.reference1 = item.reference1;

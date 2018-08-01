@@ -260,6 +260,11 @@ namespace sales {
                                 }).bindProperty("selectedKey", {
                                     path: "lineStatus",
                                     type: "sap.ui.model.type.Integer",
+                                }).bindProperty("enabled", {
+                                    path: "parentLineSign",
+                                    formatter(data: any): any {
+                                        return ibas.strings.isEmpty(data);
+                                    }
                                 })
                             }),
                             new sap.ui.table.Column("", {
@@ -275,6 +280,11 @@ namespace sales {
                                     }
                                 }).bindProperty("value", {
                                     path: "itemCode"
+                                }).bindProperty("enabled", {
+                                    path: "parentLineSign",
+                                    formatter(data: any): any {
+                                        return ibas.strings.isEmpty(data);
+                                    }
                                 })
                             }),
                             new sap.ui.table.Column("", {
@@ -308,6 +318,11 @@ namespace sales {
                                 }).bindProperty("value", {
                                     path: "quantity",
                                     type: new openui5.datatype.Quantity(),
+                                }).bindProperty("enabled", {
+                                    path: "parentLineSign",
+                                    formatter(data: any): any {
+                                        return ibas.strings.isEmpty(data);
+                                    }
                                 })
                             }),
                             new sap.ui.table.Column("", {
@@ -327,6 +342,11 @@ namespace sales {
                                 }).bindProperty("value", {
                                     path: "price",
                                     type: new openui5.datatype.Price(),
+                                }).bindProperty("enabled", {
+                                    path: "parentLineSign",
+                                    formatter(data: any): any {
+                                        return ibas.strings.isEmpty(data);
+                                    }
                                 })
                             }),
                             new sap.ui.table.Column("", {
