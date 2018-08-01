@@ -100,6 +100,11 @@ namespace sales {
              * @param fetcher 查询者
              */
             fetchSpecificationTree(fetcher: ibas.IFetchCaller<bo.ISpecificationTree>): void;
+            /**
+             * 查询 产品套装并扩展产品数据
+             * @param fetcher 查询者
+             */
+            fetchProductSuitEx(fetcher: ibas.IFetchCaller<bo.IProductSuitEx>): void;
         }
     }
 

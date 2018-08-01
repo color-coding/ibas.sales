@@ -57,5 +57,8 @@
   "sales_copy_data_continue": "复制{0}，是否继续？",
   "sales_please_specification": "请选择规格模板",
   "sales_unrecognized_extra_information": "不能识别的信息[{0}]",
+  "sales_not_found_product_suit_skipped": "产品[{0}]没有找到其产品套装，操作被跳过",
+  "sales_use_product_suit_version": "产品[{0}]存在多个版本，是否使用[{1}]版本？",
+  "sales_subitems_not_allowed_operation": "子项不允许执行此操作",
   "sales_closing_delimiter": "----结束----"
 }

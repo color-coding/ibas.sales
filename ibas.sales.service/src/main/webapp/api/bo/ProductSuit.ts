@@ -173,6 +173,16 @@ namespace sales {
             lineTotal: number;
 
         }
+        export interface IProductSuitEx extends IProductSuit {
+            extend: materials.bo.IProduct;
+            productSuitItems: IProductSuitItemExs;
+        }
+        export interface IProductSuitItemExs extends ibas.IBusinessObjects<IProductSuitItemEx> {
+
+        }
+        export interface IProductSuitItemEx extends IProductSuitItem {
+            extend: materials.bo.IProduct;
+        }
     }
 }
 

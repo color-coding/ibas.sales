@@ -148,6 +148,62 @@ namespace sales {
             fetchSpecificationTree(fetcher: ibas.IFetchCaller<bo.SpecificationTree>): void {
                 super.fetch(bo.SpecificationTree.name, fetcher);
             }
+            /**
+             * 查询 产品套装并扩展产品数据
+             * @param fetcher 查询者
+             */
+            fetchProductSuitEx(fetcher: ibas.IFetchCaller<bo.IProductSuitEx>): void {
+                this.fetchProductSuit({
+                    criteria: fetcher.criteria,
+                    onCompleted(psRslt: ibas.IOperationResult<bo.IProductSuit>): void {
+                        try {
+                            if (psRslt.resultCode !== 0) {
+                                throw new Error(psRslt.message);
+                            }
+                            if (psRslt.resultObjects.length > 0) {
+                                let criteria: ibas.ICriteria = new ibas.Criteria();
+                                for (let item of psRslt.resultObjects) {
+                                    let condition: ibas.ICondition = criteria.conditions.create();
+                                    condition.alias = "code";
+                                    condition.value = item.product;
+                                    if (criteria.conditions.length > 0) {
+                                        condition.relationship = ibas.emConditionRelationship.OR;
+                                    }
+                                    for (let sItem of item.productSuitItems) {
+                                        condition = criteria.conditions.create();
+                                        condition.alias = "code";
+                                        condition.value = sItem.itemCode;
+                                        condition.relationship = ibas.emConditionRelationship.OR;
+                                    }
+                                }
+                                let boRepository: materials.bo.IBORepositoryMaterials = ibas.boFactory.create(materials.bo.BO_REPOSITORY_MATERIALS);
+                                boRepository.fetchProduct({
+                                    criteria: criteria,
+                                    onCompleted(mmRslt: ibas.IOperationResult<materials.bo.IProduct>): void {
+                                        for (let item of psRslt.resultObjects) {
+                                            let pItem: materials.bo.IProduct = mmRslt.resultObjects.firstOrDefault(c => c.code === item.product);
+                                            if (pItem !== null) {
+                                                (<bo.IProductSuitEx>item).extend = pItem;
+                                            }
+                                            for (let sItem of item.productSuitItems) {
+                                                let pItem: materials.bo.IProduct = mmRslt.resultObjects.firstOrDefault(c => c.code === sItem.itemCode);
+                                                if (pItem !== null) {
+                                                    (<bo.IProductSuitItemEx>sItem).extend = pItem;
+                                                }
+                                            }
+                                        }
+                                        fetcher.onCompleted(<ibas.IOperationResult<bo.IProductSuitEx>>psRslt);
+                                    }
+                                });
+                            } else {
+                                fetcher.onCompleted(<ibas.IOperationResult<bo.IProductSuitEx>>psRslt);
+                            }
+                        } catch (error) {
+                            fetcher.onCompleted(new ibas.OperationResult(error));
+                        }
+                    }
+                });
+            }
         }
     }
 }
