@@ -680,7 +680,6 @@ namespace sales {
 
         /** 销售交货-行 集合 */
         export class SalesDeliveryItems extends ibas.BusinessObjects<SalesDeliveryItem, SalesDelivery> implements ISalesDeliveryItems {
-
             /** 创建并添加子项 */
             create(): SalesDeliveryItem {
                 let item: SalesDeliveryItem = new SalesDeliveryItem();
@@ -700,6 +699,19 @@ namespace sales {
                                 this.removeAt(i);
                             } else {
                                 tItem.delete();
+                            }
+                        }
+                    }
+                }
+            }
+            /** 子项属性改变时 */
+            protected onChildPropertyChanged(item: SalesDeliveryItem, name: string): void {
+                if (!ibas.strings.isEmpty(item.lineSign)) {
+                    // 父项数量变化，重新计算子项值
+                    if (ibas.strings.equalsIgnoreCase(name, SalesDeliveryItem.PROPERTY_QUANTITY_NAME)) {
+                        for (let sItem of this) {
+                            if (sItem.parentLineSign === item.lineSign) {
+                                sItem.quantity = ibas.numbers.round(sItem.basisQuantity * item.quantity);
                             }
                         }
                     }

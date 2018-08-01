@@ -340,8 +340,8 @@ namespace sales {
                                                                     parentItem.warehouse = pItem.extend.warehouse;
                                                                     parentItem.quantity = 1;
                                                                     parentItem.uom = pItem.extend.inventoryUOM;
-                                                                    parentItem.price = pItem.extend.price;
-                                                                    parentItem.currency = pItem.extend.currency;
+                                                                    parentItem.price = selected.price;
+                                                                    parentItem.currency = selected.currency;
                                                                     // 子项
                                                                     for (let sItem of pItem.productSuitItems) {
                                                                         let subItem: bo.SalesQuoteItem = that.editData.salesQuoteItems.create();

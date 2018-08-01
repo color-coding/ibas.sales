@@ -617,6 +617,19 @@ namespace sales {
                     }
                 }
             }
+            /** 子项属性改变时 */
+            protected onChildPropertyChanged(item: SalesQuoteItem, name: string): void {
+                if (!ibas.strings.isEmpty(item.lineSign)) {
+                    // 父项数量变化，重新计算子项值
+                    if (ibas.strings.equalsIgnoreCase(name, SalesQuoteItem.PROPERTY_QUANTITY_NAME)) {
+                        for (let sItem of this) {
+                            if (sItem.parentLineSign === item.lineSign) {
+                                sItem.quantity = ibas.numbers.round(sItem.basisQuantity * item.quantity);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /** 销售订单-行 */

@@ -407,8 +407,8 @@ namespace sales {
                                                                     parentItem.warehouse = pItem.extend.warehouse;
                                                                     parentItem.quantity = 1;
                                                                     parentItem.uom = pItem.extend.inventoryUOM;
-                                                                    parentItem.price = pItem.extend.price;
-                                                                    parentItem.currency = pItem.extend.currency;
+                                                                    parentItem.price = selected.price;
+                                                                    parentItem.currency = selected.currency;
                                                                     if (ibas.strings.isEmpty(parentItem.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
                                                                         parentItem.warehouse = that.view.defaultWarehouse;
                                                                     }

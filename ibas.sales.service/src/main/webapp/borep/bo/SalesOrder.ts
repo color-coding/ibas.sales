@@ -673,7 +673,6 @@ namespace sales {
 
         /** 销售订单-行 集合 */
         export class SalesOrderItems extends ibas.BusinessObjects<SalesOrderItem, SalesOrder> implements ISalesOrderItems {
-
             /** 创建并添加子项 */
             create(): SalesOrderItem {
                 let item: SalesOrderItem = new SalesOrderItem();
@@ -693,6 +692,19 @@ namespace sales {
                                 this.removeAt(i);
                             } else {
                                 tItem.delete();
+                            }
+                        }
+                    }
+                }
+            }
+            /** 子项属性改变时 */
+            protected onChildPropertyChanged(item: SalesOrderItem, name: string): void {
+                if (!ibas.strings.isEmpty(item.lineSign)) {
+                    // 父项数量变化，重新计算子项值
+                    if (ibas.strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_QUANTITY_NAME)) {
+                        for (let sItem of this) {
+                            if (sItem.parentLineSign === item.lineSign) {
+                                sItem.quantity = ibas.numbers.round(sItem.basisQuantity * item.quantity);
                             }
                         }
                     }
