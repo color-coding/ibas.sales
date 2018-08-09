@@ -358,6 +358,7 @@ namespace sales {
                                                                     fillSuit(selecteds.length);
                                                                 } catch (error) {
                                                                     that.messages(error);
+                                                                    that.view.showSalesQuoteItems(that.editData.salesQuoteItems.filterDeleted());
                                                                 }
                                                             }
                                                         });
@@ -366,6 +367,7 @@ namespace sales {
                                                 fillSuit(0);
                                             } catch (error) {
                                                 that.messages(error);
+                                                that.view.showSalesQuoteItems(that.editData.salesQuoteItems.filterDeleted());
                                             }
                                         }
                                     });
