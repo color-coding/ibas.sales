@@ -60,29 +60,19 @@ namespace sales {
                             }).bindProperty("value", {
                                 path: "mobilePhone"
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_country") }),
-                            new sap.m.Input("", {
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "country"
+                            new sap.m.Label("", {
+                                text: ibas.i18n.prop("bo_shippingaddress_country") +
+                                    "/" + ibas.i18n.prop("bo_shippingaddress_province") +
+                                    "/" + ibas.i18n.prop("bo_shippingaddress_city") +
+                                    "/" + ibas.i18n.prop("bo_shippingaddress_district")
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_province") }),
-                            new sap.m.Input("", {
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "province"
-                            }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_city") }),
-                            new sap.m.Input("", {
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "city"
-                            }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_district") }),
-                            new sap.m.Input("", {
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "district"
+                            new sap.m.ex.ProvincesCityDistrict("", {
+                                width: "100%",
+                                direction: sap.m.FlexDirection.Column,
+                                country: { path: "country" },
+                                province: { path: "province" },
+                                city: { path: "city" },
+                                district: { path: "district" },
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_street") }),
                             new sap.m.Input("", {
