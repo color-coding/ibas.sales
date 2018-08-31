@@ -31,6 +31,7 @@ namespace sales {
             /** 视图显示后 */
             protected viewShowed(): void {
                 // 视图加载完成
+                super.viewShowed();
                 let datas: bo.ShippingAddress[] = this.editAddresses.filterDeleted();
                 this.view.showShippingAddresses(datas);
                 if (datas.length > 0) {

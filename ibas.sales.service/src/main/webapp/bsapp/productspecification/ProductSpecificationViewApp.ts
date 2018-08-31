@@ -32,6 +32,7 @@ namespace sales {
             /** 视图显示后 */
             protected viewShowed(): void {
                 // 视图加载完成
+                super.viewShowed();
                 let criteria: ibas.Criteria = new ibas.Criteria();
                 let condition: ibas.ICondition = criteria.conditions.create();
                 condition.alias = "template";
