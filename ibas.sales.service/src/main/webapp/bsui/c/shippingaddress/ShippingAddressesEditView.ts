@@ -184,12 +184,8 @@ namespace sales {
                     for (let item of this.layoutMain.getContent()) {
                         if (item instanceof sap.m.Input) {
                             item.setEditable(false);
-                        } else if (item instanceof sap.m.FlexBox) {
-                            for (let item2 of item.getItems()) {
-                                if (item2 instanceof sap.m.Select) {
-                                    item2.setEnabled(true);
-                                }
-                            }
+                        } else if (item instanceof sap.m.ex.ProvincesCityDistrict) {
+                            item.setEnabled(false);
                         } else if (item instanceof sap.m.Select) {
                             item.setEnabled(false);
                         }
@@ -213,12 +209,8 @@ namespace sales {
                         for (let item of this.layoutMain.getContent()) {
                             if (item instanceof sap.m.Input) {
                                 item.setEditable(true);
-                            } else if (item instanceof sap.m.FlexBox) {
-                                for (let item2 of item.getItems()) {
-                                    if (item2 instanceof sap.m.Select) {
-                                        item2.setEnabled(true);
-                                    }
-                                }
+                            } else if (item instanceof sap.m.ex.ProvincesCityDistrict) {
+                                item.setEnabled(true);
                             } else if (item instanceof sap.m.Select) {
                                 item.setEnabled(true);
                             }
