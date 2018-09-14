@@ -249,30 +249,6 @@ namespace sales {
                     return this.page;
                 }
 
-                /** 改变视图状态 */
-                private changeViewStatus(data: bo.SalesOrder): void {
-                    if (ibas.objects.isNull(data)) {
-                        return;
-                    }
-                    // 新建时：禁用删除，
-                    if (data.isNew) {
-                        if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                            openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), true);
-                            openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                        }
-                    }
-                    // 不可编辑：已批准，
-                    if (data.approvalStatus === ibas.emApprovalStatus.APPROVED
-                        || data.documentStatus === ibas.emDocumentStatus.CLOSED
-                        || data.canceled === ibas.emYesNo.YES) {
-                        if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                            openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                            openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                        }
-                        openui5.utils.changeFormEditable(this.layoutMain, false);
-                    }
-                }
-
                 /** 显示数据 */
                 showSalesOrder(data: bo.SalesOrder): void {
                     this.layoutMain.setModel(new sap.ui.model.json.JSONModel(data));
