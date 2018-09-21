@@ -158,6 +158,8 @@ namespace sales {
                 /** 显示数据 */
                 showData(data: bo.SalesQuoteItem): void {
                     let builder: ibas.StringBuilder = new ibas.StringBuilder();
+                    builder.map(null, "");
+                    builder.map(undefined, "");
                     builder.append("#");
                     builder.append(data.lineId);
                     builder.append(", ");

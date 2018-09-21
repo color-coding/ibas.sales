@@ -1322,11 +1322,8 @@ namespace sales {
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
                     // 推导 价格 = 折扣前价格 * 折扣
-                    new ibas.BusinessRuleMultiplicativeDeduction(
+                    new ibas.BusinessRuleMultiplicativeDeductionEx(
                         SalesQuoteItem.PROPERTY_DISCOUNT_NAME, SalesQuoteItem.PROPERTY_UNITPRICE_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME),
-                    // 计算价格 = 折扣前价格 * 折扣
-                    new ibas.BusinessRuleMultiplication(
-                        SalesQuoteItem.PROPERTY_PRICE_NAME, SalesQuoteItem.PROPERTY_UNITPRICE_NAME, SalesQuoteItem.PROPERTY_DISCOUNT_NAME),
                     // 计算总计 = 数量 * 价格
                     new ibas.BusinessRuleMultiplication(
                         SalesQuoteItem.PROPERTY_LINETOTAL_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME),

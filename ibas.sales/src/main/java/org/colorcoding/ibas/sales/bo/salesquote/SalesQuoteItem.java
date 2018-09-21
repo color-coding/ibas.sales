@@ -19,7 +19,7 @@ import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMultiplication;
-import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMultiplicativeDeduction;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMultiplicativeDeductionEx;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSubtraction;
 import org.colorcoding.ibas.sales.MyConfiguration;
@@ -80,8 +80,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-编码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDocEntry(Integer value) {
 		this.setProperty(PROPERTY_DOCENTRY, value);
@@ -112,8 +111,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-行号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineId(Integer value) {
 		this.setProperty(PROPERTY_LINEID, value);
@@ -144,8 +142,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-显示顺序
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setVisOrder(Integer value) {
 		this.setProperty(PROPERTY_VISORDER, value);
@@ -176,8 +173,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setObjectCode(String value) {
 		this.setProperty(PROPERTY_OBJECTCODE, value);
@@ -208,8 +204,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-实例号（版本）
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLogInst(Integer value) {
 		this.setProperty(PROPERTY_LOGINST, value);
@@ -240,8 +235,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDataSource(String value) {
 		this.setProperty(PROPERTY_DATASOURCE, value);
@@ -272,8 +266,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-取消
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCanceled(emYesNo value) {
 		this.setProperty(PROPERTY_CANCELED, value);
@@ -304,8 +297,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-状态
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setStatus(emBOStatus value) {
 		this.setProperty(PROPERTY_STATUS, value);
@@ -336,8 +328,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-单据状态
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineStatus(emDocumentStatus value) {
 		this.setProperty(PROPERTY_LINESTATUS, value);
@@ -368,8 +359,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateDate(DateTime value) {
 		this.setProperty(PROPERTY_CREATEDATE, value);
@@ -400,8 +390,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateTime(Short value) {
 		this.setProperty(PROPERTY_CREATETIME, value);
@@ -432,8 +421,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-修改日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateDate(DateTime value) {
 		this.setProperty(PROPERTY_UPDATEDATE, value);
@@ -464,8 +452,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-修改时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateTime(Short value) {
 		this.setProperty(PROPERTY_UPDATETIME, value);
@@ -496,8 +483,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateUserSign(Integer value) {
 		this.setProperty(PROPERTY_CREATEUSERSIGN, value);
@@ -528,8 +514,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-修改用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateUserSign(Integer value) {
 		this.setProperty(PROPERTY_UPDATEUSERSIGN, value);
@@ -560,8 +545,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateActionId(String value) {
 		this.setProperty(PROPERTY_CREATEACTIONID, value);
@@ -592,8 +576,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateActionId(String value) {
 		this.setProperty(PROPERTY_UPDATEACTIONID, value);
@@ -624,8 +607,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-参考1
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setReference1(String value) {
 		this.setProperty(PROPERTY_REFERENCE1, value);
@@ -656,8 +638,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-参考2
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setReference2(String value) {
 		this.setProperty(PROPERTY_REFERENCE2, value);
@@ -688,8 +669,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-已引用
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setReferenced(emYesNo value) {
 		this.setProperty(PROPERTY_REFERENCED, value);
@@ -720,8 +700,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-已删除
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDeleted(emYesNo value) {
 		this.setProperty(PROPERTY_DELETED, value);
@@ -752,8 +731,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-基于类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setBaseDocumentType(String value) {
 		this.setProperty(PROPERTY_BASEDOCUMENTTYPE, value);
@@ -784,8 +762,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-基于标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setBaseDocumentEntry(Integer value) {
 		this.setProperty(PROPERTY_BASEDOCUMENTENTRY, value);
@@ -816,8 +793,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-基于行号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setBaseDocumentLineId(Integer value) {
 		this.setProperty(PROPERTY_BASEDOCUMENTLINEID, value);
@@ -848,8 +824,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-原始类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setOriginalDocumentType(String value) {
 		this.setProperty(PROPERTY_ORIGINALDOCUMENTTYPE, value);
@@ -880,8 +855,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-原始标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setOriginalDocumentEntry(Integer value) {
 		this.setProperty(PROPERTY_ORIGINALDOCUMENTENTRY, value);
@@ -912,8 +886,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-原始行号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setOriginalDocumentLineId(Integer value) {
 		this.setProperty(PROPERTY_ORIGINALDOCUMENTLINEID, value);
@@ -944,8 +917,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-产品编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setItemCode(String value) {
 		this.setProperty(PROPERTY_ITEMCODE, value);
@@ -976,8 +948,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-产品/服务描述
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setItemDescription(String value) {
 		this.setProperty(PROPERTY_ITEMDESCRIPTION, value);
@@ -1008,8 +979,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-序号管理
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setSerialManagement(emYesNo value) {
 		this.setProperty(PROPERTY_SERIALMANAGEMENT, value);
@@ -1040,8 +1010,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-批号管理
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setBatchManagement(emYesNo value) {
 		this.setProperty(PROPERTY_BATCHMANAGEMENT, value);
@@ -1072,8 +1041,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setQuantity(Decimal value) {
 		this.setProperty(PROPERTY_QUANTITY, value);
@@ -1082,8 +1050,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setQuantity(String value) {
 		this.setQuantity(new Decimal(value));
@@ -1092,8 +1059,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setQuantity(int value) {
 		this.setQuantity(new Decimal(value));
@@ -1102,8 +1068,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setQuantity(double value) {
 		this.setQuantity(new Decimal(value));
@@ -1134,8 +1099,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-单位
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUOM(String value) {
 		this.setProperty(PROPERTY_UOM, value);
@@ -1166,8 +1130,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-仓库
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setWarehouse(String value) {
 		this.setProperty(PROPERTY_WAREHOUSE, value);
@@ -1198,8 +1161,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setPrice(Decimal value) {
 		this.setProperty(PROPERTY_PRICE, value);
@@ -1208,8 +1170,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setPrice(String value) {
 		this.setPrice(new Decimal(value));
@@ -1218,8 +1179,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setPrice(int value) {
 		this.setPrice(new Decimal(value));
@@ -1228,8 +1188,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setPrice(double value) {
 		this.setPrice(new Decimal(value));
@@ -1260,8 +1219,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-货币
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCurrency(String value) {
 		this.setProperty(PROPERTY_CURRENCY, value);
@@ -1292,8 +1250,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-汇率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setRate(Decimal value) {
 		this.setProperty(PROPERTY_RATE, value);
@@ -1302,8 +1259,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-汇率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setRate(String value) {
 		this.setRate(new Decimal(value));
@@ -1312,8 +1268,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-汇率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setRate(int value) {
 		this.setRate(new Decimal(value));
@@ -1322,8 +1277,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-汇率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setRate(double value) {
 		this.setRate(new Decimal(value));
@@ -1354,8 +1308,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-行总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineTotal(Decimal value) {
 		this.setProperty(PROPERTY_LINETOTAL, value);
@@ -1364,8 +1317,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-行总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineTotal(String value) {
 		this.setLineTotal(new Decimal(value));
@@ -1374,8 +1326,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-行总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineTotal(int value) {
 		this.setLineTotal(new Decimal(value));
@@ -1384,8 +1335,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-行总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineTotal(double value) {
 		this.setLineTotal(new Decimal(value));
@@ -1416,8 +1366,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-行交货日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDeliveryDate(DateTime value) {
 		this.setProperty(PROPERTY_DELIVERYDATE, value);
@@ -1448,8 +1397,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-已清数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setClosedQuantity(Decimal value) {
 		this.setProperty(PROPERTY_CLOSEDQUANTITY, value);
@@ -1458,8 +1406,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-已清数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setClosedQuantity(String value) {
 		this.setClosedQuantity(new Decimal(value));
@@ -1468,8 +1415,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-已清数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setClosedQuantity(int value) {
 		this.setClosedQuantity(new Decimal(value));
@@ -1478,8 +1424,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-已清数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setClosedQuantity(double value) {
 		this.setClosedQuantity(new Decimal(value));
@@ -1510,8 +1455,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-行折扣
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDiscount(Decimal value) {
 		this.setProperty(PROPERTY_DISCOUNT, value);
@@ -1520,8 +1464,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-行折扣
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDiscount(String value) {
 		this.setDiscount(new Decimal(value));
@@ -1530,8 +1473,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-行折扣
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDiscount(int value) {
 		this.setDiscount(new Decimal(value));
@@ -1540,8 +1482,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-行折扣
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDiscount(double value) {
 		this.setDiscount(new Decimal(value));
@@ -1572,8 +1513,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-已清金额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setClosedAmount(Decimal value) {
 		this.setProperty(PROPERTY_CLOSEDAMOUNT, value);
@@ -1582,8 +1522,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-已清金额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setClosedAmount(String value) {
 		this.setClosedAmount(new Decimal(value));
@@ -1592,8 +1531,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-已清金额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setClosedAmount(int value) {
 		this.setClosedAmount(new Decimal(value));
@@ -1602,8 +1540,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-已清金额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setClosedAmount(double value) {
 		this.setClosedAmount(new Decimal(value));
@@ -1634,8 +1571,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-产品类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setTreeType(emProductTreeType value) {
 		this.setProperty(PROPERTY_TREETYPE, value);
@@ -1666,8 +1602,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-基础数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setBasisQuantity(Decimal value) {
 		this.setProperty(PROPERTY_BASISQUANTITY, value);
@@ -1676,8 +1611,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-基础数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setBasisQuantity(String value) {
 		this.setBasisQuantity(new Decimal(value));
@@ -1686,8 +1620,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-基础数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setBasisQuantity(int value) {
 		this.setBasisQuantity(new Decimal(value));
@@ -1696,8 +1629,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-基础数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setBasisQuantity(double value) {
 		this.setBasisQuantity(new Decimal(value));
@@ -1728,8 +1660,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-行标志号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineSign(String value) {
 		this.setProperty(PROPERTY_LINESIGN, value);
@@ -1760,8 +1691,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-父项行标志号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setParentLineSign(String value) {
 		this.setProperty(PROPERTY_PARENTLINESIGN, value);
@@ -1792,8 +1722,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-科目代码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setAccountCode(String value) {
 		this.setProperty(PROPERTY_ACCOUNTCODE, value);
@@ -1824,8 +1753,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-折扣前价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUnitPrice(Decimal value) {
 		this.setProperty(PROPERTY_UNITPRICE, value);
@@ -1834,8 +1762,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-折扣前价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUnitPrice(String value) {
 		this.setUnitPrice(new Decimal(value));
@@ -1844,8 +1771,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-折扣前价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUnitPrice(int value) {
 		this.setUnitPrice(new Decimal(value));
@@ -1854,8 +1780,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-折扣前价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUnitPrice(double value) {
 		this.setUnitPrice(new Decimal(value));
@@ -1886,8 +1811,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-税定义
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setTax(String value) {
 		this.setProperty(PROPERTY_TAX, value);
@@ -1918,8 +1842,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-税率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setTaxRate(Decimal value) {
 		this.setProperty(PROPERTY_TAXRATE, value);
@@ -1928,8 +1851,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-税率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setTaxRate(String value) {
 		this.setTaxRate(new Decimal(value));
@@ -1938,8 +1860,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-税率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setTaxRate(int value) {
 		this.setTaxRate(new Decimal(value));
@@ -1948,8 +1869,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-税率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setTaxRate(double value) {
 		this.setTaxRate(new Decimal(value));
@@ -1980,8 +1900,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-税总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setTaxTotal(Decimal value) {
 		this.setProperty(PROPERTY_TAXTOTAL, value);
@@ -1990,8 +1909,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-税总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setTaxTotal(String value) {
 		this.setTaxTotal(new Decimal(value));
@@ -2000,8 +1918,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-税总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setTaxTotal(int value) {
 		this.setTaxTotal(new Decimal(value));
@@ -2010,8 +1927,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-税总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setTaxTotal(double value) {
 		this.setTaxTotal(new Decimal(value));
@@ -2042,8 +1958,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-毛价
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setGrossPrice(Decimal value) {
 		this.setProperty(PROPERTY_GROSSPRICE, value);
@@ -2052,8 +1967,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-毛价
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setGrossPrice(String value) {
 		this.setGrossPrice(new Decimal(value));
@@ -2062,8 +1976,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-毛价
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setGrossPrice(int value) {
 		this.setGrossPrice(new Decimal(value));
@@ -2072,8 +1985,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-毛价
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setGrossPrice(double value) {
 		this.setGrossPrice(new Decimal(value));
@@ -2104,8 +2016,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-毛总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setGrossTotal(Decimal value) {
 		this.setProperty(PROPERTY_GROSSTOTAL, value);
@@ -2114,8 +2025,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-毛总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setGrossTotal(String value) {
 		this.setGrossTotal(new Decimal(value));
@@ -2124,8 +2034,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-毛总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setGrossTotal(int value) {
 		this.setGrossTotal(new Decimal(value));
@@ -2134,8 +2043,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-毛总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setGrossTotal(double value) {
 		this.setGrossTotal(new Decimal(value));
@@ -2166,8 +2074,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-毛利
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setGrossProfit(Decimal value) {
 		this.setProperty(PROPERTY_GROSSPROFIT, value);
@@ -2176,8 +2083,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-毛利
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setGrossProfit(String value) {
 		this.setGrossProfit(new Decimal(value));
@@ -2186,8 +2092,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-毛利
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setGrossProfit(int value) {
 		this.setGrossProfit(new Decimal(value));
@@ -2196,8 +2101,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-毛利
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setGrossProfit(double value) {
 		this.setGrossProfit(new Decimal(value));
@@ -2228,8 +2132,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-项目代码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setProject(String value) {
 		this.setProperty(PROPERTY_PROJECT, value);
@@ -2260,8 +2163,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-分配规则1
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDistributionRule1(String value) {
 		this.setProperty(PROPERTY_DISTRIBUTIONRULE1, value);
@@ -2292,8 +2194,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-分配规则2
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDistributionRule2(String value) {
 		this.setProperty(PROPERTY_DISTRIBUTIONRULE2, value);
@@ -2324,8 +2225,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-分配规则3
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDistributionRule3(String value) {
 		this.setProperty(PROPERTY_DISTRIBUTIONRULE3, value);
@@ -2356,8 +2256,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-分配规则4
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDistributionRule4(String value) {
 		this.setProperty(PROPERTY_DISTRIBUTIONRULE4, value);
@@ -2388,8 +2287,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-分配规则5
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDistributionRule5(String value) {
 		this.setProperty(PROPERTY_DISTRIBUTIONRULE5, value);
@@ -2421,8 +2319,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	/**
 	 * 设置-销售报价-行-额外信息集合
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setSalesQuoteItemExtras(ISalesQuoteItemExtras value) {
 		this.setProperty(PROPERTY_SALESQUOTEITEMEXTRAS, value);
@@ -2454,9 +2351,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_RATE), // 不能低于0
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_TAXRATE), // 不能低于0
 				// 推导 价格 = 折扣前价格 * 折扣
-				new BusinessRuleMultiplicativeDeduction(PROPERTY_DISCOUNT, PROPERTY_UNITPRICE, PROPERTY_PRICE),
-				// 计算价格 = 折扣前价格 * 折扣
-				new BusinessRuleMultiplication(PROPERTY_PRICE, PROPERTY_UNITPRICE, PROPERTY_DISCOUNT),
+				new BusinessRuleMultiplicativeDeductionEx(PROPERTY_DISCOUNT, PROPERTY_UNITPRICE, PROPERTY_PRICE),
 				// 计算总计 = 数量 * 价格
 				new BusinessRuleMultiplication(PROPERTY_LINETOTAL, PROPERTY_QUANTITY, PROPERTY_PRICE),
 				// 计算毛价 = 价格 * 税率
