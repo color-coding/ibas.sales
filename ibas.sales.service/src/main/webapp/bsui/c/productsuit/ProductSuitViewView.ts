@@ -51,7 +51,7 @@ namespace sales {
                                     press: function (event: any): void {
                                         ibas.servicesManager.showServices({
                                             proxy: new ibas.BOServiceProxy({
-                                                data: (<any>that.form.getModel()).getObject(),
+                                                data: (<any>that.form.getModel()).getData(),
                                                 converter: new bo.DataConverter(),
                                             }),
                                             displayServices(services: ibas.IServiceAgent[]): void {
