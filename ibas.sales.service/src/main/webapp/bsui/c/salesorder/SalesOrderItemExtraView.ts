@@ -164,9 +164,9 @@ namespace sales {
                     builder.append(data.lineId);
                     builder.append(", ");
                     builder.append(data.itemCode);
-                    builder.append(", ");
+                    builder.append("-");
                     builder.append(data.itemDescription);
-                    builder.append(", ");
+                    builder.append(" * ");
                     builder.append(data.quantity ? data.quantity : 0);
                     builder.append(data.uom);
                     this.input.setValue(builder.toString());

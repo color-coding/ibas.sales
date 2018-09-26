@@ -8,7 +8,7 @@
 namespace sales {
     export namespace bo {
         /** 销售退货 */
-        export class SalesReturn extends ibas.BODocument<SalesReturn> implements ISalesReturn {
+        export class SalesReturn extends ibas.BODocument<SalesReturn> implements ISalesReturn, ibas.IConvertedData {
 
             /** 业务对象编码 */
             static BUSINESS_OBJECT_CODE: string = BO_CODE_SALESRETURN;
@@ -616,6 +616,18 @@ namespace sales {
                         SalesReturn.PROPERTY_DOCUMENTTOTAL_NAME, SalesReturn.PROPERTY_DISCOUNTTOTAL_NAME,
                         SalesReturn.PROPERTY_ITEMSTAXTOTAL_NAME, SalesReturn.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME),
                 ];
+            }
+            /** 转换之前 */
+            beforeConvert(): void { }
+            /** 数据解析后 */
+            afterParsing(): void {
+                // 计算部分业务逻辑
+                for (let rule of ibas.businessRulesManager.getRules(ibas.objects.getType(this))) {
+                    if (!(rule instanceof ibas.BusinessRuleSumElements)) {
+                        continue;
+                    }
+                    rule.execute(this);
+                }
             }
             /** 基于销售订单 */
             baseDocument(document: ISalesOrder): void;

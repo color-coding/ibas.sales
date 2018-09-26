@@ -8,7 +8,7 @@
 namespace sales {
     export namespace bo {
         /** 销售订单 */
-        export class SalesQuote extends ibas.BODocument<SalesQuote> implements ISalesQuote {
+        export class SalesQuote extends ibas.BODocument<SalesQuote> implements ISalesQuote, ibas.IConvertedData {
 
             /** 业务对象编码 */
             static BUSINESS_OBJECT_CODE: string = BO_CODE_SALESQUOTE;
@@ -588,6 +588,18 @@ namespace sales {
                     new ibas.BusinessRuleSummation(
                         SalesQuote.PROPERTY_DOCUMENTTOTAL_NAME, SalesQuote.PROPERTY_DISCOUNTTOTAL_NAME, SalesQuote.PROPERTY_ITEMSTAXTOTAL_NAME),
                 ];
+            }
+            /** 转换之前 */
+            beforeConvert(): void { }
+            /** 数据解析后 */
+            afterParsing(): void {
+                // 计算部分业务逻辑
+                for (let rule of ibas.businessRulesManager.getRules(ibas.objects.getType(this))) {
+                    if (!(rule instanceof ibas.BusinessRuleSumElements)) {
+                        continue;
+                    }
+                    rule.execute(this);
+                }
             }
         }
 

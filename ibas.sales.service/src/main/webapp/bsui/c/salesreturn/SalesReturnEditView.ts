@@ -322,6 +322,16 @@ namespace sales {
                                 })
                             }),
                             new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_salesreturnitem_unitprice"),
+                                template: new sap.m.Text("", {
+                                    width: "100%",
+                                    wrapping: false
+                                }).bindProperty("text", {
+                                    path: "unitPrice",
+                                    type: new openui5.datatype.Price(),
+                                })
+                            }),
+                            new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_salesreturnitem_price"),
                                 template: new sap.m.Input("", {
                                     width: "100%",
