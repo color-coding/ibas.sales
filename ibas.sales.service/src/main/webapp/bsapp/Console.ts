@@ -18,6 +18,8 @@
 
 namespace sales {
     export namespace app {
+        /** 附件信息-文档附件 */
+        export const EXTRA_ATTACHMENT: string = "__ATTACHMENT__";
         /** 模块控制台 */
         export class Console extends ibas.ModuleConsole {
             /** 构造函数 */

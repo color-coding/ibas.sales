@@ -159,22 +159,17 @@ namespace sales {
                                     }
                                 }),
                                 new sap.m.ToolbarSeparator(""),
-                                new sap.m.MenuButton("", {
+                                new sap.m.Button("", {
                                     text: ibas.i18n.prop("sales_extra_information"),
-                                    menu: new sap.m.Menu("", {
-                                        items: [
-                                            new sap.m.MenuItem("", {
-                                                text: ibas.i18n.prop("bo_productspecification"),
-                                                press: function (): void {
-                                                    that.fireViewEvents(that.showSalesQuoteItemExtraEvent,
-                                                        // 获取表格选中的对象
-                                                        openui5.utils.getSelecteds<bo.SalesQuoteItem>(that.tableSalesQuoteItem).firstOrDefault()
-                                                    );
-                                                }
-                                            }),
-                                        ]
-                                    })
-                                })
+                                    type: sap.m.ButtonType.Transparent,
+                                    icon: "sap-icon://sap-box",
+                                    press: function (): void {
+                                        that.fireViewEvents(that.showSalesQuoteItemExtraEvent,
+                                            // 获取表格选中的对象
+                                            openui5.utils.getSelecteds<bo.SalesQuoteItem>(that.tableSalesQuoteItem).firstOrDefault()
+                                        );
+                                    }
+                                }),
                             ]
                         }),
                         enableSelectAll: false,

@@ -23,6 +23,23 @@ namespace sales {
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
+                    this.uploader = new sap.ui.unified.FileUploader("", {
+                        buttonOnly: true,
+                        iconOnly: true,
+                        multiple: false,
+                        uploadOnChange: false,
+                        width: "auto",
+                        style: "Transparent",
+                        change: function (oEvent: sap.ui.base.Event): void {
+                            let files: File[] = oEvent.getParameter("files");
+                            if (ibas.objects.isNull(files) || files.length === 0) {
+                                return;
+                            }
+                            let fileData: FormData = new FormData();
+                            fileData.append("file", files[0]);
+                            that.fireViewEvents(that.addSalesQuoteItemExtraEvent, fileData);
+                        },
+                    });
                     this.table = new sap.ui.table.Table("", {
                         toolbar: new sap.m.Toolbar("", {
                             content: [
@@ -36,6 +53,12 @@ namespace sales {
                                                 text: ibas.i18n.prop("bo_productspecification"),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.addSalesQuoteItemExtraEvent, bo.ProductSpecification.BUSINESS_OBJECT_CODE);
+                                                }
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("sales_extra_attachment"),
+                                                press: function (): void {
+                                                    document.getElementById(that.uploader.getId() + "-fu").click();
                                                 }
                                             }),
                                         ]
@@ -64,6 +87,8 @@ namespace sales {
                                         );
                                     }
                                 }),
+                                new sap.m.ToolbarSpacer(""),
+                                this.uploader,
                             ]
                         }),
                         enableSelectAll: false,
@@ -93,6 +118,9 @@ namespace sales {
                                 }).bindProperty("text", {
                                     path: "extraType",
                                     formatter(data: any): any {
+                                        if (data === app.EXTRA_ATTACHMENT) {
+                                            return ibas.i18n.prop("sales_extra_attachment");
+                                        }
                                         return ibas.businessobjects.describe(data);
                                     }
                                 })
@@ -103,6 +131,19 @@ namespace sales {
                                     wrapping: false,
                                 }).bindProperty("text", {
                                     path: "extraKey",
+                                    formatter(data: any): any {
+                                        if (ibas.objects.isNull(this.getBindingContext())) {
+                                            return data;
+                                        }
+                                        let bindingdata: bo.SalesQuoteItemExtra = this.getBindingContext().getObject();
+                                        if (ibas.objects.isNull(bindingdata)) {
+                                            return data;
+                                        }
+                                        if (bindingdata.extraType === app.EXTRA_ATTACHMENT) {
+                                            return bindingdata.note;
+                                        }
+                                        return data;
+                                    }
                                 })
                             }),
                             new sap.ui.table.Column("", {
@@ -155,6 +196,7 @@ namespace sales {
                 }
                 private input: sap.m.Input;
                 private table: sap.ui.table.Table;
+                private uploader: sap.ui.unified.FileUploader;
                 /** 显示数据 */
                 showData(data: bo.SalesQuoteItem): void {
                     let builder: ibas.StringBuilder = new ibas.StringBuilder();

@@ -47,6 +47,7 @@
   "sales_material_batch": "物料批次",
   "sales_material_serial": "物料序列",
   "sales_extra_information": "额外信息",
+  "sales_extra_attachment": "文档附件",
   "sales_payment": "付款",
   "sales_paymented": "付款已完成",
   "sales_receipt": "收款",

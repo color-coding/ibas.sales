@@ -195,6 +195,7 @@ namespace sales {
                                 }),
                                 new sap.m.ToolbarSeparator(""),
                                 new sap.m.MenuButton("", {
+                                    icon: "sap-icon://tags",
                                     text: ibas.strings.format("{0}/{1}",
                                         ibas.i18n.prop("sales_material_batch"), ibas.i18n.prop("sales_material_serial")),
                                     menu: new sap.m.Menu("", {
@@ -215,21 +216,16 @@ namespace sales {
                                     })
                                 }),
                                 new sap.m.ToolbarSeparator(""),
-                                new sap.m.MenuButton("", {
+                                new sap.m.Button("", {
                                     text: ibas.i18n.prop("sales_extra_information"),
-                                    menu: new sap.m.Menu("", {
-                                        items: [
-                                            new sap.m.MenuItem("", {
-                                                text: ibas.i18n.prop("bo_productspecification"),
-                                                press: function (): void {
-                                                    that.fireViewEvents(that.showSalesOrderItemExtraEvent,
-                                                        // 获取表格选中的对象
-                                                        openui5.utils.getSelecteds<bo.SalesOrderItem>(that.tableSalesOrderItem).firstOrDefault()
-                                                    );
-                                                }
-                                            }),
-                                        ]
-                                    })
+                                    type: sap.m.ButtonType.Transparent,
+                                    icon: "sap-icon://sap-box",
+                                    press: function (): void {
+                                        that.fireViewEvents(that.showSalesOrderItemExtraEvent,
+                                            // 获取表格选中的对象
+                                            openui5.utils.getSelecteds<bo.SalesOrderItem>(that.tableSalesOrderItem).firstOrDefault()
+                                        );
+                                    }
                                 }),
                                 new sap.m.ToolbarSpacer(""),
                                 new sap.m.Label("", {

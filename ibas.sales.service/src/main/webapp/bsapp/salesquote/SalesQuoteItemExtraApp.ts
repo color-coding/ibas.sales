@@ -48,7 +48,7 @@ namespace sales {
             }
             private editData: bo.SalesQuoteItem;
             /** 添加销售报价-行事件 */
-            private addSalesQuoteItemExtra(type: string): void {
+            private addSalesQuoteItemExtra(type: string | FormData): void {
                 if (type === bo.ProductSpecification.BUSINESS_OBJECT_CODE) {
                     let that: this = this;
                     this.messages({
@@ -90,6 +90,30 @@ namespace sales {
                                     }
                                 });
 
+                            }
+                        }
+                    });
+                } else if (type instanceof FormData) {
+                    let that: this = this;
+                    let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
+                    boRepository.upload({
+                        fileData: type,
+                        onCompleted(opRslt: ibas.IOperationResult<ibas.FileData>): void {
+                            try {
+                                if (opRslt.resultCode !== 0) {
+                                    throw new Error(opRslt.message);
+                                }
+                                that.proceeding(ibas.emMessageType.INFORMATION,
+                                    ibas.i18n.prop("shell_upload") + ibas.i18n.prop("shell_sucessful"));
+                                let fileData: ibas.FileData = opRslt.resultObjects.firstOrDefault();
+                                let item: bo.SalesQuoteItemExtra = that.editData.salesQuoteItemExtras.create();
+                                item.extraType = EXTRA_ATTACHMENT;
+                                item.extraKey = -1;
+                                item.note = fileData.fileName;
+                                item.quantity = 1;
+                                that.view.showExtraDatas(that.editData.salesQuoteItemExtras.filterDeleted());
+                            } catch (error) {
+                                that.messages(error);
                             }
                         }
                     });
@@ -200,6 +224,31 @@ namespace sales {
                     app.navigation = this.navigation;
                     app.viewShower = this.viewShower;
                     app.run(data.extraKey.toString());
+                } else if (data.extraType === EXTRA_ATTACHMENT) {
+                    let criteria: ibas.ICriteria = new ibas.Criteria();
+                    let condition: ibas.ICondition = criteria.conditions.create();
+                    condition.alias = ibas.CRITERIA_CONDITION_ALIAS_FILE_NAME;
+                    condition.value = data.note;
+                    let that: this = this;
+                    let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
+                    boRepository.download({
+                        criteria: criteria,
+                        onCompleted(opRslt: ibas.IOperationResult<Blob>): void {
+                            try {
+                                that.busy(false);
+                                if (opRslt.resultCode !== 0) {
+                                    throw new Error(opRslt.message);
+                                }
+                                let data: Blob = opRslt.resultObjects.firstOrDefault();
+                                if (!ibas.objects.isNull(data)) {
+                                    ibas.files.save(data, ibas.strings.format("{0}_{1}_{2}_{3}",
+                                        ibas.objects.getTypeName(that.editData), that.editData.docEntry, that.editData.lineId, condition.value));
+                                }
+                            } catch (error) {
+                                that.messages(error);
+                            }
+                        }
+                    });
                 } else {
                     throw new Error(ibas.i18n.prop("sales_unrecognized_extra_information"));
                 }
