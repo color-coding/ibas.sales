@@ -26,8 +26,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-编码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDocEntry(Integer value);
 
@@ -41,8 +40,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-行号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLineId(Integer value);
 
@@ -56,8 +54,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-显示顺序
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setVisOrder(Integer value);
 
@@ -71,8 +68,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectCode(String value);
 
@@ -86,8 +82,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-实例号（版本）
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLogInst(Integer value);
 
@@ -101,8 +96,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDataSource(String value);
 
@@ -116,8 +110,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-取消
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCanceled(emYesNo value);
 
@@ -131,8 +124,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-状态
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setStatus(emBOStatus value);
 
@@ -146,8 +138,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-单据状态
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLineStatus(emDocumentStatus value);
 
@@ -161,8 +152,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateDate(DateTime value);
 
@@ -176,8 +166,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateTime(Short value);
 
@@ -191,8 +180,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-修改日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateDate(DateTime value);
 
@@ -206,8 +194,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-修改时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateTime(Short value);
 
@@ -221,8 +208,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateUserSign(Integer value);
 
@@ -236,8 +222,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-修改用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateUserSign(Integer value);
 
@@ -251,8 +236,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateActionId(String value);
 
@@ -266,8 +250,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateActionId(String value);
 
@@ -281,8 +264,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-参考1
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setReference1(String value);
 
@@ -296,8 +278,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-参考2
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setReference2(String value);
 
@@ -311,8 +292,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-已引用
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setReferenced(emYesNo value);
 
@@ -326,8 +306,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-已删除
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDeleted(emYesNo value);
 
@@ -341,8 +320,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-基于类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setBaseDocumentType(String value);
 
@@ -356,8 +334,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-基于标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setBaseDocumentEntry(Integer value);
 
@@ -371,8 +348,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-基于行号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setBaseDocumentLineId(Integer value);
 
@@ -386,8 +362,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-原始类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setOriginalDocumentType(String value);
 
@@ -401,8 +376,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-原始标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setOriginalDocumentEntry(Integer value);
 
@@ -416,8 +390,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-原始行号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setOriginalDocumentLineId(Integer value);
 
@@ -431,8 +404,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-产品编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setItemCode(String value);
 
@@ -446,8 +418,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-产品/服务描述
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setItemDescription(String value);
 
@@ -461,8 +432,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-序号管理
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setSerialManagement(emYesNo value);
 
@@ -476,8 +446,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-批号管理
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setBatchManagement(emYesNo value);
 
@@ -491,32 +460,28 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setQuantity(Decimal value);
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setQuantity(String value);
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setQuantity(int value);
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setQuantity(double value);
 
@@ -530,8 +495,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-单位
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUOM(String value);
 
@@ -545,8 +509,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-仓库
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setWarehouse(String value);
 
@@ -560,32 +523,28 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPrice(Decimal value);
 
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPrice(String value);
 
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPrice(int value);
 
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPrice(double value);
 
@@ -599,8 +558,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-货币
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCurrency(String value);
 
@@ -614,32 +572,28 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-汇率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setRate(Decimal value);
 
 	/**
 	 * 设置-汇率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setRate(String value);
 
 	/**
 	 * 设置-汇率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setRate(int value);
 
 	/**
 	 * 设置-汇率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setRate(double value);
 
@@ -653,32 +607,28 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-行总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLineTotal(Decimal value);
 
 	/**
 	 * 设置-行总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLineTotal(String value);
 
 	/**
 	 * 设置-行总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLineTotal(int value);
 
 	/**
 	 * 设置-行总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLineTotal(double value);
 
@@ -692,8 +642,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-行交货日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDeliveryDate(DateTime value);
 
@@ -707,32 +656,28 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-已清数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setClosedQuantity(Decimal value);
 
 	/**
 	 * 设置-已清数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setClosedQuantity(String value);
 
 	/**
 	 * 设置-已清数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setClosedQuantity(int value);
 
 	/**
 	 * 设置-已清数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setClosedQuantity(double value);
 
@@ -746,32 +691,28 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-行折扣
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDiscount(Decimal value);
 
 	/**
 	 * 设置-行折扣
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDiscount(String value);
 
 	/**
 	 * 设置-行折扣
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDiscount(int value);
 
 	/**
 	 * 设置-行折扣
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDiscount(double value);
 
@@ -785,32 +726,28 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-已清金额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setClosedAmount(Decimal value);
 
 	/**
 	 * 设置-已清金额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setClosedAmount(String value);
 
 	/**
 	 * 设置-已清金额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setClosedAmount(int value);
 
 	/**
 	 * 设置-已清金额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setClosedAmount(double value);
 
@@ -824,8 +761,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-产品类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTreeType(emProductTreeType value);
 
@@ -839,32 +775,28 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-基础数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setBasisQuantity(Decimal value);
 
 	/**
 	 * 设置-基础数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setBasisQuantity(String value);
 
 	/**
 	 * 设置-基础数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setBasisQuantity(int value);
 
 	/**
 	 * 设置-基础数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setBasisQuantity(double value);
 
@@ -878,8 +810,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-行标志号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLineSign(String value);
 
@@ -893,8 +824,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-父项行标志号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setParentLineSign(String value);
 
@@ -908,8 +838,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-科目代码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setAccountCode(String value);
 
@@ -923,32 +852,28 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-折扣前价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUnitPrice(Decimal value);
 
 	/**
 	 * 设置-折扣前价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUnitPrice(String value);
 
 	/**
 	 * 设置-折扣前价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUnitPrice(int value);
 
 	/**
 	 * 设置-折扣前价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUnitPrice(double value);
 
@@ -962,8 +887,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-税定义
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTax(String value);
 
@@ -977,32 +901,28 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-税率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTaxRate(Decimal value);
 
 	/**
 	 * 设置-税率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTaxRate(String value);
 
 	/**
 	 * 设置-税率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTaxRate(int value);
 
 	/**
 	 * 设置-税率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTaxRate(double value);
 
@@ -1016,32 +936,28 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-税总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTaxTotal(Decimal value);
 
 	/**
 	 * 设置-税总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTaxTotal(String value);
 
 	/**
 	 * 设置-税总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTaxTotal(int value);
 
 	/**
 	 * 设置-税总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTaxTotal(double value);
 
@@ -1055,32 +971,28 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-毛价
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossPrice(Decimal value);
 
 	/**
 	 * 设置-毛价
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossPrice(String value);
 
 	/**
 	 * 设置-毛价
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossPrice(int value);
 
 	/**
 	 * 设置-毛价
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossPrice(double value);
 
@@ -1094,32 +1006,28 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-毛总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossTotal(Decimal value);
 
 	/**
 	 * 设置-毛总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossTotal(String value);
 
 	/**
 	 * 设置-毛总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossTotal(int value);
 
 	/**
 	 * 设置-毛总额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossTotal(double value);
 
@@ -1133,49 +1041,30 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-毛利
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossProfit(Decimal value);
 
 	/**
 	 * 设置-毛利
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossProfit(String value);
 
 	/**
 	 * 设置-毛利
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossProfit(int value);
 
 	/**
 	 * 设置-毛利
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossProfit(double value);
-
-	/**
-	 * 获取-项目代码
-	 * 
-	 * @return 值
-	 */
-	String getProject();
-
-	/**
-	 * 设置-项目代码
-	 * 
-	 * @param value
-	 *            值
-	 */
-	void setProject(String value);
 
 	/**
 	 * 获取-分配规则1
@@ -1187,8 +1076,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-分配规则1
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDistributionRule1(String value);
 
@@ -1202,8 +1090,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-分配规则2
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDistributionRule2(String value);
 
@@ -1217,8 +1104,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-分配规则3
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDistributionRule3(String value);
 
@@ -1232,8 +1118,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-分配规则4
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDistributionRule4(String value);
 
@@ -1247,8 +1132,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-分配规则5
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDistributionRule5(String value);
 
@@ -1262,8 +1146,7 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	/**
 	 * 设置-销售订单-行-额外信息集合
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setSalesOrderItemExtras(ISalesOrderItemExtras value);
 }

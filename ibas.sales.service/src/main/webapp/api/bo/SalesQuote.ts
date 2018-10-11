@@ -329,9 +329,6 @@ namespace sales {
             /** 毛利 */
             grossProfit: number;
 
-            /** 项目代码 */
-            project: string;
-
             /** 分配规则1 */
             distributionRule1: string;
 

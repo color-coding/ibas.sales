@@ -105,7 +105,6 @@
     <Property Name="GrossPrice" Description="毛价" DataType="Decimal" DataSubType="Price" EditSize="8" Mapped="GrossPrice"/>
     <Property Name="GrossTotal" Description="毛总额" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="GrossTotal"/>
     <Property Name="GrossProfit" Description="毛利" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="GrossProfit"/>
-    <Property Name="Project" Description="项目代码" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Project"/>
     <Property Name="DistributionRule1" Description="分配规则1" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OcrCode1"/>
     <Property Name="DistributionRule2" Description="分配规则2" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OcrCode2"/>
     <Property Name="DistributionRule3" Description="分配规则3" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OcrCode3"/>

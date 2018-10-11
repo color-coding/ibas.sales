@@ -2123,37 +2123,6 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 	}
 
 	/**
-	 * 属性名称-项目代码
-	 */
-	private static final String PROPERTY_PROJECT_NAME = "Project";
-
-	/**
-	 * 项目代码 属性
-	 */
-	@DbField(name = "Project", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_PROJECT = registerProperty(PROPERTY_PROJECT_NAME, String.class,
-			MY_CLASS);
-
-	/**
-	 * 获取-项目代码
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_PROJECT_NAME)
-	public final String getProject() {
-		return this.getProperty(PROPERTY_PROJECT);
-	}
-
-	/**
-	 * 设置-项目代码
-	 * 
-	 * @param value 值
-	 */
-	public final void setProject(String value) {
-		this.setProperty(PROPERTY_PROJECT, value);
-	}
-
-	/**
 	 * 属性名称-分配规则1
 	 */
 	private static final String PROPERTY_DISTRIBUTIONRULE1_NAME = "DistributionRule1";

@@ -574,7 +574,6 @@ namespace sales {
                         myItem.distributionRule3 = item.distributionRule3;
                         myItem.distributionRule4 = item.distributionRule4;
                         myItem.distributionRule5 = item.distributionRule5;
-                        myItem.project = item.project;
                         myItem.itemCode = item.itemCode;
                         myItem.itemDescription = item.itemDescription;
                         myItem.batchManagement = item.batchManagement;
@@ -1323,17 +1322,6 @@ namespace sales {
             /** 设置-毛利 */
             set grossProfit(value: number) {
                 this.setProperty(SalesOrderItem.PROPERTY_GROSSPROFIT_NAME, value);
-            }
-
-            /** 映射的属性名称-项目代码 */
-            static PROPERTY_PROJECT_NAME: string = "Project";
-            /** 获取-项目代码 */
-            get project(): string {
-                return this.getProperty<string>(SalesOrderItem.PROPERTY_PROJECT_NAME);
-            }
-            /** 设置-项目代码 */
-            set project(value: string) {
-                this.setProperty(SalesOrderItem.PROPERTY_PROJECT_NAME, value);
             }
 
             /** 映射的属性名称-分配规则1 */

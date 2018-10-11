@@ -1246,17 +1246,6 @@ namespace sales {
                 this.setProperty(SalesQuoteItem.PROPERTY_GROSSPROFIT_NAME, value);
             }
 
-            /** 映射的属性名称-项目代码 */
-            static PROPERTY_PROJECT_NAME: string = "Project";
-            /** 获取-项目代码 */
-            get project(): string {
-                return this.getProperty<string>(SalesQuoteItem.PROPERTY_PROJECT_NAME);
-            }
-            /** 设置-项目代码 */
-            set project(value: string) {
-                this.setProperty(SalesQuoteItem.PROPERTY_PROJECT_NAME, value);
-            }
-
             /** 映射的属性名称-分配规则1 */
             static PROPERTY_DISTRIBUTIONRULE1_NAME: string = "DistributionRule1";
             /** 获取-分配规则1 */
