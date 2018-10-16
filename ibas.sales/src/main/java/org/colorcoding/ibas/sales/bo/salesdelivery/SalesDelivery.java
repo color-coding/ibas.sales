@@ -24,6 +24,7 @@ import org.colorcoding.ibas.bobas.mapping.BOCode;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
+import org.colorcoding.ibas.bobas.period.IPeriodData;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMultiplication;
@@ -32,7 +33,7 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSummation;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
-import org.colorcoding.ibas.initialfantasy.data.IProjectData;
+import org.colorcoding.ibas.finance.data.IProjectData;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
@@ -47,7 +48,7 @@ import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
 @XmlRootElement(name = SalesDelivery.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BOCode(SalesDelivery.BUSINESS_OBJECT_CODE)
 public class SalesDelivery extends BusinessObject<SalesDelivery> implements ISalesDelivery, IDataOwnership,
-		IApprovalData, IProjectData, IBOTagDeleted, IBusinessLogicsHost, IBOUserFields {
+		IApprovalData, IPeriodData, IProjectData, IBOTagDeleted, IBusinessLogicsHost, IBOUserFields {
 
 	/**
 	 * 序列化版本标记

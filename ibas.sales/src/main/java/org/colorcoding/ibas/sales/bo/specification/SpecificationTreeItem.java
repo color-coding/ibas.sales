@@ -95,7 +95,7 @@ public class SpecificationTreeItem extends Serializable {
 	}
 
 	@XmlElementWrapper(name = "VaildValues")
-	@XmlElement(name = "VaildValues", type = KeyText.class)
+	@XmlElement(name = "VaildValue", type = KeyText.class)
 	private ArrayList<KeyText> vaildValues;
 
 	public final List<KeyText> getVaildValues() {
@@ -106,7 +106,7 @@ public class SpecificationTreeItem extends Serializable {
 	}
 
 	@XmlElementWrapper(name = "Items")
-	@XmlElement(name = "Items", type = SpecificationTreeItem.class)
+	@XmlElement(name = "Item", type = SpecificationTreeItem.class)
 	private ArrayList<SpecificationTreeItem> items;
 
 	public final List<SpecificationTreeItem> getItems() {

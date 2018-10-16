@@ -28,7 +28,7 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSummation;
-import org.colorcoding.ibas.initialfantasy.data.IProjectData;
+import org.colorcoding.ibas.finance.data.IProjectData;
 import org.colorcoding.ibas.sales.MyConfiguration;
 
 /**

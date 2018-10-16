@@ -333,6 +333,20 @@ namespace sales {
                                 })
                             }),
                             new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_salesdeliveryitem_discount"),
+                                template: new sap.m.Input("", {
+                                    width: "100%",
+                                }).bindProperty("value", {
+                                    path: "discount",
+                                    type: new openui5.datatype.Percentage(),
+                                }).bindProperty("enabled", {
+                                    path: "parentLineSign",
+                                    formatter(data: any): any {
+                                        return ibas.strings.isEmpty(data);
+                                    }
+                                })
+                            }),
+                            new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_salesdeliveryitem_price"),
                                 template: new sap.m.Input("", {
                                     width: "100%",

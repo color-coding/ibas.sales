@@ -123,6 +123,9 @@ namespace businesspartner {
 
             /** 所属渠道 */
             channel: string;
+
+            /** 组织单位 */
+            organizationalUnit: string;
         }
     }
 

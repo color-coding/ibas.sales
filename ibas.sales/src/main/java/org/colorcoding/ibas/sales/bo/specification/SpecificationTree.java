@@ -111,7 +111,7 @@ public class SpecificationTree extends Serializable {
 	}
 
 	@XmlElementWrapper(name = "Items")
-	@XmlElement(name = "Items", type = SpecificationTreeItem.class)
+	@XmlElement(name = "Item", type = SpecificationTreeItem.class)
 	private ArrayList<SpecificationTreeItem> items;
 
 	public final List<SpecificationTreeItem> getItems() {
