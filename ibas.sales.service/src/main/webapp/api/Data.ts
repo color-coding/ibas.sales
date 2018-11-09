@@ -68,7 +68,7 @@ namespace sales {
     export namespace app {
         /** 规格服务契约 */
         export interface ISpecificationTreeContract extends ibas.IServiceContract {
-            /** 目标（物料编号或产品规格） */
+            /** 目标（物料编码或产品规格） */
             target: string | bo.IProductSpecification;
             /** 备注 */
             remarks?: string;

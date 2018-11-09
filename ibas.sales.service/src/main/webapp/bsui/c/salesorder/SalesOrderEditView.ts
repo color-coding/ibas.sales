@@ -94,7 +94,7 @@ namespace sales {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_ordertype") }),
                             new sap.m.ex.SmartField("", {
                                 width: "100%",
-                                boType: bo.SalesOrder.name,
+                                boCode: ibas.config.applyVariables(bo.SalesOrder.BUSINESS_OBJECT_CODE),
                                 propertyName: "OrderType",
                                 bindingValue: {
                                     path: "orderType"
@@ -605,9 +605,9 @@ namespace sales {
                     // 绘制自定义字段显示布局
                     openui5.utils.drawUserFieldPage(this.page, this.layoutMain);
                     // 主布局加载自定义自段
-                    openui5.utils.loadUserFields(this.page, bo.SalesOrder);
+                    openui5.utils.loadUserFields(this.page, bo.SalesOrder.BUSINESS_OBJECT_CODE);
                     // 列表加载自定义自段
-                    openui5.utils.loadUserFields(this.tableSalesOrderItem, bo.SalesOrderItem);
+                    openui5.utils.loadUserFields(this.tableSalesOrderItem, bo.SalesOrder.BUSINESS_OBJECT_CODE, bo.SalesOrderItem.name);
                     return this.page;
                 }
 

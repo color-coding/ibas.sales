@@ -76,6 +76,18 @@ namespace sales {
                                 })
                             }),
                             new sap.ui.table.Column("", {
+                                label: ibas.i18n.prop("bo_salesreturn_documentdate"),
+                                template: new sap.m.Text("", {
+                                    wrapping: false,
+                                }).bindProperty("text", {
+                                    path: "documentDate",
+                                    type: new sap.ui.model.type.Date({
+                                        pattern: "yyyy-MM-dd",
+                                        strictParsing: true,
+                                    })
+                                }),
+                            }),
+                            new sap.ui.table.Column("", {
                                 label: ibas.i18n.prop("bo_salesreturn_deliverydate"),
                                 template: new sap.m.Text("", {
                                     wrapping: false,
@@ -149,7 +161,7 @@ namespace sales {
                         }
                     });
                     // 列表加载自定义字段
-                    openui5.utils.loadUserFields(this.table, bo.SalesReturn, true);
+                    openui5.utils.loadUserFields(this.table, bo.SalesReturn.BUSINESS_OBJECT_CODE, true);
                     return new sap.m.Dialog("", {
                         title: this.title,
                         type: sap.m.DialogType.Standard,

@@ -31,8 +31,7 @@ import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItems;
 import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItems;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
-import org.colorcoding.ibas.materials.logic.IMaterialCommitedContract;
-import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCommitedContract;
+import org.colorcoding.ibas.materials.logic.IMaterialCommitedJournalContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
 
@@ -2428,25 +2427,7 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 		if (this.getLineStatus() == emDocumentStatus.RELEASED) {
 			return new IBusinessLogicContract[] {
 
-					new IMaterialCommitedContract() {
-
-						@Override
-						public String getIdentifiers() {
-							return SalesOrderItem.this.getIdentifiers();
-						}
-
-						@Override
-						public String getItemCode() {
-							return SalesOrderItem.this.getItemCode();
-						}
-
-						@Override
-						public Decimal getQuantity() {
-							// 承诺数量 = 订单数量 - 已交货数量
-							return SalesOrderItem.this.getQuantity().subtract(SalesOrderItem.this.getClosedQuantity());
-						}
-
-					}, new IMaterialWarehouseCommitedContract() {
+					new IMaterialCommitedJournalContract() {
 
 						@Override
 						public String getIdentifiers() {
@@ -2465,8 +2446,23 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 
 						@Override
 						public Decimal getQuantity() {
-							// 承诺数量 = 订单数量 - 已交货数量
+							// 订购数量 = 订单数量 - 已交货数量
 							return SalesOrderItem.this.getQuantity().subtract(SalesOrderItem.this.getClosedQuantity());
+						}
+
+						@Override
+						public String getDocumentType() {
+							return SalesOrderItem.this.getObjectCode();
+						}
+
+						@Override
+						public Integer getDocumentEntry() {
+							return SalesOrderItem.this.getDocEntry();
+						}
+
+						@Override
+						public Integer getDocumentLineId() {
+							return SalesOrderItem.this.getLineId();
 						}
 
 					}

@@ -92,7 +92,7 @@ namespace sales {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_ordertype") }),
                             new sap.m.ex.SmartField("", {
                                 width: "100%",
-                                boType: bo.SalesReturn.name,
+                                boCode: ibas.config.applyVariables(bo.SalesReturn.BUSINESS_OBJECT_CODE),
                                 propertyName: "OrderType",
                                 bindingValue: {
                                     path: "orderType"
@@ -588,9 +588,9 @@ namespace sales {
                     // 绘制自定义字段显示布局
                     openui5.utils.drawUserFieldPage(this.page, this.layoutMain);
                     // 主布局加载自定义自段
-                    openui5.utils.loadUserFields(this.page, bo.SalesReturn);
+                    openui5.utils.loadUserFields(this.page, bo.SalesReturn.BUSINESS_OBJECT_CODE);
                     // 列表加载自定义自段
-                    openui5.utils.loadUserFields(this.tableSalesReturnItem, bo.SalesReturnItem);
+                    openui5.utils.loadUserFields(this.tableSalesReturnItem, bo.SalesReturn.BUSINESS_OBJECT_CODE, bo.SalesReturnItem.name);
                     return this.page;
                 }
 
