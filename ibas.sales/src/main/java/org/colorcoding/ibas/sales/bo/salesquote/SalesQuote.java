@@ -22,6 +22,7 @@ import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleDocumentStatus;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMultiplication;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
@@ -1824,6 +1825,8 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DOCUMENTRATE), // 不能低于0
 				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_PAIDTOTAL), // 不能低于0
 				new BusinessRuleRequiredElements(PROPERTY_SALESQUOTEITEMS), // 要求有元素
+				new BusinessRuleDocumentStatus(PROPERTY_DOCUMENTSTATUS, PROPERTY_SALESQUOTEITEMS,
+						SalesQuoteItem.PROPERTY_LINESTATUS), // 使用集合元素状态
 				new BusinessRuleSumElements(PROPERTY_ITEMSLINETOTAL, PROPERTY_SALESQUOTEITEMS,
 						SalesQuoteItem.PROPERTY_LINETOTAL), // 计算项目-行总计
 				new BusinessRuleSumElements(PROPERTY_ITEMSTAXTOTAL, PROPERTY_SALESQUOTEITEMS,
