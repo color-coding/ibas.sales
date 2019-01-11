@@ -9,7 +9,7 @@ namespace sales {
     export namespace ui {
         export namespace c {
             /** 编辑视图-送货地址 */
-            export class ShippingAddressesEditView extends ibas.BODialogView implements app.IShippingAddressesEditView {
+            export class ShippingAddressesEditView extends ibas.DialogView implements app.IShippingAddressesEditView {
                 /** 删除数据事件 */
                 deleteDataEvent: Function;
                 /** 新建数据事件，参数1：是否克隆 */

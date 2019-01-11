@@ -9,7 +9,7 @@ namespace sales {
     export namespace ui {
         export namespace c {
             /** 查看视图-规格模板 */
-            export class SpecificationTreeView extends ibas.BODialogView implements app.ISpecificationTreeView {
+            export class SpecificationTreeView extends ibas.DialogView implements app.ISpecificationTreeView {
                 /** 保存事件 */
                 saveEvent: Function;
                 /** 使用事件 */

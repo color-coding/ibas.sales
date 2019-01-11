@@ -11,7 +11,7 @@ namespace sales {
             /**
              * 列表视图-销售订单-行额外
              */
-            export class SalesOrderItemExtraView extends ibas.BODialogView implements app.ISalesOrderItemExtraView {
+            export class SalesOrderItemExtraView extends ibas.DialogView implements app.ISalesOrderItemExtraView {
                 /** 添加销售订单-行额外 事件 */
                 addSalesOrderItemExtraEvent: Function;
                 /** 移出销售订单-行额外 事件 */

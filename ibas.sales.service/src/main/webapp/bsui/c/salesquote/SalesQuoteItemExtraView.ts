@@ -11,7 +11,7 @@ namespace sales {
             /**
              * 列表视图-销售报价-行额外
              */
-            export class SalesQuoteItemExtraView extends ibas.BODialogView implements app.ISalesQuoteItemExtraView {
+            export class SalesQuoteItemExtraView extends ibas.DialogView implements app.ISalesQuoteItemExtraView {
                 /** 添加销售报价-行额外 事件 */
                 addSalesQuoteItemExtraEvent: Function;
                 /** 移出销售报价-行额外 事件 */
