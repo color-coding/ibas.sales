@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>org.colorcoding.apps</groupId>
-            <artifactId>ibas.finance</artifactId>
+            <artifactId>ibas.accounting</artifactId>
             <version>0.1.0</version>
         </dependency>
     </dependencies>

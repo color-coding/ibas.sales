@@ -35,7 +35,7 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSummation;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
-import org.colorcoding.ibas.finance.data.IProjectData;
+import org.colorcoding.ibas.accounting.data.IProjectData;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
