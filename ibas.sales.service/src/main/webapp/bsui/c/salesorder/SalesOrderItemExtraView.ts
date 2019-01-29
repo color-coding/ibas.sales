@@ -96,9 +96,9 @@ namespace sales {
                         selectionMode: openui5.utils.toSelectionMode(ibas.emChooseType.SINGLE),
                         visibleRowCount: 6,
                         rowActionCount: 1,
-                        rowActionTemplate: new sap.ui.table.RowAction({
+                        rowActionTemplate: new sap.ui.table.RowAction("", {
                             items: [
-                                new sap.ui.table.RowActionItem({
+                                new sap.ui.table.RowActionItem("", {
                                     icon: "sap-icon://display",
                                     press: function (oEvent: any): void {
                                         that.fireViewEvents(that.viewSalesOrderItemExtraEvent,
