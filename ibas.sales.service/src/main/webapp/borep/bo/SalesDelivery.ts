@@ -562,6 +562,7 @@ namespace sales {
                 this.objectCode = ibas.config.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE);
                 this.documentStatus = ibas.emDocumentStatus.RELEASED;
                 this.documentCurrency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
+                this.rounding = ibas.emYesNo.YES;
                 this.discount = 1;
             }
             /** 映射的属性名称-项目的税总计 */
@@ -614,6 +615,10 @@ namespace sales {
                     new ibas.BusinessRuleSummation(
                         SalesDelivery.PROPERTY_DOCUMENTTOTAL_NAME, SalesDelivery.PROPERTY_DISCOUNTTOTAL_NAME,
                         SalesDelivery.PROPERTY_ITEMSTAXTOTAL_NAME, SalesDelivery.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME),
+                    // 小数舍入（单据总计）
+                    new ibas.BusinessRuleRoundingOff(
+                        SalesDelivery.PROPERTY_DIFFAMOUNT_NAME, SalesDelivery.PROPERTY_DOCUMENTTOTAL_NAME,
+                        ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM), SalesDelivery.PROPERTY_ROUNDING_NAME),
                 ];
             }
             /** 转换之前 */

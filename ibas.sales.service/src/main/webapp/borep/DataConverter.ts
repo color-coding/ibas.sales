@@ -90,6 +90,10 @@ namespace sales {
                     if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
                         return ibas.enums.toString(ibas.emYesNo, value);
                     }
+                } else if (boName === bo.SalesQuote.name) {
+                    if (property === bo.SalesQuote.PROPERTY_ROUNDING_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    }
                 } else if (boName === bo.SalesOrderItem.name) {
                     if (property === bo.SalesOrderItem.PROPERTY_BATCHMANAGEMENT_NAME) {
                         return ibas.enums.toString(ibas.emYesNo, value);
@@ -148,6 +152,10 @@ namespace sales {
             protected parsingData(boName: string, property: string, value: any): any {
                 if (boName === bo.SalesOrder.name) {
                     if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.SalesQuote.name) {
+                    if (property === bo.SalesQuote.PROPERTY_ROUNDING_NAME) {
                         return ibas.enums.valueOf(ibas.emYesNo, value);
                     }
                 } else if (boName === bo.SalesOrderItem.name) {
