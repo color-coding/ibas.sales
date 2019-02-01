@@ -241,180 +241,154 @@ namespace sales {
                         let item: bo.SalesQuoteItem = that.editData.salesQuoteItems[index];
                         // 选择返回数量多余触发数量时,自动创建新的项目
                         let created: boolean = false;
-                        let fill: Function = function (index: number): void {
-                            if (index >= selecteds.length) {
-                                if (created) {
-                                    // 创建了新的行项目
-                                    that.view.showSalesQuoteItems(that.editData.salesQuoteItems.filterDeleted());
-                                }
-                                fill = null;
-                                item = null;
-                                index = null;
-                            } else {
-                                let selected: materials.bo.IProduct = selecteds[index];
-                                if (selected.phantomItem === ibas.emYesNo.YES) {
-                                    // 虚拟物料，需要处理子项
-                                    let criteria: ibas.Criteria = new ibas.Criteria();
-                                    let condition: ibas.ICondition = criteria.conditions.create();
-                                    condition.alias = bo.ProductSuit.PROPERTY_PRODUCT_NAME;
-                                    condition.value = selected.code;
-                                    condition = criteria.conditions.create();
-                                    condition.alias = bo.ProductSuit.PROPERTY_ACTIVATED_NAME;
-                                    condition.value = ibas.emYesNo.YES.toString();
-                                    let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
-                                    boRepository.fetchProductSuitEx({
-                                        criteria: criteria,
-                                        onCompleted(opRslt: ibas.IOperationResult<bo.IProductSuitEx>): void {
-                                            try {
-                                                if (opRslt.resultCode !== 0) {
-                                                    throw new Error(opRslt.message);
-                                                }
-                                                if (opRslt.resultObjects.length === 0) {
-                                                    throw new Error(
-                                                        ibas.i18n.prop("sales_not_found_product_suit_skipped",
-                                                            ibas.strings.isEmpty(selected.name) ? selected.code : selected.name));
-                                                }
-                                                let fillSuit: Function = function (sIndex: number): void {
-                                                    if (sIndex >= selecteds.length) {
-                                                        fillSuit = null;
-                                                        item = null;
-                                                        sIndex = null;
-                                                        fill(index + 1);
+                        ibas.queues.execute(selecteds, (selected, sNext) => {
+                            if (selected.phantomItem === ibas.emYesNo.YES) {
+                                // 虚拟物料，需要处理子项
+                                let criteria: ibas.Criteria = new ibas.Criteria();
+                                let condition: ibas.ICondition = criteria.conditions.create();
+                                condition.alias = bo.ProductSuit.PROPERTY_PRODUCT_NAME;
+                                condition.value = selected.code;
+                                condition = criteria.conditions.create();
+                                condition.alias = bo.ProductSuit.PROPERTY_ACTIVATED_NAME;
+                                condition.value = ibas.emYesNo.YES.toString();
+                                let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
+                                boRepository.fetchProductSuitEx({
+                                    criteria: criteria,
+                                    onCompleted(opRslt: ibas.IOperationResult<bo.IProductSuitEx>): void {
+                                        if (opRslt.resultCode !== 0) {
+                                            sNext(new Error(opRslt.message));
+                                        } else if (opRslt.resultObjects.length === 0) {
+                                            sNext(new Error(ibas.i18n.prop("sales_not_found_product_suit_skipped",
+                                                ibas.strings.isEmpty(selected.name) ? selected.code : selected.name)));
+                                        }
+                                        ibas.queues.execute(opRslt.resultObjects, (pData, pNext) => {
+                                            that.messages({
+                                                type: ibas.emMessageType.QUESTION,
+                                                message: ibas.i18n.prop("sales_use_product_suit_version",
+                                                    ibas.strings.isEmpty(selected.name) ? selected.code : selected.name, pData.version),
+                                                actions: [ibas.emMessageAction.YES, ibas.emMessageAction.NO],
+                                                /** 调用完成 */
+                                                onCompleted(action: ibas.emMessageAction): void {
+                                                    if (action !== ibas.emMessageAction.YES) {
+                                                        // 不是用继续下一条
+                                                        pNext();
                                                     } else {
-                                                        let pItem: bo.IProductSuitEx = opRslt.resultObjects[sIndex];
-                                                        that.messages({
-                                                            type: ibas.emMessageType.QUESTION,
-                                                            message: ibas.i18n.prop("sales_use_product_suit_version",
-                                                                ibas.strings.isEmpty(selected.name) ? selected.code : selected.name, pItem.version),
-                                                            actions: [
-                                                                ibas.emMessageAction.YES,
-                                                                ibas.emMessageAction.NO
-                                                            ],
-                                                            /** 调用完成 */
-                                                            onCompleted(action: ibas.emMessageAction): void {
-                                                                if (action !== ibas.emMessageAction.YES) {
-                                                                    // 不是用继续下一条
-                                                                    fillSuit(sIndex + 1);
-                                                                    return;
-                                                                }
-                                                                try {
-                                                                    // 选择了一条，处理后退出
-                                                                    let parentItem: bo.SalesQuoteItem = null;
-                                                                    // 清理旧数据，bo对象负责清理关联子项
-                                                                    if (!ibas.objects.isNull(item)) {
-                                                                        parentItem = item;
-                                                                        if (!ibas.strings.isEmpty(parentItem.lineSign)) {
-                                                                            for (let i: number = that.editData.salesQuoteItems.length - 1; i >= 0; i--) {
-                                                                                let tItem: bo.SalesQuoteItem = that.editData.salesQuoteItems[i];
-                                                                                if (tItem.parentLineSign === parentItem.lineSign) {
-                                                                                    if (tItem.isNew) {
-                                                                                        that.editData.salesQuoteItems.remove(tItem);
-                                                                                    } else {
-                                                                                        tItem.delete();
-                                                                                    }
-                                                                                }
-                                                                            }
+                                                        // 选择了一条，处理后退出
+                                                        let parentItem: bo.SalesQuoteItem = null;
+                                                        // 清理旧数据，bo对象负责清理关联子项
+                                                        if (!ibas.objects.isNull(item)) {
+                                                            parentItem = item;
+                                                            if (!ibas.strings.isEmpty(parentItem.lineSign)) {
+                                                                for (let i: number = that.editData.salesQuoteItems.length - 1; i >= 0; i--) {
+                                                                    let tItem: bo.SalesQuoteItem = that.editData.salesQuoteItems[i];
+                                                                    if (tItem.parentLineSign === parentItem.lineSign) {
+                                                                        if (tItem.isNew) {
+                                                                            that.editData.salesQuoteItems.remove(tItem);
+                                                                        } else {
+                                                                            tItem.delete();
                                                                         }
-                                                                        if (!parentItem.isNew) {
-                                                                            parentItem.delete();
-                                                                            parentItem = null;
-                                                                        }
-                                                                        item = null;
                                                                     }
-                                                                    if (ibas.objects.isNull(parentItem)) {
-                                                                        parentItem = that.editData.salesQuoteItems.create();
-                                                                    }
-                                                                    // 父项
-                                                                    parentItem.lineSign = ibas.uuids.random();
-                                                                    parentItem.itemCode = pItem.extend.code;
-                                                                    parentItem.itemDescription = pItem.extend.name;
-                                                                    parentItem.serialManagement = pItem.extend.serialManagement;
-                                                                    parentItem.batchManagement = pItem.extend.batchManagement;
-                                                                    parentItem.warehouse = pItem.extend.warehouse;
-                                                                    parentItem.quantity = 1;
-                                                                    parentItem.uom = pItem.extend.inventoryUOM;
-                                                                    parentItem.price = selected.price;
-                                                                    parentItem.currency = selected.currency;
-                                                                    // 子项
-                                                                    for (let sItem of pItem.productSuitItems) {
-                                                                        let subItem: bo.SalesQuoteItem = that.editData.salesQuoteItems.create();
-                                                                        // 构建父项关系
-                                                                        subItem.lineSign = ibas.uuids.random();
-                                                                        subItem.parentLineSign = parentItem.lineSign;
-                                                                        // 计算单位数量
-                                                                        subItem.basisQuantity = sItem.quantity / pItem.unitQuantity;
-                                                                        subItem.price = sItem.price;
-                                                                        subItem.currency = sItem.currency;
-                                                                        // 基本信息赋值
-                                                                        subItem.itemCode = sItem.extend.code;
-                                                                        subItem.itemDescription = sItem.extend.name;
-                                                                        subItem.serialManagement = sItem.extend.serialManagement;
-                                                                        subItem.batchManagement = sItem.extend.batchManagement;
-                                                                        subItem.warehouse = sItem.extend.warehouse;
-                                                                        subItem.quantity = subItem.basisQuantity;
-                                                                        subItem.uom = sItem.extend.inventoryUOM;
-                                                                    }
-                                                                    created = true;
-                                                                    // 超出索引，结束询问
-                                                                    fillSuit(selecteds.length);
-                                                                } catch (error) {
-                                                                    that.messages(error);
-                                                                    that.view.showSalesQuoteItems(that.editData.salesQuoteItems.filterDeleted());
                                                                 }
                                                             }
-                                                        });
-                                                    }
-                                                };
-                                                fillSuit(0);
-                                            } catch (error) {
-                                                that.messages(error);
-                                                that.view.showSalesQuoteItems(that.editData.salesQuoteItems.filterDeleted());
-                                            }
-                                        }
-                                    });
-                                    that.proceeding(ibas.emMessageType.WARNING,
-                                        ibas.i18n.prop("sales_loading_product_suit", ibas.strings.isEmpty(selected.name) ? selected.code : selected.name));
-                                } else {
-                                    // 普通物料
-                                    if (!ibas.objects.isNull(item)) {
-                                        // 清理旧数据，bo对象负责清理关联子项
-                                        if (!ibas.strings.isEmpty(item.lineSign)) {
-                                            for (let i: number = that.editData.salesQuoteItems.length - 1; i >= 0; i--) {
-                                                let tItem: bo.SalesQuoteItem = that.editData.salesQuoteItems[i];
-                                                if (tItem.parentLineSign === item.lineSign) {
-                                                    if (tItem.isNew) {
-                                                        that.editData.salesQuoteItems.remove(tItem);
-                                                    } else {
-                                                        tItem.delete();
+                                                            if (!parentItem.isNew) {
+                                                                parentItem.delete();
+                                                                parentItem = null;
+                                                            }
+                                                            item = null;
+                                                        }
+                                                        if (ibas.objects.isNull(parentItem)) {
+                                                            parentItem = that.editData.salesQuoteItems.create();
+                                                        }
+                                                        // 父项
+                                                        parentItem.lineSign = ibas.uuids.random();
+                                                        parentItem.itemCode = pData.extend.code;
+                                                        parentItem.itemDescription = pData.extend.name;
+                                                        parentItem.serialManagement = pData.extend.serialManagement;
+                                                        parentItem.batchManagement = pData.extend.batchManagement;
+                                                        parentItem.warehouse = pData.extend.warehouse;
+                                                        parentItem.quantity = 1;
+                                                        parentItem.uom = pData.extend.inventoryUOM;
+                                                        parentItem.price = selected.price;
+                                                        parentItem.currency = selected.currency;
+                                                        // 子项
+                                                        for (let sItem of pData.productSuitItems) {
+                                                            let subItem: bo.SalesQuoteItem = that.editData.salesQuoteItems.create();
+                                                            // 构建父项关系
+                                                            subItem.lineSign = ibas.uuids.random();
+                                                            subItem.parentLineSign = parentItem.lineSign;
+                                                            // 计算单位数量
+                                                            subItem.basisQuantity = sItem.quantity / pData.unitQuantity;
+                                                            subItem.price = sItem.price;
+                                                            subItem.currency = sItem.currency;
+                                                            // 基本信息赋值
+                                                            subItem.itemCode = sItem.extend.code;
+                                                            subItem.itemDescription = sItem.extend.name;
+                                                            subItem.serialManagement = sItem.extend.serialManagement;
+                                                            subItem.batchManagement = sItem.extend.batchManagement;
+                                                            subItem.warehouse = sItem.extend.warehouse;
+                                                            subItem.quantity = subItem.basisQuantity;
+                                                            subItem.uom = sItem.extend.inventoryUOM;
+                                                        }
+                                                        created = true;
+                                                        // 数据处理完，上级队列下一条
+                                                        sNext();
                                                     }
                                                 }
-                                            }
-                                            created = true;
-                                        }
-                                        if (!item.isNew) {
-                                            item.delete();
-                                            item = null;
-                                        }
+                                            });
+                                        }, (pError) => {
+                                            sNext(pError);
+                                        });
                                     }
-                                    if (ibas.objects.isNull(item)) {
-                                        item = that.editData.salesQuoteItems.create();
+                                });
+                                that.proceeding(ibas.emMessageType.WARNING,
+                                    ibas.i18n.prop("sales_loading_product_suit", ibas.strings.isEmpty(selected.name) ? selected.code : selected.name));
+                            } else {
+                                // 普通物料
+                                if (!ibas.objects.isNull(item)) {
+                                    // 清理旧数据，bo对象负责清理关联子项
+                                    if (!ibas.strings.isEmpty(item.lineSign)) {
+                                        for (let i: number = that.editData.salesQuoteItems.length - 1; i >= 0; i--) {
+                                            let tItem: bo.SalesQuoteItem = that.editData.salesQuoteItems[i];
+                                            if (tItem.parentLineSign === item.lineSign) {
+                                                if (tItem.isNew) {
+                                                    that.editData.salesQuoteItems.remove(tItem);
+                                                } else {
+                                                    tItem.delete();
+                                                }
+                                            }
+                                        }
                                         created = true;
                                     }
-                                    item.itemCode = selected.code;
-                                    item.itemDescription = selected.name;
-                                    item.serialManagement = selected.serialManagement;
-                                    item.batchManagement = selected.batchManagement;
-                                    item.warehouse = selected.warehouse;
-                                    item.quantity = 1;
-                                    item.uom = selected.inventoryUOM;
-                                    item.price = selected.price;
-                                    item.currency = selected.currency;
-                                    item = null;
-                                    fill(index + 1);
+                                    if (!item.isNew) {
+                                        item.delete();
+                                        item = null;
+                                    }
                                 }
+                                if (ibas.objects.isNull(item)) {
+                                    item = that.editData.salesQuoteItems.create();
+                                    created = true;
+                                }
+                                item.itemCode = selected.code;
+                                item.itemDescription = selected.name;
+                                item.serialManagement = selected.serialManagement;
+                                item.batchManagement = selected.batchManagement;
+                                item.warehouse = selected.warehouse;
+                                item.quantity = 1;
+                                item.uom = selected.inventoryUOM;
+                                item.price = selected.price;
+                                item.currency = selected.currency;
+                                item = null;
+                                sNext();
                             }
-                        };
-                        fill(0);
+                        }, (error) => {
+                            if (error instanceof Error) {
+                                that.messages(error);
+                            }
+                            if (created) {
+                                // 创建了新的行项目
+                                that.view.showSalesQuoteItems(that.editData.salesQuoteItems.filterDeleted());
+                            }
+                        });
                     }
                 });
             }
