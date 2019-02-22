@@ -1,5 +1,7 @@
 package org.colorcoding.ibas.sales.bo.salesquote;
 
+import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -74,8 +76,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-编码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDocEntry(Integer value) {
 		this.setProperty(PROPERTY_DOCENTRY, value);
@@ -106,8 +107,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-行号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineId(Integer value) {
 		this.setProperty(PROPERTY_LINEID, value);
@@ -138,8 +138,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-显示顺序
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setVisOrder(Integer value) {
 		this.setProperty(PROPERTY_VISORDER, value);
@@ -170,8 +169,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setObjectCode(String value) {
 		this.setProperty(PROPERTY_OBJECTCODE, value);
@@ -202,8 +200,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-实例号（版本）
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLogInst(Integer value) {
 		this.setProperty(PROPERTY_LOGINST, value);
@@ -234,8 +231,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDataSource(String value) {
 		this.setProperty(PROPERTY_DATASOURCE, value);
@@ -266,8 +262,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-取消
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCanceled(emYesNo value) {
 		this.setProperty(PROPERTY_CANCELED, value);
@@ -298,8 +293,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-状态
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setStatus(emBOStatus value) {
 		this.setProperty(PROPERTY_STATUS, value);
@@ -330,8 +324,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-单据状态
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineStatus(emDocumentStatus value) {
 		this.setProperty(PROPERTY_LINESTATUS, value);
@@ -362,8 +355,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateDate(DateTime value) {
 		this.setProperty(PROPERTY_CREATEDATE, value);
@@ -394,8 +386,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateTime(Short value) {
 		this.setProperty(PROPERTY_CREATETIME, value);
@@ -426,8 +417,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-修改日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateDate(DateTime value) {
 		this.setProperty(PROPERTY_UPDATEDATE, value);
@@ -458,8 +448,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-修改时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateTime(Short value) {
 		this.setProperty(PROPERTY_UPDATETIME, value);
@@ -490,8 +479,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateUserSign(Integer value) {
 		this.setProperty(PROPERTY_CREATEUSERSIGN, value);
@@ -522,8 +510,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-修改用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateUserSign(Integer value) {
 		this.setProperty(PROPERTY_UPDATEUSERSIGN, value);
@@ -554,8 +541,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateActionId(String value) {
 		this.setProperty(PROPERTY_CREATEACTIONID, value);
@@ -586,8 +572,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateActionId(String value) {
 		this.setProperty(PROPERTY_UPDATEACTIONID, value);
@@ -618,8 +603,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-参考1
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setReference1(String value) {
 		this.setProperty(PROPERTY_REFERENCE1, value);
@@ -650,8 +634,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-参考2
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setReference2(String value) {
 		this.setProperty(PROPERTY_REFERENCE2, value);
@@ -682,8 +665,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-项目行号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setItemId(Integer value) {
 		this.setProperty(PROPERTY_ITEMID, value);
@@ -714,8 +696,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-额外类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setExtraType(String value) {
 		this.setProperty(PROPERTY_EXTRATYPE, value);
@@ -746,8 +727,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-额外标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setExtraKey(Integer value) {
 		this.setProperty(PROPERTY_EXTRAKEY, value);
@@ -762,8 +742,8 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	 * 数量 属性
 	 */
 	@DbField(name = "Quantity", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_QUANTITY = registerProperty(PROPERTY_QUANTITY_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_QUANTITY = registerProperty(PROPERTY_QUANTITY_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-数量
@@ -771,48 +751,44 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_QUANTITY_NAME)
-	public final Decimal getQuantity() {
+	public final BigDecimal getQuantity() {
 		return this.getProperty(PROPERTY_QUANTITY);
 	}
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	public final void setQuantity(Decimal value) {
+	public final void setQuantity(BigDecimal value) {
 		this.setProperty(PROPERTY_QUANTITY, value);
 	}
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setQuantity(String value) {
-		this.setQuantity(new Decimal(value));
+		this.setQuantity(Decimal.valueOf(value));
 	}
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setQuantity(int value) {
-		this.setQuantity(new Decimal(value));
+		this.setQuantity(Decimal.valueOf(value));
 	}
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setQuantity(double value) {
-		this.setQuantity(new Decimal(value));
+		this.setQuantity(Decimal.valueOf(value));
 	}
 
 	/**
@@ -840,8 +816,7 @@ public class SalesQuoteItemExtra extends BusinessObject<SalesQuoteItemExtra> imp
 	/**
 	 * 设置-备注
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setNote(String value) {
 		this.setProperty(PROPERTY_NOTE, value);

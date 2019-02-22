@@ -1,5 +1,7 @@
 package org.colorcoding.ibas.sales.bo.salesquote;
 
+import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -1025,8 +1027,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 数量 属性
 	 */
 	@DbField(name = "Quantity", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_QUANTITY = registerProperty(PROPERTY_QUANTITY_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_QUANTITY = registerProperty(PROPERTY_QUANTITY_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-数量
@@ -1034,7 +1036,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_QUANTITY_NAME)
-	public final Decimal getQuantity() {
+	public final BigDecimal getQuantity() {
 		return this.getProperty(PROPERTY_QUANTITY);
 	}
 
@@ -1043,7 +1045,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setQuantity(Decimal value) {
+	public final void setQuantity(BigDecimal value) {
 		this.setProperty(PROPERTY_QUANTITY, value);
 	}
 
@@ -1053,7 +1055,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setQuantity(String value) {
-		this.setQuantity(new Decimal(value));
+		this.setQuantity(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1062,7 +1064,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setQuantity(int value) {
-		this.setQuantity(new Decimal(value));
+		this.setQuantity(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1071,7 +1073,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setQuantity(double value) {
-		this.setQuantity(new Decimal(value));
+		this.setQuantity(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1145,8 +1147,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 价格 属性
 	 */
 	@DbField(name = "Price", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_PRICE = registerProperty(PROPERTY_PRICE_NAME, Decimal.class,
-			MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_PRICE = registerProperty(PROPERTY_PRICE_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-价格
@@ -1154,7 +1156,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_PRICE_NAME)
-	public final Decimal getPrice() {
+	public final BigDecimal getPrice() {
 		return this.getProperty(PROPERTY_PRICE);
 	}
 
@@ -1163,7 +1165,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setPrice(Decimal value) {
+	public final void setPrice(BigDecimal value) {
 		this.setProperty(PROPERTY_PRICE, value);
 	}
 
@@ -1173,7 +1175,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setPrice(String value) {
-		this.setPrice(new Decimal(value));
+		this.setPrice(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1182,7 +1184,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setPrice(int value) {
-		this.setPrice(new Decimal(value));
+		this.setPrice(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1191,7 +1193,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setPrice(double value) {
-		this.setPrice(new Decimal(value));
+		this.setPrice(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1234,7 +1236,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 汇率 属性
 	 */
 	@DbField(name = "Rate", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_RATE = registerProperty(PROPERTY_RATE_NAME, Decimal.class,
+	public static final IPropertyInfo<BigDecimal> PROPERTY_RATE = registerProperty(PROPERTY_RATE_NAME, BigDecimal.class,
 			MY_CLASS);
 
 	/**
@@ -1243,7 +1245,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_RATE_NAME)
-	public final Decimal getRate() {
+	public final BigDecimal getRate() {
 		return this.getProperty(PROPERTY_RATE);
 	}
 
@@ -1252,7 +1254,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setRate(Decimal value) {
+	public final void setRate(BigDecimal value) {
 		this.setProperty(PROPERTY_RATE, value);
 	}
 
@@ -1262,7 +1264,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setRate(String value) {
-		this.setRate(new Decimal(value));
+		this.setRate(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1271,7 +1273,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setRate(int value) {
-		this.setRate(new Decimal(value));
+		this.setRate(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1280,7 +1282,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setRate(double value) {
-		this.setRate(new Decimal(value));
+		this.setRate(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1292,8 +1294,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 行总计 属性
 	 */
 	@DbField(name = "LineTotal", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_LINETOTAL = registerProperty(PROPERTY_LINETOTAL_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_LINETOTAL = registerProperty(PROPERTY_LINETOTAL_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-行总计
@@ -1301,7 +1303,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_LINETOTAL_NAME)
-	public final Decimal getLineTotal() {
+	public final BigDecimal getLineTotal() {
 		return this.getProperty(PROPERTY_LINETOTAL);
 	}
 
@@ -1310,7 +1312,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setLineTotal(Decimal value) {
+	public final void setLineTotal(BigDecimal value) {
 		this.setProperty(PROPERTY_LINETOTAL, value);
 	}
 
@@ -1320,7 +1322,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setLineTotal(String value) {
-		this.setLineTotal(new Decimal(value));
+		this.setLineTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1329,7 +1331,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setLineTotal(int value) {
-		this.setLineTotal(new Decimal(value));
+		this.setLineTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1338,7 +1340,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setLineTotal(double value) {
-		this.setLineTotal(new Decimal(value));
+		this.setLineTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1381,8 +1383,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 已清数量 属性
 	 */
 	@DbField(name = "ClosedQty", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_CLOSEDQUANTITY = registerProperty(PROPERTY_CLOSEDQUANTITY_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_CLOSEDQUANTITY = registerProperty(
+			PROPERTY_CLOSEDQUANTITY_NAME, BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-已清数量
@@ -1390,7 +1392,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_CLOSEDQUANTITY_NAME)
-	public final Decimal getClosedQuantity() {
+	public final BigDecimal getClosedQuantity() {
 		return this.getProperty(PROPERTY_CLOSEDQUANTITY);
 	}
 
@@ -1399,7 +1401,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setClosedQuantity(Decimal value) {
+	public final void setClosedQuantity(BigDecimal value) {
 		this.setProperty(PROPERTY_CLOSEDQUANTITY, value);
 	}
 
@@ -1409,7 +1411,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setClosedQuantity(String value) {
-		this.setClosedQuantity(new Decimal(value));
+		this.setClosedQuantity(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1418,7 +1420,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setClosedQuantity(int value) {
-		this.setClosedQuantity(new Decimal(value));
+		this.setClosedQuantity(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1427,7 +1429,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setClosedQuantity(double value) {
-		this.setClosedQuantity(new Decimal(value));
+		this.setClosedQuantity(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1439,8 +1441,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 行折扣 属性
 	 */
 	@DbField(name = "DiscPrcnt", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_DISCOUNT = registerProperty(PROPERTY_DISCOUNT_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_DISCOUNT = registerProperty(PROPERTY_DISCOUNT_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-行折扣
@@ -1448,7 +1450,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_DISCOUNT_NAME)
-	public final Decimal getDiscount() {
+	public final BigDecimal getDiscount() {
 		return this.getProperty(PROPERTY_DISCOUNT);
 	}
 
@@ -1457,7 +1459,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setDiscount(Decimal value) {
+	public final void setDiscount(BigDecimal value) {
 		this.setProperty(PROPERTY_DISCOUNT, value);
 	}
 
@@ -1467,7 +1469,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setDiscount(String value) {
-		this.setDiscount(new Decimal(value));
+		this.setDiscount(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1476,7 +1478,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setDiscount(int value) {
-		this.setDiscount(new Decimal(value));
+		this.setDiscount(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1485,7 +1487,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setDiscount(double value) {
-		this.setDiscount(new Decimal(value));
+		this.setDiscount(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1497,8 +1499,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 已清金额 属性
 	 */
 	@DbField(name = "ClosedAmt", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_CLOSEDAMOUNT = registerProperty(PROPERTY_CLOSEDAMOUNT_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_CLOSEDAMOUNT = registerProperty(PROPERTY_CLOSEDAMOUNT_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-已清金额
@@ -1506,7 +1508,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_CLOSEDAMOUNT_NAME)
-	public final Decimal getClosedAmount() {
+	public final BigDecimal getClosedAmount() {
 		return this.getProperty(PROPERTY_CLOSEDAMOUNT);
 	}
 
@@ -1515,7 +1517,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setClosedAmount(Decimal value) {
+	public final void setClosedAmount(BigDecimal value) {
 		this.setProperty(PROPERTY_CLOSEDAMOUNT, value);
 	}
 
@@ -1525,7 +1527,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setClosedAmount(String value) {
-		this.setClosedAmount(new Decimal(value));
+		this.setClosedAmount(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1534,7 +1536,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setClosedAmount(int value) {
-		this.setClosedAmount(new Decimal(value));
+		this.setClosedAmount(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1543,7 +1545,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setClosedAmount(double value) {
-		this.setClosedAmount(new Decimal(value));
+		this.setClosedAmount(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1586,8 +1588,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 基础数量 属性
 	 */
 	@DbField(name = "BasisQty", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_BASISQUANTITY = registerProperty(PROPERTY_BASISQUANTITY_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_BASISQUANTITY = registerProperty(PROPERTY_BASISQUANTITY_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-基础数量
@@ -1595,7 +1597,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_BASISQUANTITY_NAME)
-	public final Decimal getBasisQuantity() {
+	public final BigDecimal getBasisQuantity() {
 		return this.getProperty(PROPERTY_BASISQUANTITY);
 	}
 
@@ -1604,7 +1606,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setBasisQuantity(Decimal value) {
+	public final void setBasisQuantity(BigDecimal value) {
 		this.setProperty(PROPERTY_BASISQUANTITY, value);
 	}
 
@@ -1614,7 +1616,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setBasisQuantity(String value) {
-		this.setBasisQuantity(new Decimal(value));
+		this.setBasisQuantity(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1623,7 +1625,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setBasisQuantity(int value) {
-		this.setBasisQuantity(new Decimal(value));
+		this.setBasisQuantity(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1632,7 +1634,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setBasisQuantity(double value) {
-		this.setBasisQuantity(new Decimal(value));
+		this.setBasisQuantity(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1737,8 +1739,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 折扣前价格 属性
 	 */
 	@DbField(name = "UnitPrice", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_UNITPRICE = registerProperty(PROPERTY_UNITPRICE_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_UNITPRICE = registerProperty(PROPERTY_UNITPRICE_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-折扣前价格
@@ -1746,7 +1748,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_UNITPRICE_NAME)
-	public final Decimal getUnitPrice() {
+	public final BigDecimal getUnitPrice() {
 		return this.getProperty(PROPERTY_UNITPRICE);
 	}
 
@@ -1755,7 +1757,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setUnitPrice(Decimal value) {
+	public final void setUnitPrice(BigDecimal value) {
 		this.setProperty(PROPERTY_UNITPRICE, value);
 	}
 
@@ -1765,7 +1767,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setUnitPrice(String value) {
-		this.setUnitPrice(new Decimal(value));
+		this.setUnitPrice(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1774,7 +1776,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setUnitPrice(int value) {
-		this.setUnitPrice(new Decimal(value));
+		this.setUnitPrice(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1783,7 +1785,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setUnitPrice(double value) {
-		this.setUnitPrice(new Decimal(value));
+		this.setUnitPrice(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1826,8 +1828,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 税率 属性
 	 */
 	@DbField(name = "TaxRate", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_TAXRATE = registerProperty(PROPERTY_TAXRATE_NAME, Decimal.class,
-			MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_TAXRATE = registerProperty(PROPERTY_TAXRATE_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-税率
@@ -1835,7 +1837,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_TAXRATE_NAME)
-	public final Decimal getTaxRate() {
+	public final BigDecimal getTaxRate() {
 		return this.getProperty(PROPERTY_TAXRATE);
 	}
 
@@ -1844,7 +1846,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setTaxRate(Decimal value) {
+	public final void setTaxRate(BigDecimal value) {
 		this.setProperty(PROPERTY_TAXRATE, value);
 	}
 
@@ -1854,7 +1856,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setTaxRate(String value) {
-		this.setTaxRate(new Decimal(value));
+		this.setTaxRate(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1863,7 +1865,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setTaxRate(int value) {
-		this.setTaxRate(new Decimal(value));
+		this.setTaxRate(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1872,7 +1874,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setTaxRate(double value) {
-		this.setTaxRate(new Decimal(value));
+		this.setTaxRate(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1884,8 +1886,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 税总额 属性
 	 */
 	@DbField(name = "TaxTotal", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_TAXTOTAL = registerProperty(PROPERTY_TAXTOTAL_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_TAXTOTAL = registerProperty(PROPERTY_TAXTOTAL_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-税总额
@@ -1893,7 +1895,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_TAXTOTAL_NAME)
-	public final Decimal getTaxTotal() {
+	public final BigDecimal getTaxTotal() {
 		return this.getProperty(PROPERTY_TAXTOTAL);
 	}
 
@@ -1902,7 +1904,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setTaxTotal(Decimal value) {
+	public final void setTaxTotal(BigDecimal value) {
 		this.setProperty(PROPERTY_TAXTOTAL, value);
 	}
 
@@ -1912,7 +1914,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setTaxTotal(String value) {
-		this.setTaxTotal(new Decimal(value));
+		this.setTaxTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1921,7 +1923,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setTaxTotal(int value) {
-		this.setTaxTotal(new Decimal(value));
+		this.setTaxTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1930,7 +1932,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setTaxTotal(double value) {
-		this.setTaxTotal(new Decimal(value));
+		this.setTaxTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1942,8 +1944,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 毛价 属性
 	 */
 	@DbField(name = "GrossPrice", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_GROSSPRICE = registerProperty(PROPERTY_GROSSPRICE_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_GROSSPRICE = registerProperty(PROPERTY_GROSSPRICE_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-毛价
@@ -1951,7 +1953,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_GROSSPRICE_NAME)
-	public final Decimal getGrossPrice() {
+	public final BigDecimal getGrossPrice() {
 		return this.getProperty(PROPERTY_GROSSPRICE);
 	}
 
@@ -1960,7 +1962,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setGrossPrice(Decimal value) {
+	public final void setGrossPrice(BigDecimal value) {
 		this.setProperty(PROPERTY_GROSSPRICE, value);
 	}
 
@@ -1970,7 +1972,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setGrossPrice(String value) {
-		this.setGrossPrice(new Decimal(value));
+		this.setGrossPrice(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1979,7 +1981,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setGrossPrice(int value) {
-		this.setGrossPrice(new Decimal(value));
+		this.setGrossPrice(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1988,7 +1990,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setGrossPrice(double value) {
-		this.setGrossPrice(new Decimal(value));
+		this.setGrossPrice(Decimal.valueOf(value));
 	}
 
 	/**
@@ -2000,8 +2002,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 毛总额 属性
 	 */
 	@DbField(name = "GrossTotal", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_GROSSTOTAL = registerProperty(PROPERTY_GROSSTOTAL_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_GROSSTOTAL = registerProperty(PROPERTY_GROSSTOTAL_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-毛总额
@@ -2009,7 +2011,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_GROSSTOTAL_NAME)
-	public final Decimal getGrossTotal() {
+	public final BigDecimal getGrossTotal() {
 		return this.getProperty(PROPERTY_GROSSTOTAL);
 	}
 
@@ -2018,7 +2020,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setGrossTotal(Decimal value) {
+	public final void setGrossTotal(BigDecimal value) {
 		this.setProperty(PROPERTY_GROSSTOTAL, value);
 	}
 
@@ -2028,7 +2030,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setGrossTotal(String value) {
-		this.setGrossTotal(new Decimal(value));
+		this.setGrossTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -2037,7 +2039,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setGrossTotal(int value) {
-		this.setGrossTotal(new Decimal(value));
+		this.setGrossTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -2046,7 +2048,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setGrossTotal(double value) {
-		this.setGrossTotal(new Decimal(value));
+		this.setGrossTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -2058,8 +2060,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 毛利 属性
 	 */
 	@DbField(name = "GrossProfit", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_GROSSPROFIT = registerProperty(PROPERTY_GROSSPROFIT_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_GROSSPROFIT = registerProperty(PROPERTY_GROSSPROFIT_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-毛利
@@ -2067,7 +2069,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_GROSSPROFIT_NAME)
-	public final Decimal getGrossProfit() {
+	public final BigDecimal getGrossProfit() {
 		return this.getProperty(PROPERTY_GROSSPROFIT);
 	}
 
@@ -2076,7 +2078,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * 
 	 * @param value 值
 	 */
-	public final void setGrossProfit(Decimal value) {
+	public final void setGrossProfit(BigDecimal value) {
 		this.setProperty(PROPERTY_GROSSPROFIT, value);
 	}
 
@@ -2086,7 +2088,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setGrossProfit(String value) {
-		this.setGrossProfit(new Decimal(value));
+		this.setGrossProfit(Decimal.valueOf(value));
 	}
 
 	/**
@@ -2095,7 +2097,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setGrossProfit(int value) {
-		this.setGrossProfit(new Decimal(value));
+		this.setGrossProfit(Decimal.valueOf(value));
 	}
 
 	/**
@@ -2104,7 +2106,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 * @param value 值
 	 */
 	public final void setGrossProfit(double value) {
-		this.setGrossProfit(new Decimal(value));
+		this.setGrossProfit(Decimal.valueOf(value));
 	}
 
 	/**
@@ -2310,15 +2312,15 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	protected IBusinessRule[] registerRules() {
 		return new IBusinessRule[] { // 注册的业务规则
 				new BusinessRuleRequired(PROPERTY_ITEMCODE), // 要求有值
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_CLOSEDQUANTITY), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_CLOSEDAMOUNT), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_QUANTITY), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_PRICE), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_UNITPRICE), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DISCOUNT), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_GROSSPRICE), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_RATE), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_TAXRATE), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_CLOSEDQUANTITY), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_CLOSEDAMOUNT), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_QUANTITY), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_PRICE), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_UNITPRICE), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DISCOUNT), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_GROSSPRICE), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_RATE), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_TAXRATE), // 不能低于0
 				// 推导 价格 = 折扣前价格 * 折扣
 				new BusinessRuleMultiplicativeDeductionEx(PROPERTY_DISCOUNT, PROPERTY_UNITPRICE, PROPERTY_PRICE),
 				// 计算总计 = 数量 * 价格
@@ -2329,9 +2331,9 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 				new BusinessRuleMultiplication(PROPERTY_GROSSTOTAL, PROPERTY_QUANTITY, PROPERTY_GROSSPRICE),
 				// 计算税总额 = 毛总额 - 总计
 				new BusinessRuleSubtraction(PROPERTY_TAXTOTAL, PROPERTY_GROSSTOTAL, PROPERTY_LINETOTAL),
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_GROSSTOTAL), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_TAXTOTAL), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_GROSSTOTAL), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_TAXTOTAL), // 不能低于0
 
 		};
 	}

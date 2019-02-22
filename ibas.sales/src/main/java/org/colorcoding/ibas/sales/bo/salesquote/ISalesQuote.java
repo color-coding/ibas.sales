@@ -1,8 +1,9 @@
 package org.colorcoding.ibas.sales.bo.salesquote;
 
+import java.math.BigDecimal;
+
 import org.colorcoding.ibas.bobas.bo.IBODocument;
 import org.colorcoding.ibas.bobas.data.DateTime;
-import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
@@ -24,8 +25,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-凭证编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDocEntry(Integer value);
 
@@ -39,8 +39,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-期间编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDocNum(Integer value);
 
@@ -54,8 +53,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-期间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPeriod(Integer value);
 
@@ -69,8 +67,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-取消
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCanceled(emYesNo value);
 
@@ -84,8 +81,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-状态
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setStatus(emBOStatus value);
 
@@ -99,8 +95,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-审批状态
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setApprovalStatus(emApprovalStatus value);
 
@@ -114,8 +109,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-单据状态
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDocumentStatus(emDocumentStatus value);
 
@@ -129,8 +123,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-对象类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectCode(String value);
 
@@ -144,8 +137,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateDate(DateTime value);
 
@@ -159,8 +151,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateTime(Short value);
 
@@ -174,8 +165,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-修改日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateDate(DateTime value);
 
@@ -189,8 +179,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-修改时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateTime(Short value);
 
@@ -204,8 +193,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-版本
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLogInst(Integer value);
 
@@ -219,8 +207,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-服务系列
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setSeries(Integer value);
 
@@ -234,8 +221,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDataSource(String value);
 
@@ -249,8 +235,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateUserSign(Integer value);
 
@@ -264,8 +249,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-修改用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateUserSign(Integer value);
 
@@ -279,8 +263,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateActionId(String value);
 
@@ -294,8 +277,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateActionId(String value);
 
@@ -309,8 +291,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-数据所有者
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDataOwner(Integer value);
 
@@ -324,8 +305,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-团队成员
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTeamMembers(String value);
 
@@ -339,8 +319,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-数据所属组织
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setOrganization(String value);
 
@@ -354,8 +333,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-过账日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPostingDate(DateTime value);
 
@@ -369,8 +347,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-到期日
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDeliveryDate(DateTime value);
 
@@ -384,8 +361,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-凭证日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDocumentDate(DateTime value);
 
@@ -399,8 +375,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-参考1
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setReference1(String value);
 
@@ -414,8 +389,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-参考2
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setReference2(String value);
 
@@ -429,8 +403,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-备注
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setRemarks(String value);
 
@@ -444,8 +417,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-已引用
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setReferenced(emYesNo value);
 
@@ -459,8 +431,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-已删除
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDeleted(emYesNo value);
 
@@ -474,8 +445,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-客户代码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCustomerCode(String value);
 
@@ -489,8 +459,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-客户名称
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCustomerName(String value);
 
@@ -504,8 +473,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-联系人
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setContactPerson(Integer value);
 
@@ -514,37 +482,33 @@ public interface ISalesQuote extends IBODocument {
 	 * 
 	 * @return 值
 	 */
-	Decimal getDiscount();
+	BigDecimal getDiscount();
 
 	/**
 	 * 设置-折扣
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setDiscount(Decimal value);
+	void setDiscount(BigDecimal value);
 
 	/**
 	 * 设置-折扣
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDiscount(String value);
 
 	/**
 	 * 设置-折扣
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDiscount(int value);
 
 	/**
 	 * 设置-折扣
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDiscount(double value);
 
@@ -553,37 +517,33 @@ public interface ISalesQuote extends IBODocument {
 	 * 
 	 * @return 值
 	 */
-	Decimal getDiscountTotal();
+	BigDecimal getDiscountTotal();
 
 	/**
 	 * 设置-折扣后总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setDiscountTotal(Decimal value);
+	void setDiscountTotal(BigDecimal value);
 
 	/**
 	 * 设置-折扣后总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDiscountTotal(String value);
 
 	/**
 	 * 设置-折扣后总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDiscountTotal(int value);
 
 	/**
 	 * 设置-折扣后总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDiscountTotal(double value);
 
@@ -597,8 +557,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-单据货币
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDocumentCurrency(String value);
 
@@ -607,37 +566,33 @@ public interface ISalesQuote extends IBODocument {
 	 * 
 	 * @return 值
 	 */
-	Decimal getDocumentRate();
+	BigDecimal getDocumentRate();
 
 	/**
 	 * 设置-单据汇率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setDocumentRate(Decimal value);
+	void setDocumentRate(BigDecimal value);
 
 	/**
 	 * 设置-单据汇率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDocumentRate(String value);
 
 	/**
 	 * 设置-单据汇率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDocumentRate(int value);
 
 	/**
 	 * 设置-单据汇率
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDocumentRate(double value);
 
@@ -646,37 +601,33 @@ public interface ISalesQuote extends IBODocument {
 	 * 
 	 * @return 值
 	 */
-	Decimal getDocumentTotal();
+	BigDecimal getDocumentTotal();
 
 	/**
 	 * 设置-单据总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setDocumentTotal(Decimal value);
+	void setDocumentTotal(BigDecimal value);
 
 	/**
 	 * 设置-单据总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDocumentTotal(String value);
 
 	/**
 	 * 设置-单据总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDocumentTotal(int value);
 
 	/**
 	 * 设置-单据总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDocumentTotal(double value);
 
@@ -685,37 +636,33 @@ public interface ISalesQuote extends IBODocument {
 	 * 
 	 * @return 值
 	 */
-	Decimal getPaidTotal();
+	BigDecimal getPaidTotal();
 
 	/**
 	 * 设置-已付款总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setPaidTotal(Decimal value);
+	void setPaidTotal(BigDecimal value);
 
 	/**
 	 * 设置-已付款总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPaidTotal(String value);
 
 	/**
 	 * 设置-已付款总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPaidTotal(int value);
 
 	/**
 	 * 设置-已付款总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPaidTotal(double value);
 
@@ -724,37 +671,33 @@ public interface ISalesQuote extends IBODocument {
 	 * 
 	 * @return 值
 	 */
-	Decimal getGrossProfit();
+	BigDecimal getGrossProfit();
 
 	/**
 	 * 设置-毛利
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setGrossProfit(Decimal value);
+	void setGrossProfit(BigDecimal value);
 
 	/**
 	 * 设置-毛利
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossProfit(String value);
 
 	/**
 	 * 设置-毛利
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossProfit(int value);
 
 	/**
 	 * 设置-毛利
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGrossProfit(double value);
 
@@ -768,8 +711,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-价格清单
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPriceList(Integer value);
 
@@ -783,8 +725,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-付款条款代码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPaymentCode(String value);
 
@@ -798,8 +739,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-舍入
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setRounding(emYesNo value);
 
@@ -808,37 +748,33 @@ public interface ISalesQuote extends IBODocument {
 	 * 
 	 * @return 值
 	 */
-	Decimal getDiffAmount();
+	BigDecimal getDiffAmount();
 
 	/**
 	 * 设置-舍入差额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setDiffAmount(Decimal value);
+	void setDiffAmount(BigDecimal value);
 
 	/**
 	 * 设置-舍入差额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDiffAmount(String value);
 
 	/**
 	 * 设置-舍入差额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDiffAmount(int value);
 
 	/**
 	 * 设置-舍入差额
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDiffAmount(double value);
 
@@ -852,8 +788,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-项目代码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setProject(String value);
 
@@ -867,8 +802,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-消费者
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setConsumer(String value);
 
@@ -882,8 +816,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-单据类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setOrderType(String value);
 
@@ -897,8 +830,7 @@ public interface ISalesQuote extends IBODocument {
 	/**
 	 * 设置-销售报价-行集合
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setSalesQuoteItems(ISalesQuoteItems value);
 
@@ -906,12 +838,12 @@ public interface ISalesQuote extends IBODocument {
 	 * 获取-项目的行总计
 	 * 
 	 */
-	Decimal getItemsLineTotal();
+	BigDecimal getItemsLineTotal();
 
 	/**
 	 * 获取-项目的税总计
 	 * 
 	 */
-	Decimal getItemsTaxTotal();
+	BigDecimal getItemsTaxTotal();
 
 }

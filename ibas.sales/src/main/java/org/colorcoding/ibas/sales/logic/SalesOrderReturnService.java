@@ -1,5 +1,7 @@
 package org.colorcoding.ibas.sales.logic;
 
+import java.math.BigDecimal;
+
 import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.logic.BusinessLogicException;
@@ -32,7 +34,7 @@ public class SalesOrderReturnService extends SalesOrderService<ISalesOrderReturn
 			throw new BusinessLogicException(I18N.prop("msg_ph_not_found_order_item", contract.getBaseDocumentType(),
 					contract.getBaseDocumentEntry(), contract.getBaseDocumentLineId()));
 		}
-		Decimal closedQuantity = orderItem.getClosedQuantity();
+		BigDecimal closedQuantity = orderItem.getClosedQuantity();
 		if (closedQuantity == null) {
 			closedQuantity = Decimal.ZERO;
 		}
@@ -51,7 +53,7 @@ public class SalesOrderReturnService extends SalesOrderService<ISalesOrderReturn
 			throw new BusinessLogicException(I18N.prop("msg_sl_not_found_order_item", contract.getBaseDocumentType(),
 					contract.getBaseDocumentEntry(), contract.getBaseDocumentLineId()));
 		}
-		Decimal closedQuantity = orderItem.getClosedQuantity();
+		BigDecimal closedQuantity = orderItem.getClosedQuantity();
 		if (closedQuantity == null) {
 			closedQuantity = Decimal.ZERO;
 		}

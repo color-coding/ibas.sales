@@ -1,8 +1,9 @@
 package org.colorcoding.ibas.sales.bo.productsuit;
 
+import java.math.BigDecimal;
+
 import org.colorcoding.ibas.bobas.bo.IBOSimpleLine;
 import org.colorcoding.ibas.bobas.data.DateTime;
-import org.colorcoding.ibas.bobas.data.Decimal;
 
 /**
  * 产品套装-项目 接口
@@ -20,8 +21,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-对象编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectKey(Integer value);
 
@@ -35,8 +35,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-对象行号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLineId(Integer value);
 
@@ -50,8 +49,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-对象类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectCode(String value);
 
@@ -65,8 +63,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-实例号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLogInst(Integer value);
 
@@ -80,8 +77,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDataSource(String value);
 
@@ -95,8 +91,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateDate(DateTime value);
 
@@ -110,8 +105,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateTime(Short value);
 
@@ -125,8 +119,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-更新日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateDate(DateTime value);
 
@@ -140,8 +133,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-更新时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateTime(Short value);
 
@@ -155,8 +147,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateUserSign(Integer value);
 
@@ -170,8 +161,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-更新用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateUserSign(Integer value);
 
@@ -185,8 +175,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateActionId(String value);
 
@@ -200,8 +189,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateActionId(String value);
 
@@ -215,8 +203,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-组件编码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setItemCode(String value);
 
@@ -230,8 +217,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-组件名称
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setItemDescription(String value);
 
@@ -240,37 +226,33 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	 * 
 	 * @return 值
 	 */
-	Decimal getQuantity();
+	BigDecimal getQuantity();
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setQuantity(Decimal value);
+	void setQuantity(BigDecimal value);
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setQuantity(String value);
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setQuantity(int value);
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setQuantity(double value);
 
@@ -284,8 +266,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-单位
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUOM(String value);
 
@@ -294,37 +275,33 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	 * 
 	 * @return 值
 	 */
-	Decimal getPrice();
+	BigDecimal getPrice();
 
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setPrice(Decimal value);
+	void setPrice(BigDecimal value);
 
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPrice(String value);
 
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPrice(int value);
 
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPrice(double value);
 
@@ -338,8 +315,7 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	/**
 	 * 设置-货币
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCurrency(String value);
 
@@ -348,37 +324,33 @@ public interface IProductSuitItem extends IBOSimpleLine {
 	 * 
 	 * @return 值
 	 */
-	Decimal getLineTotal();
+	BigDecimal getLineTotal();
 
 	/**
 	 * 设置-总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setLineTotal(Decimal value);
+	void setLineTotal(BigDecimal value);
 
 	/**
 	 * 设置-总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLineTotal(String value);
 
 	/**
 	 * 设置-总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLineTotal(int value);
 
 	/**
 	 * 设置-总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLineTotal(double value);
 

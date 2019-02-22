@@ -1,5 +1,7 @@
 package org.colorcoding.ibas.sales.bo.productsuit;
 
+import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -76,8 +78,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-对象编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setObjectKey(Integer value) {
 		this.setProperty(PROPERTY_OBJECTKEY, value);
@@ -108,8 +109,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-对象行号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineId(Integer value) {
 		this.setProperty(PROPERTY_LINEID, value);
@@ -140,8 +140,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-对象类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setObjectCode(String value) {
 		this.setProperty(PROPERTY_OBJECTCODE, value);
@@ -172,8 +171,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-实例号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLogInst(Integer value) {
 		this.setProperty(PROPERTY_LOGINST, value);
@@ -204,8 +202,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDataSource(String value) {
 		this.setProperty(PROPERTY_DATASOURCE, value);
@@ -236,8 +233,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateDate(DateTime value) {
 		this.setProperty(PROPERTY_CREATEDATE, value);
@@ -268,8 +264,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateTime(Short value) {
 		this.setProperty(PROPERTY_CREATETIME, value);
@@ -300,8 +295,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-更新日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateDate(DateTime value) {
 		this.setProperty(PROPERTY_UPDATEDATE, value);
@@ -332,8 +326,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-更新时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateTime(Short value) {
 		this.setProperty(PROPERTY_UPDATETIME, value);
@@ -364,8 +357,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateUserSign(Integer value) {
 		this.setProperty(PROPERTY_CREATEUSERSIGN, value);
@@ -396,8 +388,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-更新用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateUserSign(Integer value) {
 		this.setProperty(PROPERTY_UPDATEUSERSIGN, value);
@@ -428,8 +419,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateActionId(String value) {
 		this.setProperty(PROPERTY_CREATEACTIONID, value);
@@ -460,8 +450,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateActionId(String value) {
 		this.setProperty(PROPERTY_UPDATEACTIONID, value);
@@ -492,8 +481,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-组件编码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setItemCode(String value) {
 		this.setProperty(PROPERTY_ITEMCODE, value);
@@ -524,8 +512,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-组件名称
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setItemDescription(String value) {
 		this.setProperty(PROPERTY_ITEMDESCRIPTION, value);
@@ -540,8 +527,8 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	 * 数量 属性
 	 */
 	@DbField(name = "Quantity", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_QUANTITY = registerProperty(PROPERTY_QUANTITY_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_QUANTITY = registerProperty(PROPERTY_QUANTITY_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-数量
@@ -549,48 +536,44 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_QUANTITY_NAME)
-	public final Decimal getQuantity() {
+	public final BigDecimal getQuantity() {
 		return this.getProperty(PROPERTY_QUANTITY);
 	}
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	public final void setQuantity(Decimal value) {
+	public final void setQuantity(BigDecimal value) {
 		this.setProperty(PROPERTY_QUANTITY, value);
 	}
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setQuantity(String value) {
-		this.setQuantity(new Decimal(value));
+		this.setQuantity(Decimal.valueOf(value));
 	}
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setQuantity(int value) {
-		this.setQuantity(new Decimal(value));
+		this.setQuantity(Decimal.valueOf(value));
 	}
 
 	/**
 	 * 设置-数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setQuantity(double value) {
-		this.setQuantity(new Decimal(value));
+		this.setQuantity(Decimal.valueOf(value));
 	}
 
 	/**
@@ -618,8 +601,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-单位
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUOM(String value) {
 		this.setProperty(PROPERTY_UOM, value);
@@ -634,8 +616,8 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	 * 价格 属性
 	 */
 	@DbField(name = "Price", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_PRICE = registerProperty(PROPERTY_PRICE_NAME, Decimal.class,
-			MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_PRICE = registerProperty(PROPERTY_PRICE_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-价格
@@ -643,48 +625,44 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_PRICE_NAME)
-	public final Decimal getPrice() {
+	public final BigDecimal getPrice() {
 		return this.getProperty(PROPERTY_PRICE);
 	}
 
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	public final void setPrice(Decimal value) {
+	public final void setPrice(BigDecimal value) {
 		this.setProperty(PROPERTY_PRICE, value);
 	}
 
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setPrice(String value) {
-		this.setPrice(new Decimal(value));
+		this.setPrice(Decimal.valueOf(value));
 	}
 
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setPrice(int value) {
-		this.setPrice(new Decimal(value));
+		this.setPrice(Decimal.valueOf(value));
 	}
 
 	/**
 	 * 设置-价格
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setPrice(double value) {
-		this.setPrice(new Decimal(value));
+		this.setPrice(Decimal.valueOf(value));
 	}
 
 	/**
@@ -712,8 +690,7 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	/**
 	 * 设置-货币
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCurrency(String value) {
 		this.setProperty(PROPERTY_CURRENCY, value);
@@ -728,8 +705,8 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	 * 总计 属性
 	 */
 	@DbField(name = "LineTotal", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_LINETOTAL = registerProperty(PROPERTY_LINETOTAL_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_LINETOTAL = registerProperty(PROPERTY_LINETOTAL_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-总计
@@ -737,48 +714,44 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_LINETOTAL_NAME)
-	public final Decimal getLineTotal() {
+	public final BigDecimal getLineTotal() {
 		return this.getProperty(PROPERTY_LINETOTAL);
 	}
 
 	/**
 	 * 设置-总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	public final void setLineTotal(Decimal value) {
+	public final void setLineTotal(BigDecimal value) {
 		this.setProperty(PROPERTY_LINETOTAL, value);
 	}
 
 	/**
 	 * 设置-总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineTotal(String value) {
-		this.setLineTotal(new Decimal(value));
+		this.setLineTotal(Decimal.valueOf(value));
 	}
 
 	/**
 	 * 设置-总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineTotal(int value) {
-		this.setLineTotal(new Decimal(value));
+		this.setLineTotal(Decimal.valueOf(value));
 	}
 
 	/**
 	 * 设置-总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLineTotal(double value) {
-		this.setLineTotal(new Decimal(value));
+		this.setLineTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -795,9 +768,9 @@ public class ProductSuitItem extends BusinessObject<ProductSuitItem> implements 
 	protected IBusinessRule[] registerRules() {
 		return new IBusinessRule[] { // 注册的业务规则
 				new BusinessRuleRequired(PROPERTY_ITEMCODE), // 要求有值
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_QUANTITY), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_QUANTITY), // 不能低于0
 				new BusinessRuleMultiplication(PROPERTY_LINETOTAL, PROPERTY_QUANTITY, PROPERTY_PRICE), // 计算总计 = 数量 * 价格
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
 
 		};
 	}

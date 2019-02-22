@@ -47,6 +47,8 @@ declare namespace materials {
         const BO_CODE_MATERIALSERIALITEM: string;
         /** 业务对象编码-物料批次项目 */
         const BO_CODE_MATERIALBATCHITEM: string;
+        /** 业务对象编码-库存盘点 */
+        const BO_CODE_INVENTORYCOUNTING: string;
         /** 物料类型 */
         enum emItemType {
             /** 物料 */
@@ -1174,6 +1176,8 @@ declare namespace materials {
             itemCode: string;
             /** 仓库编号 */
             warehouse: string;
+            /** 冻结的 */
+            frozen: ibas.emYesNo;
             /** 价格 */
             avgPrice: number;
             /** 库存 */
@@ -1743,6 +1747,154 @@ declare namespace materials {
  */
 declare namespace materials {
     namespace bo {
+        /** 库存盘点 */
+        interface IInventoryCounting extends ibas.IBODocument {
+            /** 凭证编号 */
+            docEntry: number;
+            /** 期间编号 */
+            docNum: number;
+            /** 期间 */
+            period: number;
+            /** 取消 */
+            canceled: ibas.emYesNo;
+            /** 状态 */
+            status: ibas.emBOStatus;
+            /** 审批状态 */
+            approvalStatus: ibas.emApprovalStatus;
+            /** 单据状态 */
+            documentStatus: ibas.emDocumentStatus;
+            /** 对象类型 */
+            objectCode: string;
+            /** 创建日期 */
+            createDate: Date;
+            /** 创建时间 */
+            createTime: number;
+            /** 修改日期 */
+            updateDate: Date;
+            /** 修改时间 */
+            updateTime: number;
+            /** 版本 */
+            logInst: number;
+            /** 服务系列 */
+            series: number;
+            /** 数据源 */
+            dataSource: string;
+            /** 创建用户 */
+            createUserSign: number;
+            /** 修改用户 */
+            updateUserSign: number;
+            /** 创建动作标识 */
+            createActionId: string;
+            /** 更新动作标识 */
+            updateActionId: string;
+            /** 数据所有者 */
+            dataOwner: number;
+            /** 团队成员 */
+            teamMembers: string;
+            /** 数据所属组织 */
+            organization: string;
+            /** 过账日期 */
+            postingDate: Date;
+            /** 到期日 */
+            deliveryDate: Date;
+            /** 凭证日期 */
+            documentDate: Date;
+            /** 盘点日期 */
+            countDate: Date;
+            /** 盘点时间 */
+            countTime: number;
+            /** 盘点类型 */
+            countType: string;
+            /** 参考1 */
+            reference1: string;
+            /** 参考2 */
+            reference2: string;
+            /** 备注 */
+            remarks: string;
+            /** 单据类型 */
+            orderType: string;
+            /** 库存盘点-行集合 */
+            inventoryCountingLines: IInventoryCountingLines;
+        }
+        /** 库存盘点-行 集合 */
+        interface IInventoryCountingLines extends ibas.IBusinessObjects<IInventoryCountingLine> {
+            /** 创建并添加子项 */
+            create(): IInventoryCountingLine;
+        }
+        /** 库存盘点-行 */
+        interface IInventoryCountingLine extends ibas.IBODocumentLine, IMaterialSerialItemParent, IMaterialBatchItemParent {
+            /** 编码 */
+            docEntry: number;
+            /** 行号 */
+            lineId: number;
+            /** 显示顺序 */
+            visOrder: number;
+            /** 状态 */
+            status: ibas.emBOStatus;
+            /** 单据状态 */
+            lineStatus: ibas.emDocumentStatus;
+            /** 类型 */
+            objectCode: string;
+            /** 创建日期 */
+            createDate: Date;
+            /** 创建时间 */
+            createTime: number;
+            /** 修改日期 */
+            updateDate: Date;
+            /** 修改时间 */
+            updateTime: number;
+            /** 版本 */
+            logInst: number;
+            /** 服务系列 */
+            series: number;
+            /** 数据源 */
+            dataSource: string;
+            /** 创建用户 */
+            createUserSign: number;
+            /** 修改用户 */
+            updateUserSign: number;
+            /** 创建动作标识 */
+            createActionId: string;
+            /** 更新动作标识 */
+            updateActionId: string;
+            /** 参考1 */
+            reference1: string;
+            /** 参考2 */
+            reference2: string;
+            /** 物料编码 */
+            itemCode: string;
+            /** 物料/服务描述 */
+            itemDescription: string;
+            /** 序号管理 */
+            serialManagement: ibas.emYesNo;
+            /** 批号管理 */
+            batchManagement: ibas.emYesNo;
+            /** 仓库 */
+            warehouse: string;
+            /** 库存数量 */
+            inventoryQuantity: number;
+            /** 盘点数量 */
+            countQuantity: number;
+            /** 差额 */
+            difference: number;
+            /** 单位 */
+            uom: string;
+            /** 已盘点 */
+            counted: ibas.emYesNo;
+            /** 冻结物料 */
+            freeze: ibas.emYesNo;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace bo {
         /** 仓库 */
         interface IWarehouse extends ibas.IBOMasterData, ibas.IBOUserFields {
             /** 编号 */
@@ -1921,6 +2073,16 @@ declare namespace materials {
              * @param fetcher 查询者
              */
             fetchMaterialSerialJournal(fetcher: ibas.IFetchCaller<bo.IMaterialSerialJournal>): void;
+            /**
+             * 查询 库存盘点
+             * @param fetcher 查询者
+             */
+            fetchInventoryCounting(fetcher: ibas.IFetchCaller<bo.IInventoryCounting>): void;
+            /**
+             * 保存 库存盘点
+             * @param saver 保存者
+             */
+            saveInventoryCounting(saver: ibas.ISaveCaller<bo.IInventoryCounting>): void;
             /**
              * 查询 物料价格清单
              * @param fetcher 查询者
@@ -3882,6 +4044,11 @@ declare namespace materials {
             /** 获取-仓库编号 */
             /** 设置-仓库编号 */
             warehouse: string;
+            /** 映射的属性名称-冻结的 */
+            static PROPERTY_FROZEN_NAME: string;
+            /** 获取-冻结的 */
+            /** 设置-冻结的 */
+            frozen: ibas.emYesNo;
             /** 映射的属性名称-价格 */
             static PROPERTY_AVGPRICE_NAME: string;
             /** 获取-价格 */
@@ -4915,6 +5082,364 @@ declare namespace materials {
  */
 declare namespace materials {
     namespace bo {
+        /** 库存盘点 */
+        class InventoryCounting extends ibas.BODocument<InventoryCounting> implements IInventoryCounting {
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 映射的属性名称-凭证编号 */
+            static PROPERTY_DOCENTRY_NAME: string;
+            /** 获取-凭证编号 */
+            /** 设置-凭证编号 */
+            docEntry: number;
+            /** 映射的属性名称-期间编号 */
+            static PROPERTY_DOCNUM_NAME: string;
+            /** 获取-期间编号 */
+            /** 设置-期间编号 */
+            docNum: number;
+            /** 映射的属性名称-期间 */
+            static PROPERTY_PERIOD_NAME: string;
+            /** 获取-期间 */
+            /** 设置-期间 */
+            period: number;
+            /** 映射的属性名称-取消 */
+            static PROPERTY_CANCELED_NAME: string;
+            /** 获取-取消 */
+            /** 设置-取消 */
+            canceled: ibas.emYesNo;
+            /** 映射的属性名称-状态 */
+            static PROPERTY_STATUS_NAME: string;
+            /** 获取-状态 */
+            /** 设置-状态 */
+            status: ibas.emBOStatus;
+            /** 映射的属性名称-审批状态 */
+            static PROPERTY_APPROVALSTATUS_NAME: string;
+            /** 获取-审批状态 */
+            /** 设置-审批状态 */
+            approvalStatus: ibas.emApprovalStatus;
+            /** 映射的属性名称-单据状态 */
+            static PROPERTY_DOCUMENTSTATUS_NAME: string;
+            /** 获取-单据状态 */
+            /** 设置-单据状态 */
+            documentStatus: ibas.emDocumentStatus;
+            /** 映射的属性名称-对象类型 */
+            static PROPERTY_OBJECTCODE_NAME: string;
+            /** 获取-对象类型 */
+            /** 设置-对象类型 */
+            objectCode: string;
+            /** 映射的属性名称-创建日期 */
+            static PROPERTY_CREATEDATE_NAME: string;
+            /** 获取-创建日期 */
+            /** 设置-创建日期 */
+            createDate: Date;
+            /** 映射的属性名称-创建时间 */
+            static PROPERTY_CREATETIME_NAME: string;
+            /** 获取-创建时间 */
+            /** 设置-创建时间 */
+            createTime: number;
+            /** 映射的属性名称-修改日期 */
+            static PROPERTY_UPDATEDATE_NAME: string;
+            /** 获取-修改日期 */
+            /** 设置-修改日期 */
+            updateDate: Date;
+            /** 映射的属性名称-修改时间 */
+            static PROPERTY_UPDATETIME_NAME: string;
+            /** 获取-修改时间 */
+            /** 设置-修改时间 */
+            updateTime: number;
+            /** 映射的属性名称-版本 */
+            static PROPERTY_LOGINST_NAME: string;
+            /** 获取-版本 */
+            /** 设置-版本 */
+            logInst: number;
+            /** 映射的属性名称-服务系列 */
+            static PROPERTY_SERIES_NAME: string;
+            /** 获取-服务系列 */
+            /** 设置-服务系列 */
+            series: number;
+            /** 映射的属性名称-数据源 */
+            static PROPERTY_DATASOURCE_NAME: string;
+            /** 获取-数据源 */
+            /** 设置-数据源 */
+            dataSource: string;
+            /** 映射的属性名称-创建用户 */
+            static PROPERTY_CREATEUSERSIGN_NAME: string;
+            /** 获取-创建用户 */
+            /** 设置-创建用户 */
+            createUserSign: number;
+            /** 映射的属性名称-修改用户 */
+            static PROPERTY_UPDATEUSERSIGN_NAME: string;
+            /** 获取-修改用户 */
+            /** 设置-修改用户 */
+            updateUserSign: number;
+            /** 映射的属性名称-创建动作标识 */
+            static PROPERTY_CREATEACTIONID_NAME: string;
+            /** 获取-创建动作标识 */
+            /** 设置-创建动作标识 */
+            createActionId: string;
+            /** 映射的属性名称-更新动作标识 */
+            static PROPERTY_UPDATEACTIONID_NAME: string;
+            /** 获取-更新动作标识 */
+            /** 设置-更新动作标识 */
+            updateActionId: string;
+            /** 映射的属性名称-数据所有者 */
+            static PROPERTY_DATAOWNER_NAME: string;
+            /** 获取-数据所有者 */
+            /** 设置-数据所有者 */
+            dataOwner: number;
+            /** 映射的属性名称-团队成员 */
+            static PROPERTY_TEAMMEMBERS_NAME: string;
+            /** 获取-团队成员 */
+            /** 设置-团队成员 */
+            teamMembers: string;
+            /** 映射的属性名称-数据所属组织 */
+            static PROPERTY_ORGANIZATION_NAME: string;
+            /** 获取-数据所属组织 */
+            /** 设置-数据所属组织 */
+            organization: string;
+            /** 映射的属性名称-过账日期 */
+            static PROPERTY_POSTINGDATE_NAME: string;
+            /** 获取-过账日期 */
+            /** 设置-过账日期 */
+            postingDate: Date;
+            /** 映射的属性名称-到期日 */
+            static PROPERTY_DELIVERYDATE_NAME: string;
+            /** 获取-到期日 */
+            /** 设置-到期日 */
+            deliveryDate: Date;
+            /** 映射的属性名称-凭证日期 */
+            static PROPERTY_DOCUMENTDATE_NAME: string;
+            /** 获取-凭证日期 */
+            /** 设置-凭证日期 */
+            documentDate: Date;
+            /** 映射的属性名称-盘点日期 */
+            static PROPERTY_COUNTDATE_NAME: string;
+            /** 获取-盘点日期 */
+            /** 设置-盘点日期 */
+            countDate: Date;
+            /** 映射的属性名称-盘点时间 */
+            static PROPERTY_COUNTTIME_NAME: string;
+            /** 获取-盘点时间 */
+            /** 设置-盘点时间 */
+            countTime: number;
+            /** 映射的属性名称-盘点类型 */
+            static PROPERTY_COUNTTYPE_NAME: string;
+            /** 获取-盘点类型 */
+            /** 设置-盘点类型 */
+            countType: string;
+            /** 映射的属性名称-参考1 */
+            static PROPERTY_REFERENCE1_NAME: string;
+            /** 获取-参考1 */
+            /** 设置-参考1 */
+            reference1: string;
+            /** 映射的属性名称-参考2 */
+            static PROPERTY_REFERENCE2_NAME: string;
+            /** 获取-参考2 */
+            /** 设置-参考2 */
+            reference2: string;
+            /** 映射的属性名称-备注 */
+            static PROPERTY_REMARKS_NAME: string;
+            /** 获取-备注 */
+            /** 设置-备注 */
+            remarks: string;
+            /** 映射的属性名称-单据类型 */
+            static PROPERTY_ORDERTYPE_NAME: string;
+            /** 获取-单据类型 */
+            /** 设置-单据类型 */
+            orderType: string;
+            /** 映射的属性名称-库存盘点-行集合 */
+            static PROPERTY_INVENTORYCOUNTINGLINES_NAME: string;
+            /** 获取-库存盘点-行集合 */
+            /** 设置-库存盘点-行集合 */
+            inventoryCountingLines: InventoryCountingLines;
+            /** 初始化数据 */
+            protected init(): void;
+        }
+        /** 库存盘点-行 集合 */
+        class InventoryCountingLines extends ibas.BusinessObjects<InventoryCountingLine, InventoryCounting> implements IInventoryCountingLines {
+            /** 创建并添加子项 */
+            create(): InventoryCountingLine;
+        }
+        /** 库存盘点-行 */
+        class InventoryCountingLine extends ibas.BODocumentLine<InventoryCountingLine> implements IInventoryCountingLine {
+            /** 构造函数 */
+            constructor();
+            /** 映射的属性名称-编码 */
+            static PROPERTY_DOCENTRY_NAME: string;
+            /** 获取-编码 */
+            /** 设置-编码 */
+            docEntry: number;
+            /** 映射的属性名称-行号 */
+            static PROPERTY_LINEID_NAME: string;
+            /** 获取-行号 */
+            /** 设置-行号 */
+            lineId: number;
+            /** 映射的属性名称-显示顺序 */
+            static PROPERTY_VISORDER_NAME: string;
+            /** 获取-显示顺序 */
+            /** 设置-显示顺序 */
+            visOrder: number;
+            /** 映射的属性名称-状态 */
+            static PROPERTY_STATUS_NAME: string;
+            /** 获取-状态 */
+            /** 设置-状态 */
+            status: ibas.emBOStatus;
+            /** 映射的属性名称-单据状态 */
+            static PROPERTY_LINESTATUS_NAME: string;
+            /** 获取-单据状态 */
+            /** 设置-单据状态 */
+            lineStatus: ibas.emDocumentStatus;
+            /** 映射的属性名称-类型 */
+            static PROPERTY_OBJECTCODE_NAME: string;
+            /** 获取-类型 */
+            /** 设置-类型 */
+            objectCode: string;
+            /** 映射的属性名称-创建日期 */
+            static PROPERTY_CREATEDATE_NAME: string;
+            /** 获取-创建日期 */
+            /** 设置-创建日期 */
+            createDate: Date;
+            /** 映射的属性名称-创建时间 */
+            static PROPERTY_CREATETIME_NAME: string;
+            /** 获取-创建时间 */
+            /** 设置-创建时间 */
+            createTime: number;
+            /** 映射的属性名称-修改日期 */
+            static PROPERTY_UPDATEDATE_NAME: string;
+            /** 获取-修改日期 */
+            /** 设置-修改日期 */
+            updateDate: Date;
+            /** 映射的属性名称-修改时间 */
+            static PROPERTY_UPDATETIME_NAME: string;
+            /** 获取-修改时间 */
+            /** 设置-修改时间 */
+            updateTime: number;
+            /** 映射的属性名称-版本 */
+            static PROPERTY_LOGINST_NAME: string;
+            /** 获取-版本 */
+            /** 设置-版本 */
+            logInst: number;
+            /** 映射的属性名称-服务系列 */
+            static PROPERTY_SERIES_NAME: string;
+            /** 获取-服务系列 */
+            /** 设置-服务系列 */
+            series: number;
+            /** 映射的属性名称-数据源 */
+            static PROPERTY_DATASOURCE_NAME: string;
+            /** 获取-数据源 */
+            /** 设置-数据源 */
+            dataSource: string;
+            /** 映射的属性名称-创建用户 */
+            static PROPERTY_CREATEUSERSIGN_NAME: string;
+            /** 获取-创建用户 */
+            /** 设置-创建用户 */
+            createUserSign: number;
+            /** 映射的属性名称-修改用户 */
+            static PROPERTY_UPDATEUSERSIGN_NAME: string;
+            /** 获取-修改用户 */
+            /** 设置-修改用户 */
+            updateUserSign: number;
+            /** 映射的属性名称-创建动作标识 */
+            static PROPERTY_CREATEACTIONID_NAME: string;
+            /** 获取-创建动作标识 */
+            /** 设置-创建动作标识 */
+            createActionId: string;
+            /** 映射的属性名称-更新动作标识 */
+            static PROPERTY_UPDATEACTIONID_NAME: string;
+            /** 获取-更新动作标识 */
+            /** 设置-更新动作标识 */
+            updateActionId: string;
+            /** 映射的属性名称-参考1 */
+            static PROPERTY_REFERENCE1_NAME: string;
+            /** 获取-参考1 */
+            /** 设置-参考1 */
+            reference1: string;
+            /** 映射的属性名称-参考2 */
+            static PROPERTY_REFERENCE2_NAME: string;
+            /** 获取-参考2 */
+            /** 设置-参考2 */
+            reference2: string;
+            /** 映射的属性名称-物料编码 */
+            static PROPERTY_ITEMCODE_NAME: string;
+            /** 获取-物料编码 */
+            /** 设置-物料编码 */
+            itemCode: string;
+            /** 映射的属性名称-物料/服务描述 */
+            static PROPERTY_ITEMDESCRIPTION_NAME: string;
+            /** 获取-物料/服务描述 */
+            /** 设置-物料/服务描述 */
+            itemDescription: string;
+            /** 映射的属性名称-序号管理 */
+            static PROPERTY_SERIALMANAGEMENT_NAME: string;
+            /** 获取-序号管理 */
+            /** 设置-序号管理 */
+            serialManagement: ibas.emYesNo;
+            /** 映射的属性名称-批号管理 */
+            static PROPERTY_BATCHMANAGEMENT_NAME: string;
+            /** 获取-批号管理 */
+            /** 设置-批号管理 */
+            batchManagement: ibas.emYesNo;
+            /** 映射的属性名称-仓库 */
+            static PROPERTY_WAREHOUSE_NAME: string;
+            /** 获取-仓库 */
+            /** 设置-仓库 */
+            warehouse: string;
+            /** 映射的属性名称-库存数量 */
+            static PROPERTY_INVENTORYQUANTITY_NAME: string;
+            /** 获取-库存数量 */
+            /** 设置-库存数量 */
+            inventoryQuantity: number;
+            /** 映射的属性名称-盘点数量 */
+            static PROPERTY_COUNTQUANTITY_NAME: string;
+            /** 获取-盘点数量 */
+            /** 设置-盘点数量 */
+            countQuantity: number;
+            /** 映射的属性名称-差额 */
+            static PROPERTY_DIFFERENCE_NAME: string;
+            /** 获取-差额 */
+            /** 设置-差额 */
+            difference: number;
+            /** 映射的属性名称-单位 */
+            static PROPERTY_UOM_NAME: string;
+            /** 获取-单位 */
+            /** 设置-单位 */
+            uom: string;
+            /** 映射的属性名称-已盘点 */
+            static PROPERTY_COUNTED_NAME: string;
+            /** 获取-已盘点 */
+            /** 设置-已盘点 */
+            counted: ibas.emYesNo;
+            /** 映射的属性名称-冻结物料 */
+            static PROPERTY_FREEZE_NAME: string;
+            /** 获取-冻结物料 */
+            /** 设置-冻结物料 */
+            freeze: ibas.emYesNo;
+            /** 映射的属性名称-物料批次集合 */
+            static PROPERTY_MATERIALBATCHES_NAME: string;
+            /** 获取-物料批次集合 */
+            /** 设置-物料批次集合 */
+            materialBatches: MaterialBatchItems;
+            /** 映射的属性名称-物料序列集合 */
+            static PROPERTY_MATERIALSERIALS_NAME: string;
+            /** 获取-物料序列集合 */
+            /** 设置-物料序列集合 */
+            materialSerials: MaterialSerialItems;
+            quantity: number;
+            /** 初始化数据 */
+            protected init(): void;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace bo {
         /** 数据转换者 */
         class DataConverter extends ibas.DataConverter4j {
             /** 创建业务对象转换者 */
@@ -5081,6 +5606,16 @@ declare namespace materials {
              * @param fetcher 查询者
              */
             fetchMaterialPrice(fetcher: ibas.IFetchCaller<bo.MaterialPrice>): void;
+            /**
+             * 查询 库存盘点
+             * @param fetcher 查询者
+             */
+            fetchInventoryCounting(fetcher: ibas.IFetchCaller<bo.InventoryCounting>): void;
+            /**
+             * 保存 库存盘点
+             * @param saver 保存者
+             */
+            saveInventoryCounting(saver: ibas.ISaveCaller<bo.InventoryCounting>): void;
         }
     }
 }
@@ -7265,6 +7800,184 @@ declare namespace materials {
             constructor();
             /** 创建服务实例 */
             create(): ibas.IService<ibas.IBOLinkServiceCaller>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        class InventoryCountingFunc extends ibas.ModuleFunction {
+            /** 功能标识 */
+            static FUNCTION_ID: string;
+            /** 功能名称 */
+            static FUNCTION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 默认功能 */
+            default(): ibas.IApplication<ibas.IView>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 列表应用-库存盘点 */
+        class InventoryCountingListApp extends ibas.BOListApplication<IInventoryCountingListView, bo.InventoryCounting> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria): void;
+            /** 新建数据 */
+            protected newData(): void;
+            /** 查看数据，参数：目标数据 */
+            protected viewData(data: bo.InventoryCounting): void;
+            /** 编辑数据，参数：目标数据 */
+            protected editData(data: bo.InventoryCounting): void;
+            /** 删除数据，参数：目标数据集合 */
+            protected deleteData(data: bo.InventoryCounting | bo.InventoryCounting[]): void;
+        }
+        /** 视图-库存盘点 */
+        interface IInventoryCountingListView extends ibas.IBOListView {
+            /** 编辑数据事件，参数：编辑对象 */
+            editDataEvent: Function;
+            /** 删除数据事件，参数：删除对象集合 */
+            deleteDataEvent: Function;
+            /** 显示数据 */
+            showData(datas: bo.InventoryCounting[]): void;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 选择应用-库存盘点 */
+        class InventoryCountingChooseApp extends ibas.BOChooseService<IInventoryCountingChooseView, bo.InventoryCounting> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria): void;
+            /** 新建数据 */
+            protected newData(): void;
+        }
+        /** 视图-库存盘点 */
+        interface IInventoryCountingChooseView extends ibas.IBOChooseView {
+            /** 显示数据 */
+            showData(datas: bo.InventoryCounting[]): void;
+        }
+        /** 库存盘点选择服务映射 */
+        class InventoryCountingChooseServiceMapping extends ibas.BOChooseServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IBOChooseService<bo.InventoryCounting>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 编辑应用-库存盘点 */
+        class InventoryCountingEditApp extends ibas.BOEditApplication<IInventoryCountingEditView, bo.InventoryCounting> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            run(): void;
+            run(data: bo.InventoryCounting): void;
+            /** 待编辑的数据 */
+            protected editData: bo.InventoryCounting;
+            /** 保存数据 */
+            protected saveData(): void;
+            /** 删除数据 */
+            protected deleteData(): void;
+            /** 新建数据，参数1：是否克隆 */
+            protected createData(clone: boolean): void;
+            /** 添加库存盘点-行事件 */
+            protected addInventoryCountingLine(): void;
+            /** 删除库存盘点-行事件 */
+            protected removeInventoryCountingLine(items: bo.InventoryCountingLine[]): void;
+        }
+        /** 视图-库存盘点 */
+        interface IInventoryCountingEditView extends ibas.IBOEditView {
+            /** 显示数据 */
+            showInventoryCounting(data: bo.InventoryCounting): void;
+            /** 删除数据事件 */
+            deleteDataEvent: Function;
+            /** 新建数据事件，参数1：是否克隆 */
+            createDataEvent: Function;
+            /** 添加库存盘点-行事件 */
+            addInventoryCountingLineEvent: Function;
+            /** 删除库存盘点-行事件 */
+            removeInventoryCountingLineEvent: Function;
+            /** 选择库存盘点行物料事件 */
+            chooseInventoryCountingLineMaterialEvent: Function;
+            /** 选择库存盘点行仓库事件 */
+            chooseInventoryCountingLineWarehouseEvent: Function;
+            /** 选择库存盘点行物料批次事件 */
+            chooseInventoryCountingLineMaterialBatchEvent: Function;
+            /** 选择库存盘点行物料序列事件 */
+            chooseInventoryCountingLineMaterialSerialEvent: Function;
+            /** 显示数据 */
+            showInventoryCountingLines(datas: bo.InventoryCountingLine[]): void;
         }
     }
 }

@@ -1,5 +1,7 @@
 package org.colorcoding.ibas.sales.bo.salesreturn;
 
+import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -1110,8 +1112,8 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 折扣 属性
 	 */
 	@DbField(name = "DiscPrcnt", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_DISCOUNT = registerProperty(PROPERTY_DISCOUNT_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_DISCOUNT = registerProperty(PROPERTY_DISCOUNT_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-折扣
@@ -1119,7 +1121,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_DISCOUNT_NAME)
-	public final Decimal getDiscount() {
+	public final BigDecimal getDiscount() {
 		return this.getProperty(PROPERTY_DISCOUNT);
 	}
 
@@ -1128,7 +1130,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 
 	 * @param value 值
 	 */
-	public final void setDiscount(Decimal value) {
+	public final void setDiscount(BigDecimal value) {
 		this.setProperty(PROPERTY_DISCOUNT, value);
 	}
 
@@ -1138,7 +1140,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDiscount(String value) {
-		this.setDiscount(new Decimal(value));
+		this.setDiscount(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1147,7 +1149,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDiscount(int value) {
-		this.setDiscount(new Decimal(value));
+		this.setDiscount(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1156,7 +1158,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDiscount(double value) {
-		this.setDiscount(new Decimal(value));
+		this.setDiscount(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1168,8 +1170,8 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 折扣后总计 属性
 	 */
 	@DbField(name = "DiscSum", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_DISCOUNTTOTAL = registerProperty(PROPERTY_DISCOUNTTOTAL_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_DISCOUNTTOTAL = registerProperty(PROPERTY_DISCOUNTTOTAL_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-折扣后总计
@@ -1177,7 +1179,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_DISCOUNTTOTAL_NAME)
-	public final Decimal getDiscountTotal() {
+	public final BigDecimal getDiscountTotal() {
 		return this.getProperty(PROPERTY_DISCOUNTTOTAL);
 	}
 
@@ -1186,7 +1188,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 
 	 * @param value 值
 	 */
-	public final void setDiscountTotal(Decimal value) {
+	public final void setDiscountTotal(BigDecimal value) {
 		this.setProperty(PROPERTY_DISCOUNTTOTAL, value);
 	}
 
@@ -1196,7 +1198,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDiscountTotal(String value) {
-		this.setDiscountTotal(new Decimal(value));
+		this.setDiscountTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1205,7 +1207,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDiscountTotal(int value) {
-		this.setDiscountTotal(new Decimal(value));
+		this.setDiscountTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1214,7 +1216,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDiscountTotal(double value) {
-		this.setDiscountTotal(new Decimal(value));
+		this.setDiscountTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1257,8 +1259,8 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 单据汇率 属性
 	 */
 	@DbField(name = "DocRate", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_DOCUMENTRATE = registerProperty(PROPERTY_DOCUMENTRATE_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_DOCUMENTRATE = registerProperty(PROPERTY_DOCUMENTRATE_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-单据汇率
@@ -1266,7 +1268,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_DOCUMENTRATE_NAME)
-	public final Decimal getDocumentRate() {
+	public final BigDecimal getDocumentRate() {
 		return this.getProperty(PROPERTY_DOCUMENTRATE);
 	}
 
@@ -1275,7 +1277,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 
 	 * @param value 值
 	 */
-	public final void setDocumentRate(Decimal value) {
+	public final void setDocumentRate(BigDecimal value) {
 		this.setProperty(PROPERTY_DOCUMENTRATE, value);
 	}
 
@@ -1285,7 +1287,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDocumentRate(String value) {
-		this.setDocumentRate(new Decimal(value));
+		this.setDocumentRate(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1294,7 +1296,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDocumentRate(int value) {
-		this.setDocumentRate(new Decimal(value));
+		this.setDocumentRate(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1303,7 +1305,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDocumentRate(double value) {
-		this.setDocumentRate(new Decimal(value));
+		this.setDocumentRate(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1315,8 +1317,8 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 单据总计 属性
 	 */
 	@DbField(name = "DocTotal", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_DOCUMENTTOTAL = registerProperty(PROPERTY_DOCUMENTTOTAL_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_DOCUMENTTOTAL = registerProperty(PROPERTY_DOCUMENTTOTAL_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-单据总计
@@ -1324,7 +1326,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_DOCUMENTTOTAL_NAME)
-	public final Decimal getDocumentTotal() {
+	public final BigDecimal getDocumentTotal() {
 		return this.getProperty(PROPERTY_DOCUMENTTOTAL);
 	}
 
@@ -1333,7 +1335,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 
 	 * @param value 值
 	 */
-	public final void setDocumentTotal(Decimal value) {
+	public final void setDocumentTotal(BigDecimal value) {
 		this.setProperty(PROPERTY_DOCUMENTTOTAL, value);
 	}
 
@@ -1343,7 +1345,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDocumentTotal(String value) {
-		this.setDocumentTotal(new Decimal(value));
+		this.setDocumentTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1352,7 +1354,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDocumentTotal(int value) {
-		this.setDocumentTotal(new Decimal(value));
+		this.setDocumentTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1361,7 +1363,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDocumentTotal(double value) {
-		this.setDocumentTotal(new Decimal(value));
+		this.setDocumentTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1373,8 +1375,8 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 已付款总计 属性
 	 */
 	@DbField(name = "PaidTotal", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_PAIDTOTAL = registerProperty(PROPERTY_PAIDTOTAL_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_PAIDTOTAL = registerProperty(PROPERTY_PAIDTOTAL_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-已付款总计
@@ -1382,7 +1384,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_PAIDTOTAL_NAME)
-	public final Decimal getPaidTotal() {
+	public final BigDecimal getPaidTotal() {
 		return this.getProperty(PROPERTY_PAIDTOTAL);
 	}
 
@@ -1391,7 +1393,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 
 	 * @param value 值
 	 */
-	public final void setPaidTotal(Decimal value) {
+	public final void setPaidTotal(BigDecimal value) {
 		this.setProperty(PROPERTY_PAIDTOTAL, value);
 	}
 
@@ -1401,7 +1403,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setPaidTotal(String value) {
-		this.setPaidTotal(new Decimal(value));
+		this.setPaidTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1410,7 +1412,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setPaidTotal(int value) {
-		this.setPaidTotal(new Decimal(value));
+		this.setPaidTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1419,7 +1421,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setPaidTotal(double value) {
-		this.setPaidTotal(new Decimal(value));
+		this.setPaidTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1431,8 +1433,8 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 毛利 属性
 	 */
 	@DbField(name = "GrossProfit", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_GROSSPROFIT = registerProperty(PROPERTY_GROSSPROFIT_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_GROSSPROFIT = registerProperty(PROPERTY_GROSSPROFIT_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-毛利
@@ -1440,7 +1442,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_GROSSPROFIT_NAME)
-	public final Decimal getGrossProfit() {
+	public final BigDecimal getGrossProfit() {
 		return this.getProperty(PROPERTY_GROSSPROFIT);
 	}
 
@@ -1449,7 +1451,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 
 	 * @param value 值
 	 */
-	public final void setGrossProfit(Decimal value) {
+	public final void setGrossProfit(BigDecimal value) {
 		this.setProperty(PROPERTY_GROSSPROFIT, value);
 	}
 
@@ -1459,7 +1461,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setGrossProfit(String value) {
-		this.setGrossProfit(new Decimal(value));
+		this.setGrossProfit(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1468,7 +1470,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setGrossProfit(int value) {
-		this.setGrossProfit(new Decimal(value));
+		this.setGrossProfit(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1477,7 +1479,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setGrossProfit(double value) {
-		this.setGrossProfit(new Decimal(value));
+		this.setGrossProfit(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1582,8 +1584,8 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 舍入差额 属性
 	 */
 	@DbField(name = "RoundDiff", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_DIFFAMOUNT = registerProperty(PROPERTY_DIFFAMOUNT_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_DIFFAMOUNT = registerProperty(PROPERTY_DIFFAMOUNT_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-舍入差额
@@ -1591,7 +1593,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_DIFFAMOUNT_NAME)
-	public final Decimal getDiffAmount() {
+	public final BigDecimal getDiffAmount() {
 		return this.getProperty(PROPERTY_DIFFAMOUNT);
 	}
 
@@ -1600,7 +1602,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 
 	 * @param value 值
 	 */
-	public final void setDiffAmount(Decimal value) {
+	public final void setDiffAmount(BigDecimal value) {
 		this.setProperty(PROPERTY_DIFFAMOUNT, value);
 	}
 
@@ -1610,7 +1612,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDiffAmount(String value) {
-		this.setDiffAmount(new Decimal(value));
+		this.setDiffAmount(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1619,7 +1621,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDiffAmount(int value) {
-		this.setDiffAmount(new Decimal(value));
+		this.setDiffAmount(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1628,7 +1630,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * @param value 值
 	 */
 	public final void setDiffAmount(double value) {
-		this.setDiffAmount(new Decimal(value));
+		this.setDiffAmount(Decimal.valueOf(value));
 	}
 
 	/**
@@ -1813,15 +1815,15 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	/**
 	 * 项目的行总计 属性
 	 */
-	public static final IPropertyInfo<Decimal> PROPERTY_ITEMSLINETOTAL = registerProperty(PROPERTY_ITEMSLINETOTAL_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_ITEMSLINETOTAL = registerProperty(
+			PROPERTY_ITEMSLINETOTAL_NAME, BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-项目的行总计
 	 * 
 	 * @return 值
 	 */
-	public final Decimal getItemsLineTotal() {
+	public final BigDecimal getItemsLineTotal() {
 		return this.getProperty(PROPERTY_ITEMSLINETOTAL);
 	}
 
@@ -1830,7 +1832,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 
 	 * @param value 值
 	 */
-	final void setItemsLineTotal(Decimal value) {
+	final void setItemsLineTotal(BigDecimal value) {
 		this.setProperty(PROPERTY_ITEMSLINETOTAL, value);
 	}
 
@@ -1842,15 +1844,15 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	/**
 	 * 项目的税总计 属性
 	 */
-	public static final IPropertyInfo<Decimal> PROPERTY_ITEMSTAXTOTAL = registerProperty(PROPERTY_ITEMSTAXTOTAL_NAME,
-			Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_ITEMSTAXTOTAL = registerProperty(PROPERTY_ITEMSTAXTOTAL_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-项目的税总计
 	 * 
 	 * @return 值
 	 */
-	public final Decimal getItemsTaxTotal() {
+	public final BigDecimal getItemsTaxTotal() {
 		return this.getProperty(PROPERTY_ITEMSTAXTOTAL);
 	}
 
@@ -1859,7 +1861,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 
 	 * @param value 值
 	 */
-	final void setItemsTaxTotal(Decimal value) {
+	final void setItemsTaxTotal(BigDecimal value) {
 		this.setProperty(PROPERTY_ITEMSTAXTOTAL, value);
 	}
 
@@ -1871,15 +1873,15 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	/**
 	 * 运送费用总计 属性
 	 */
-	public static final IPropertyInfo<Decimal> PROPERTY_SHIPPINGSEXPENSETOTAL = registerProperty(
-			PROPERTY_SHIPPINGSEXPENSETOTAL_NAME, Decimal.class, MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_SHIPPINGSEXPENSETOTAL = registerProperty(
+			PROPERTY_SHIPPINGSEXPENSETOTAL_NAME, BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-运送费用总计
 	 * 
 	 * @return 值
 	 */
-	public final Decimal getShippingsExpenseTotal() {
+	public final BigDecimal getShippingsExpenseTotal() {
 		return this.getProperty(PROPERTY_SHIPPINGSEXPENSETOTAL);
 	}
 
@@ -1888,7 +1890,7 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	 * 
 	 * @param value 值
 	 */
-	final void setShippingsExpenseTotal(Decimal value) {
+	final void setShippingsExpenseTotal(BigDecimal value) {
 		this.setProperty(PROPERTY_SHIPPINGSEXPENSETOTAL, value);
 	}
 
@@ -1896,9 +1898,9 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	protected IBusinessRule[] registerRules() {
 		return new IBusinessRule[] { // 注册的业务规则
 				new BusinessRuleRequired(PROPERTY_CUSTOMERCODE), // 要求有值
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DISCOUNT), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DOCUMENTRATE), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_PAIDTOTAL), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DISCOUNT), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DOCUMENTRATE), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_PAIDTOTAL), // 不能低于0
 				new BusinessRuleRequiredElements(PROPERTY_SALESRETURNITEMS), // 要求有元素
 				new BusinessRuleDocumentStatus(PROPERTY_DOCUMENTSTATUS, PROPERTY_SALESRETURNITEMS,
 						SalesReturnItem.PROPERTY_LINESTATUS), // 使用集合元素状态
@@ -1915,8 +1917,8 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 						PROPERTY_SHIPPINGSEXPENSETOTAL),
 				// 小数舍入（单据总计）
 				new BusinessRuleRoundingOff(PROPERTY_DIFFAMOUNT, PROPERTY_DOCUMENTTOTAL, PROPERTY_ROUNDING),
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DISCOUNTTOTAL), // 不能低于0
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_DOCUMENTTOTAL), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DISCOUNTTOTAL), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DOCUMENTTOTAL), // 不能低于0
 
 		};
 	}

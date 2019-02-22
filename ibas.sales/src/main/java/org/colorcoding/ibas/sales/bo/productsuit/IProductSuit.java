@@ -1,8 +1,9 @@
 package org.colorcoding.ibas.sales.bo.productsuit;
 
+import java.math.BigDecimal;
+
 import org.colorcoding.ibas.bobas.bo.IBOSimple;
 import org.colorcoding.ibas.bobas.data.DateTime;
-import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 
@@ -22,8 +23,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-产品编码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setProduct(String value);
 
@@ -37,8 +37,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-产品描述
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDescription(String value);
 
@@ -52,8 +51,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-版本
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setVersion(String value);
 
@@ -67,8 +65,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-是否激活
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setActivated(emYesNo value);
 
@@ -77,37 +74,33 @@ public interface IProductSuit extends IBOSimple {
 	 * 
 	 * @return 值
 	 */
-	Decimal getUnitQuantity();
+	BigDecimal getUnitQuantity();
 
 	/**
 	 * 设置-单位数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setUnitQuantity(Decimal value);
+	void setUnitQuantity(BigDecimal value);
 
 	/**
 	 * 设置-单位数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUnitQuantity(String value);
 
 	/**
 	 * 设置-单位数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUnitQuantity(int value);
 
 	/**
 	 * 设置-单位数量
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUnitQuantity(double value);
 
@@ -121,8 +114,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-单位
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUOM(String value);
 
@@ -136,8 +128,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-生效日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setValidDate(DateTime value);
 
@@ -151,8 +142,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-失效日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setInvalidDate(DateTime value);
 
@@ -161,37 +151,33 @@ public interface IProductSuit extends IBOSimple {
 	 * 
 	 * @return 值
 	 */
-	Decimal getTotal();
+	BigDecimal getTotal();
 
 	/**
 	 * 设置-总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setTotal(Decimal value);
+	void setTotal(BigDecimal value);
 
 	/**
 	 * 设置-总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTotal(String value);
 
 	/**
 	 * 设置-总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTotal(int value);
 
 	/**
 	 * 设置-总计
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTotal(double value);
 
@@ -205,8 +191,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-货币
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCurrency(String value);
 
@@ -220,8 +205,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-备注
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setRemarks(String value);
 
@@ -235,8 +219,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-对象编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectKey(Integer value);
 
@@ -250,8 +233,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-对象类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectCode(String value);
 
@@ -265,8 +247,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateDate(DateTime value);
 
@@ -280,8 +261,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateTime(Short value);
 
@@ -295,8 +275,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-修改日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateDate(DateTime value);
 
@@ -310,8 +289,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-修改时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateTime(Short value);
 
@@ -325,8 +303,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-版本
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLogInst(Integer value);
 
@@ -340,8 +317,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-服务系列
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setSeries(Integer value);
 
@@ -355,8 +331,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDataSource(String value);
 
@@ -370,8 +345,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateUserSign(Integer value);
 
@@ -385,8 +359,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-修改用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateUserSign(Integer value);
 
@@ -400,8 +373,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateActionId(String value);
 
@@ -415,8 +387,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateActionId(String value);
 
@@ -430,8 +401,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-审批状态
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setApprovalStatus(emApprovalStatus value);
 
@@ -445,8 +415,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-数据所有者
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDataOwner(Integer value);
 
@@ -460,8 +429,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-团队成员
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTeamMembers(String value);
 
@@ -475,8 +443,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-数据所属组织
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setOrganization(String value);
 
@@ -490,8 +457,7 @@ public interface IProductSuit extends IBOSimple {
 	/**
 	 * 设置-产品套装-项目集合
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setProductSuitItems(IProductSuitItems value);
 

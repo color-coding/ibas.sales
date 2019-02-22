@@ -1,6 +1,7 @@
 package org.colorcoding.ibas.sales.logic;
 
-import org.colorcoding.ibas.bobas.data.Decimal;
+import java.math.BigDecimal;
+
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
 
 /**
@@ -16,7 +17,7 @@ public interface ISalesReturnPaymentContract extends IBusinessLogicContract, ISa
 	 * 
 	 * @return
 	 */
-	Decimal getAmount();
+	BigDecimal getAmount();
 
 	/**
 	 * 币种
@@ -30,5 +31,5 @@ public interface ISalesReturnPaymentContract extends IBusinessLogicContract, ISa
 	 * 
 	 * @return
 	 */
-	Decimal getRate();
+	BigDecimal getRate();
 }

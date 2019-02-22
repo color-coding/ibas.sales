@@ -1,8 +1,9 @@
 package org.colorcoding.ibas.sales.bo.shippingaddress;
 
+import java.math.BigDecimal;
+
 import org.colorcoding.ibas.bobas.bo.IBOSimple;
 import org.colorcoding.ibas.bobas.data.DateTime;
-import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.sales.data.emShippingStatus;
 
 /**
@@ -21,8 +22,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-基于类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setBaseDocumentType(String value);
 
@@ -36,8 +36,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-基于标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setBaseDocumentEntry(Integer value);
 
@@ -51,8 +50,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-名称
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setName(String value);
 
@@ -66,8 +64,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-顺序
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setOrder(Integer value);
 
@@ -81,8 +78,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-送货状态
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setShippingStatus(emShippingStatus value);
 
@@ -96,8 +92,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-收货人
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setConsignee(String value);
 
@@ -111,8 +106,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-街道
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setStreet(String value);
 
@@ -126,8 +120,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-县/区
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDistrict(String value);
 
@@ -141,8 +134,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-市
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCity(String value);
 
@@ -156,8 +148,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-省
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setProvince(String value);
 
@@ -171,8 +162,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-国
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCountry(String value);
 
@@ -186,8 +176,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-邮编
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setZipCode(String value);
 
@@ -201,8 +190,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-联系电话
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setMobilePhone(String value);
 
@@ -216,8 +204,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-电话
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTelephone(String value);
 
@@ -231,8 +218,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-备注 1
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setRemark1(String value);
 
@@ -246,8 +232,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-备注 2
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setRemark2(String value);
 
@@ -256,37 +241,33 @@ public interface IShippingAddress extends IBOSimple {
 	 * 
 	 * @return 值
 	 */
-	Decimal getExpense();
+	BigDecimal getExpense();
 
 	/**
 	 * 设置-费用
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	void setExpense(Decimal value);
+	void setExpense(BigDecimal value);
 
 	/**
 	 * 设置-费用
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setExpense(String value);
 
 	/**
 	 * 设置-费用
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setExpense(int value);
 
 	/**
 	 * 设置-费用
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setExpense(double value);
 
@@ -300,8 +281,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-货币
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCurrency(String value);
 
@@ -315,8 +295,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-快递单号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTrackingNumber(String value);
 
@@ -330,8 +309,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-对象编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectKey(Integer value);
 
@@ -345,8 +323,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-对象类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectCode(String value);
 
@@ -360,8 +337,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateDate(DateTime value);
 
@@ -375,8 +351,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateTime(Short value);
 
@@ -390,8 +365,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-修改日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateDate(DateTime value);
 
@@ -405,8 +379,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-修改时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateTime(Short value);
 
@@ -420,8 +393,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-实例号（版本）
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLogInst(Integer value);
 
@@ -435,8 +407,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-服务系列
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setSeries(Integer value);
 
@@ -450,8 +421,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDataSource(String value);
 
@@ -465,8 +435,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateUserSign(Integer value);
 
@@ -480,8 +449,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-修改用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateUserSign(Integer value);
 
@@ -495,8 +463,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateActionId(String value);
 
@@ -510,8 +477,7 @@ public interface IShippingAddress extends IBOSimple {
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateActionId(String value);
 

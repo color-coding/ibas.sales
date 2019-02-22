@@ -1,5 +1,7 @@
 package org.colorcoding.ibas.sales.bo.shippingaddress;
 
+import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -79,8 +81,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-基于类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setBaseDocumentType(String value) {
 		this.setProperty(PROPERTY_BASEDOCUMENTTYPE, value);
@@ -111,8 +112,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-基于标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setBaseDocumentEntry(Integer value) {
 		this.setProperty(PROPERTY_BASEDOCUMENTENTRY, value);
@@ -143,8 +143,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-名称
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setName(String value) {
 		this.setProperty(PROPERTY_NAME, value);
@@ -175,8 +174,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-顺序
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setOrder(Integer value) {
 		this.setProperty(PROPERTY_ORDER, value);
@@ -207,8 +205,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-送货状态
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setShippingStatus(emShippingStatus value) {
 		this.setProperty(PROPERTY_SHIPPINGSTATUS, value);
@@ -239,8 +236,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-收货人
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setConsignee(String value) {
 		this.setProperty(PROPERTY_CONSIGNEE, value);
@@ -271,8 +267,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-街道
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setStreet(String value) {
 		this.setProperty(PROPERTY_STREET, value);
@@ -303,8 +298,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-县/区
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDistrict(String value) {
 		this.setProperty(PROPERTY_DISTRICT, value);
@@ -335,8 +329,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-市
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCity(String value) {
 		this.setProperty(PROPERTY_CITY, value);
@@ -367,8 +360,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-省
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setProvince(String value) {
 		this.setProperty(PROPERTY_PROVINCE, value);
@@ -399,8 +391,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-国
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCountry(String value) {
 		this.setProperty(PROPERTY_COUNTRY, value);
@@ -431,8 +422,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-邮编
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setZipCode(String value) {
 		this.setProperty(PROPERTY_ZIPCODE, value);
@@ -463,8 +453,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-联系电话
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setMobilePhone(String value) {
 		this.setProperty(PROPERTY_MOBILEPHONE, value);
@@ -495,8 +484,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-电话
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setTelephone(String value) {
 		this.setProperty(PROPERTY_TELEPHONE, value);
@@ -527,8 +515,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-备注 1
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setRemark1(String value) {
 		this.setProperty(PROPERTY_REMARK1, value);
@@ -559,8 +546,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-备注 2
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setRemark2(String value) {
 		this.setProperty(PROPERTY_REMARK2, value);
@@ -575,8 +561,8 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	 * 费用 属性
 	 */
 	@DbField(name = "Expense", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Decimal> PROPERTY_EXPENSE = registerProperty(PROPERTY_EXPENSE_NAME, Decimal.class,
-			MY_CLASS);
+	public static final IPropertyInfo<BigDecimal> PROPERTY_EXPENSE = registerProperty(PROPERTY_EXPENSE_NAME,
+			BigDecimal.class, MY_CLASS);
 
 	/**
 	 * 获取-费用
@@ -584,48 +570,44 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	 * @return 值
 	 */
 	@XmlElement(name = PROPERTY_EXPENSE_NAME)
-	public final Decimal getExpense() {
+	public final BigDecimal getExpense() {
 		return this.getProperty(PROPERTY_EXPENSE);
 	}
 
 	/**
 	 * 设置-费用
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
-	public final void setExpense(Decimal value) {
+	public final void setExpense(BigDecimal value) {
 		this.setProperty(PROPERTY_EXPENSE, value);
 	}
 
 	/**
 	 * 设置-费用
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setExpense(String value) {
-		this.setExpense(new Decimal(value));
+		this.setExpense(Decimal.valueOf(value));
 	}
 
 	/**
 	 * 设置-费用
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setExpense(int value) {
-		this.setExpense(new Decimal(value));
+		this.setExpense(Decimal.valueOf(value));
 	}
 
 	/**
 	 * 设置-费用
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setExpense(double value) {
-		this.setExpense(new Decimal(value));
+		this.setExpense(Decimal.valueOf(value));
 	}
 
 	/**
@@ -653,8 +635,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-货币
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCurrency(String value) {
 		this.setProperty(PROPERTY_CURRENCY, value);
@@ -685,8 +666,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-快递单号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setTrackingNumber(String value) {
 		this.setProperty(PROPERTY_TRACKINGNUMBER, value);
@@ -717,8 +697,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-对象编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setObjectKey(Integer value) {
 		this.setProperty(PROPERTY_OBJECTKEY, value);
@@ -749,8 +728,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-对象类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setObjectCode(String value) {
 		this.setProperty(PROPERTY_OBJECTCODE, value);
@@ -781,8 +759,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateDate(DateTime value) {
 		this.setProperty(PROPERTY_CREATEDATE, value);
@@ -813,8 +790,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateTime(Short value) {
 		this.setProperty(PROPERTY_CREATETIME, value);
@@ -845,8 +821,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-修改日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateDate(DateTime value) {
 		this.setProperty(PROPERTY_UPDATEDATE, value);
@@ -877,8 +852,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-修改时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateTime(Short value) {
 		this.setProperty(PROPERTY_UPDATETIME, value);
@@ -909,8 +883,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-实例号（版本）
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLogInst(Integer value) {
 		this.setProperty(PROPERTY_LOGINST, value);
@@ -941,8 +914,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-服务系列
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setSeries(Integer value) {
 		this.setProperty(PROPERTY_SERIES, value);
@@ -973,8 +945,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDataSource(String value) {
 		this.setProperty(PROPERTY_DATASOURCE, value);
@@ -1005,8 +976,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateUserSign(Integer value) {
 		this.setProperty(PROPERTY_CREATEUSERSIGN, value);
@@ -1037,8 +1007,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-修改用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateUserSign(Integer value) {
 		this.setProperty(PROPERTY_UPDATEUSERSIGN, value);
@@ -1069,8 +1038,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateActionId(String value) {
 		this.setProperty(PROPERTY_CREATEACTIONID, value);
@@ -1101,8 +1069,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateActionId(String value) {
 		this.setProperty(PROPERTY_UPDATEACTIONID, value);
@@ -1122,7 +1089,7 @@ public class ShippingAddress extends BusinessObject<ShippingAddress> implements 
 	@Override
 	protected IBusinessRule[] registerRules() {
 		return new IBusinessRule[] { // 注册的业务规则
-				new BusinessRuleMinValue<Decimal>(Decimal.ZERO, PROPERTY_EXPENSE), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_EXPENSE), // 不能低于0
 
 		};
 	}
