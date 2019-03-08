@@ -373,7 +373,7 @@ namespace sales {
                 if (ibas.objects.isNull(address)) {
                     return;
                 }
-                if (ibas.objects.getType(address).BUSINESS_OBJECT_CODE !== businesspartner.bo.BO_CODE_ADDRESS) {
+                if (ibas.objects.typeOf(address).BUSINESS_OBJECT_CODE !== businesspartner.bo.BO_CODE_ADDRESS) {
                     return;
                 }
                 this.name = address.name;

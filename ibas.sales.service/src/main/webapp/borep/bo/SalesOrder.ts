@@ -510,13 +510,13 @@ namespace sales {
                 this.setProperty(SalesOrder.PROPERTY_PROJECT_NAME, value);
             }
 
-            /** 映射的属性名称-消费者 */
+            /** 映射的属性名称-终端客户 */
             static PROPERTY_CONSUMER_NAME: string = "Consumer";
-            /** 获取-消费者 */
+            /** 获取-终端客户 */
             get consumer(): string {
                 return this.getProperty<string>(SalesOrder.PROPERTY_CONSUMER_NAME);
             }
-            /** 设置-消费者 */
+            /** 设置-终端客户 */
             set consumer(value: string) {
                 this.setProperty(SalesOrder.PROPERTY_CONSUMER_NAME, value);
             }
@@ -601,7 +601,7 @@ namespace sales {
                 if (ibas.objects.isNull(address)) {
                     return;
                 }
-                if (ibas.objects.getType(address).BUSINESS_OBJECT_CODE === businesspartner.bo.BO_CODE_ADDRESS) {
+                if (ibas.objects.typeOf(address).BUSINESS_OBJECT_CODE === businesspartner.bo.BO_CODE_ADDRESS) {
                     let myAddress: IShippingAddress = this.shippingAddresss.create();
                     myAddress.baseAddress(address);
                 }
@@ -677,7 +677,7 @@ namespace sales {
             /** 数据解析后 */
             afterParsing(): void {
                 // 计算部分业务逻辑
-                for (let rule of ibas.businessRulesManager.getRules(ibas.objects.getType(this))) {
+                for (let rule of ibas.businessRulesManager.getRules(ibas.objects.typeOf(this))) {
                     if (!(rule instanceof ibas.BusinessRuleSumElements)) {
                         continue;
                     }

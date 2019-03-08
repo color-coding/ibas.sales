@@ -1038,6 +1038,7 @@ declare namespace businesspartner {
             updateActionId: string;
             /** 初始化数据 */
             protected init(): void;
+            protected registerRules(): ibas.IBusinessRule[];
         }
     }
 }
@@ -1303,6 +1304,7 @@ declare namespace businesspartner {
             updateActionId: string;
             /** 初始化数据 */
             protected init(): void;
+            protected registerRules(): ibas.IBusinessRule[];
         }
     }
 }
@@ -2113,6 +2115,7 @@ declare namespace businesspartner {
             remark2: string;
             /** 初始化数据 */
             protected init(): void;
+            protected registerRules(): ibas.IBusinessRule[];
         }
         /** 客户资产 */
         class CustomerAsset {
@@ -2343,6 +2346,19 @@ declare namespace businesspartner {
         }
         /** 模块业务对象工厂 */
         const boFactory: ibas.BOFactory;
+        /** 业务规则-清理属性值 */
+        class BusinessRuleClearValue extends ibas.BusinessRuleCommon {
+            /**
+             * 构造
+             * @param sProperty 触发属性
+             * @param tProperty 目标属性
+             */
+            constructor(sProperty: string, tProperty: string);
+            sourceProperty: string;
+            targetProperty: string;
+            /** 计算规则 */
+            protected compute(context: ibas.BusinessRuleContextCommon): void;
+        }
     }
 }
 /**
@@ -3939,7 +3955,6 @@ declare namespace businesspartner {
         class Console extends ibas.ModuleConsole {
             /** 构造函数 */
             constructor();
-            private _navigation;
             /** 创建视图导航 */
             navigation(): ibas.IViewNavigation;
             /** 初始化 */

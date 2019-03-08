@@ -1665,19 +1665,19 @@ public class SalesDelivery extends BusinessObject<SalesDelivery> implements ISal
 	}
 
 	/**
-	 * 属性名称-消费者
+	 * 属性名称-终端客户
 	 */
 	private static final String PROPERTY_CONSUMER_NAME = "Consumer";
 
 	/**
-	 * 消费者 属性
+	 * 终端客户 属性
 	 */
 	@DbField(name = "Consumer", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
 	public static final IPropertyInfo<String> PROPERTY_CONSUMER = registerProperty(PROPERTY_CONSUMER_NAME, String.class,
 			MY_CLASS);
 
 	/**
-	 * 获取-消费者
+	 * 获取-终端客户
 	 * 
 	 * @return 值
 	 */
@@ -1687,7 +1687,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery> implements ISal
 	}
 
 	/**
-	 * 设置-消费者
+	 * 设置-终端客户
 	 * 
 	 * @param value 值
 	 */

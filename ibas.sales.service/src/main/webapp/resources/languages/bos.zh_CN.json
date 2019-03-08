@@ -143,7 +143,7 @@
         "bo_salesdelivery_rounding": "舍入",
         "bo_salesdelivery_diffamount": "舍入差额",
         "bo_salesdelivery_project": "项目代码",
-        "bo_salesdelivery_consumer": "消费者",
+        "bo_salesdelivery_consumer": "终端客户",
         "bo_salesdelivery_ordertype": "单据类型",
         "bo_salesdelivery_shippingsexpensetotal": "运费总计",
         "bo_salesdelivery_itemstaxtotal": "税总计",
@@ -257,7 +257,7 @@
         "bo_salesorder_rounding": "舍入",
         "bo_salesorder_diffamount": "舍入差额",
         "bo_salesorder_project": "项目代码",
-        "bo_salesorder_consumer": "消费者",
+        "bo_salesorder_consumer": "终端客户",
         "bo_salesorder_ordertype": "单据类型",
         "bo_salesorder_shippingsexpensetotal": "运费总计",
         "bo_salesorder_itemstaxtotal": "税总计",
@@ -397,7 +397,7 @@
         "bo_salesreturn_rounding": "舍入",
         "bo_salesreturn_diffamount": "舍入差额",
         "bo_salesreturn_project": "项目代码",
-        "bo_salesreturn_consumer": "消费者",
+        "bo_salesreturn_consumer": "终端客户",
         "bo_salesreturn_ordertype": "单据类型",
         "bo_salesreturn_shippingsexpensetotal": "运费总计",
         "bo_salesreturn_itemstaxtotal": "税总计",
@@ -511,7 +511,7 @@
         "bo_salesquote_rounding": "舍入",
         "bo_salesquote_diffamount": "舍入差额",
         "bo_salesquote_project": "项目代码",
-        "bo_salesquote_consumer": "消费者",
+        "bo_salesquote_consumer": "终端客户",
         "bo_salesquote_ordertype": "单据类型",
         "bo_salesquote_shippingsexpensetotal": "运费总计",
         "bo_salesquote_itemstaxtotal": "税总计",
@@ -706,10 +706,15 @@
         "bo_specification_closing_delimiter": "----结束----"
     },
     {
-        "em_waiting": "等待",
-        "em_shipping": "运输中",
-        "em_shipped": "已送达",
-        "em_material": "物料",
-        "em_material_group": "物料组"
+        "em_shippingstatus_waiting": "等待",
+        "em_shippingstatus_shipping": "运输中",
+        "em_shippingstatus_shipped": "已送达"
+    },
+    {
+        "em_specificationtarget_material": "物料",
+        "em_specificationtarget_material_group": "物料组"
+    },
+    {
+        "em_producttreetype_bundled": "捆绑"
     }
 ]

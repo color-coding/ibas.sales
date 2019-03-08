@@ -76,6 +76,13 @@ declare namespace materials {
             /** 编码排序 */
             ORDER_BY_CODE = 2
         }
+        /** 库存调整 */
+        enum emInventoryAdjustment {
+            /** 盘盈 */
+            OVER = 0,
+            /** 盘亏 */
+            SHORT = 1
+        }
     }
     namespace app {
         /** 批次服务契约 */
@@ -778,6 +785,8 @@ declare namespace materials {
             dataOwner: number;
             /** 数据所属组织 */
             organization: string;
+            /** 可用量（库存+已订购-已承诺） */
+            onAvailable(): number;
         }
         /** 物料数量 */
         interface IMaterialQuantity {
@@ -793,6 +802,8 @@ declare namespace materials {
             onOrdered: number;
             /** 单位 */
             uom: string;
+            /** 可用量（库存+已订购-已承诺） */
+            onAvailable(): number;
         }
         /** 物料价格 */
         interface IMaterialPrice {
@@ -1212,6 +1223,8 @@ declare namespace materials {
             createActionId: string;
             /** 更新动作标识 */
             updateActionId: string;
+            /** 可用量（库存+已订购-已承诺） */
+            onAvailable(): number;
         }
     }
 }
@@ -1334,6 +1347,10 @@ declare namespace materials {
             createActionId: string;
             /** 更新动作标识 */
             updateActionId: string;
+            /** 数据所有者 */
+            dataOwner: number;
+            /** 数据所属组织 */
+            organization: string;
             /** 价格清单-行集合 */
             materialPriceItems: IMaterialPriceItems;
         }
@@ -1735,6 +1752,8 @@ declare namespace materials {
             dataOwner: number;
             /** 数据所属组织 */
             organization: string;
+            /** 可用量（库存+已订购-已承诺） */
+            onAvailable(): number;
         }
     }
 }
@@ -1903,6 +1922,18 @@ declare namespace materials {
             name: string;
             /** 激活 */
             activated: ibas.emYesNo;
+            /** 街道 */
+            street: string;
+            /** 县/区 */
+            district: string;
+            /** 市 */
+            city: string;
+            /** 省 */
+            province: string;
+            /** 国 */
+            country: string;
+            /** 邮编 */
+            zipCode: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
             /** 已删除 */
@@ -2084,6 +2115,11 @@ declare namespace materials {
              */
             saveInventoryCounting(saver: ibas.ISaveCaller<bo.IInventoryCounting>): void;
             /**
+             * 结算 库存盘点
+             * @param fetcher 查询者
+             */
+            closeInventoryCounting(closer: ICloseCaller<bo.IInventoryCounting>): void;
+            /**
              * 查询 物料价格清单
              * @param fetcher 查询者
              */
@@ -2103,6 +2139,10 @@ declare namespace materials {
              * @param fetcher 查询者
              */
             fetchMaterialPrice(fetcher: ibas.IFetchCaller<bo.IMaterialPrice>): void;
+        }
+        interface ICloseCaller<T> extends ibas.IMethodCaller<string> {
+            /** 查询条件 */
+            criteria: ibas.ICriteria | ibas.ICondition[] | T;
         }
     }
 }
@@ -3562,6 +3602,8 @@ declare namespace materials {
             organization: string;
             /** 初始化数据 */
             protected init(): void;
+            /** 可用量（库存+已订购-已承诺） */
+            onAvailable(): number;
         }
         /** 物料数量 */
         class MaterialQuantity extends ibas.BusinessObject<MaterialQuantity> implements IMaterialQuantity {
@@ -3601,6 +3643,8 @@ declare namespace materials {
             criteria(): ibas.ICriteria;
             /** 初始化数据 */
             protected init(): void;
+            /** 可用量（库存+已订购-已承诺） */
+            onAvailable(): number;
         }
         /** 物料价格 */
         class MaterialPrice extends ibas.BusinessObject<MaterialPrice> implements IMaterialPrice {
@@ -4136,6 +4180,8 @@ declare namespace materials {
             updateActionId: string;
             /** 初始化数据 */
             protected init(): void;
+            /** 可用量（库存+已订购-已承诺） */
+            onAvailable(): number;
         }
     }
 }
@@ -4945,6 +4991,8 @@ declare namespace materials {
             organization: string;
             /** 初始化数据 */
             protected init(): void;
+            /** 可用量（库存+已订购-已承诺） */
+            onAvailable(): number;
         }
     }
 }
@@ -4978,6 +5026,36 @@ declare namespace materials {
             /** 获取-激活 */
             /** 设置-激活 */
             activated: ibas.emYesNo;
+            /** 映射的属性名称-街道 */
+            static PROPERTY_STREET_NAME: string;
+            /** 获取-街道 */
+            /** 设置-街道 */
+            street: string;
+            /** 映射的属性名称-县/区 */
+            static PROPERTY_DISTRICT_NAME: string;
+            /** 获取-县/区 */
+            /** 设置-县/区 */
+            district: string;
+            /** 映射的属性名称-市 */
+            static PROPERTY_CITY_NAME: string;
+            /** 获取-市 */
+            /** 设置-市 */
+            city: string;
+            /** 映射的属性名称-省 */
+            static PROPERTY_PROVINCE_NAME: string;
+            /** 获取-省 */
+            /** 设置-省 */
+            province: string;
+            /** 映射的属性名称-国 */
+            static PROPERTY_COUNTRY_NAME: string;
+            /** 获取-国 */
+            /** 设置-国 */
+            country: string;
+            /** 映射的属性名称-邮编 */
+            static PROPERTY_ZIPCODE_NAME: string;
+            /** 获取-邮编 */
+            /** 设置-邮编 */
+            zipCode: string;
             /** 映射的属性名称-已引用 */
             static PROPERTY_REFERENCED_NAME: string;
             /** 获取-已引用 */
@@ -5428,6 +5506,9 @@ declare namespace materials {
             quantity: number;
             /** 初始化数据 */
             protected init(): void;
+            protected registerRules(): ibas.IBusinessRule[];
+            /** 属性改变时 */
+            protected onPropertyChanged(name: string): void;
         }
     }
 }
@@ -5616,6 +5697,11 @@ declare namespace materials {
              * @param saver 保存者
              */
             saveInventoryCounting(saver: ibas.ISaveCaller<bo.InventoryCounting>): void;
+            /**
+             * 结算 库存盘点
+             * @param fetcher 查询者
+             */
+            closeInventoryCounting(closer: ICloseCaller<bo.IInventoryCounting>): void;
         }
     }
 }
@@ -7947,14 +8033,25 @@ declare namespace materials {
             protected editData: bo.InventoryCounting;
             /** 保存数据 */
             protected saveData(): void;
+            /** 关闭数据 */
+            protected closeData(): void;
             /** 删除数据 */
             protected deleteData(): void;
             /** 新建数据，参数1：是否克隆 */
             protected createData(clone: boolean): void;
+            protected refreshMaterialInventory(): void;
             /** 添加库存盘点-行事件 */
             protected addInventoryCountingLine(): void;
             /** 删除库存盘点-行事件 */
             protected removeInventoryCountingLine(items: bo.InventoryCountingLine[]): void;
+            /** 选择库存盘点行物料事件 */
+            private chooseInventoryCountingLineMaterial;
+            /** 选择库存盘点行物料事件 */
+            private chooseInventoryCountingLineWarehouse;
+            private chooseInventoryCountingLineMaterialBatch;
+            private chooseInventoryCountingLineMaterialSerial;
+            /** 选择库存盘点物料库存事件 */
+            private chooseInventoryCountingMaterialInventory;
         }
         /** 视图-库存盘点 */
         interface IInventoryCountingEditView extends ibas.IBOEditView {
@@ -7964,6 +8061,8 @@ declare namespace materials {
             deleteDataEvent: Function;
             /** 新建数据事件，参数1：是否克隆 */
             createDataEvent: Function;
+            /** 关闭数据事件 */
+            closeDataEvent: Function;
             /** 添加库存盘点-行事件 */
             addInventoryCountingLineEvent: Function;
             /** 删除库存盘点-行事件 */
@@ -7976,8 +8075,14 @@ declare namespace materials {
             chooseInventoryCountingLineMaterialBatchEvent: Function;
             /** 选择库存盘点行物料序列事件 */
             chooseInventoryCountingLineMaterialSerialEvent: Function;
+            /** 选择库存盘点库存记录事件 */
+            chooseInventoryCountingMaterialInventoryEvent: Function;
             /** 显示数据 */
             showInventoryCountingLines(datas: bo.InventoryCountingLine[]): void;
+            /** 默认仓库 */
+            defaultWarehouse: string;
+            /** 刷新库存 */
+            refreshMaterialInventoryEvent: Function;
         }
     }
 }
@@ -8001,7 +8106,6 @@ declare namespace materials {
         class Console extends ibas.ModuleConsole {
             /** 构造函数 */
             constructor();
-            private _navigation;
             /** 创建视图导航 */
             navigation(): ibas.IViewNavigation;
             /** 初始化 */

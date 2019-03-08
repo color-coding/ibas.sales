@@ -242,7 +242,7 @@ namespace sales {
                                 let data: Blob = opRslt.resultObjects.firstOrDefault();
                                 if (!ibas.objects.isNull(data)) {
                                     ibas.files.save(data, ibas.strings.format("{0}_{1}_{2}_{3}",
-                                        ibas.objects.getTypeName(that.editData), that.editData.docEntry, that.editData.lineId, condition.value));
+                                        ibas.objects.nameOf(that.editData), that.editData.docEntry, that.editData.lineId, condition.value));
                                 }
                             } catch (error) {
                                 that.messages(error);

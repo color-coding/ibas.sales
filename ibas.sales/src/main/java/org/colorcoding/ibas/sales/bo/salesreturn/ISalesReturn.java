@@ -794,14 +794,14 @@ public interface ISalesReturn extends IBODocument {
 	void setProject(String value);
 
 	/**
-	 * 获取-消费者
+	 * 获取-终端客户
 	 * 
 	 * @return 值
 	 */
 	String getConsumer();
 
 	/**
-	 * 设置-消费者
+	 * 设置-终端客户
 	 * 
 	 * @param value 值
 	 */
