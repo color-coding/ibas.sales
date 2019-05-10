@@ -636,7 +636,7 @@ namespace sales {
             }
             /** 基于销售订单 */
             baseDocument(document: ISalesOrder): void;
-            /** 基于销售收货 */
+            /** 基于销售交货 */
             baseDocument(document: ISalesDelivery): void;
             /** 基于单据 */
             baseDocument(): void {
@@ -648,6 +648,12 @@ namespace sales {
                     }
                     // 复制行项目
                     for (let item of document.salesOrderItems) {
+                        if (item.canceled === ibas.emYesNo.YES) {
+                            continue;
+                        }
+                        if (item.lineStatus !== ibas.emDocumentStatus.RELEASED) {
+                            continue;
+                        }
                         let myItem: SalesReturnItem = this.salesReturnItems.create();
                         myItem.baseDocumentType = item.objectCode;
                         myItem.baseDocumentEntry = item.docEntry;
@@ -688,7 +694,7 @@ namespace sales {
                         this.shippingAddresss.add(<ShippingAddress>myAddress);
                     }
                 }
-                // 基于销售收货
+                // 基于销售交货
                 if (ibas.objects.instanceOf(arguments[0], SalesDelivery)) {
                     let document: SalesDelivery = arguments[0];
                     if (!ibas.strings.equals(this.customerCode, document.customerCode)) {
@@ -696,6 +702,12 @@ namespace sales {
                     }
                     // 复制行项目
                     for (let item of document.salesDeliveryItems) {
+                        if (item.canceled === ibas.emYesNo.YES) {
+                            continue;
+                        }
+                        if (item.lineStatus !== ibas.emDocumentStatus.RELEASED) {
+                            continue;
+                        }
                         let myItem: SalesReturnItem = this.salesReturnItems.create();
                         myItem.baseDocumentType = item.objectCode;
                         myItem.baseDocumentEntry = item.docEntry;

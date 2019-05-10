@@ -33,198 +33,192 @@ namespace sales {
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_general") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_product") }),
-                            new sap.m.Input("", {
+                            new sap.extension.m.Input("", {
                                 showValueHelp: true,
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseProductSuitMaterialEvent);
                                 }
-                            }).bindProperty("value", {
-                                path: "product"
+                            }).bindProperty("bindingValue", {
+                                path: "product",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 20
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_description") }),
-                            new sap.m.Input("", {
-                            }).bindProperty("value", {
-                                path: "description"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "description",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 100
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_unitquantity") }),
-                            new sap.m.Input("", {
-                            }).bindProperty("value", {
+                            new sap.extension.m.Input("", {
+                                type: sap.m.InputType.Number
+                            }).bindProperty("bindingValue", {
                                 path: "unitQuantity",
-                                type: new openui5.datatype.Quantity(),
-                            }),
-                            new sap.m.Text("", {
-                            }).bindProperty("text", {
-                                path: "uom"
+                                type: new sap.extension.data.Quantity()
+                            }).bindProperty("description", {
+                                path: "uom",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 8
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_total") }),
-                            new sap.m.Input("", {
-                            }).bindProperty("value", {
+                            new sap.extension.m.Input("", {
+                                type: sap.m.InputType.Number
+                            }).bindProperty("bindingValue", {
                                 path: "total",
-                                type: new openui5.datatype.Sum(),
-                            }),
-                            new sap.m.Text("", {
-                            }).bindProperty("text", {
-                                path: "currency"
+                                type: new sap.extension.data.Sum()
+                            }).bindProperty("description", {
+                                path: "currency",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 8
+                                })
                             }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_status") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_version") }),
-                            new sap.m.Input("", {
-                            }).bindProperty("value", {
-                                path: "version"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "version",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 4
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_activated") }),
-                            new sap.m.Select("", {
-                                items: openui5.utils.createComboBoxItems(ibas.emYesNo),
-                            }).bindProperty("selectedKey", {
+                            new sap.extension.m.EnumSelect("", {
+                                enumType: ibas.emYesNo
+                            }).bindProperty("bindingValue", {
                                 path: "activated",
-                                type: "sap.ui.model.type.Integer",
+                                type: new sap.extension.data.YesNo()
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_validdate") }),
-                            new sap.m.DatePicker("", {
-                                valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                                displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                            }).bindProperty("dateValue", {
+                            new sap.extension.m.DatePicker("", {
+                            }).bindProperty("bindingValue", {
                                 path: "validDate",
+                                type: new sap.extension.data.Date()
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_invaliddate") }),
-                            new sap.m.DatePicker("", {
-                                valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                                displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
-                            }).bindProperty("dateValue", {
+                            new sap.extension.m.DatePicker("", {
+                            }).bindProperty("bindingValue", {
                                 path: "invalidDate",
+                                type: new sap.extension.data.Date()
                             }),
                         ]
                     });
-                    this.tableProductSuitItem = new sap.ui.table.Table("", {
-                        toolbar: new sap.m.Toolbar("", {
-                            content: [
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("shell_data_add"),
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://add",
-                                    press: function (): void {
-                                        that.fireViewEvents(that.addProductSuitItemEvent);
-                                    }
-                                }),
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("shell_data_remove"),
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://less",
-                                    press: function (): void {
-                                        that.fireViewEvents(that.removeProductSuitItemEvent,
-                                            // 获取表格选中的对象
-                                            openui5.utils.getSelecteds<bo.ProductSuitItem>(that.tableProductSuitItem)
-                                        );
-                                    }
-                                }),
-                            ]
-                        }),
-                        enableSelectAll: false,
-                        selectionBehavior: sap.ui.table.SelectionBehavior.Row,
-                        visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 8),
-                        rows: "{/rows}",
-                        columns: [
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_productsuititem_lineid"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false,
-                                }).bindProperty("text", {
-                                    path: "lineId",
-                                }),
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_productsuititem_itemcode"),
-                                template: new sap.m.Input("", {
-                                    width: "100%",
-                                    showValueHelp: true,
-                                    valueHelpRequest: function (): void {
-                                        that.fireViewEvents(that.chooseProductSuitItemMaterialEvent,
-                                            // 获取当前对象
-                                            this.getBindingContext().getObject()
-                                        );
-                                    }
-                                }).bindProperty("value", {
-                                    path: "itemCode"
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_productsuititem_itemdescription"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false,
-                                }).bindProperty("text", {
-                                    path: "itemDescription"
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_productsuititem_quantity"),
-                                template: new sap.m.Input("", {
-                                    width: "100%",
-                                    type: sap.m.InputType.Number
-                                }).bindProperty("value", {
-                                    path: "quantity",
-                                    type: new openui5.datatype.Quantity(),
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_productsuititem_uom"),
-                                template: new sap.m.Text("", {
-                                    width: "100%",
-                                    wrapping: false
-                                }).bindProperty("text", {
-                                    path: "uom"
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_productsuititem_price"),
-                                template: new sap.m.Input("", {
-                                    width: "100%",
-                                    type: sap.m.InputType.Number
-                                }).bindProperty("value", {
-                                    path: "price",
-                                    type: new openui5.datatype.Price(),
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_productsuititem_linetotal"),
-                                template: new sap.m.Text("", {
-                                    width: "100%",
-                                    wrapping: false
-                                }).bindProperty("text", {
-                                    path: "lineTotal",
-                                    type: new openui5.datatype.Sum(),
-                                })
-                            }),
-                        ]
-                    });
-                    let formMiddle: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
+                    let formProductSuitItem: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
                         editable: true,
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_productsuititem") }),
-                            this.tableProductSuitItem,
+                            this.tableProductSuitItem = new sap.extension.table.DataTable("", {
+                                enableSelectAll: false,
+                                visibleRowCount: sap.extension.table.visibleRowCount(8),
+                                dataInfo: {
+                                    code: bo.ProductSuit.BUSINESS_OBJECT_CODE,
+                                    name: bo.ProductSuitItem.name
+                                },
+                                toolbar: new sap.m.Toolbar("", {
+                                    content: [
+                                        new sap.m.Button("", {
+                                            text: ibas.i18n.prop("shell_data_add"),
+                                            type: sap.m.ButtonType.Transparent,
+                                            icon: "sap-icon://add",
+                                            press: function (): void {
+                                                that.fireViewEvents(that.addProductSuitItemEvent);
+                                            }
+                                        }),
+                                        new sap.m.Button("", {
+                                            text: ibas.i18n.prop("shell_data_remove"),
+                                            type: sap.m.ButtonType.Transparent,
+                                            icon: "sap-icon://less",
+                                            press: function (): void {
+                                                that.fireViewEvents(that.removeProductSuitItemEvent, that.tableProductSuitItem.getSelecteds());
+                                            }
+                                        }),
+                                    ]
+                                }),
+                                rows: "{/rows}",
+                                columns: [
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productsuititem_lineid"),
+                                        template: new sap.extension.m.Text("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "lineId",
+                                            type: new sap.extension.data.Numeric()
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productsuititem_itemcode"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseProductSuitItemMaterialEvent,
+                                                    // 获取当前对象
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "itemCode",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 20
+                                            })
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productsuititem_itemdescription"),
+                                        template: new sap.extension.m.Text("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "itemDescription",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 100
+                                            })
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productsuititem_quantity"),
+                                        template: new sap.extension.m.Input("", {
+                                            type: sap.m.InputType.Number
+                                        }).bindProperty("bindingValue", {
+                                            path: "quantity",
+                                            type: new sap.extension.data.Quantity()
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productsuititem_uom"),
+                                        template: new sap.extension.m.Text("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "uom",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            })
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productsuititem_price"),
+                                        template: new sap.extension.m.Input("", {
+                                            type: sap.m.InputType.Number
+                                        }).bindProperty("bindingValue", {
+                                            path: "price",
+                                            type: new sap.extension.data.Price()
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productsuititem_linetotal"),
+                                        template: new sap.extension.m.Text("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "lineTotal",
+                                            type: new sap.extension.data.Sum()
+                                        }),
+                                    }),
+                                ]
+                            })
                         ]
                     });
-                    let formBottom: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
-                        editable: true,
-                        content: [
-                            new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_others") }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_remarks") }),
-                            new sap.m.TextArea("", {
-                                rows: 3,
-                            }).bindProperty("value", {
-                                path: "remarks",
-                            }),
-                            new sap.ui.core.Title("", {}),
-                        ]
-                    });
-                    this.layoutMain = new sap.ui.layout.VerticalLayout("", {
-                        content: [
-                            formTop,
-                            formMiddle,
-                            formBottom,
-                        ]
-                    });
-                    this.page = new sap.m.Page("", {
+                    return this.page = new sap.extension.m.DataPage("", {
                         showHeader: false,
+                        dataInfo: {
+                            code: bo.ProductSuit.BUSINESS_OBJECT_CODE,
+                        },
                         subHeader: new sap.m.Toolbar("", {
                             content: [
                                 new sap.m.Button("", {
@@ -272,49 +266,24 @@ namespace sales {
                                 }),
                             ]
                         }),
-                        content: [this.layoutMain]
+                        content: [
+                            formTop,
+                            formProductSuitItem,
+                        ]
                     });
-                    return this.page;
                 }
-                private page: sap.m.Page;
-                private layoutMain: sap.ui.layout.VerticalLayout;
-                private tableProductSuitItem: sap.ui.table.Table;
-                /** 改变视图状态 */
-                private changeViewStatus(data: bo.ProductSuit): void {
-                    if (ibas.objects.isNull(data)) {
-                        return;
-                    }
-                    // 新建时：禁用删除，
-                    if (data.isNew) {
-                        if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                            openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), true);
-                            openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                        }
-                    }
-                    // 不可编辑：已批准，
-                    if (data.approvalStatus === ibas.emApprovalStatus.APPROVED) {
-                        if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                            openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                            openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                        }
-                        openui5.utils.changeFormEditable(this.layoutMain, false);
-                    }
-                }
+                private page: sap.extension.m.Page;
+                private tableProductSuitItem: sap.extension.table.Table;
 
                 /** 显示数据 */
                 showProductSuit(data: bo.ProductSuit): void {
-                    this.layoutMain.setModel(new sap.ui.model.json.JSONModel(data));
-                    this.layoutMain.bindObject("/");
-                    // 监听属性改变，并更新控件
-                    openui5.utils.refreshModelChanged(this.layoutMain, data);
-                    // 改变视图状态
-                    this.changeViewStatus(data);
+                    this.page.setModel(new sap.extension.model.JSONModel(data));
+                    // 改变页面状态
+                    sap.extension.pages.changeStatus(this.page);
                 }
-                /** 显示数据 */
+                /** 显示数据-产品套装-项目 */
                 showProductSuitItems(datas: bo.ProductSuitItem[]): void {
-                    this.tableProductSuitItem.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
-                    // 监听属性改变，并更新控件
-                    openui5.utils.refreshModelChanged(this.tableProductSuitItem, datas);
+                    this.tableProductSuitItem.setModel(new sap.extension.model.JSONModel({ rows: datas }));
                 }
             }
         }

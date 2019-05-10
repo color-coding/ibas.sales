@@ -6,6 +6,8 @@
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
  */
 /// <reference path="../../index.d.ts" />
+/// <reference path="../Component.d.ts" />
+/// <reference path="../Component.ts" />
 /// <reference path="./productsuit/index.ts" />
 /// <reference path="./salesdelivery/index.ts" />
 /// <reference path="./salesorder/index.ts" />
@@ -44,9 +46,6 @@ namespace sales {
                         break;
                     case app.ProductSuitChooseApp.APPLICATION_ID:
                         view = new c.ProductSuitChooseView();
-                        break;
-                    case app.ProductSuitViewApp.APPLICATION_ID:
-                        view = new c.ProductSuitViewView();
                         break;
                     case app.ProductSuitEditApp.APPLICATION_ID:
                         view = new c.ProductSuitEditView();

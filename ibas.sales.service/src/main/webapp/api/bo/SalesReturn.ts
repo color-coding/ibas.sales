@@ -162,7 +162,7 @@ namespace sales {
             /** 基于销售订单 */
             baseDocument(document: ISalesOrder): void;
 
-            /** 基于销售收货 */
+            /** 基于销售交货 */
             baseDocument(document: ISalesDelivery): void;
 
         }

@@ -16,133 +16,105 @@ namespace sales {
                 createDataEvent: Function;
                 /** 编辑数据事件 */
                 editDataEvent: Function;
-
-
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
-                    this.buttonAddress = new sap.m.MenuButton("", {
-                        type: sap.m.ButtonType.Accept,
-                        text: ibas.i18n.prop("shell_data_new"),
-                        width: "140px",
-                        buttonMode: sap.m.MenuButtonMode.Split,
-                        useDefaultActionOnly: true,
-                        menu: new sap.m.Menu("", {}),
-                        defaultAction(): void {
-                            that.fireViewEvents(that.createDataEvent);
-                        }
-                    });
-                    this.layoutMain = new sap.ui.layout.VerticalLayout("", {
-                        width: "100%",
+                    this.formTop = new sap.ui.layout.form.SimpleForm("", {
+                        editable: true,
                         content: [
-                            new sap.m.HBox("", {
-                                width: "100%",
-                                height: "100%",
-                                renderType: sap.m.FlexRendertype.Bare,
-                                alignContent: sap.m.FlexAlignContent.Stretch,
-                                items: [
-                                    new sap.m.Label("", {
-                                        width: "100%",
-                                        height: "100%",
-                                        vAlign: sap.ui.core.VerticalAlign.Middle,
-                                        text: ibas.i18n.prop("bo_shippingaddress_name")
-                                    }),
-                                    this.buttonAddress,
-                                ]
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_name") }),
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "/name",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 30
+                                })
                             }),
-                            new sap.m.Input("", {
-                                width: "100%",
-                                type: sap.m.InputType.Text,
-                            }).bindProperty("value", {
-                                path: "name"
+                            this.buttonAddress = new sap.m.MenuButton("", {
+                                type: sap.m.ButtonType.Accept,
+                                text: ibas.i18n.prop("shell_data_new"),
+                                buttonMode: sap.m.MenuButtonMode.Split,
+                                useDefaultActionOnly: true,
+                                menu: new sap.m.Menu("", {}),
+                                defaultAction(): void {
+                                    that.fireViewEvents(that.createDataEvent);
+                                }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_shippingstatus") }),
-                            new sap.m.Select("", {
-                                width: "100%",
-                                items: openui5.utils.createComboBoxItems(bo.emShippingStatus)
-                            }).bindProperty("selectedKey", {
-                                path: "shippingstatus",
-                                type: "sap.ui.model.type.Integer"
+                            new sap.extension.m.EnumSelect("", {
+                                enumType: bo.emShippingStatus
+                            }).bindProperty("bindingValue", {
+                                path: "/shippingStatus",
+                                type: new sap.extension.data.Enum({
+                                    enumType: bo.emShippingStatus
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_consignee") }),
-                            new sap.m.Input("", {
-                                width: "100%",
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "consignee",
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "/consignee",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 50
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_mobilephone") }),
-                            new sap.m.Input("", {
-                                width: "100%",
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "mobilePhone"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "/mobilePhone",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 20
+                                })
                             }),
-                            new sap.m.Label("", {
-                                text: ibas.i18n.prop("bo_shippingaddress_country") +
-                                    "/" + ibas.i18n.prop("bo_shippingaddress_province") +
-                                    "/" + ibas.i18n.prop("bo_shippingaddress_city") +
-                                    "/" + ibas.i18n.prop("bo_shippingaddress_district")
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress") }),
+                            new sap.extension.m.AddressArea("", {
+                                countryVisible: true,
+                                zipCodeVisible: false,
+                            }).bindProperty("country", {
+                                path: "/country",
+                            }).bindProperty("province", {
+                                path: "/province",
+                            }).bindProperty("city", {
+                                path: "/city",
+                            }).bindProperty("district", {
+                                path: "/district",
+                            }).bindProperty("street", {
+                                path: "/street",
+                            }).bindProperty("zipCode", {
+                                path: "/zipCode",
                             }),
-                            new sap.m.ex.ProvincesCityDistrict("", {
-                                width: "100%",
-                                direction: sap.m.FlexDirection.Column,
-                                country: { path: "country" },
-                                province: { path: "province" },
-                                city: { path: "city" },
-                                district: { path: "district" },
-                            }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_street") }),
-                            new sap.m.Input("", {
-                                width: "100%",
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "street"
-                            }),
-                            /*
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_zipcode") }),
-                            new sap.m.Input("", {
-                                width: "100%",
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "zipCode"
-                            }),
-                            */
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_trackingnumber") }),
-                            new sap.m.Input("", {
-                                width: "100%",
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "trackingNumber"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "/trackingNumber",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 30
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_expense") }),
-                            new sap.m.Input("", {
-                                width: "100%",
+                            new sap.extension.m.Input("", {
                                 type: sap.m.InputType.Number
-                            }).bindProperty("value", {
-                                path: "expense",
-                                type: new openui5.datatype.Sum(),
-                            }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_currency") }),
-                            new sap.m.Input("", {
-                                width: "100%",
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "currency",
+                            }).bindProperty("bindingValue", {
+                                path: "/expense",
+                                type: new sap.extension.data.Sum()
+                            }).bindProperty("description", {
+                                path: "/currency",
+                                type: new sap.extension.data.Alphanumeric()
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_remark1") }),
-                            new sap.m.Input("", {
-                                width: "100%",
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "remark1"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "/remark1",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 200
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_remark2") }),
-                            new sap.m.Input("", {
-                                width: "100%",
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "remark2"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "/remark2",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 200
+                                })
                             }),
                         ]
                     });
@@ -150,18 +122,17 @@ namespace sales {
                         title: this.title,
                         type: sap.m.DialogType.Standard,
                         state: sap.ui.core.ValueState.None,
-                        stretchOnPhone: true,
                         horizontalScrolling: true,
                         verticalScrolling: true,
                         content: [
-                            this.layoutMain
+                            this.formTop
                         ],
                         buttons: [
                             new sap.m.Button("", {
                                 text: ibas.i18n.prop("shell_data_delete"),
                                 type: sap.m.ButtonType.Transparent,
                                 press: function (): void {
-                                    that.fireViewEvents(that.deleteDataEvent, (<any>that.layoutMain.getModel()).getData());
+                                    that.fireViewEvents(that.deleteDataEvent, (<any>that.formTop.getModel()).getData());
                                 }
                             }),
                             new sap.m.Button("", {
@@ -174,21 +145,11 @@ namespace sales {
                         ]
                     });
                 }
-
-                private layoutMain: sap.ui.layout.VerticalLayout;
+                private formTop: sap.ui.layout.form.SimpleForm;
                 private buttonAddress: sap.m.MenuButton;
 
                 /** 显示数据 */
                 showShippingAddresses(datas: bo.ShippingAddress[]): void {
-                    for (let item of this.layoutMain.getContent()) {
-                        if (item instanceof sap.m.Input) {
-                            item.setEditable(false);
-                        } else if (item instanceof sap.m.ex.ProvincesCityDistrict) {
-                            item.setEnabled(false);
-                        } else if (item instanceof sap.m.Select) {
-                            item.setEnabled(false);
-                        }
-                    }
                     let that: this = this;
                     this.buttonAddress.getMenu().destroyItems();
                     for (let item of datas) {
@@ -204,21 +165,28 @@ namespace sales {
                 }
                 /** 显示数据 */
                 showShippingAddress(data: bo.ShippingAddress): void {
-                    if (!ibas.objects.isNull(data)) {
-                        for (let item of this.layoutMain.getContent()) {
+                    if (ibas.objects.isNull(data)) {
+                        for (let item of this.formTop.getContent()) {
+                            if (item instanceof sap.extension.m.Input) {
+                                item.setEditable(false);
+                            } else if (item instanceof sap.extension.m.AddressArea) {
+                                item.setEditable(false);
+                            } else if (item instanceof sap.extension.m.Select) {
+                                item.setEnabled(false);
+                            }
+                        }
+                    } else {
+                        for (let item of this.formTop.getContent()) {
                             if (item instanceof sap.m.Input) {
                                 item.setEditable(true);
-                            } else if (item instanceof sap.m.ex.ProvincesCityDistrict) {
-                                item.setEnabled(true);
+                            } else if (item instanceof sap.extension.m.AddressArea) {
+                                item.setEditable(true);
                             } else if (item instanceof sap.m.Select) {
                                 item.setEnabled(true);
                             }
                         }
                     }
-                    this.layoutMain.setModel(new sap.ui.model.json.JSONModel(data));
-                    this.layoutMain.bindObject("/");
-                    // 监听属性改变，并更新控件
-                    openui5.utils.refreshModelChanged(this.layoutMain, data);
+                    this.formTop.setModel(new sap.ui.model.json.JSONModel(data));
                 }
             }
         }

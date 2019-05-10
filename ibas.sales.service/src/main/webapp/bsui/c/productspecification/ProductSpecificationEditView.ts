@@ -27,143 +27,159 @@ namespace sales {
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_general") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productspecification_name") }),
-                            new sap.m.Input("", {
-                            }).bindProperty("value", {
-                                path: "name"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "name",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 100
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productspecification_specification") }),
-                            new sap.m.ex.BOChooseInput("", {
-                                boText: "name",
-                                boKey: "objectKey",
+                            new sap.extension.m.RepositoryInput("", {
                                 editable: false,
-                                boCode: ibas.config.applyVariables(bo.BO_CODE_SPECIFICATION),
-                                repositoryName: bo.BO_REPOSITORY_SALES,
-                                bindingValue: {
-                                    path: "specification"
-                                }
+                                repository: bo.BORepositorySales,
+                                dataInfo: {
+                                    type: bo.Specification,
+                                    key: "ObjectKey",
+                                    text: "Name"
+                                },
+                            }).bindProperty("bindingValue", {
+                                path: "specification",
+                                type: new sap.extension.data.Numeric()
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productspecification_reference1") }),
-                            new sap.m.Input("", {
-                            }).bindProperty("value", {
-                                path: "reference1"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "reference1",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 100
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productspecification_reference2") }),
-                            new sap.m.Input("", {
-                            }).bindProperty("value", {
-                                path: "reference2"
-                            }),
-                            new sap.ui.core.Title("", {  }),
-                        ]
-                    });
-                    this.tableProductSpecificationItem = new sap.ui.table.Table("", {
-                        toolbar: new sap.m.Toolbar("", {
-                            content: [
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("shell_data_add"),
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://add",
-                                    press: function (): void {
-                                        that.fireViewEvents(that.addProductSpecificationItemEvent);
-                                    }
-                                }),
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("shell_data_remove"),
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://less",
-                                    press: function (): void {
-                                        that.fireViewEvents(that.removeProductSpecificationItemEvent,
-                                            // 获取表格选中的对象
-                                            openui5.utils.getSelecteds<bo.ProductSpecificationItem>(that.tableProductSpecificationItem)
-                                        );
-                                    }
-                                })
-                            ]
-                        }),
-                        enableSelectAll: false,
-                        selectionBehavior: sap.ui.table.SelectionBehavior.Row,
-                        visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 8),
-                        rows: "{/rows}",
-                        columns: [
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_productspecificationitem_lineid"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false,
-                                }).bindProperty("text", {
-                                    path: "lineId",
-                                }),
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_productspecificationitem_parentsign"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false,
-                                }).bindProperty("text", {
-                                    path: "parentSign"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "reference2",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 200
                                 })
                             }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_productspecificationitem_sign"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false,
-                                }).bindProperty("text", {
-                                    path: "sign"
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_productspecificationitem_description"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false,
-                                }).bindProperty("text", {
-                                    path: "description"
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_productspecificationitem_content"),
-                                template: new sap.m.Input("", {
-                                    width: "100%",
-                                }).bindProperty("value", {
-                                    path: "content"
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_productspecificationitem_note"),
-                                template: new sap.m.Input("", {
-                                    width: "100%",
-                                }).bindProperty("value", {
-                                    path: "note"
-                                })
-                            }),
+                            new sap.ui.core.Title("", {}),
                         ]
                     });
                     let formProductSpecificationItem: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
                         editable: true,
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_productspecificationitem") }),
-                            this.tableProductSpecificationItem,
+                            this.tableProductSpecificationItem = new sap.extension.table.DataTable("", {
+                                enableSelectAll: false,
+                                visibleRowCount: sap.extension.table.visibleRowCount(8),
+                                dataInfo: {
+                                    code: bo.ProductSpecification.BUSINESS_OBJECT_CODE,
+                                    name: bo.ProductSpecificationItem.name
+                                },
+                                toolbar: new sap.m.Toolbar("", {
+                                    content: [
+                                        new sap.m.Button("", {
+                                            text: ibas.i18n.prop("shell_data_add"),
+                                            type: sap.m.ButtonType.Transparent,
+                                            icon: "sap-icon://add",
+                                            press: function (): void {
+                                                that.fireViewEvents(that.addProductSpecificationItemEvent);
+                                            }
+                                        }),
+                                        new sap.m.Button("", {
+                                            text: ibas.i18n.prop("shell_data_remove"),
+                                            type: sap.m.ButtonType.Transparent,
+                                            icon: "sap-icon://less",
+                                            press: function (): void {
+                                                that.fireViewEvents(that.removeProductSpecificationItemEvent, that.tableProductSpecificationItem.getSelecteds());
+                                            }
+                                        })
+                                    ]
+                                }),
+                                rows: "{/rows}",
+                                columns: [
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productspecificationitem_lineid"),
+                                        template: new sap.extension.m.Text("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "lineId",
+                                            type: new sap.extension.data.Numeric()
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productspecificationitem_parentsign"),
+                                        template: new sap.extension.m.Text("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "parentSign",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            })
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productspecificationitem_sign"),
+                                        template: new sap.extension.m.Text("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "sign",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            })
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productspecificationitem_description"),
+                                        template: new sap.extension.m.Text("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "description",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 100
+                                            })
+                                        })
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productspecificationitem_content"),
+                                        template: new sap.extension.m.Input("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "content",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 60
+                                            })
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productspecificationitem_note"),
+                                        template: new sap.extension.m.Input("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "note",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 200
+                                            })
+                                        }),
+                                    }),
+                                ]
+                            })
                         ]
                     });
                     let formBottom: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
                         editable: true,
                         content: [
-                            new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_productspecification_remarks") }),
-                            new sap.m.TextArea("", {
-                                rows: 4,
-                                width: "80%",
-                            }).bindProperty("value", {
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_others") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_productspecification_remarks") }),
+                            new sap.extension.m.TextArea("", {
+                                rows: 3,
+                            }).bindProperty("bindingValue", {
                                 path: "remarks",
+                                type: new sap.extension.data.Alphanumeric()
                             }),
-                            new sap.ui.core.Title("", {  }),
+                            new sap.ui.core.Title("", {}),
                         ]
                     });
-                    this.layoutMain = new sap.ui.layout.VerticalLayout("", {
-                        width: "100%",
-                        content: [
-                            formTop,
-                            formProductSpecificationItem,
-                            formBottom,
-                        ]
-                    });
-                    this.page = new sap.m.Page("", {
+                    return this.page = new sap.extension.m.DataPage("", {
                         showHeader: false,
+                        dataInfo: {
+                            code: bo.ProductSpecification.BUSINESS_OBJECT_CODE,
+                        },
                         subHeader: new sap.m.Toolbar("", {
                             content: [
                                 new sap.m.Button("", {
@@ -211,51 +227,25 @@ namespace sales {
                                 }),
                             ]
                         }),
-                        content: [this.layoutMain]
+                        content: [
+                            formTop,
+                            formProductSpecificationItem,
+                            formBottom,
+                        ]
                     });
-                    return this.page;
                 }
-
-                private page: sap.m.Page;
-                private layoutMain: sap.ui.layout.VerticalLayout;
-                private tableProductSpecificationItem: sap.ui.table.Table;
-
-                /** 改变视图状态 */
-                private changeViewStatus(data: bo.ProductSpecification): void {
-                    if (ibas.objects.isNull(data)) {
-                        return;
-                    }
-                    // 新建时：禁用删除，
-                    if (data.isNew) {
-                        if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                            openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), true);
-                            openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                        }
-                    }
-                    // 不可编辑：已批准，
-                    if (data.approvalStatus === ibas.emApprovalStatus.APPROVED) {
-                        if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                            openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                            openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                        }
-                        openui5.utils.changeFormEditable(this.layoutMain, false);
-                    }
-                }
+                private page: sap.extension.m.Page;
+                private tableProductSpecificationItem: sap.extension.table.Table;
 
                 /** 显示数据 */
                 showProductSpecification(data: bo.ProductSpecification): void {
-                    this.layoutMain.setModel(new sap.ui.model.json.JSONModel(data));
-                    this.layoutMain.bindObject("/");
-                    // 监听属性改变，并更新控件
-                    openui5.utils.refreshModelChanged(this.layoutMain, data);
-                    // 改变视图状态
-                    this.changeViewStatus(data);
+                    this.page.setModel(new sap.extension.model.JSONModel(data));
+                    // 改变页面状态
+                    sap.extension.pages.changeStatus(this.page);
                 }
-                /** 显示数据 */
+                /** 显示数据-产品规格-项目 */
                 showProductSpecificationItems(datas: bo.ProductSpecificationItem[]): void {
-                    this.tableProductSpecificationItem.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
-                    // 监听属性改变，并更新控件
-                    openui5.utils.refreshModelChanged(this.tableProductSpecificationItem, datas);
+                    this.tableProductSpecificationItem.setModel(new sap.extension.model.JSONModel({ rows: datas }));
                 }
             }
         }

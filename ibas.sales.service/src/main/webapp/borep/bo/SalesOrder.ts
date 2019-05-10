@@ -562,6 +562,12 @@ namespace sales {
                     }
                     // 复制行项目
                     for (let item of document.salesQuoteItems) {
+                        if (item.canceled === ibas.emYesNo.YES) {
+                            continue;
+                        }
+                        if (item.lineStatus !== ibas.emDocumentStatus.RELEASED) {
+                            continue;
+                        }
                         let myItem: SalesOrderItem = this.salesOrderItems.create();
                         myItem.baseDocumentType = item.objectCode;
                         myItem.baseDocumentEntry = item.docEntry;

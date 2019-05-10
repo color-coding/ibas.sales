@@ -8,4 +8,3 @@
 /// <reference path="./ProductSuitChooseView.ts" />
 /// <reference path="./ProductSuitEditView.ts" />
 /// <reference path="./ProductSuitListView.ts" />
-/// <reference path="./ProductSuitViewView.ts" />

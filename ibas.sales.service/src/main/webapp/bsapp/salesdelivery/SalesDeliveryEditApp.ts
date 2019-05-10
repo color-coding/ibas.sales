@@ -32,6 +32,7 @@ namespace sales {
                 this.view.addSalesDeliveryItemEvent = this.addSalesDeliveryItem;
                 this.view.removeSalesDeliveryItemEvent = this.removeSalesDeliveryItem;
                 this.view.chooseSalesDeliveryCustomerEvent = this.chooseSalesDeliveryCustomer;
+                this.view.chooseSalesDeliveryContactPersonEvent = this.chooseSalesDeliveryContactPerson;
                 this.view.chooseSalesDeliveryPriceListEvent = this.chooseSalesDeliveryPriceList;
                 this.view.chooseSalesDeliveryItemMaterialEvent = this.chooseSalesDeliveryItemMaterial;
                 this.view.chooseSalesDeliveryItemMaterialBatchEvent = this.chooseSalesDeliveryLineMaterialBatch;
@@ -585,7 +586,7 @@ namespace sales {
                     proxy: new materials.app.MaterialSerialIssueServiceProxy(contracts)
                 });
             }
-            /** 选择销售收货-销售订单事件 */
+            /** 选择销售交货-销售订单事件 */
             private chooseSalesDeliverySalesOrder(): void {
                 if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
@@ -604,11 +605,11 @@ namespace sales {
                 condition.alias = ibas.BO_PROPERTY_NAME_DELETED;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emYesNo.NO.toString();
-                // 未结算的
+                // 仅下达的
                 condition = criteria.conditions.create();
                 condition.alias = ibas.BO_PROPERTY_NAME_DOCUMENTSTATUS;
-                condition.operation = ibas.emConditionOperation.NOT_EQUAL;
-                condition.value = ibas.emDocumentStatus.CLOSED.toString();
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emDocumentStatus.RELEASED.toString();
                 // 当前客户的
                 condition.alias = bo.SalesOrder.PROPERTY_CUSTOMERCODE_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
@@ -649,6 +650,36 @@ namespace sales {
                     })
                 });
             }
+            /** 选择联系人 */
+            private chooseSalesDeliveryContactPerson(): void {
+                if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("bo_salesdelivery_suppliercode")
+                    ));
+                    return;
+                }
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = businesspartner.bo.ContactPerson.PROPERTY_OWNERTYPE_NAME;
+                condition.value = businesspartner.bo.emBusinessPartnerType.CUSTOMER.toString();
+                condition = criteria.conditions.create();
+                condition.alias = businesspartner.bo.ContactPerson.PROPERTY_BUSINESSPARTNER_NAME;
+                condition.value = this.editData.customerCode;
+                condition = criteria.conditions.create();
+                condition.alias = businesspartner.bo.ContactPerson.PROPERTY_ACTIVATED_NAME;
+                condition.value = ibas.emYesNo.YES.toString();
+                // 调用选择服务
+                let that: this = this;
+                ibas.servicesManager.runChooseService<businesspartner.bo.IContactPerson>({
+                    boCode: businesspartner.bo.BO_CODE_CONTACTPERSON,
+                    chooseType: ibas.emChooseType.SINGLE,
+                    criteria: criteria,
+                    onCompleted(selecteds: ibas.IList<businesspartner.bo.IContactPerson>): void {
+                        let selected: businesspartner.bo.IContactPerson = selecteds.firstOrDefault();
+                        that.editData.contactPerson = selected.objectKey;
+                    }
+                });
+            }
             private editShippingAddresses(): void {
                 let that: this = this;
                 let app: ShippingAddressesEditApp = new ShippingAddressesEditApp();
@@ -676,6 +707,8 @@ namespace sales {
             showSalesDeliveryItems(datas: bo.SalesDeliveryItem[]): void;
             /** 选择销售交货客户事件 */
             chooseSalesDeliveryCustomerEvent: Function;
+            /** 选择销售交货联系人信息 */
+            chooseSalesDeliveryContactPersonEvent: Function;
             /** 选择销售交货价格清单事件 */
             chooseSalesDeliveryPriceListEvent: Function;
             /** 选择销售交货物料事件 */

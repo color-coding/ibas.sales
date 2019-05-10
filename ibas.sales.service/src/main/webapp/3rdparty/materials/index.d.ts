@@ -6043,7 +6043,7 @@ declare namespace materials {
             /** 选择库存收货订单物料价格清单事件 */
             private chooseeGoodsReceiptMaterialPriceList;
             /** 选择库存收货订单行物料事件 */
-            private chooseGoodsReceiptlineWarehouse;
+            private chooseGoodsReceiptLineWarehouse;
             /** 选择物料批次信息 */
             private chooseGoodsReceiptLineMaterialBatch;
             /** 选择物料序列信息 */
@@ -6068,7 +6068,7 @@ declare namespace materials {
             /** 选择库存收货单行物料事件 */
             chooseGoodsReceiptLineMaterialEvent: Function;
             /** 选择库存收货单行仓库事件 */
-            chooseGoodsReceiptlineWarehouseEvent: Function;
+            chooseGoodsReceiptLineWarehouseEvent: Function;
             /** 批次管理物料新建批次 */
             chooseGoodsReceiptLineMaterialBatchEvent: Function;
             /** 批次管理物料新建序列 */

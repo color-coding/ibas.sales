@@ -23,24 +23,9 @@ namespace sales {
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
-                    this.uploader = new sap.ui.unified.FileUploader("", {
-                        buttonOnly: true,
-                        iconOnly: true,
-                        multiple: false,
-                        uploadOnChange: false,
-                        width: "auto",
-                        style: "Transparent",
-                        change: function (oEvent: sap.ui.base.Event): void {
-                            let files: File[] = oEvent.getParameter("files");
-                            if (ibas.objects.isNull(files) || files.length === 0) {
-                                return;
-                            }
-                            let fileData: FormData = new FormData();
-                            fileData.append("file", files[0]);
-                            that.fireViewEvents(that.addSalesQuoteItemExtraEvent, fileData);
-                        },
-                    });
-                    this.table = new sap.ui.table.Table("", {
+                    this.table = new sap.extension.table.DataTable("", {
+                        enableSelectAll: false,
+                        visibleRowCount: sap.extension.table.visibleRowCount(6),
                         toolbar: new sap.m.Toolbar("", {
                             content: [
                                 new sap.m.MenuButton("", {
@@ -69,10 +54,7 @@ namespace sales {
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://less",
                                     press: function (): void {
-                                        that.fireViewEvents(that.removeSalesQuoteItemExtraEvent,
-                                            // 获取表格选中的对象
-                                            openui5.utils.getSelecteds<bo.SalesQuoteItem>(that.table)
-                                        );
+                                        that.fireViewEvents(that.removeSalesQuoteItemExtraEvent, that.table.getSelecteds());
                                     }
                                 }),
                                 new sap.m.ToolbarSeparator(""),
@@ -81,20 +63,29 @@ namespace sales {
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://delete",
                                     press: function (): void {
-                                        that.fireViewEvents(that.deleteSalesQuoteItemExtraEvent,
-                                            // 获取表格选中的对象
-                                            openui5.utils.getSelecteds<bo.SalesQuoteItem>(that.table).firstOrDefault()
-                                        );
+                                        that.fireViewEvents(that.deleteSalesQuoteItemExtraEvent, that.table.getSelecteds().firstOrDefault());
                                     }
                                 }),
                                 new sap.m.ToolbarSpacer(""),
-                                this.uploader,
+                                this.uploader = new sap.ui.unified.FileUploader("", {
+                                    buttonOnly: true,
+                                    iconOnly: true,
+                                    multiple: false,
+                                    uploadOnChange: false,
+                                    width: "auto",
+                                    style: "Transparent",
+                                    change: function (oEvent: sap.ui.base.Event): void {
+                                        let files: File[] = oEvent.getParameter("files");
+                                        if (ibas.objects.isNull(files) || files.length === 0) {
+                                            return;
+                                        }
+                                        let fileData: FormData = new FormData();
+                                        fileData.append("file", files[0]);
+                                        that.fireViewEvents(that.addSalesQuoteItemExtraEvent, fileData);
+                                    },
+                                }),
                             ]
                         }),
-                        enableSelectAll: false,
-                        selectionBehavior: sap.ui.table.SelectionBehavior.Row,
-                        selectionMode: openui5.utils.toSelectionMode(ibas.emChooseType.SINGLE),
-                        visibleRowCount: 6,
                         rowActionCount: 1,
                         rowActionTemplate: new sap.ui.table.RowAction("", {
                             items: [
@@ -111,11 +102,10 @@ namespace sales {
                         }),
                         rows: "{/rows}",
                         columns: [
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_salesquoteitemextra_extratype"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false
-                                }).bindProperty("text", {
+                            new sap.extension.table.Column("", {
+                                label: ibas.i18n.prop("bo_salesorderitemextra_extratype"),
+                                template: new sap.extension.m.Text("", {
+                                }).bindProperty("bindingValue", {
                                     path: "extraType",
                                     formatter(data: any): any {
                                         if (data === app.EXTRA_ATTACHMENT) {
@@ -125,11 +115,10 @@ namespace sales {
                                     }
                                 })
                             }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_salesquoteitemextra_extrakey"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false,
-                                }).bindProperty("text", {
+                            new sap.extension.table.Column("", {
+                                label: ibas.i18n.prop("bo_salesorderitemextra_extrakey"),
+                                template: new sap.extension.m.Text("", {
+                                }).bindProperty("bindingValue", {
                                     path: "extraKey",
                                     formatter(data: any): any {
                                         if (ibas.objects.isNull(this.getBindingContext())) {
@@ -146,27 +135,21 @@ namespace sales {
                                     }
                                 })
                             }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_salesquoteitemextra_quantity"),
-                                template: new sap.m.Input("", {
-                                    width: "100%",
+                            new sap.extension.table.Column("", {
+                                label: ibas.i18n.prop("bo_salesorderitemextra_quantity"),
+                                template: new sap.extension.m.Input("", {
                                     type: sap.m.InputType.Number
-                                }).bindProperty("value", {
+                                }).bindProperty("bindingValue", {
                                     path: "quantity",
-                                    type: new openui5.datatype.Quantity(),
+                                    type: new sap.extension.data.Quantity(),
                                 })
                             }),
                         ]
-                    });
-                    openui5.utils.changeSelectionStyle(this.table, ibas.emChooseType.SINGLE);
-                    this.input = new sap.m.Input("", {
-                        editable: false,
                     });
                     return new sap.m.Dialog("", {
                         title: this.title,
                         type: sap.m.DialogType.Standard,
                         state: sap.ui.core.ValueState.None,
-                        stretchOnPhone: true,
                         horizontalScrolling: true,
                         verticalScrolling: true,
                         subHeader: new sap.m.Toolbar("", {
@@ -175,7 +158,9 @@ namespace sales {
                                 new sap.m.Label("", {
                                     text: ibas.i18n.prop("sales_summary"),
                                 }),
-                                this.input,
+                                this.input = new sap.m.Input("", {
+                                    editable: false,
+                                }),
                                 new sap.m.ToolbarSpacer("", { width: "5px" }),
                             ]
                         }),
@@ -186,7 +171,6 @@ namespace sales {
                             new sap.m.Button("", {
                                 text: ibas.i18n.prop("shell_exit"),
                                 type: sap.m.ButtonType.Transparent,
-                                // icon: "sap-icon://inspect-down",
                                 press: function (): void {
                                     that.fireViewEvents(that.closeEvent);
                                 }
@@ -194,8 +178,8 @@ namespace sales {
                         ]
                     });
                 }
+                private table: sap.extension.table.Table;
                 private input: sap.m.Input;
-                private table: sap.ui.table.Table;
                 private uploader: sap.ui.unified.FileUploader;
                 /** 显示数据 */
                 showData(data: bo.SalesQuoteItem): void {
@@ -215,9 +199,7 @@ namespace sales {
                 }
                 /** 显示额外数据 */
                 showExtraDatas(datas: bo.SalesQuoteItemExtra[]): void {
-                    this.table.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
-                    // 监听属性改变，并更新控件
-                    openui5.utils.refreshModelChanged(this.table, datas);
+                    this.table.setModel(new sap.extension.model.JSONModel({ rows: datas }));
                 }
             }
         }
