@@ -43,15 +43,6 @@ declare namespace sales {
                 /** 触发地址改变事件 */
                 protected fireSelectionChange(param: { address: object }): this;
             }
-            /**
-             * 物料或物料组-文本框
-             */
-            class MaterialOrMaterialGroupText extends sap.extension.m.ConversionText {
-                /** 获取-用户或角色类型属性 */
-                getTypeProperty(): string;
-                /** 设置-用户或角色类型属性 */
-                setTypeProperty(value: string): this;
-            }
         }
     }
 }

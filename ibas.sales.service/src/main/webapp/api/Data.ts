@@ -28,10 +28,6 @@ namespace sales {
         export const BO_CODE_SALESQUOTE: string = "${Company}_SL_SALESQUOTE";
         /** 业务对象编码-送货地址 */
         export const BO_CODE_SHIPPINGADDRESS: string = "${Company}_SL_SHIPADDRESS";
-        /** 业务对象编码-产品规格 */
-        export const BO_CODE_PRODUCTSPECIFICATION: string = "${Company}_SL_PDSPEC";
-        /** 业务对象编码-规格模板 */
-        export const BO_CODE_SPECIFICATION: string = "${Company}_SL_SPEC";
 
         /** 产品树类型 */
         export enum emProductTreeType {
@@ -53,29 +49,8 @@ namespace sales {
              */
             SHIPPED,
         }
-        export enum emSpecificationTarget {
-            /**
-             * 物料
-             */
-            MATERIAL,
-            /**
-             * 物料组
-             */
-            MATERIAL_GROUP,
-        }
     }
 
     export namespace app {
-        /** 规格服务契约 */
-        export interface ISpecificationTreeContract extends ibas.IServiceContract {
-            /** 目标（物料编码或产品规格） */
-            target: string | bo.IProductSpecification;
-            /** 备注 */
-            remarks?: string;
-        }
-        /** 规格服务代理 */
-        export class SpecificationTreeServiceProxy extends ibas.ServiceProxy<ISpecificationTreeContract> {
-
-        }
     }
 }

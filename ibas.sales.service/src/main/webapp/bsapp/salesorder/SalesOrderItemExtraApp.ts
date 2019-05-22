@@ -49,11 +49,11 @@ namespace sales {
             private editData: bo.SalesOrderItem;
             /** 添加销售订单-行事件 */
             private addSalesOrderItemExtra(type: string | FormData): void {
-                if (type === bo.ProductSpecification.BUSINESS_OBJECT_CODE) {
+                if (type === materials.bo.MaterialSpecification.BUSINESS_OBJECT_CODE) {
                     let that: this = this;
                     this.messages({
                         type: ibas.emMessageType.QUESTION,
-                        message: ibas.i18n.prop("sales_create_continue", ibas.i18n.prop("bo_productspecification")),
+                        message: ibas.i18n.prop("sales_create_continue", ibas.i18n.prop("bo_materialspecification")),
                         actions: [
                             ibas.emMessageAction.YES,
                             ibas.emMessageAction.NO
@@ -61,11 +61,11 @@ namespace sales {
                         /** 调用完成 */
                         onCompleted(action: ibas.emMessageAction): void {
                             if (action === ibas.emMessageAction.YES) {
-                                ibas.servicesManager.runApplicationService<ISpecificationTreeContract, bo.ProductSpecification>({
-                                    proxy: new SpecificationTreeServiceProxy({
+                                ibas.servicesManager.runApplicationService<materials.app.ISpecificationTreeContract, materials.bo.MaterialSpecification>({
+                                    proxy: new materials.app.SpecificationTreeServiceProxy({
                                         target: that.editData.itemCode,
                                     }),
-                                    onCompleted(result: bo.ProductSpecification): void {
+                                    onCompleted(result: materials.bo.MaterialSpecification): void {
                                         let item: bo.SalesOrderItemExtra = that.editData.salesOrderItemExtras.create();
                                         item.extraType = result.objectCode;
                                         item.extraKey = result.objectKey;
@@ -74,12 +74,12 @@ namespace sales {
                                     }
                                 });
                             } else {
-                                ibas.servicesManager.runChooseService<bo.IProductSpecification>({
-                                    boCode: bo.BO_CODE_PRODUCTSPECIFICATION,
+                                ibas.servicesManager.runChooseService<materials.bo.IMaterialSpecification>({
+                                    boCode: materials.bo.BO_CODE_MATERIALSPECIFICATION,
                                     criteria: [
-                                        new ibas.Condition(bo.ProductSpecification.PROPERTY_OBJECTKEY_NAME, ibas.emConditionOperation.GRATER_THAN, "0"),
+                                        new ibas.Condition(materials.bo.MaterialSpecification.PROPERTY_OBJECTKEY_NAME, ibas.emConditionOperation.GRATER_THAN, "0"),
                                     ],
-                                    onCompleted(selecteds: ibas.IList<bo.IProductSpecification>): void {
+                                    onCompleted(selecteds: ibas.IList<materials.bo.IMaterialSpecification>): void {
                                         for (let selected of selecteds) {
                                             let item: bo.SalesOrderItemExtra = that.editData.salesOrderItemExtras.create();
                                             item.extraType = selected.objectCode;
@@ -154,18 +154,18 @@ namespace sales {
                     return;
                 }
                 if (!ibas.objects.isNull(data.extraKey)) {
-                    if (data.extraType === ibas.config.applyVariables(bo.ProductSpecification.BUSINESS_OBJECT_CODE)) {
+                    if (data.extraType === ibas.config.applyVariables(materials.bo.MaterialSpecification.BUSINESS_OBJECT_CODE)) {
                         this.busy(true);
                         let criteria: ibas.ICriteria = new ibas.Criteria();
                         criteria.result = 1;
                         let condition: ibas.ICondition = criteria.conditions.create();
-                        condition.alias = bo.ProductSpecification.PROPERTY_OBJECTKEY_NAME;
+                        condition.alias = materials.bo.MaterialSpecification.PROPERTY_OBJECTKEY_NAME;
                         condition.value = data.extraKey.toString();
                         let that: this = this;
-                        let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
-                        boRepository.fetchProductSpecification({
+                        let boRepository: materials.bo.BORepositoryMaterials = new materials.bo.BORepositoryMaterials();
+                        boRepository.fetchMaterialSpecification({
                             criteria: criteria,
-                            onCompleted(opRslt: ibas.IOperationResult<bo.ProductSpecification>): void {
+                            onCompleted(opRslt: ibas.IOperationResult<materials.bo.MaterialSpecification>): void {
                                 try {
                                     that.busy(false);
                                     if (opRslt.resultCode !== 0) {
@@ -175,7 +175,7 @@ namespace sales {
                                         that.messages({
                                             type: ibas.emMessageType.QUESTION,
                                             message: ibas.i18n.prop("sales_delete_continue",
-                                                ibas.i18n.prop("bo_productspecification"), ibas.strings.isEmpty(item.name) ? item.objectKey : item.name),
+                                                ibas.i18n.prop("bo_materialspecification"), ibas.strings.isEmpty(item.name) ? item.objectKey : item.name),
                                             actions: [
                                                 ibas.emMessageAction.YES,
                                                 ibas.emMessageAction.NO
@@ -186,9 +186,9 @@ namespace sales {
                                                     return;
                                                 }
                                                 item.delete();
-                                                boRepository.saveProductSpecification({
+                                                boRepository.saveMaterialSpecification({
                                                     beSaved: item,
-                                                    onCompleted(opRslt: ibas.IOperationResult<bo.ProductSpecification>): void {
+                                                    onCompleted(opRslt: ibas.IOperationResult<materials.bo.MaterialSpecification>): void {
                                                         try {
                                                             that.busy(false);
                                                             if (opRslt.resultCode !== 0) {
@@ -218,11 +218,11 @@ namespace sales {
                     ));
                     return;
                 }
-                if (data.extraType === ibas.config.applyVariables(bo.ProductSpecification.BUSINESS_OBJECT_CODE)) {
-                    let app: ProductSpecificationViewApp = new ProductSpecificationViewApp();
-                    app.navigation = this.navigation;
-                    app.viewShower = this.viewShower;
-                    app.run(data.extraKey.toString());
+                if (data.extraType === ibas.config.applyVariables(materials.bo.MaterialSpecification.BUSINESS_OBJECT_CODE)) {
+                    ibas.servicesManager.runLinkService({
+                        boCode: data.extraType,
+                        linkValue: ibas.strings.valueOf(data.extraKey)
+                    });
                 } else if (data.extraType === EXTRA_ATTACHMENT) {
                     let criteria: ibas.ICriteria = new ibas.Criteria();
                     let condition: ibas.ICondition = criteria.conditions.create();

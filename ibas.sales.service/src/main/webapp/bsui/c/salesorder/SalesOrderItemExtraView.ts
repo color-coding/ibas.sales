@@ -35,9 +35,9 @@ namespace sales {
                                     menu: new sap.m.Menu("", {
                                         items: [
                                             new sap.m.MenuItem("", {
-                                                text: ibas.i18n.prop("bo_productspecification"),
+                                                text: ibas.i18n.prop("bo_materialspecification"),
                                                 press: function (): void {
-                                                    that.fireViewEvents(that.addSalesOrderItemExtraEvent, bo.ProductSpecification.BUSINESS_OBJECT_CODE);
+                                                    that.fireViewEvents(that.addSalesOrderItemExtraEvent, materials.bo.MaterialSpecification.BUSINESS_OBJECT_CODE);
                                                 }
                                             }),
                                             new sap.m.MenuItem("", {

@@ -14,8 +14,6 @@
 /// <reference path="./salesreturn/index.ts" />
 /// <reference path="./salesquote/index.ts" />
 /// <reference path="./shippingaddress/index.ts" />
-/// <reference path="./productspecification/index.ts" />
-/// <reference path="./specification/index.ts" />
 namespace sales {
     export namespace ui {
         /**
@@ -29,18 +27,6 @@ namespace sales {
             protected newView(id: string): ibas.IView {
                 let view: ibas.IView = null;
                 switch (id) {
-                    case app.ProductSpecificationListApp.APPLICATION_ID:
-                        view = new c.ProductSpecificationListView();
-                        break;
-                    case app.ProductSpecificationChooseApp.APPLICATION_ID:
-                        view = new c.ProductSpecificationChooseView();
-                        break;
-                    case app.ProductSpecificationViewApp.APPLICATION_ID:
-                        view = new c.ProductSpecificationViewView();
-                        break;
-                    case app.ProductSpecificationEditApp.APPLICATION_ID:
-                        view = new c.ProductSpecificationEditView();
-                        break;
                     case app.ProductSuitListApp.APPLICATION_ID:
                         view = new c.ProductSuitListView();
                         break;
@@ -106,18 +92,6 @@ namespace sales {
                         break;
                     case app.ShippingAddressesEditApp.APPLICATION_ID:
                         view = new c.ShippingAddressesEditView();
-                        break;
-                    case app.SpecificationListApp.APPLICATION_ID:
-                        view = new c.SpecificationListView();
-                        break;
-                    case app.SpecificationChooseApp.APPLICATION_ID:
-                        view = new c.SpecificationChooseView();
-                        break;
-                    case app.SpecificationTreeService.APPLICATION_ID:
-                        view = new c.SpecificationTreeView();
-                        break;
-                    case app.SpecificationEditApp.APPLICATION_ID:
-                        view = new c.SpecificationEditView();
                         break;
                     default:
                         break;

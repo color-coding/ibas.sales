@@ -49,6 +49,10 @@ declare namespace materials {
         const BO_CODE_MATERIALBATCHITEM: string;
         /** 业务对象编码-库存盘点 */
         const BO_CODE_INVENTORYCOUNTING: string;
+        /** 业务对象编码-物料规格 */
+        const BO_CODE_MATERIALSPECIFICATION: string;
+        /** 业务对象编码-规格模板 */
+        const BO_CODE_SPECIFICATION: string;
         /** 物料类型 */
         enum emItemType {
             /** 物料 */
@@ -82,6 +86,17 @@ declare namespace materials {
             OVER = 0,
             /** 盘亏 */
             SHORT = 1
+        }
+        /** 规格目标 */
+        enum emSpecificationTarget {
+            /**
+             * 物料
+             */
+            MATERIAL = 0,
+            /**
+             * 物料组
+             */
+            MATERIAL_GROUP = 1
         }
     }
     namespace app {
@@ -130,6 +145,18 @@ declare namespace materials {
         }
         /** 物料序列选择服务代理 */
         class MaterialSerialIssueServiceProxy extends ibas.ServiceProxy<IMaterialSerialContract[]> {
+        }
+        /** 规格服务契约 */
+        interface ISpecificationTreeContract extends ibas.IServiceContract {
+            /** 目标（物料编码或物料规格） */
+            target: string | bo.IMaterialSpecification;
+            /** 名称 */
+            name?: string;
+            /** 备注 */
+            remarks?: string;
+        }
+        /** 规格服务代理 */
+        class SpecificationTreeServiceProxy extends ibas.ServiceProxy<ISpecificationTreeContract> {
         }
         /** 查询条件 */
         namespace conditions {
@@ -1982,6 +2009,299 @@ declare namespace materials {
  */
 declare namespace materials {
     namespace bo {
+        /** 物料规格 */
+        interface IMaterialSpecification extends ibas.IBOSimple, ibas.IBOUserFields {
+            /** 对象编号 */
+            objectKey: number;
+            /** 对象类型 */
+            objectCode: string;
+            /** 创建日期 */
+            createDate: Date;
+            /** 创建时间 */
+            createTime: number;
+            /** 修改日期 */
+            updateDate: Date;
+            /** 修改时间 */
+            updateTime: number;
+            /** 版本 */
+            logInst: number;
+            /** 服务系列 */
+            series: number;
+            /** 数据源 */
+            dataSource: string;
+            /** 创建用户 */
+            createUserSign: number;
+            /** 修改用户 */
+            updateUserSign: number;
+            /** 创建动作标识 */
+            createActionId: string;
+            /** 更新动作标识 */
+            updateActionId: string;
+            /** 审批状态 */
+            approvalStatus: ibas.emApprovalStatus;
+            /** 数据所有者 */
+            dataOwner: number;
+            /** 团队成员 */
+            teamMembers: string;
+            /** 数据所属组织 */
+            organization: string;
+            /** 名称 */
+            name: string;
+            /** 规格模板 */
+            specification: number;
+            /** 项目代码 */
+            project: string;
+            /** 参考1 */
+            reference1: string;
+            /** 参考2 */
+            reference2: string;
+            /** 备注 */
+            remarks: string;
+            /** 物料规格-项目集合 */
+            materialSpecificationItems: IMaterialSpecificationItems;
+        }
+        /** 物料规格-项目 集合 */
+        interface IMaterialSpecificationItems extends ibas.IBusinessObjects<IMaterialSpecificationItem> {
+            /** 创建并添加子项 */
+            create(): IMaterialSpecificationItem;
+        }
+        /** 物料规格-项目 */
+        interface IMaterialSpecificationItem extends ibas.IBOSimpleLine {
+            /** 对象编号 */
+            objectKey: number;
+            /** 对象行号 */
+            lineId: number;
+            /** 对象类型 */
+            objectCode: string;
+            /** 实例号 */
+            logInst: number;
+            /** 数据源 */
+            dataSource: string;
+            /** 创建日期 */
+            createDate: Date;
+            /** 创建时间 */
+            createTime: number;
+            /** 更新日期 */
+            updateDate: Date;
+            /** 更新时间 */
+            updateTime: number;
+            /** 创建用户 */
+            createUserSign: number;
+            /** 更新用户 */
+            updateUserSign: number;
+            /** 创建动作标识 */
+            createActionId: string;
+            /** 更新动作标识 */
+            updateActionId: string;
+            /** 组标记 */
+            parentSign: string;
+            /** 标记 */
+            sign: string;
+            /** 描述 */
+            description: string;
+            /** 内容 */
+            content: string;
+            /** 备注 */
+            note: string;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace bo {
+        /** 规格模板 */
+        interface ISpecification extends ibas.IBOSimple, ibas.IBOUserFields {
+            /** 对象编号 */
+            objectKey: number;
+            /** 对象类型 */
+            objectCode: string;
+            /** 创建日期 */
+            createDate: Date;
+            /** 创建时间 */
+            createTime: number;
+            /** 修改日期 */
+            updateDate: Date;
+            /** 修改时间 */
+            updateTime: number;
+            /** 版本 */
+            logInst: number;
+            /** 服务系列 */
+            series: number;
+            /** 数据源 */
+            dataSource: string;
+            /** 创建用户 */
+            createUserSign: number;
+            /** 修改用户 */
+            updateUserSign: number;
+            /** 创建动作标识 */
+            createActionId: string;
+            /** 更新动作标识 */
+            updateActionId: string;
+            /** 审批状态 */
+            approvalStatus: ibas.emApprovalStatus;
+            /** 数据所有者 */
+            dataOwner: number;
+            /** 团队成员 */
+            teamMembers: string;
+            /** 数据所属组织 */
+            organization: string;
+            /** 名称 */
+            name: string;
+            /** 目标类型 */
+            targetType: emSpecificationTarget;
+            /** 目标 */
+            target: string;
+            /** 是否激活 */
+            activated: ibas.emYesNo;
+            /** 备注 */
+            remarks: string;
+            /** 规格模板-项目集合 */
+            specificationItems: ISpecificationItems;
+        }
+        /** 规格模板-项目 集合 */
+        interface ISpecificationItems extends ibas.IBusinessObjects<ISpecificationItem> {
+            /** 创建并添加子项 */
+            create(): ISpecificationItem;
+        }
+        /** 规格模板-项目 */
+        interface ISpecificationItem extends ibas.IBOSimpleLine {
+            /** 对象编号 */
+            objectKey: number;
+            /** 对象行号 */
+            lineId: number;
+            /** 对象类型 */
+            objectCode: string;
+            /** 实例号 */
+            logInst: number;
+            /** 数据源 */
+            dataSource: string;
+            /** 创建日期 */
+            createDate: Date;
+            /** 创建时间 */
+            createTime: number;
+            /** 更新日期 */
+            updateDate: Date;
+            /** 更新时间 */
+            updateTime: number;
+            /** 创建用户 */
+            createUserSign: number;
+            /** 更新用户 */
+            updateUserSign: number;
+            /** 创建动作标识 */
+            createActionId: string;
+            /** 更新动作标识 */
+            updateActionId: string;
+            /** 组标记 */
+            parentSign: string;
+            /** 标记 */
+            sign: string;
+            /** 描述 */
+            description: string;
+            /** 内容 */
+            content: string;
+            /** 备注 */
+            note: string;
+            /** 可编辑 */
+            editable: ibas.emYesNo;
+            /** 规格模板-项目值集合 */
+            specificationItemValues: ISpecificationItemValues;
+        }
+        /** 规格模板-项目值 集合 */
+        interface ISpecificationItemValues extends ibas.IBusinessObjects<ISpecificationItemValue> {
+            /** 创建并添加子项 */
+            create(): ISpecificationItemValue;
+        }
+        /** 规格模板-项目值 */
+        interface ISpecificationItemValue extends ibas.IBOSimpleLine {
+            /** 对象编号 */
+            objectKey: number;
+            /** 对象行号 */
+            lineId: number;
+            /** 对象类型 */
+            objectCode: string;
+            /** 实例号 */
+            logInst: number;
+            /** 数据源 */
+            dataSource: string;
+            /** 创建日期 */
+            createDate: Date;
+            /** 创建时间 */
+            createTime: number;
+            /** 更新日期 */
+            updateDate: Date;
+            /** 更新时间 */
+            updateTime: number;
+            /** 创建用户 */
+            createUserSign: number;
+            /** 更新用户 */
+            updateUserSign: number;
+            /** 创建动作标识 */
+            createActionId: string;
+            /** 更新动作标识 */
+            updateActionId: string;
+            /** 项目号 */
+            itemId: number;
+            /** 值 */
+            value: string;
+            /** 描述 */
+            description: string;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace bo {
+        /** 规格树 */
+        interface ISpecificationTree {
+            /** 模板 */
+            template: number;
+            /** 名称 */
+            name: string;
+            /** 备注 */
+            remarks: string;
+            /** 规格模板-项目集合 */
+            items: ibas.IList<ISpecificationTreeItem>;
+        }
+        /** 规格模板-项目 */
+        interface ISpecificationTreeItem {
+            /** 标记 */
+            sign: string;
+            /** 描述 */
+            description: string;
+            /** 内容 */
+            content: string;
+            /** 备注 */
+            note: string;
+            /** 可编辑 */
+            editable: boolean;
+            /** 可选值 */
+            vaildValues: ibas.IList<ibas.KeyText>;
+            /** 规格模板-项目集合 */
+            items: ibas.IList<ISpecificationTreeItem>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace bo {
         /** 业务仓库 */
         interface IBORepositoryMaterials extends ibas.IBORepositoryApplication {
             /**
@@ -2139,6 +2459,31 @@ declare namespace materials {
              * @param fetcher 查询者
              */
             fetchMaterialPrice(fetcher: ibas.IFetchCaller<bo.IMaterialPrice>): void;
+            /**
+             * 查询 物料规格
+             * @param fetcher 查询者
+             */
+            fetchMaterialSpecification(fetcher: ibas.IFetchCaller<bo.IMaterialSpecification>): void;
+            /**
+             * 保存 物料规格
+             * @param saver 保存者
+             */
+            saveMaterialSpecification(saver: ibas.ISaveCaller<bo.IMaterialSpecification>): void;
+            /**
+             * 查询 规格模板
+             * @param fetcher 查询者
+             */
+            fetchSpecification(fetcher: ibas.IFetchCaller<bo.ISpecification>): void;
+            /**
+             * 保存 规格模板
+             * @param saver 保存者
+             */
+            saveSpecification(saver: ibas.ISaveCaller<bo.ISpecification>): void;
+            /**
+             * 查询 规格树
+             * @param fetcher 查询者
+             */
+            fetchSpecificationTree(fetcher: ibas.IFetchCaller<bo.ISpecificationTree>): void;
         }
         interface ICloseCaller<T> extends ibas.IMethodCaller<string> {
             /** 查询条件 */
@@ -5521,13 +5866,677 @@ declare namespace materials {
  */
 declare namespace materials {
     namespace bo {
+        /** 物料规格 */
+        class MaterialSpecification extends ibas.BOSimple<MaterialSpecification> implements IMaterialSpecification {
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 映射的属性名称-对象编号 */
+            static PROPERTY_OBJECTKEY_NAME: string;
+            /** 获取-对象编号 */
+            /** 设置-对象编号 */
+            objectKey: number;
+            /** 映射的属性名称-对象类型 */
+            static PROPERTY_OBJECTCODE_NAME: string;
+            /** 获取-对象类型 */
+            /** 设置-对象类型 */
+            objectCode: string;
+            /** 映射的属性名称-创建日期 */
+            static PROPERTY_CREATEDATE_NAME: string;
+            /** 获取-创建日期 */
+            /** 设置-创建日期 */
+            createDate: Date;
+            /** 映射的属性名称-创建时间 */
+            static PROPERTY_CREATETIME_NAME: string;
+            /** 获取-创建时间 */
+            /** 设置-创建时间 */
+            createTime: number;
+            /** 映射的属性名称-修改日期 */
+            static PROPERTY_UPDATEDATE_NAME: string;
+            /** 获取-修改日期 */
+            /** 设置-修改日期 */
+            updateDate: Date;
+            /** 映射的属性名称-修改时间 */
+            static PROPERTY_UPDATETIME_NAME: string;
+            /** 获取-修改时间 */
+            /** 设置-修改时间 */
+            updateTime: number;
+            /** 映射的属性名称-版本 */
+            static PROPERTY_LOGINST_NAME: string;
+            /** 获取-版本 */
+            /** 设置-版本 */
+            logInst: number;
+            /** 映射的属性名称-服务系列 */
+            static PROPERTY_SERIES_NAME: string;
+            /** 获取-服务系列 */
+            /** 设置-服务系列 */
+            series: number;
+            /** 映射的属性名称-数据源 */
+            static PROPERTY_DATASOURCE_NAME: string;
+            /** 获取-数据源 */
+            /** 设置-数据源 */
+            dataSource: string;
+            /** 映射的属性名称-创建用户 */
+            static PROPERTY_CREATEUSERSIGN_NAME: string;
+            /** 获取-创建用户 */
+            /** 设置-创建用户 */
+            createUserSign: number;
+            /** 映射的属性名称-修改用户 */
+            static PROPERTY_UPDATEUSERSIGN_NAME: string;
+            /** 获取-修改用户 */
+            /** 设置-修改用户 */
+            updateUserSign: number;
+            /** 映射的属性名称-创建动作标识 */
+            static PROPERTY_CREATEACTIONID_NAME: string;
+            /** 获取-创建动作标识 */
+            /** 设置-创建动作标识 */
+            createActionId: string;
+            /** 映射的属性名称-更新动作标识 */
+            static PROPERTY_UPDATEACTIONID_NAME: string;
+            /** 获取-更新动作标识 */
+            /** 设置-更新动作标识 */
+            updateActionId: string;
+            /** 映射的属性名称-审批状态 */
+            static PROPERTY_APPROVALSTATUS_NAME: string;
+            /** 获取-审批状态 */
+            /** 设置-审批状态 */
+            approvalStatus: ibas.emApprovalStatus;
+            /** 映射的属性名称-数据所有者 */
+            static PROPERTY_DATAOWNER_NAME: string;
+            /** 获取-数据所有者 */
+            /** 设置-数据所有者 */
+            dataOwner: number;
+            /** 映射的属性名称-团队成员 */
+            static PROPERTY_TEAMMEMBERS_NAME: string;
+            /** 获取-团队成员 */
+            /** 设置-团队成员 */
+            teamMembers: string;
+            /** 映射的属性名称-数据所属组织 */
+            static PROPERTY_ORGANIZATION_NAME: string;
+            /** 获取-数据所属组织 */
+            /** 设置-数据所属组织 */
+            organization: string;
+            /** 映射的属性名称-名称 */
+            static PROPERTY_NAME_NAME: string;
+            /** 获取-名称 */
+            /** 设置-名称 */
+            name: string;
+            /** 映射的属性名称-规格模板 */
+            static PROPERTY_SPECIFICATION_NAME: string;
+            /** 获取-规格模板 */
+            /** 设置-规格模板 */
+            specification: number;
+            /** 映射的属性名称-项目代码 */
+            static PROPERTY_PROJECT_NAME: string;
+            /** 获取-项目代码 */
+            /** 设置-项目代码 */
+            project: string;
+            /** 映射的属性名称-参考1 */
+            static PROPERTY_REFERENCE1_NAME: string;
+            /** 获取-参考1 */
+            /** 设置-参考1 */
+            reference1: string;
+            /** 映射的属性名称-参考2 */
+            static PROPERTY_REFERENCE2_NAME: string;
+            /** 获取-参考2 */
+            /** 设置-参考2 */
+            reference2: string;
+            /** 映射的属性名称-备注 */
+            static PROPERTY_REMARKS_NAME: string;
+            /** 获取-备注 */
+            /** 设置-备注 */
+            remarks: string;
+            /** 映射的属性名称-物料规格-项目集合 */
+            static PROPERTY_MATERIALSPECIFICATIONITEMS_NAME: string;
+            /** 获取-物料规格-项目集合 */
+            /** 设置-物料规格-项目集合 */
+            materialSpecificationItems: MaterialSpecificationItems;
+            /** 初始化数据 */
+            protected init(): void;
+        }
+        /** 物料规格-项目 集合 */
+        class MaterialSpecificationItems extends ibas.BusinessObjects<MaterialSpecificationItem, MaterialSpecification> implements IMaterialSpecificationItems {
+            /** 创建并添加子项 */
+            create(): MaterialSpecificationItem;
+        }
+        /** 物料规格-项目 */
+        class MaterialSpecificationItem extends ibas.BOSimpleLine<MaterialSpecificationItem> implements IMaterialSpecificationItem {
+            /** 构造函数 */
+            constructor();
+            /** 映射的属性名称-对象编号 */
+            static PROPERTY_OBJECTKEY_NAME: string;
+            /** 获取-对象编号 */
+            /** 设置-对象编号 */
+            objectKey: number;
+            /** 映射的属性名称-对象行号 */
+            static PROPERTY_LINEID_NAME: string;
+            /** 获取-对象行号 */
+            /** 设置-对象行号 */
+            lineId: number;
+            /** 映射的属性名称-对象类型 */
+            static PROPERTY_OBJECTCODE_NAME: string;
+            /** 获取-对象类型 */
+            /** 设置-对象类型 */
+            objectCode: string;
+            /** 映射的属性名称-实例号 */
+            static PROPERTY_LOGINST_NAME: string;
+            /** 获取-实例号 */
+            /** 设置-实例号 */
+            logInst: number;
+            /** 映射的属性名称-数据源 */
+            static PROPERTY_DATASOURCE_NAME: string;
+            /** 获取-数据源 */
+            /** 设置-数据源 */
+            dataSource: string;
+            /** 映射的属性名称-创建日期 */
+            static PROPERTY_CREATEDATE_NAME: string;
+            /** 获取-创建日期 */
+            /** 设置-创建日期 */
+            createDate: Date;
+            /** 映射的属性名称-创建时间 */
+            static PROPERTY_CREATETIME_NAME: string;
+            /** 获取-创建时间 */
+            /** 设置-创建时间 */
+            createTime: number;
+            /** 映射的属性名称-更新日期 */
+            static PROPERTY_UPDATEDATE_NAME: string;
+            /** 获取-更新日期 */
+            /** 设置-更新日期 */
+            updateDate: Date;
+            /** 映射的属性名称-更新时间 */
+            static PROPERTY_UPDATETIME_NAME: string;
+            /** 获取-更新时间 */
+            /** 设置-更新时间 */
+            updateTime: number;
+            /** 映射的属性名称-创建用户 */
+            static PROPERTY_CREATEUSERSIGN_NAME: string;
+            /** 获取-创建用户 */
+            /** 设置-创建用户 */
+            createUserSign: number;
+            /** 映射的属性名称-更新用户 */
+            static PROPERTY_UPDATEUSERSIGN_NAME: string;
+            /** 获取-更新用户 */
+            /** 设置-更新用户 */
+            updateUserSign: number;
+            /** 映射的属性名称-创建动作标识 */
+            static PROPERTY_CREATEACTIONID_NAME: string;
+            /** 获取-创建动作标识 */
+            /** 设置-创建动作标识 */
+            createActionId: string;
+            /** 映射的属性名称-更新动作标识 */
+            static PROPERTY_UPDATEACTIONID_NAME: string;
+            /** 获取-更新动作标识 */
+            /** 设置-更新动作标识 */
+            updateActionId: string;
+            /** 映射的属性名称-组标记 */
+            static PROPERTY_PARENTSIGN_NAME: string;
+            /** 获取-组标记 */
+            /** 设置-组标记 */
+            parentSign: string;
+            /** 映射的属性名称-标记 */
+            static PROPERTY_SIGN_NAME: string;
+            /** 获取-标记 */
+            /** 设置-标记 */
+            sign: string;
+            /** 映射的属性名称-描述 */
+            static PROPERTY_DESCRIPTION_NAME: string;
+            /** 获取-描述 */
+            /** 设置-描述 */
+            description: string;
+            /** 映射的属性名称-内容 */
+            static PROPERTY_CONTENT_NAME: string;
+            /** 获取-内容 */
+            /** 设置-内容 */
+            content: string;
+            /** 映射的属性名称-备注 */
+            static PROPERTY_NOTE_NAME: string;
+            /** 获取-备注 */
+            /** 设置-备注 */
+            note: string;
+            /** 初始化数据 */
+            protected init(): void;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace bo {
+        /** 规格模板 */
+        class Specification extends ibas.BOSimple<Specification> implements ISpecification {
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 映射的属性名称-对象编号 */
+            static PROPERTY_OBJECTKEY_NAME: string;
+            /** 获取-对象编号 */
+            /** 设置-对象编号 */
+            objectKey: number;
+            /** 映射的属性名称-对象类型 */
+            static PROPERTY_OBJECTCODE_NAME: string;
+            /** 获取-对象类型 */
+            /** 设置-对象类型 */
+            objectCode: string;
+            /** 映射的属性名称-创建日期 */
+            static PROPERTY_CREATEDATE_NAME: string;
+            /** 获取-创建日期 */
+            /** 设置-创建日期 */
+            createDate: Date;
+            /** 映射的属性名称-创建时间 */
+            static PROPERTY_CREATETIME_NAME: string;
+            /** 获取-创建时间 */
+            /** 设置-创建时间 */
+            createTime: number;
+            /** 映射的属性名称-修改日期 */
+            static PROPERTY_UPDATEDATE_NAME: string;
+            /** 获取-修改日期 */
+            /** 设置-修改日期 */
+            updateDate: Date;
+            /** 映射的属性名称-修改时间 */
+            static PROPERTY_UPDATETIME_NAME: string;
+            /** 获取-修改时间 */
+            /** 设置-修改时间 */
+            updateTime: number;
+            /** 映射的属性名称-版本 */
+            static PROPERTY_LOGINST_NAME: string;
+            /** 获取-版本 */
+            /** 设置-版本 */
+            logInst: number;
+            /** 映射的属性名称-服务系列 */
+            static PROPERTY_SERIES_NAME: string;
+            /** 获取-服务系列 */
+            /** 设置-服务系列 */
+            series: number;
+            /** 映射的属性名称-数据源 */
+            static PROPERTY_DATASOURCE_NAME: string;
+            /** 获取-数据源 */
+            /** 设置-数据源 */
+            dataSource: string;
+            /** 映射的属性名称-创建用户 */
+            static PROPERTY_CREATEUSERSIGN_NAME: string;
+            /** 获取-创建用户 */
+            /** 设置-创建用户 */
+            createUserSign: number;
+            /** 映射的属性名称-修改用户 */
+            static PROPERTY_UPDATEUSERSIGN_NAME: string;
+            /** 获取-修改用户 */
+            /** 设置-修改用户 */
+            updateUserSign: number;
+            /** 映射的属性名称-创建动作标识 */
+            static PROPERTY_CREATEACTIONID_NAME: string;
+            /** 获取-创建动作标识 */
+            /** 设置-创建动作标识 */
+            createActionId: string;
+            /** 映射的属性名称-更新动作标识 */
+            static PROPERTY_UPDATEACTIONID_NAME: string;
+            /** 获取-更新动作标识 */
+            /** 设置-更新动作标识 */
+            updateActionId: string;
+            /** 映射的属性名称-审批状态 */
+            static PROPERTY_APPROVALSTATUS_NAME: string;
+            /** 获取-审批状态 */
+            /** 设置-审批状态 */
+            approvalStatus: ibas.emApprovalStatus;
+            /** 映射的属性名称-数据所有者 */
+            static PROPERTY_DATAOWNER_NAME: string;
+            /** 获取-数据所有者 */
+            /** 设置-数据所有者 */
+            dataOwner: number;
+            /** 映射的属性名称-团队成员 */
+            static PROPERTY_TEAMMEMBERS_NAME: string;
+            /** 获取-团队成员 */
+            /** 设置-团队成员 */
+            teamMembers: string;
+            /** 映射的属性名称-数据所属组织 */
+            static PROPERTY_ORGANIZATION_NAME: string;
+            /** 获取-数据所属组织 */
+            /** 设置-数据所属组织 */
+            organization: string;
+            /** 映射的属性名称-名称 */
+            static PROPERTY_NAME_NAME: string;
+            /** 获取-名称 */
+            /** 设置-名称 */
+            name: string;
+            /** 映射的属性名称-目标类型 */
+            static PROPERTY_TARGETTYPE_NAME: string;
+            /** 获取-目标类型 */
+            /** 设置-目标类型 */
+            targetType: emSpecificationTarget;
+            /** 映射的属性名称-目标 */
+            static PROPERTY_TARGET_NAME: string;
+            /** 获取-目标 */
+            /** 设置-目标 */
+            target: string;
+            /** 映射的属性名称-是否激活 */
+            static PROPERTY_ACTIVATED_NAME: string;
+            /** 获取-是否激活 */
+            /** 设置-是否激活 */
+            activated: ibas.emYesNo;
+            /** 映射的属性名称-备注 */
+            static PROPERTY_REMARKS_NAME: string;
+            /** 获取-备注 */
+            /** 设置-备注 */
+            remarks: string;
+            /** 映射的属性名称-规格模板-项目集合 */
+            static PROPERTY_SPECIFICATIONITEMS_NAME: string;
+            /** 获取-规格模板-项目集合 */
+            /** 设置-规格模板-项目集合 */
+            specificationItems: SpecificationItems;
+            /** 初始化数据 */
+            protected init(): void;
+        }
+        /** 规格模板-项目 集合 */
+        class SpecificationItems extends ibas.BusinessObjects<SpecificationItem, Specification> implements ISpecificationItems {
+            /** 创建并添加子项 */
+            create(): SpecificationItem;
+        }
+        /** 规格模板-项目 */
+        class SpecificationItem extends ibas.BOSimpleLine<SpecificationItem> implements ISpecificationItem {
+            /** 构造函数 */
+            constructor();
+            /** 映射的属性名称-对象编号 */
+            static PROPERTY_OBJECTKEY_NAME: string;
+            /** 获取-对象编号 */
+            /** 设置-对象编号 */
+            objectKey: number;
+            /** 映射的属性名称-对象行号 */
+            static PROPERTY_LINEID_NAME: string;
+            /** 获取-对象行号 */
+            /** 设置-对象行号 */
+            lineId: number;
+            /** 映射的属性名称-对象类型 */
+            static PROPERTY_OBJECTCODE_NAME: string;
+            /** 获取-对象类型 */
+            /** 设置-对象类型 */
+            objectCode: string;
+            /** 映射的属性名称-实例号 */
+            static PROPERTY_LOGINST_NAME: string;
+            /** 获取-实例号 */
+            /** 设置-实例号 */
+            logInst: number;
+            /** 映射的属性名称-数据源 */
+            static PROPERTY_DATASOURCE_NAME: string;
+            /** 获取-数据源 */
+            /** 设置-数据源 */
+            dataSource: string;
+            /** 映射的属性名称-创建日期 */
+            static PROPERTY_CREATEDATE_NAME: string;
+            /** 获取-创建日期 */
+            /** 设置-创建日期 */
+            createDate: Date;
+            /** 映射的属性名称-创建时间 */
+            static PROPERTY_CREATETIME_NAME: string;
+            /** 获取-创建时间 */
+            /** 设置-创建时间 */
+            createTime: number;
+            /** 映射的属性名称-更新日期 */
+            static PROPERTY_UPDATEDATE_NAME: string;
+            /** 获取-更新日期 */
+            /** 设置-更新日期 */
+            updateDate: Date;
+            /** 映射的属性名称-更新时间 */
+            static PROPERTY_UPDATETIME_NAME: string;
+            /** 获取-更新时间 */
+            /** 设置-更新时间 */
+            updateTime: number;
+            /** 映射的属性名称-创建用户 */
+            static PROPERTY_CREATEUSERSIGN_NAME: string;
+            /** 获取-创建用户 */
+            /** 设置-创建用户 */
+            createUserSign: number;
+            /** 映射的属性名称-更新用户 */
+            static PROPERTY_UPDATEUSERSIGN_NAME: string;
+            /** 获取-更新用户 */
+            /** 设置-更新用户 */
+            updateUserSign: number;
+            /** 映射的属性名称-创建动作标识 */
+            static PROPERTY_CREATEACTIONID_NAME: string;
+            /** 获取-创建动作标识 */
+            /** 设置-创建动作标识 */
+            createActionId: string;
+            /** 映射的属性名称-更新动作标识 */
+            static PROPERTY_UPDATEACTIONID_NAME: string;
+            /** 获取-更新动作标识 */
+            /** 设置-更新动作标识 */
+            updateActionId: string;
+            /** 映射的属性名称-组标记 */
+            static PROPERTY_PARENTSIGN_NAME: string;
+            /** 获取-组标记 */
+            /** 设置-组标记 */
+            parentSign: string;
+            /** 映射的属性名称-标记 */
+            static PROPERTY_SIGN_NAME: string;
+            /** 获取-标记 */
+            /** 设置-标记 */
+            sign: string;
+            /** 映射的属性名称-描述 */
+            static PROPERTY_DESCRIPTION_NAME: string;
+            /** 获取-描述 */
+            /** 设置-描述 */
+            description: string;
+            /** 映射的属性名称-内容 */
+            static PROPERTY_CONTENT_NAME: string;
+            /** 获取-内容 */
+            /** 设置-内容 */
+            content: string;
+            /** 映射的属性名称-备注 */
+            static PROPERTY_NOTE_NAME: string;
+            /** 获取-备注 */
+            /** 设置-备注 */
+            note: string;
+            /** 映射的属性名称-可编辑 */
+            static PROPERTY_EDITABLE_NAME: string;
+            /** 获取-可编辑 */
+            /** 设置-可编辑 */
+            editable: ibas.emYesNo;
+            /** 映射的属性名称-规格模板-项目值集合 */
+            static PROPERTY_SPECIFICATIONITEMVALUES_NAME: string;
+            /** 获取-规格模板-项目值集合 */
+            /** 设置-规格模板-项目值集合 */
+            specificationItemValues: SpecificationItemValues;
+            /** 初始化数据 */
+            protected init(): void;
+        }
+        /** 规格模板-项目值 集合 */
+        class SpecificationItemValues extends ibas.BusinessObjects<SpecificationItemValue, SpecificationItem> implements ISpecificationItemValues {
+            /** 创建并添加子项 */
+            create(): SpecificationItemValue;
+        }
+        /** 规格模板-项目值 */
+        class SpecificationItemValue extends ibas.BOSimpleLine<SpecificationItemValue> implements ISpecificationItemValue {
+            /** 构造函数 */
+            constructor();
+            /** 映射的属性名称-对象编号 */
+            static PROPERTY_OBJECTKEY_NAME: string;
+            /** 获取-对象编号 */
+            /** 设置-对象编号 */
+            objectKey: number;
+            /** 映射的属性名称-对象行号 */
+            static PROPERTY_LINEID_NAME: string;
+            /** 获取-对象行号 */
+            /** 设置-对象行号 */
+            lineId: number;
+            /** 映射的属性名称-对象类型 */
+            static PROPERTY_OBJECTCODE_NAME: string;
+            /** 获取-对象类型 */
+            /** 设置-对象类型 */
+            objectCode: string;
+            /** 映射的属性名称-实例号 */
+            static PROPERTY_LOGINST_NAME: string;
+            /** 获取-实例号 */
+            /** 设置-实例号 */
+            logInst: number;
+            /** 映射的属性名称-数据源 */
+            static PROPERTY_DATASOURCE_NAME: string;
+            /** 获取-数据源 */
+            /** 设置-数据源 */
+            dataSource: string;
+            /** 映射的属性名称-创建日期 */
+            static PROPERTY_CREATEDATE_NAME: string;
+            /** 获取-创建日期 */
+            /** 设置-创建日期 */
+            createDate: Date;
+            /** 映射的属性名称-创建时间 */
+            static PROPERTY_CREATETIME_NAME: string;
+            /** 获取-创建时间 */
+            /** 设置-创建时间 */
+            createTime: number;
+            /** 映射的属性名称-更新日期 */
+            static PROPERTY_UPDATEDATE_NAME: string;
+            /** 获取-更新日期 */
+            /** 设置-更新日期 */
+            updateDate: Date;
+            /** 映射的属性名称-更新时间 */
+            static PROPERTY_UPDATETIME_NAME: string;
+            /** 获取-更新时间 */
+            /** 设置-更新时间 */
+            updateTime: number;
+            /** 映射的属性名称-创建用户 */
+            static PROPERTY_CREATEUSERSIGN_NAME: string;
+            /** 获取-创建用户 */
+            /** 设置-创建用户 */
+            createUserSign: number;
+            /** 映射的属性名称-更新用户 */
+            static PROPERTY_UPDATEUSERSIGN_NAME: string;
+            /** 获取-更新用户 */
+            /** 设置-更新用户 */
+            updateUserSign: number;
+            /** 映射的属性名称-创建动作标识 */
+            static PROPERTY_CREATEACTIONID_NAME: string;
+            /** 获取-创建动作标识 */
+            /** 设置-创建动作标识 */
+            createActionId: string;
+            /** 映射的属性名称-更新动作标识 */
+            static PROPERTY_UPDATEACTIONID_NAME: string;
+            /** 获取-更新动作标识 */
+            /** 设置-更新动作标识 */
+            updateActionId: string;
+            /** 映射的属性名称-项目号 */
+            static PROPERTY_ITEMID_NAME: string;
+            /** 获取-项目号 */
+            /** 设置-项目号 */
+            itemId: number;
+            /** 映射的属性名称-值 */
+            static PROPERTY_VALUE_NAME: string;
+            /** 获取-值 */
+            /** 设置-值 */
+            value: string;
+            /** 映射的属性名称-描述 */
+            static PROPERTY_DESCRIPTION_NAME: string;
+            /** 获取-描述 */
+            /** 设置-描述 */
+            description: string;
+            /** 初始化数据 */
+            protected init(): void;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace bo {
+        /** 规格树 */
+        class SpecificationTree implements ISpecificationTree {
+            constructor();
+            /** 模板 */
+            template: number;
+            /** 名称 */
+            name: string;
+            /** 备注 */
+            remarks: string;
+            /** 规格模板-项目集合 */
+            items: ibas.IList<ISpecificationTreeItem>;
+        }
+        /** 规格模板-项目 */
+        class SpecificationTreeItem implements ISpecificationTreeItem {
+            constructor();
+            /** 标记 */
+            sign: string;
+            /** 描述 */
+            description: string;
+            /** 内容 */
+            content: string;
+            /** 备注 */
+            note: string;
+            /** 可编辑 */
+            editable: boolean;
+            /** 可选值 */
+            vaildValues: ibas.IList<ibas.KeyText>;
+            /** 规格模板-项目集合 */
+            items: ibas.IList<ISpecificationTreeItem>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace bo {
         /** 数据转换者 */
         class DataConverter extends ibas.DataConverter4j {
             /** 创建业务对象转换者 */
             protected createConverter(): ibas.BOConverter;
+            /**
+             * 解析业务对象数据
+             * @param data 目标类型
+             * @param sign 特殊标记
+             * @returns 本地类型
+             */
+            parsing(data: any, sign: string): any;
         }
         /** 模块业务对象工厂 */
         const boFactory: ibas.BOFactory;
+        namespace bo4j {
+            /** 操作消息 */
+            interface IDataDeclaration {
+                /** 数据类型 */
+                type: string;
+            }
+            /** 规格树 */
+            interface ISpecificationTree extends IDataDeclaration {
+                /** 模板 */
+                Template: number;
+                /** 名称 */
+                Name: string;
+                /** 备注 */
+                Remarks: string;
+                /** 规格模板-项目集合 */
+                Items: ISpecificationTreeItem[];
+            }
+            /** 规格模板-项目 */
+            interface ISpecificationTreeItem extends IDataDeclaration {
+                /** 标记 */
+                Sign: string;
+                /** 描述 */
+                Description: string;
+                /** 内容 */
+                Content: string;
+                /** 备注 */
+                Note: string;
+                /** 可编辑 */
+                Editable: boolean;
+                /** 可选值 */
+                VaildValues: ibas.KeyText[];
+                /** 规格模板-项目集合 */
+                Items: ISpecificationTreeItem[];
+            }
+        }
     }
 }
 /**
@@ -5702,6 +6711,31 @@ declare namespace materials {
              * @param fetcher 查询者
              */
             closeInventoryCounting(closer: ICloseCaller<bo.IInventoryCounting>): void;
+            /**
+             * 查询 规格模板
+             * @param fetcher 查询者
+             */
+            fetchSpecification(fetcher: ibas.IFetchCaller<bo.Specification>): void;
+            /**
+             * 保存 规格模板
+             * @param saver 保存者
+             */
+            saveSpecification(saver: ibas.ISaveCaller<bo.Specification>): void;
+            /**
+             * 查询 规格树
+             * @param fetcher 查询者
+             */
+            fetchSpecificationTree(fetcher: ibas.IFetchCaller<bo.SpecificationTree>): void;
+            /**
+             * 查询 物料规格
+             * @param fetcher 查询者
+             */
+            fetchMaterialSpecification(fetcher: ibas.IFetchCaller<bo.MaterialSpecification>): void;
+            /**
+             * 保存 物料规格
+             * @param saver 保存者
+             */
+            saveMaterialSpecification(saver: ibas.ISaveCaller<bo.MaterialSpecification>): void;
         }
     }
 }
@@ -8083,6 +9117,494 @@ declare namespace materials {
             defaultWarehouse: string;
             /** 刷新库存 */
             refreshMaterialInventoryEvent: Function;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        class MaterialSpecificationFunc extends ibas.ModuleFunction {
+            /** 功能标识 */
+            static FUNCTION_ID: string;
+            /** 功能名称 */
+            static FUNCTION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 默认功能 */
+            default(): ibas.IApplication<ibas.IView>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 列表应用-物料规格 */
+        class MaterialSpecificationListApp extends ibas.BOListApplication<IMaterialSpecificationListView, bo.MaterialSpecification> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria): void;
+            /** 新建数据 */
+            protected newData(): void;
+            /** 查看数据，参数：目标数据 */
+            protected viewData(data: bo.MaterialSpecification): void;
+            /** 编辑数据，参数：目标数据 */
+            protected editData(data: bo.MaterialSpecification): void;
+            /** 删除数据，参数：目标数据集合 */
+            protected deleteData(data: bo.MaterialSpecification | bo.MaterialSpecification[]): void;
+            /** 规格模板 */
+            protected specification(): void;
+        }
+        /** 视图-物料规格 */
+        interface IMaterialSpecificationListView extends ibas.IBOListView {
+            /** 编辑数据事件，参数：编辑对象 */
+            editDataEvent: Function;
+            /** 删除数据事件，参数：删除对象集合 */
+            deleteDataEvent: Function;
+            /** 规格模板事件 */
+            specificationEvent: Function;
+            /** 显示数据 */
+            showData(datas: bo.MaterialSpecification[]): void;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 选择应用-物料规格 */
+        class MaterialSpecificationChooseApp extends ibas.BOChooseService<IMaterialSpecificationChooseView, bo.MaterialSpecification> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria): void;
+            /** 新建数据 */
+            protected newData(): void;
+        }
+        /** 视图-物料规格 */
+        interface IMaterialSpecificationChooseView extends ibas.IBOChooseView {
+            /** 显示数据 */
+            showData(datas: bo.MaterialSpecification[]): void;
+        }
+        /** 物料规格选择服务映射 */
+        class MaterialSpecificationChooseServiceMapping extends ibas.BOChooseServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IBOChooseService<bo.MaterialSpecification>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 查看应用-物料规格 */
+        class MaterialSpecificationViewApp extends ibas.BOViewService<IMaterialSpecificationViewView, bo.MaterialSpecification> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            run(): void;
+            run(data: bo.MaterialSpecification): void;
+            run(criteria: ibas.Criteria | string): void;
+            protected viewData: bo.MaterialSpecification;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria | string): void;
+            private save;
+        }
+        /** 视图-物料规格 */
+        interface IMaterialSpecificationViewView extends ibas.IBOViewView {
+            /** 保存事件 */
+            saveEvent: Function;
+            /** 显示规格 */
+            showSpecificationTree(data: MaterialSpecificationTree): void;
+        }
+        /** 物料规格连接服务映射 */
+        class MaterialSpecificationLinkServiceMapping extends ibas.BOLinkServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IBOLinkService;
+        }
+        class MaterialSpecificationTree implements bo.ISpecificationTree {
+            constructor(data: bo.MaterialSpecification);
+            data: bo.MaterialSpecification;
+            /** 模板 */
+            template: number;
+            /** 名称 */
+            name: string;
+            /** 备注 */
+            remarks: string;
+            /** 项目集合 */
+            items: ibas.IList<bo.ISpecificationTreeItem>;
+        }
+        class MaterialSpecificationTreeItem implements bo.ISpecificationTreeItem {
+            constructor(data: bo.MaterialSpecificationItem);
+            data: bo.MaterialSpecificationItem;
+            /** 标记 */
+            sign: string;
+            /** 描述 */
+            description: string;
+            /** 可编辑 */
+            editable: boolean;
+            /** 内容 */
+            content: string;
+            /** 备注 */
+            note: string;
+            /** 可选值 */
+            vaildValues: ibas.IList<ibas.KeyText>;
+            /** 项目集合 */
+            items: ibas.IList<bo.ISpecificationTreeItem>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 编辑应用-物料规格 */
+        class MaterialSpecificationEditApp extends ibas.BOEditApplication<IMaterialSpecificationEditView, bo.MaterialSpecification> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            run(): void;
+            run(data: bo.MaterialSpecification): void;
+            /** 待编辑的数据 */
+            protected editData: bo.MaterialSpecification;
+            /** 保存数据 */
+            protected saveData(): void;
+            /** 删除数据 */
+            protected deleteData(): void;
+            /** 新建数据，参数1：是否克隆 */
+            protected createData(clone: boolean): void;
+            /** 添加物料规格-项目事件 */
+            protected addMaterialSpecificationItem(): void;
+            /** 删除物料规格-项目事件 */
+            protected removeMaterialSpecificationItem(items: bo.MaterialSpecificationItem[]): void;
+        }
+        /** 视图-物料规格 */
+        interface IMaterialSpecificationEditView extends ibas.IBOEditView {
+            /** 显示数据 */
+            showMaterialSpecification(data: bo.MaterialSpecification): void;
+            /** 删除数据事件 */
+            deleteDataEvent: Function;
+            /** 新建数据事件，参数1：是否克隆 */
+            createDataEvent: Function;
+            /** 添加物料规格-项目事件 */
+            addMaterialSpecificationItemEvent: Function;
+            /** 删除物料规格-项目事件 */
+            removeMaterialSpecificationItemEvent: Function;
+            /** 显示数据 */
+            showMaterialSpecificationItems(datas: bo.MaterialSpecificationItem[]): void;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        class SpecificationFunc extends ibas.ModuleFunction {
+            /** 功能标识 */
+            static FUNCTION_ID: string;
+            /** 功能名称 */
+            static FUNCTION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 默认功能 */
+            default(): ibas.IApplication<ibas.IView>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 列表应用-规格模板 */
+        class SpecificationListApp extends ibas.BOListApplication<ISpecificationListView, bo.Specification> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria): void;
+            /** 新建数据 */
+            protected newData(): void;
+            /** 查看数据，参数：目标数据 */
+            protected viewData(data: bo.Specification): void;
+            /** 编辑数据，参数：目标数据 */
+            protected editData(data: bo.Specification): void;
+            /** 删除数据，参数：目标数据集合 */
+            protected deleteData(data: bo.Specification | bo.Specification[]): void;
+        }
+        /** 视图-规格模板 */
+        interface ISpecificationListView extends ibas.IBOListView {
+            /** 编辑数据事件，参数：编辑对象 */
+            editDataEvent: Function;
+            /** 删除数据事件，参数：删除对象集合 */
+            deleteDataEvent: Function;
+            /** 显示数据 */
+            showData(datas: bo.Specification[]): void;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 选择应用-规格模板 */
+        class SpecificationChooseApp extends ibas.BOChooseService<ISpecificationChooseView, bo.Specification> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria): void;
+            /** 新建数据 */
+            protected newData(): void;
+        }
+        /** 视图-规格模板 */
+        interface ISpecificationChooseView extends ibas.IBOChooseView {
+            /** 显示数据 */
+            showData(datas: bo.Specification[]): void;
+        }
+        /** 规格模板选择服务映射 */
+        class SpecificationChooseServiceMapping extends ibas.BOChooseServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IBOChooseService<bo.Specification>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 编辑应用-规格模板 */
+        class SpecificationEditApp extends ibas.BOEditApplication<ISpecificationEditView, bo.Specification> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            run(): void;
+            run(data: bo.Specification): void;
+            /** 待编辑的数据 */
+            protected editData: bo.Specification;
+            /** 保存数据 */
+            protected saveData(): void;
+            /** 删除数据 */
+            protected deleteData(): void;
+            /** 新建数据，参数1：是否克隆 */
+            protected createData(clone: boolean): void;
+            /** 添加规格模板-项目事件 */
+            protected addSpecificationItem(parent: bo.SpecificationItem): void;
+            /** 删除规格模板-项目事件 */
+            protected removeSpecificationItem(items: bo.SpecificationItem[]): void;
+            private chooseSpecificationTarget;
+            private editSpecificationItemData;
+            /** 编辑属性值事件 */
+            private editSpecificationItem;
+            /** 添加属性值事件 */
+            private addSpecificationItemValue;
+            /** 删除属性值事件 */
+            private removeSpecificationItemValue;
+        }
+        /** 视图-规格模板 */
+        interface ISpecificationEditView extends ibas.IBOEditView {
+            /** 显示数据 */
+            showSpecification(data: bo.Specification): void;
+            /** 删除数据事件 */
+            deleteDataEvent: Function;
+            /** 新建数据事件，参数1：是否克隆 */
+            createDataEvent: Function;
+            /** 添加规格模板-项目事件 */
+            addSpecificationItemEvent: Function;
+            /** 删除规格模板-项目事件 */
+            removeSpecificationItemEvent: Function;
+            /** 选择规格模板目标事件 */
+            chooseSpecificationTargetEvent: Function;
+            /** 显示数据 */
+            showSpecificationItems(datas: bo.SpecificationItem[]): void;
+            /** 编辑规格模事件 */
+            editSpecificationItemEvent: Function;
+            /** 添加规格模板-项目值事件 */
+            addSpecificationItemValueEvent: Function;
+            /** 删除规格模板-项目值事件 */
+            removeSpecificationItemValueEvent: Function;
+            /** 显示数据 */
+            showSpecificationItemValues(datas: bo.SpecificationItemValue[]): void;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 查看应用-规格模板 */
+        class SpecificationTreeService extends ibas.ServiceWithResultApplication<ISpecificationTreeView, ISpecificationTreeContract, bo.IMaterialSpecification> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 运行服务 */
+            runService(contract: ISpecificationTreeContract): void;
+            private extraData;
+            private specification;
+            private showSpecification;
+            private using;
+            private save;
+        }
+        /** 视图-规格模板 */
+        interface ISpecificationTreeView extends ibas.IBOView {
+            /** 显示规格 */
+            showSpecifications(datas: bo.SpecificationTree[]): void;
+            /** 使用事件 */
+            usingEvent: Function;
+            /** 保存事件 */
+            saveEvent: Function;
+            /** 显示规格 */
+            showSpecificationTree(data: bo.SpecificationTree): void;
+        }
+        /** 规格模板连接服务映射 */
+        class SpecificationTreeServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract>;
         }
     }
 }
