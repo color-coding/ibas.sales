@@ -159,7 +159,7 @@ namespace sales {
                         press: (event: sap.ui.base.Event) => {
                             let select: any = this.getAggregation("_select", undefined);
                             if (select instanceof sap.m.Select) {
-                                let index: number = select.indexOfItem(select.getSelectedItem());
+                                let index: number = ibas.numbers.toInt(select.getSelectedItem().getKey());
                                 if (index >= 0) {
                                     let address: bo.ShippingAddress = this.getBindingValue()[index];
                                     this.fireEditSelected({ address: address });
@@ -195,15 +195,41 @@ namespace sales {
                     } else if (!ibas.objects.isNull(value)) {
                         throw new TypeError("bindingValue");
                     }
+                    let bValue: any = this.getProperty("bindingValue");
+                    if (bValue instanceof ibas.BusinessObjects) {
+                        bValue.removeListener(this.getId());
+                    }
                     this.setProperty("bindingValue", values);
+                    if (values instanceof ibas.BusinessObjects) {
+                        values.registerListener({
+                            id: this.getId(),
+                            propertyChanged: (property: string) => {
+                                if (property === "length") {
+                                    this.loadItems(values);
+                                }
+                            }
+                        });
+                    }
+                    this.loadItems(values);
+                    return this;
+                },
+                /** 加载可选项目 */
+                loadItems(this: ShippingAddressSelect, values: bo.ShippingAddresss): ShippingAddressSelect {
                     let select: any = this.getAggregation("_select", undefined);
                     if (select instanceof sap.m.Select) {
                         select.destroyItems();
+                        let textArea: any = this.getAggregation("_textarea", undefined);
+                        if (textArea instanceof sap.m.TextArea) {
+                            textArea.setValue(null);
+                        }
                         if (values instanceof Array) {
                             for (let i: number = 0; i < values.length; i++) {
                                 let item: bo.ShippingAddress = values[i];
+                                if (item.isDeleted === true) {
+                                    continue;
+                                }
                                 select.addItem(new sap.ui.core.ListItem("", {
-                                    key: item.objectKey,
+                                    key: i,
                                     text: ibas.strings.format("{0} ({1}/{2})",
                                         ibas.strings.isEmpty(item.name) ? item.objectKey : item.name, i + 1, values.length),
                                 }));
@@ -211,7 +237,7 @@ namespace sales {
                         }
                         if (select.getItems().length > 0) {
                             select.setSelectedItem(select.getFirstItem());
-                            this.setSelectedValue(values[0]);
+                            this.setSelectedValue(values.firstOrDefault(c => c.isDeleted !== true));
                         }
                     }
                     return this;

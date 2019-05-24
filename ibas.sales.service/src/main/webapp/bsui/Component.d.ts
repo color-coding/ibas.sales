@@ -26,6 +26,8 @@ declare namespace sales {
                  * @param value 地址项目实例或集合
                  */
                 setBindingValue(value: bo.ShippingAddress | bo.ShippingAddresss): this;
+                /** 加载可选项目 */
+                loadItems(values: bo.ShippingAddresss): this;
                 /** 设置监听地址编辑事件 */
                 attachEditSelected(oData: any, fnFunction: Function, oListener?: any): this;
                 /** 取消监听地址编辑事件 */

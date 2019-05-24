@@ -80,14 +80,6 @@ namespace sales {
             protected editData(data: bo.ShippingAddress): void {
                 this.view.showShippingAddress(data);
             }
-            /** 关闭视图 */
-            close(): void {
-                super.close();
-                if (this.onClosed instanceof Function) {
-                    this.onClosed();
-                }
-            }
-            onClosed: Function;
         }
         /** 视图-送货地址 */
         export interface IShippingAddressesEditView extends ibas.IBOView {

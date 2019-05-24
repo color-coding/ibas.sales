@@ -681,13 +681,9 @@ namespace sales {
                 });
             }
             private editShippingAddresses(): void {
-                let that: this = this;
                 let app: ShippingAddressesEditApp = new ShippingAddressesEditApp();
                 app.navigation = this.navigation;
                 app.viewShower = this.viewShower;
-                app.onClosed = function (): void {
-                    that.viewShowed();
-                };
                 app.run(this.editData.shippingAddresss);
             }
             private showSaleOrderItemExtra(data: bo.SalesOrderItem): void {
