@@ -159,7 +159,8 @@ namespace sales {
                         press: (event: sap.ui.base.Event) => {
                             let select: any = this.getAggregation("_select", undefined);
                             if (select instanceof sap.m.Select) {
-                                let index: number = ibas.numbers.toInt(select.getSelectedItem().getKey());
+                                let index: number = ibas.numbers.toInt(
+                                    select.getSelectedItem() ? select.getSelectedItem().getKey() : null);
                                 if (index >= 0) {
                                     let address: bo.ShippingAddress = this.getBindingValue()[index];
                                     this.fireEditSelected({ address: address });

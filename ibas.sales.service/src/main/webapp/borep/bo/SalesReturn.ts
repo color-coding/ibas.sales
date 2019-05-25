@@ -777,7 +777,7 @@ namespace sales {
                 }
             }
             /** 子项属性改变时 */
-            protected onChildPropertyChanged(item: SalesReturnItem, name: string): void {
+            protected onItemPropertyChanged(item: SalesReturnItem, name: string): void {
                 if (!ibas.strings.isEmpty(item.lineSign)) {
                     // 父项数量变化，重新计算子项值
                     if (ibas.strings.equalsIgnoreCase(name, SalesReturnItem.PROPERTY_QUANTITY_NAME)) {
