@@ -582,6 +582,7 @@ namespace sales {
                         myItem.distributionRule5 = item.distributionRule5;
                         myItem.itemCode = item.itemCode;
                         myItem.itemDescription = item.itemDescription;
+                        myItem.itemSign = item.itemSign;
                         myItem.batchManagement = item.batchManagement;
                         myItem.serialManagement = item.serialManagement;
                         myItem.price = item.price;
@@ -1058,6 +1059,17 @@ namespace sales {
             /** 设置-产品/服务描述 */
             set itemDescription(value: string) {
                 this.setProperty(SalesOrderItem.PROPERTY_ITEMDESCRIPTION_NAME, value);
+            }
+
+            /** 映射的属性名称-产品标识 */
+            static PROPERTY_ITEMSIGN_NAME: string = "ItemSign";
+            /** 获取-产品标识 */
+            get itemSign(): string {
+                return this.getProperty<string>(SalesOrderItem.PROPERTY_ITEMSIGN_NAME);
+            }
+            /** 设置-产品标识 */
+            set itemSign(value: string) {
+                this.setProperty(SalesOrderItem.PROPERTY_ITEMSIGN_NAME, value);
             }
 
             /** 映射的属性名称-序号管理 */

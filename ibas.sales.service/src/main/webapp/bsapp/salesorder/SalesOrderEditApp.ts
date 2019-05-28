@@ -371,6 +371,7 @@ namespace sales {
                                                         parentItem.lineSign = ibas.uuids.random();
                                                         parentItem.itemCode = pData.extend.code;
                                                         parentItem.itemDescription = pData.extend.name;
+                                                        parentItem.itemSign = pData.extend.sign;
                                                         parentItem.serialManagement = pData.extend.serialManagement;
                                                         parentItem.batchManagement = pData.extend.batchManagement;
                                                         parentItem.warehouse = pData.extend.warehouse;
@@ -394,6 +395,7 @@ namespace sales {
                                                             // 基本信息赋值
                                                             subItem.itemCode = sItem.extend.code;
                                                             subItem.itemDescription = sItem.extend.name;
+                                                            subItem.itemSign = sItem.extend.sign;
                                                             subItem.serialManagement = sItem.extend.serialManagement;
                                                             subItem.batchManagement = sItem.extend.batchManagement;
                                                             subItem.warehouse = sItem.extend.warehouse;
@@ -444,6 +446,7 @@ namespace sales {
                                 }
                                 item.itemCode = selected.code;
                                 item.itemDescription = selected.name;
+                                item.itemSign = selected.sign;
                                 item.serialManagement = selected.serialManagement;
                                 item.batchManagement = selected.batchManagement;
                                 item.warehouse = selected.warehouse;

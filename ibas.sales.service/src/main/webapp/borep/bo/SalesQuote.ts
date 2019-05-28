@@ -976,6 +976,17 @@ namespace sales {
                 this.setProperty(SalesQuoteItem.PROPERTY_ITEMDESCRIPTION_NAME, value);
             }
 
+            /** 映射的属性名称-产品标识 */
+            static PROPERTY_ITEMSIGN_NAME: string = "ItemSign";
+            /** 获取-产品标识 */
+            get itemSign(): string {
+                return this.getProperty<string>(SalesQuoteItem.PROPERTY_ITEMSIGN_NAME);
+            }
+            /** 设置-产品标识 */
+            set itemSign(value: string) {
+                this.setProperty(SalesQuoteItem.PROPERTY_ITEMSIGN_NAME, value);
+            }
+
             /** 映射的属性名称-序号管理 */
             static PROPERTY_SERIALMANAGEMENT_NAME: string = "SerialManagement";
             /** 获取-序号管理 */

@@ -261,6 +261,9 @@ namespace sales {
             /** 产品/服务描述 */
             itemDescription: string;
 
+            /** 产品标识 */
+            itemSign: string;
+
             /** 序号管理 */
             serialManagement: ibas.emYesNo;
 

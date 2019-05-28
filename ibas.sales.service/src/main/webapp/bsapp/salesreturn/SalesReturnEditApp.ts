@@ -269,6 +269,7 @@ namespace sales {
                             }
                             item.itemCode = selected.code;
                             item.itemDescription = selected.name;
+                            item.itemSign = selected.sign;
                             item.serialManagement = selected.serialManagement;
                             item.batchManagement = selected.batchManagement;
                             item.warehouse = selected.warehouse;

@@ -424,6 +424,20 @@ public interface ISalesReturnItem extends IBODocumentLine, IMaterialBatchReceipt
 	void setItemDescription(String value);
 
 	/**
+	 * 获取-产品标识
+	 * 
+	 * @return 值
+	 */
+	String getItemSign();
+
+	/**
+	 * 设置-产品标识
+	 * 
+	 * @param value 值
+	 */
+	void setItemSign(String value);
+
+	/**
 	 * 获取-序号管理
 	 * 
 	 * @return 值

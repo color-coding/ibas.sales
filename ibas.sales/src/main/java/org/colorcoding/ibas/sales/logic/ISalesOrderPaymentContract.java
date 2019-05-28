@@ -20,7 +20,7 @@ public interface ISalesOrderPaymentContract extends IBusinessLogicContract, ISal
 	BigDecimal getAmount();
 
 	/**
-	 * 币种
+	 * 货币
 	 * 
 	 * @return
 	 */

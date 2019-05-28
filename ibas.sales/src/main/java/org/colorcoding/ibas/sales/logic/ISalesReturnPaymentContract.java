@@ -20,7 +20,7 @@ public interface ISalesReturnPaymentContract extends IBusinessLogicContract, ISa
 	BigDecimal getAmount();
 
 	/**
-	 * 币种
+	 * 货币
 	 * 
 	 * @return
 	 */

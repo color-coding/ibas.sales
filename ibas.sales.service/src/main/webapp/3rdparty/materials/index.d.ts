@@ -358,6 +358,8 @@ declare namespace materials {
             itemCode: string;
             /** 物料/服务描述 */
             itemDescription: string;
+            /** 物料标识 */
+            itemSign: string;
             /** 序号管理 */
             serialManagement: ibas.emYesNo;
             /** 批号管理 */
@@ -522,6 +524,8 @@ declare namespace materials {
             itemCode: string;
             /** 物料/服务描述 */
             itemDescription: string;
+            /** 物料标识 */
+            itemSign: string;
             /** 序号管理 */
             serialManagement: ibas.emYesNo;
             /** 批号管理 */
@@ -688,6 +692,8 @@ declare namespace materials {
             itemCode: string;
             /** 物料/服务描述 */
             itemDescription: string;
+            /** 物料标识 */
+            itemSign: string;
             /** 序号管理 */
             serialManagement: ibas.emYesNo;
             /** 批号管理 */
@@ -726,6 +732,8 @@ declare namespace materials {
             name: string;
             /** 外文名称 */
             foreignName: string;
+            /** 标识 */
+            sign: string;
             /** 物料组 */
             group: string;
             /** 激活 */
@@ -1729,6 +1737,8 @@ declare namespace materials {
             name: string;
             /** 外文名称 */
             foreignName: string;
+            /** 标识 */
+            sign: string;
             /** 物料组 */
             group: string;
             /** 激活 */
@@ -1911,6 +1921,8 @@ declare namespace materials {
             itemCode: string;
             /** 物料/服务描述 */
             itemDescription: string;
+            /** 物料标识 */
+            itemSign: string;
             /** 序号管理 */
             serialManagement: ibas.emYesNo;
             /** 批号管理 */
@@ -2836,6 +2848,11 @@ declare namespace materials {
             /** 获取-物料/服务描述 */
             /** 设置-物料/服务描述 */
             itemDescription: string;
+            /** 映射的属性名称-物料标识 */
+            static PROPERTY_ITEMSIGN_NAME: string;
+            /** 获取-物料标识 */
+            /** 设置-物料标识 */
+            itemSign: string;
             /** 映射的属性名称-序号管理 */
             static PROPERTY_SERIALMANAGEMENT_NAME: string;
             /** 获取-序号管理 */
@@ -3235,6 +3252,11 @@ declare namespace materials {
             /** 获取-物料/服务描述 */
             /** 设置-物料/服务描述 */
             itemDescription: string;
+            /** 映射的属性名称-物料标识 */
+            static PROPERTY_ITEMSIGN_NAME: string;
+            /** 获取-物料标识 */
+            /** 设置-物料标识 */
+            itemSign: string;
             /** 映射的属性名称-序号管理 */
             static PROPERTY_SERIALMANAGEMENT_NAME: string;
             /** 获取-序号管理 */
@@ -3639,6 +3661,11 @@ declare namespace materials {
             /** 获取-物料/服务描述 */
             /** 设置-物料/服务描述 */
             itemDescription: string;
+            /** 映射的属性名称-物料标识 */
+            static PROPERTY_ITEMSIGN_NAME: string;
+            /** 获取-物料标识 */
+            /** 设置-物料标识 */
+            itemSign: string;
             /** 映射的属性名称-序号管理 */
             static PROPERTY_SERIALMANAGEMENT_NAME: string;
             /** 获取-序号管理 */
@@ -3730,6 +3757,11 @@ declare namespace materials {
             /** 获取-外文名称 */
             /** 设置-外文名称 */
             foreignName: string;
+            /** 映射的属性名称-标识 */
+            static PROPERTY_SIGN_NAME: string;
+            /** 获取-标识 */
+            /** 设置-标识 */
+            sign: string;
             /** 映射的属性名称-物料组 */
             static PROPERTY_GROUP_NAME: string;
             /** 获取-物料组 */
@@ -5209,6 +5241,11 @@ declare namespace materials {
             /** 获取-外文名称 */
             /** 设置-外文名称 */
             foreignName: string;
+            /** 映射的属性名称-标识 */
+            static PROPERTY_SIGN_NAME: string;
+            /** 获取-标识 */
+            /** 设置-标识 */
+            sign: string;
             /** 映射的属性名称-物料组 */
             static PROPERTY_GROUP_NAME: string;
             /** 获取-物料组 */
@@ -5793,6 +5830,11 @@ declare namespace materials {
             /** 获取-物料/服务描述 */
             /** 设置-物料/服务描述 */
             itemDescription: string;
+            /** 映射的属性名称-物料标识 */
+            static PROPERTY_ITEMSIGN_NAME: string;
+            /** 获取-物料标识 */
+            /** 设置-物料标识 */
+            itemSign: string;
             /** 映射的属性名称-序号管理 */
             static PROPERTY_SERIALMANAGEMENT_NAME: string;
             /** 获取-序号管理 */
