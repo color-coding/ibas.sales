@@ -65,6 +65,9 @@ namespace sales {
             /** 货币 */
             currency: string;
 
+            /** 汇率 */
+            rate: number;
+
             /** 快递单号 */
             trackingNumber: string;
 
@@ -108,7 +111,7 @@ namespace sales {
             updateActionId: string;
 
             /** 基于地址 */
-            baseAddress(address: businesspartner.bo.IAddress):void;
+            baseAddress(address: businesspartner.bo.IAddress): void;
         }
 
 

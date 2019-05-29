@@ -214,6 +214,17 @@ namespace sales {
                 this.setProperty(ShippingAddress.PROPERTY_CURRENCY_NAME, value);
             }
 
+            /** 映射的属性名称-汇率 */
+            static PROPERTY_RATE_NAME: string = "Rate";
+            /** 获取-汇率 */
+            get rate(): number {
+                return this.getProperty<number>(ShippingAddress.PROPERTY_RATE_NAME);
+            }
+            /** 设置-汇率 */
+            set rate(value: number) {
+                this.setProperty(ShippingAddress.PROPERTY_RATE_NAME, value);
+            }
+
             /** 映射的属性名称-快递单号 */
             static PROPERTY_TRACKINGNUMBER_NAME: string = "TrackingNumber";
             /** 获取-快递单号 */

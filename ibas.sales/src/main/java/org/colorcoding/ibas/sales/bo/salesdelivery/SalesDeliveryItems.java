@@ -37,8 +37,7 @@ public class SalesDeliveryItems extends BusinessObjects<ISalesDeliveryItem, ISal
 	/**
 	 * 构造方法
 	 * 
-	 * @param parent
-	 *            父项对象
+	 * @param parent 父项对象
 	 */
 	public SalesDeliveryItems(ISalesDelivery parent) {
 		super(parent);
@@ -101,5 +100,10 @@ public class SalesDeliveryItems extends BusinessObjects<ISalesDeliveryItem, ISal
 	@Override
 	public void onParentPropertyChanged(PropertyChangeEvent evt) {
 		super.onParentPropertyChanged(evt);
+		if (SalesDelivery.PROPERTY_DOCUMENTCURRENCY.getName().equals(evt.getPropertyName())) {
+			this.forEach(c -> c.setCurrency(this.getParent().getDocumentCurrency()));
+		} else if (SalesDelivery.PROPERTY_DOCUMENTRATE.getName().equals(evt.getPropertyName())) {
+			this.forEach(c -> c.setRate(this.getParent().getDocumentRate()));
+		}
 	}
 }

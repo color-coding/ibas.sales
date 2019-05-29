@@ -8,13 +8,14 @@ import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddressParent;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 
 /**
  * 销售退货 接口
  * 
  */
-public interface ISalesReturn extends IBODocument {
+public interface ISalesReturn extends IBODocument, IShippingAddressParent {
 
 	/**
 	 * 获取-凭证编号

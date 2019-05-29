@@ -19,7 +19,8 @@ import org.colorcoding.ibas.sales.MyConfiguration;
  */
 @XmlType(name = ShippingAddresss.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlSeeAlso({ ShippingAddress.class })
-public class ShippingAddresss extends BusinessObjects<IShippingAddress, IBODocument> implements IShippingAddresss {
+public class ShippingAddresss extends BusinessObjects<IShippingAddress, IShippingAddressParent>
+		implements IShippingAddresss {
 
 	/**
 	 * 业务对象名称
@@ -41,10 +42,9 @@ public class ShippingAddresss extends BusinessObjects<IShippingAddress, IBODocum
 	/**
 	 * 构造方法
 	 * 
-	 * @param parent
-	 *            父项对象
+	 * @param parent 父项对象
 	 */
-	public ShippingAddresss(IBODocument parent) {
+	public ShippingAddresss(IShippingAddressParent parent) {
 		super(parent);
 	}
 
@@ -68,6 +68,8 @@ public class ShippingAddresss extends BusinessObjects<IShippingAddress, IBODocum
 		super.afterAddItem(item);
 		item.setBaseDocumentType(this.getParent().getObjectCode());
 		item.setBaseDocumentEntry(this.getParent().getDocEntry());
+		item.setCurrency(this.getParent().getDocumentCurrency());
+		item.setRate(this.getParent().getDocumentRate());
 	}
 
 	@Override
@@ -89,9 +91,13 @@ public class ShippingAddresss extends BusinessObjects<IShippingAddress, IBODocum
 	public void onParentPropertyChanged(PropertyChangeEvent evt) {
 		super.onParentPropertyChanged(evt);
 		if (evt.getPropertyName().equals(IBODocument.MASTER_PRIMARY_KEY_NAME)) {
-			for (IShippingAddress item : this) {
-				item.setBaseDocumentEntry(this.getParent().getDocEntry());
-			}
+			this.forEach(c -> c.setBaseDocumentEntry(this.getParent().getDocEntry()));
+		} else if (evt.getPropertyName().equals("ObjectCode")) {
+			this.forEach(c -> c.setBaseDocumentType(this.getParent().getObjectCode()));
+		} else if (evt.getPropertyName().equals("DocumentCurrency")) {
+			this.forEach(c -> c.setCurrency(this.getParent().getDocumentCurrency()));
+		} else if (evt.getPropertyName().equals("DocumentRate")) {
+			this.forEach(c -> c.setRate(this.getParent().getDocumentRate()));
 		}
 	}
 }

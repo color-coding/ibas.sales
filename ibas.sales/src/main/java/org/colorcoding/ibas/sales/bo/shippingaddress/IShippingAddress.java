@@ -286,6 +286,41 @@ public interface IShippingAddress extends IBOSimple {
 	void setCurrency(String value);
 
 	/**
+	 * 获取-汇率
+	 * 
+	 * @return 值
+	 */
+	BigDecimal getRate();
+
+	/**
+	 * 设置-汇率
+	 * 
+	 * @param value 值
+	 */
+	void setRate(BigDecimal value);
+
+	/**
+	 * 设置-汇率
+	 * 
+	 * @param value 值
+	 */
+	void setRate(String value);
+
+	/**
+	 * 设置-汇率
+	 * 
+	 * @param value 值
+	 */
+	void setRate(int value);
+
+	/**
+	 * 设置-汇率
+	 * 
+	 * @param value 值
+	 */
+	void setRate(double value);
+
+	/**
 	 * 获取-快递单号
 	 * 
 	 * @return 值

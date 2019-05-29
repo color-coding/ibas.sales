@@ -199,6 +199,7 @@ namespace sales {
                         that.editData.customerName = selected.name;
                         that.editData.priceList = selected.priceList;
                         that.editData.contactPerson = selected.contactPerson;
+                        that.editData.documentCurrency = selected.currency;
                         that.view.defaultWarehouse = selected.warehouse;
                         // 复制地址
                         if (!ibas.objects.isNull(selected.shipAddress) && selected.shipAddress > 0) {
