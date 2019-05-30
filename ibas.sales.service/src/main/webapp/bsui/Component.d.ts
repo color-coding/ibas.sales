@@ -16,7 +16,7 @@ declare namespace sales {
             /**
              * 送货地址-选择框
              */
-            class ShippingAddressSelect extends sap.ui.core.Control {
+            class ShippingAddressSelect extends sap.extension.core.EditableControl {
                 /**
                  * 获取地址项目
                  */

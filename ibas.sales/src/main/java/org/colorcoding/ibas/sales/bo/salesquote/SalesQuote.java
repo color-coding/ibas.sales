@@ -22,7 +22,7 @@ import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
-import org.colorcoding.ibas.bobas.mapping.BOCode;
+import org.colorcoding.ibas.bobas.mapping.BusinessObjectUnit;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
@@ -45,7 +45,7 @@ import org.colorcoding.ibas.sales.MyConfiguration;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = SalesQuote.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = SalesQuote.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-@BOCode(SalesQuote.BUSINESS_OBJECT_CODE)
+@BusinessObjectUnit(code = SalesQuote.BUSINESS_OBJECT_CODE)
 public class SalesQuote extends BusinessObject<SalesQuote>
 		implements ISalesQuote, IDataOwnership, IApprovalData, IBusinessLogicsHost, IProjectData, IBOUserFields {
 

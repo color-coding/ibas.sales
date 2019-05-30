@@ -425,6 +425,8 @@ namespace sales {
                 super.afterAdd(item);
                 item.baseDocumentType = this.parent.objectCode;
                 item.baseDocumentEntry = this.parent.docEntry;
+                item.currency = this.parent.documentCurrency;
+                item.rate = this.parent.documentRate;
                 let max: number = 0;
                 for (let tmp of this) {
                     let id: number = tmp.objectKey;
@@ -440,6 +442,11 @@ namespace sales {
             /** 主表属性发生变化后 子项属性赋值  */
             protected onParentPropertyChanged(name: string): void {
                 super.onParentPropertyChanged(name);
+                if (name === SalesOrder.PROPERTY_DOCUMENTCURRENCY_NAME) {
+                    this.forEach(c => c.currency = this.parent.documentCurrency);
+                } else if (name === SalesOrder.PROPERTY_DOCUMENTRATE_NAME) {
+                    this.forEach(c => c.rate = this.parent.documentRate);
+                }
             }
         }
     }

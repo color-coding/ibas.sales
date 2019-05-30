@@ -88,7 +88,7 @@ namespace sales {
             /**
              * 送货地址-选择框
              */
-            sap.ui.core.Control.extend("sales.ui.component.ShippingAddressSelect", {
+            sap.extension.core.EditableControl.extend("sales.ui.component.ShippingAddressSelect", {
                 metadata: {
                     properties: {
                         /** 地址集合数据 */
@@ -125,6 +125,7 @@ namespace sales {
                     oRm.write("<div");
                     oRm.addClass("sapMInputBaseContentWrapper sapMInputBaseHasEndIcons");
                     oRm.writeClasses();
+                    oRm.addStyle("display", "inline-flex");
                     oRm.addStyle("width", "100%");
                     oRm.addStyle("height", "100%");
                     oRm.addStyle("border", "0");
@@ -175,6 +176,12 @@ namespace sales {
                         rows: 3,
                         width: "100%",
                     }));
+                },
+                /** 是否可编辑 */
+                setEditable(this: ShippingAddressSelect, value: boolean): ShippingAddressSelect {
+                    this.setProperty("editable", value);
+                    (<sap.m.Button>this.getAggregation("_button", undefined)).setEnabled(value);
+                    return this;
                 },
                 /**
                  * 获取绑定值

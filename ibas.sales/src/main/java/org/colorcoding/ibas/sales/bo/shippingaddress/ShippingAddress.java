@@ -13,7 +13,7 @@ import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
-import org.colorcoding.ibas.bobas.mapping.BOCode;
+import org.colorcoding.ibas.bobas.mapping.BusinessObjectUnit;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
@@ -28,7 +28,7 @@ import org.colorcoding.ibas.sales.data.emShippingStatus;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ShippingAddress.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = ShippingAddress.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-@BOCode(ShippingAddress.BUSINESS_OBJECT_CODE)
+@BusinessObjectUnit(code = ShippingAddress.BUSINESS_OBJECT_CODE)
 public class ShippingAddress extends BusinessObject<ShippingAddress> implements IShippingAddress, IBOUserFields {
 
 	/**

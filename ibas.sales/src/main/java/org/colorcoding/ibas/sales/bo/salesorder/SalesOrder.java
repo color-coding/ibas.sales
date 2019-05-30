@@ -24,7 +24,7 @@ import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
-import org.colorcoding.ibas.bobas.mapping.BOCode;
+import org.colorcoding.ibas.bobas.mapping.BusinessObjectUnit;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
@@ -51,7 +51,7 @@ import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = SalesOrder.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = SalesOrder.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-@BOCode(SalesOrder.BUSINESS_OBJECT_CODE)
+@BusinessObjectUnit(code = SalesOrder.BUSINESS_OBJECT_CODE)
 public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrder, IDataOwnership, IApprovalData,
 		IPeriodData, IProjectData, IBOTagDeleted, IBOTagCanceled, IBusinessLogicsHost, IBOUserFields {
 

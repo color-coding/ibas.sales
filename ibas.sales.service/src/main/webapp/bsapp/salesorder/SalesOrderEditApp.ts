@@ -615,6 +615,7 @@ namespace sales {
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emDocumentStatus.RELEASED.toString();
                 // 当前客户的
+                condition = criteria.conditions.create();
                 condition.alias = bo.SalesQuote.PROPERTY_CUSTOMERCODE_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = this.editData.customerCode;
