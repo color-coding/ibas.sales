@@ -690,6 +690,10 @@ namespace sales {
                     }
                     // 复制地址
                     for (let address of document.shippingAddresss) {
+                        // 不复制重名的
+                        if (this.shippingAddresss.firstOrDefault(c => c.name === address.name) !== null) {
+                            continue;
+                        }
                         let myAddress: IShippingAddress = address.clone();
                         this.shippingAddresss.add(<ShippingAddress>myAddress);
                     }

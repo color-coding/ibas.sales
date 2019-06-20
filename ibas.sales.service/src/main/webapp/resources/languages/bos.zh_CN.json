@@ -446,7 +446,7 @@
         "bo_salesquote_teammembers": "团队成员",
         "bo_salesquote_organization": "数据所属组织",
         "bo_salesquote_postingdate": "过账日期",
-        "bo_salesquote_deliverydate": "交货日期",
+        "bo_salesquote_deliverydate": "到期日期",
         "bo_salesquote_documentdate": "凭证日期",
         "bo_salesquote_reference1": "参考1",
         "bo_salesquote_reference2": "参考2",

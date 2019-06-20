@@ -576,6 +576,9 @@ namespace sales {
             }
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
+                    // 计算项目-到期日期
+                    new ibas.BusinessRuleDateCalculation(
+                        SalesQuote.PROPERTY_DOCUMENTDATE_NAME, SalesQuote.PROPERTY_DELIVERYDATE_NAME, 30),
                     // 计算项目-行总计
                     new ibas.BusinessRuleSumElements(
                         SalesQuote.PROPERTY_ITEMSLINETOTAL_NAME, SalesQuote.PROPERTY_SALESQUOTEITEMS_NAME, SalesQuoteItem.PROPERTY_LINETOTAL_NAME),
