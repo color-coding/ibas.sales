@@ -35,10 +35,11 @@ import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItems;
 import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItems;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
+import org.colorcoding.ibas.materials.logic.IMaterialCompletionContract;
 import org.colorcoding.ibas.materials.logic.IMaterialIssueContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
-import org.colorcoding.ibas.sales.logic.ISalesOrderReceiptContract;
+import org.colorcoding.ibas.sales.logic.ISalesOrderIssueContract;
 
 /**
  * 获取-销售交货-行
@@ -2435,99 +2436,135 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 
 	@Override
 	public IBusinessLogicContract[] getContracts() {
-		return new IBusinessLogicContract[] { new IMaterialIssueContract() {
-			@Override
-			public String getIdentifiers() {
-				return SalesDeliveryItem.this.getIdentifiers();
-			}
+		return new IBusinessLogicContract[] {
+				// 物料发货
+				new IMaterialIssueContract() {
+					@Override
+					public String getIdentifiers() {
+						return SalesDeliveryItem.this.getIdentifiers();
+					}
 
-			@Override
-			public String getItemCode() {
-				return SalesDeliveryItem.this.getItemCode();
-			}
+					@Override
+					public String getItemCode() {
+						return SalesDeliveryItem.this.getItemCode();
+					}
 
-			@Override
-			public String getItemName() {
-				return SalesDeliveryItem.this.getItemDescription();
-			}
+					@Override
+					public String getItemName() {
+						return SalesDeliveryItem.this.getItemDescription();
+					}
 
-			@Override
-			public String getWarehouse() {
-				return SalesDeliveryItem.this.getWarehouse();
-			}
+					@Override
+					public String getWarehouse() {
+						return SalesDeliveryItem.this.getWarehouse();
+					}
 
-			@Override
-			public String getDocumentType() {
-				return SalesDeliveryItem.this.getObjectCode();
-			}
+					@Override
+					public String getDocumentType() {
+						return SalesDeliveryItem.this.getObjectCode();
+					}
 
-			@Override
-			public Integer getDocumentEntry() {
-				return SalesDeliveryItem.this.getDocEntry();
-			}
+					@Override
+					public Integer getDocumentEntry() {
+						return SalesDeliveryItem.this.getDocEntry();
+					}
 
-			@Override
-			public Integer getDocumentLineId() {
-				return SalesDeliveryItem.this.getLineId();
-			}
+					@Override
+					public Integer getDocumentLineId() {
+						return SalesDeliveryItem.this.getLineId();
+					}
 
-			@Override
-			public BigDecimal getQuantity() {
-				return SalesDeliveryItem.this.getQuantity();
-			}
+					@Override
+					public BigDecimal getQuantity() {
+						return SalesDeliveryItem.this.getQuantity();
+					}
 
-			@Override
-			public DateTime getPostingDate() {
-				return SalesDeliveryItem.this.parent.getPostingDate();
-			}
+					@Override
+					public DateTime getPostingDate() {
+						return SalesDeliveryItem.this.parent.getPostingDate();
+					}
 
-			@Override
-			public DateTime getDeliveryDate() {
-				return SalesDeliveryItem.this.parent.getDeliveryDate();
-			}
+					@Override
+					public DateTime getDeliveryDate() {
+						return SalesDeliveryItem.this.parent.getDeliveryDate();
+					}
 
-			@Override
-			public DateTime getDocumentDate() {
-				return SalesDeliveryItem.this.parent.getDocumentDate();
-			}
+					@Override
+					public DateTime getDocumentDate() {
+						return SalesDeliveryItem.this.parent.getDocumentDate();
+					}
 
-			@Override
-			public emYesNo getBatchManagement() {
-				return SalesDeliveryItem.this.getBatchManagement();
-			}
+					@Override
+					public emYesNo getBatchManagement() {
+						return SalesDeliveryItem.this.getBatchManagement();
+					}
 
-			@Override
-			public emYesNo getSerialManagement() {
-				return SalesDeliveryItem.this.getSerialManagement();
-			}
-		}, new ISalesOrderReceiptContract() {
+					@Override
+					public emYesNo getSerialManagement() {
+						return SalesDeliveryItem.this.getSerialManagement();
+					}
+				},
+				// 销售订单发货
+				new ISalesOrderIssueContract() {
 
-			@Override
-			public String getIdentifiers() {
-				return SalesDeliveryItem.this.getIdentifiers();
-			}
+					@Override
+					public String getIdentifiers() {
+						return SalesDeliveryItem.this.getIdentifiers();
+					}
 
-			@Override
-			public BigDecimal getQuantity() {
-				return SalesDeliveryItem.this.getQuantity();
-			}
+					@Override
+					public BigDecimal getQuantity() {
+						return SalesDeliveryItem.this.getQuantity();
+					}
 
-			@Override
-			public String getBaseDocumentType() {
-				return SalesDeliveryItem.this.getBaseDocumentType();
-			}
+					@Override
+					public String getBaseDocumentType() {
+						return SalesDeliveryItem.this.getBaseDocumentType();
+					}
 
-			@Override
-			public Integer getBaseDocumentEntry() {
-				return SalesDeliveryItem.this.getBaseDocumentEntry();
-			}
+					@Override
+					public Integer getBaseDocumentEntry() {
+						return SalesDeliveryItem.this.getBaseDocumentEntry();
+					}
 
-			@Override
-			public Integer getBaseDocumentLineId() {
-				return SalesDeliveryItem.this.getBaseDocumentLineId();
-			}
+					@Override
+					public Integer getBaseDocumentLineId() {
+						return SalesDeliveryItem.this.getBaseDocumentLineId();
+					}
 
-		}
+				},
+				// 物料信息补全
+				new IMaterialCompletionContract() {
+					@Override
+					public String getIdentifiers() {
+						return SalesDeliveryItem.this.getIdentifiers();
+					}
+
+					@Override
+					public String getItemCode() {
+						return SalesDeliveryItem.this.getItemCode();
+					}
+
+					@Override
+					public String getItemSign() {
+						return SalesDeliveryItem.this.getItemSign();
+					}
+
+					@Override
+					public void setItemSign(String value) {
+						SalesDeliveryItem.this.setItemSign(value);
+					}
+
+					@Override
+					public String getItemDescription() {
+						return SalesDeliveryItem.this.getItemDescription();
+					}
+
+					@Override
+					public void setItemDescription(String value) {
+						SalesDeliveryItem.this.setItemDescription(value);
+					}
+				}
 
 		};
 	}

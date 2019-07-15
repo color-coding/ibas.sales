@@ -13,6 +13,7 @@ import org.colorcoding.ibas.bobas.bo.IBOTagCanceled;
 import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
 import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
+import org.colorcoding.ibas.bobas.data.ArrayList;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
@@ -35,6 +36,7 @@ import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItems;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.logic.IMaterialCommitedJournalContract;
+import org.colorcoding.ibas.materials.logic.IMaterialCompletionContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
 
@@ -2458,51 +2460,83 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 
 	@Override
 	public IBusinessLogicContract[] getContracts() {
+		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>(2);
 		if (this.getLineStatus() == emDocumentStatus.RELEASED) {
-			return new IBusinessLogicContract[] {
+			// 物料已承诺数量
+			contracts.add(new IMaterialCommitedJournalContract() {
 
-					new IMaterialCommitedJournalContract() {
+				@Override
+				public String getIdentifiers() {
+					return SalesOrderItem.this.getIdentifiers();
+				}
 
-						@Override
-						public String getIdentifiers() {
-							return SalesOrderItem.this.getIdentifiers();
-						}
+				@Override
+				public String getItemCode() {
+					return SalesOrderItem.this.getItemCode();
+				}
 
-						@Override
-						public String getItemCode() {
-							return SalesOrderItem.this.getItemCode();
-						}
+				@Override
+				public String getWarehouse() {
+					return SalesOrderItem.this.getWarehouse();
+				}
 
-						@Override
-						public String getWarehouse() {
-							return SalesOrderItem.this.getWarehouse();
-						}
+				@Override
+				public BigDecimal getQuantity() {
+					// 订购数量 = 订单数量 - 已交货数量
+					return SalesOrderItem.this.getQuantity().subtract(SalesOrderItem.this.getClosedQuantity());
+				}
 
-						@Override
-						public BigDecimal getQuantity() {
-							// 订购数量 = 订单数量 - 已交货数量
-							return SalesOrderItem.this.getQuantity().subtract(SalesOrderItem.this.getClosedQuantity());
-						}
+				@Override
+				public String getDocumentType() {
+					return SalesOrderItem.this.getObjectCode();
+				}
 
-						@Override
-						public String getDocumentType() {
-							return SalesOrderItem.this.getObjectCode();
-						}
+				@Override
+				public Integer getDocumentEntry() {
+					return SalesOrderItem.this.getDocEntry();
+				}
 
-						@Override
-						public Integer getDocumentEntry() {
-							return SalesOrderItem.this.getDocEntry();
-						}
+				@Override
+				public Integer getDocumentLineId() {
+					return SalesOrderItem.this.getLineId();
+				}
 
-						@Override
-						public Integer getDocumentLineId() {
-							return SalesOrderItem.this.getLineId();
-						}
-
-					}
-
-			};
+			});
 		}
-		return new IBusinessLogicContract[] {};
+		// 物料信息补全
+		contracts.add(new IMaterialCompletionContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesOrderItem.this.getIdentifiers();
+			}
+
+			@Override
+			public String getItemCode() {
+				return SalesOrderItem.this.getItemCode();
+			}
+
+			@Override
+			public String getItemSign() {
+				return SalesOrderItem.this.getItemSign();
+			}
+
+			@Override
+			public void setItemSign(String value) {
+				SalesOrderItem.this.setItemSign(value);
+			}
+
+			@Override
+			public String getItemDescription() {
+				return SalesOrderItem.this.getItemDescription();
+			}
+
+			@Override
+			public void setItemDescription(String value) {
+				SalesOrderItem.this.setItemDescription(value);
+			}
+		});
+		return contracts.toArray(new IBusinessLogicContract[] {});
 	}
+
 }

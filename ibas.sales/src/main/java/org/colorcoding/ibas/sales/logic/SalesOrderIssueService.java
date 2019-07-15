@@ -16,16 +16,16 @@ import org.colorcoding.ibas.sales.bo.salesorder.ISalesOrderItem;
  * @author Niuren.Zhu
  *
  */
-@LogicContract(ISalesOrderReceiptContract.class)
-public class SalesOrderReceiptService extends SalesOrderService<ISalesOrderReceiptContract> {
+@LogicContract(ISalesOrderIssueContract.class)
+public class SalesOrderIssueService extends SalesOrderService<ISalesOrderIssueContract> {
 
 	@Override
-	protected ISalesOrder fetchBeAffected(ISalesOrderReceiptContract contract) {
+	protected ISalesOrder fetchBeAffected(ISalesOrderIssueContract contract) {
 		return this.fetchBeAffected(contract.getBaseDocumentType(), contract.getBaseDocumentEntry());
 	}
 
 	@Override
-	protected void impact(ISalesOrderReceiptContract contract) {
+	protected void impact(ISalesOrderIssueContract contract) {
 		if (this.getBeAffected() == null) {
 			return;
 		}
@@ -48,7 +48,7 @@ public class SalesOrderReceiptService extends SalesOrderService<ISalesOrderRecei
 	}
 
 	@Override
-	protected void revoke(ISalesOrderReceiptContract contract) {
+	protected void revoke(ISalesOrderIssueContract contract) {
 		if (this.getBeAffected() == null) {
 			return;
 		}
