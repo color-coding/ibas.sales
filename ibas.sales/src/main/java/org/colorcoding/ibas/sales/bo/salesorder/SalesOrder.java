@@ -1,6 +1,7 @@
 package org.colorcoding.ibas.sales.bo.salesorder;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,11 +39,12 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRoundingOff;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSummation;
-import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
+import org.colorcoding.ibas.materials.logic.IMaterialPriceCheckContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
+import org.colorcoding.ibas.sales.logic.ICustomerCheckContract;
 
 /**
  * 获取-销售订单
@@ -1727,6 +1729,37 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 	}
 
 	/**
+	 * 属性名称-底价清单
+	 */
+	private static final String PROPERTY_FLOORLIST_NAME = "FloorList";
+
+	/**
+	 * 底价清单 属性
+	 */
+	@DbField(name = "FloorList", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<Integer> PROPERTY_FLOORLIST = registerProperty(PROPERTY_FLOORLIST_NAME,
+			Integer.class, MY_CLASS);
+
+	/**
+	 * 获取-底价清单
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_FLOORLIST_NAME)
+	public final Integer getFloorList() {
+		return this.getProperty(PROPERTY_FLOORLIST);
+	}
+
+	/**
+	 * 设置-底价清单
+	 * 
+	 * @param value 值
+	 */
+	public final void setFloorList(Integer value) {
+		this.setProperty(PROPERTY_FLOORLIST, value);
+	}
+
+	/**
 	 * 属性名称-销售订单-行
 	 */
 	private static final String PROPERTY_SALESORDERITEMS_NAME = "SalesOrderItems";
@@ -1926,7 +1959,7 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 	@Override
 	public IBusinessLogicContract[] getContracts() {
 		return new IBusinessLogicContract[] {
-
+				// 客户检查
 				new ICustomerCheckContract() {
 					@Override
 					public String getIdentifiers() {
@@ -1936,6 +1969,77 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 					@Override
 					public String getCustomerCode() {
 						return SalesOrder.this.getCustomerCode();
+					}
+
+					@Override
+					public Integer getFloorList() {
+						return SalesOrder.this.getFloorList();
+					}
+
+					@Override
+					public void setFloorList(Integer value) {
+						SalesOrder.this.setFloorList(value);
+					}
+
+				},
+				// 价格检查
+				new IMaterialPriceCheckContract() {
+
+					@Override
+					public String getIdentifiers() {
+						return SalesOrder.this.getIdentifiers();
+					}
+
+					@Override
+					public Integer getPriceList() {
+						return SalesOrder.this.getFloorList();
+					}
+
+					@Override
+					public Iterable<IMaterialPrice> getMaterialPrices() {
+						return new Iterable<IMaterialPrice>() {
+
+							@Override
+							public Iterator<IMaterialPrice> iterator() {
+
+								return new Iterator<IMaterialPrice>() {
+
+									Iterator<ISalesOrderItem> iterator = SalesOrder.this.getSalesOrderItems().stream()
+											.filter(c -> c.isDeleted() != true && c.getDeleted() != emYesNo.YES)
+											.iterator();
+
+									@Override
+									public boolean hasNext() {
+										return iterator.hasNext();
+									}
+
+									@Override
+									public IMaterialPrice next() {
+
+										return new IMaterialPrice() {
+											ISalesOrderItem item = iterator.next();
+
+											@Override
+											public String getItemCode() {
+												return item.getItemCode();
+											}
+
+											@Override
+											public BigDecimal getPrice() {
+												return item.getPrice();
+											}
+
+											@Override
+											public String getCurrency() {
+												return item.getCurrency();
+											}
+
+										};
+									}
+								};
+							}
+
+						};
 					}
 				}
 

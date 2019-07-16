@@ -532,6 +532,17 @@ namespace sales {
                 this.setProperty(SalesOrder.PROPERTY_ORDERTYPE_NAME, value);
             }
 
+            /** 映射的属性名称-底价清单 */
+            static PROPERTY_FLOORLIST_NAME: string = "FloorList";
+            /** 获取-底价清单 */
+            get floorList(): number {
+                return this.getProperty<number>(SalesOrder.PROPERTY_FLOORLIST_NAME);
+            }
+            /** 设置-底价清单 */
+            set floorList(value: number) {
+                this.setProperty(SalesOrder.PROPERTY_FLOORLIST_NAME, value);
+            }
+
             /** 映射的属性名称-销售订单-行集合 */
             static PROPERTY_SALESORDERITEMS_NAME: string = "SalesOrderItems";
             /** 获取-销售订单-行集合 */
@@ -679,6 +690,11 @@ namespace sales {
                         SalesOrder.PROPERTY_DIFFAMOUNT_NAME, SalesOrder.PROPERTY_DOCUMENTTOTAL_NAME,
                         ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM), SalesOrder.PROPERTY_ROUNDING_NAME),
                 ];
+            }
+            /** 重置 */
+            protected resetStatus(): void {
+                super.resetStatus();
+                this.paidTotal = 0;
             }
             /** 转换之前 */
             beforeConvert(): void { }
@@ -1464,6 +1480,12 @@ namespace sales {
                     new ibas.BusinessRuleSubtraction(
                         SalesOrderItem.PROPERTY_TAXTOTAL_NAME, SalesOrderItem.PROPERTY_GROSSTOTAL_NAME, SalesOrderItem.PROPERTY_LINETOTAL_NAME),
                 ];
+            }
+            /** 重置 */
+            protected resetStatus(): void {
+                super.resetStatus();
+                this.closedAmount = 0;
+                this.closedQuantity = 0;
             }
         }
         /** 销售订单-行-额外信息 集合 */

@@ -848,6 +848,8 @@ declare namespace materials {
             itemCode: string;
             /** 物料名称 */
             itemName: string;
+            /** 物料标记 */
+            itemSign: string;
             /** 价格 */
             price: number;
             /** 货币 */
@@ -1356,6 +1358,8 @@ declare namespace materials {
             validDate: Date;
             /** 失效日期 */
             invalidDate: Date;
+            /** 底价清单 */
+            floorList: number;
             /** 对象编号 */
             objectKey: number;
             /** 对象类型 */
@@ -4040,6 +4044,11 @@ declare namespace materials {
             /** 获取-物料名称 */
             /** 设置-物料名称 */
             itemName: string;
+            /** 映射的属性名称-物料标识 */
+            static PROPERTY_ITEMSIGN_NAME: string;
+            /** 获取-物料标识 */
+            /** 设置-物料标识 */
+            itemSign: string;
             /** 映射的属性名称-价格 */
             static PROPERTY_PRICE_NAME: string;
             /** 获取-价格 */
@@ -4766,6 +4775,11 @@ declare namespace materials {
             /** 获取-失效日期 */
             /** 设置-失效日期 */
             invalidDate: Date;
+            /** 映射的属性名称-底价清单 */
+            static PROPERTY_FLOORLIST_NAME: string;
+            /** 获取-底价清单 */
+            /** 设置-底价清单 */
+            floorList: number;
             /** 映射的属性名称-对象编号 */
             static PROPERTY_OBJECTKEY_NAME: string;
             /** 获取-对象编号 */
@@ -8387,6 +8401,8 @@ declare namespace materials {
             protected deleteData(): void;
             /** 选择基于的价格清单 */
             private chooseBasedOnMaterialPriceList;
+            /** 选择底价价格清单 */
+            private chooseFloorOnMaterialPriceList;
         }
         /** 视图-物料价格清单 */
         interface IMaterialPriceListEditView extends ibas.IBOEditView {
@@ -8396,6 +8412,8 @@ declare namespace materials {
             deleteDataEvent: Function;
             /** 选择基于的价格清单 */
             chooseBasedOnMaterialPriceListEvent: Function;
+            /** 选择底价价格清单 */
+            chooseFloorMaterialPriceListEvent: Function;
         }
     }
 }

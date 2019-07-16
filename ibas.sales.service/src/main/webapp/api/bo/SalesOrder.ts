@@ -152,6 +152,9 @@ namespace sales {
             /** 单据类型 */
             orderType: string;
 
+            /** 底价清单 */
+            floorList: number;
+
             /** 销售订单-行集合 */
             salesOrderItems: ISalesOrderItems;
 

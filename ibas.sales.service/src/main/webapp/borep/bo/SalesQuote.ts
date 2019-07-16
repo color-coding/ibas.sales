@@ -533,6 +533,17 @@ namespace sales {
                 this.setProperty(SalesQuote.PROPERTY_ORDERTYPE_NAME, value);
             }
 
+            /** 映射的属性名称-底价清单 */
+            static PROPERTY_FLOORLIST_NAME: string = "FloorList";
+            /** 获取-底价清单 */
+            get floorList(): number {
+                return this.getProperty<number>(SalesQuote.PROPERTY_FLOORLIST_NAME);
+            }
+            /** 设置-底价清单 */
+            set floorList(value: number) {
+                this.setProperty(SalesQuote.PROPERTY_FLOORLIST_NAME, value);
+            }
+
             /** 映射的属性名称-销售订单-行集合 */
             static PROPERTY_SALESQUOTEITEMS_NAME: string = "SalesQuoteItems";
             /** 获取-销售订单-行集合 */
@@ -596,6 +607,11 @@ namespace sales {
                         SalesQuote.PROPERTY_DIFFAMOUNT_NAME, SalesQuote.PROPERTY_DOCUMENTTOTAL_NAME,
                         ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM), SalesQuote.PROPERTY_ROUNDING_NAME),
                 ];
+            }
+            /** 重置 */
+            protected resetStatus(): void {
+                super.resetStatus();
+                this.paidTotal = 0;
             }
             /** 转换之前 */
             beforeConvert(): void { }
@@ -1357,6 +1373,12 @@ namespace sales {
                     new ibas.BusinessRuleSubtraction(
                         SalesQuoteItem.PROPERTY_TAXTOTAL_NAME, SalesQuoteItem.PROPERTY_GROSSTOTAL_NAME, SalesQuoteItem.PROPERTY_LINETOTAL_NAME),
                 ];
+            }
+            /** 重置 */
+            protected resetStatus(): void {
+                super.resetStatus();
+                this.closedAmount = 0;
+                this.closedQuantity = 0;
             }
         }
         /** 销售报价-行-额外信息 集合 */

@@ -622,6 +622,11 @@ namespace sales {
                         ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM), SalesReturn.PROPERTY_ROUNDING_NAME),
                 ];
             }
+            /** 重置 */
+            protected resetStatus(): void {
+                super.resetStatus();
+                this.paidTotal = 0;
+            }
             /** 转换之前 */
             beforeConvert(): void { }
             /** 数据解析后 */
@@ -1521,6 +1526,12 @@ namespace sales {
                     new ibas.BusinessRuleSubtraction(
                         SalesReturnItem.PROPERTY_TAXTOTAL_NAME, SalesReturnItem.PROPERTY_GROSSTOTAL_NAME, SalesReturnItem.PROPERTY_LINETOTAL_NAME),
                 ];
+            }
+            /** 重置 */
+            protected resetStatus(): void {
+                super.resetStatus();
+                this.closedAmount = 0;
+                this.closedQuantity = 0;
             }
         }
     }
