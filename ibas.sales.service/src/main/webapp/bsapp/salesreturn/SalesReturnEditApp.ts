@@ -187,6 +187,10 @@ namespace sales {
             }
             /** 选择销售退货客户事件 */
             private chooseSalesReturnCustomer(): void {
+                if (!ibas.objects.isNull(this.editData) && this.editData.salesReturnItems.length > 0) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_existing_items_not_allowed_operation"));
+                    return;
+                }
                 let that: this = this;
                 ibas.servicesManager.runChooseService<businesspartner.bo.ICustomer>({
                     boCode: businesspartner.bo.BO_CODE_CUSTOMER,

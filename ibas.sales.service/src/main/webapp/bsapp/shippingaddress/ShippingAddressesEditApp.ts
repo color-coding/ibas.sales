@@ -80,6 +80,14 @@ namespace sales {
             protected editData(data: bo.ShippingAddress): void {
                 this.view.showShippingAddress(data);
             }
+            /** 关闭视图 */
+            close(): void {
+                super.close.apply(this, arguments);
+                notification.apply(this.editAddresses);
+            }
+        }
+        function notification(this: ibas.Bindable): void {
+            this.firePropertyChanged("length");
         }
         /** 视图-送货地址 */
         export interface IShippingAddressesEditView extends ibas.IBOView {

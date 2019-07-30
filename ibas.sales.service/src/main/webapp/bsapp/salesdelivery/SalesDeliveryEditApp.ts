@@ -187,6 +187,10 @@ namespace sales {
             }
             /** 选择销售交货客户事件 */
             private chooseSalesDeliveryCustomer(): void {
+                if (!ibas.objects.isNull(this.editData) && this.editData.salesDeliveryItems.length > 0) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_existing_items_not_allowed_operation"));
+                    return;
+                }
                 let that: this = this;
                 ibas.servicesManager.runChooseService<businesspartner.bo.ICustomer>({
                     boCode: businesspartner.bo.BO_CODE_CUSTOMER,
@@ -200,51 +204,6 @@ namespace sales {
                         that.editData.contactPerson = selected.contactPerson;
                         that.editData.documentCurrency = selected.currency;
                         that.view.defaultWarehouse = selected.warehouse;
-                        // 复制地址
-                        if (!ibas.objects.isNull(selected.shipAddress) && selected.shipAddress > 0) {
-                            that.messages({
-                                type: ibas.emMessageType.QUESTION,
-                                message: ibas.i18n.prop("sales_copy_data_continue", ibas.i18n.prop("bo_shippingaddress")),
-                                actions: [
-                                    ibas.emMessageAction.YES,
-                                    ibas.emMessageAction.NO
-                                ],
-                                onCompleted(action: ibas.emMessageAction): void {
-                                    if (action !== ibas.emMessageAction.YES) {
-                                        return;
-                                    }
-                                    for (let index: number = that.editData.shippingAddresss.length - 1; index >= 0; index--) {
-                                        let item: bo.ShippingAddress = that.editData.shippingAddresss[index];
-                                        if (item.isNew) {
-                                            that.editData.shippingAddresss.remove(item);
-                                        }
-                                    }
-                                    let criteria: ibas.ICriteria = new ibas.Criteria();
-                                    criteria.result = 1;
-                                    let condition: ibas.ICondition = criteria.conditions.create();
-                                    condition.alias = "ObjectKey";
-                                    condition.value = selected.shipAddress.toString();
-                                    let boRepository: businesspartner.bo.IBORepositoryBusinessPartner = ibas.boFactory.create(businesspartner.bo.BO_REPOSITORY_BUSINESSPARTNER);
-                                    boRepository.fetchAddress({
-                                        criteria: criteria,
-                                        onCompleted(opRslt: ibas.IOperationResult<businesspartner.bo.IAddress>): void {
-                                            try {
-                                                if (opRslt.resultCode !== 0) {
-                                                    throw new Error(opRslt.message);
-                                                }
-                                                if (opRslt.resultObjects.length === 0) {
-                                                    return;
-                                                }
-                                                that.editData.baseAddress(opRslt.resultObjects.firstOrDefault());
-                                                that.view.showSalesDelivery(that.editData);
-                                            } catch (error) {
-                                                that.proceeding(error);
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                        }
                     }
                 });
             }
@@ -689,7 +648,40 @@ namespace sales {
                 let app: ShippingAddressesEditApp = new ShippingAddressesEditApp();
                 app.navigation = this.navigation;
                 app.viewShower = this.viewShower;
-                app.run(this.editData.shippingAddresss);
+                if (this.editData.shippingAddresss.length === 0) {
+                    // 初始化地址
+                    let that: this = this;
+                    this.messages({
+                        type: ibas.emMessageType.QUESTION,
+                        message: ibas.i18n.prop("sales_copy_data_continue", ibas.i18n.prop("bo_shippingaddress")),
+                        actions: [
+                            ibas.emMessageAction.YES,
+                            ibas.emMessageAction.NO
+                        ],
+                        onCompleted(action: ibas.emMessageAction): void {
+                            if (action === ibas.emMessageAction.YES) {
+                                ibas.servicesManager.runChooseService<businesspartner.bo.IAddress>({
+                                    boCode: businesspartner.bo.BO_CODE_ADDRESS,
+                                    chooseType: ibas.emChooseType.SINGLE,
+                                    criteria: [
+                                        new ibas.Condition("businessPartner", ibas.emConditionOperation.EQUAL, that.editData.customerCode),
+                                        new ibas.Condition("ownerType", ibas.emConditionOperation.EQUAL, businesspartner.bo.emBusinessPartnerType.CUSTOMER),
+                                        new ibas.Condition("activated", ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                                    ],
+                                    onCompleted(selecteds: ibas.IList<businesspartner.bo.IAddress>): void {
+                                        let selected: businesspartner.bo.IAddress = selecteds.firstOrDefault();
+                                        that.editData.baseAddress(selected);
+                                        app.run(that.editData.shippingAddresss);
+                                    }
+                                });
+                            } else {
+                                app.run(that.editData.shippingAddresss);
+                            }
+                        }
+                    });
+                } else {
+                    app.run(this.editData.shippingAddresss);
+                }
             }
         }
         /** 视图-销售交货 */

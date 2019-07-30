@@ -609,9 +609,10 @@ namespace sales {
                 ];
             }
             /** 重置 */
-            protected resetStatus(): void {
+            resetStatus(): void {
                 super.resetStatus();
                 this.paidTotal = 0;
+                this.documentStatus = ibas.emDocumentStatus.RELEASED;
             }
             /** 转换之前 */
             beforeConvert(): void { }
@@ -1375,7 +1376,7 @@ namespace sales {
                 ];
             }
             /** 重置 */
-            protected resetStatus(): void {
+            resetStatus(): void {
                 super.resetStatus();
                 this.closedAmount = 0;
                 this.closedQuantity = 0;

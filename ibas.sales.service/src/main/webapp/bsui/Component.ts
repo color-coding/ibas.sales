@@ -221,6 +221,13 @@ namespace sales {
                     this.loadItems(values);
                     return this;
                 },
+                exit(): void {
+                    (<any>sap.ui.core.Control.prototype).exit.apply(this, arguments);
+                    let bValue: any = this.getProperty("bindingValue");
+                    if (bValue instanceof ibas.BusinessObjects) {
+                        bValue.removeListener(this.getId());
+                    }
+                },
                 /** 加载可选项目 */
                 loadItems(this: ShippingAddressSelect, values: bo.ShippingAddresss): ShippingAddressSelect {
                     let select: any = this.getAggregation("_select", undefined);
