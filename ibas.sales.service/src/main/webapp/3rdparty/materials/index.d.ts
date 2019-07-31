@@ -3983,6 +3983,8 @@ declare namespace materials {
             organization: string;
             /** 初始化数据 */
             protected init(): void;
+            /** 重置 */
+            reset(): void;
             /** 可用量（库存+已订购-已承诺） */
             onAvailable(): number;
         }
@@ -4216,6 +4218,8 @@ declare namespace materials {
             updateActionId: string;
             /** 初始化数据 */
             protected init(): void;
+            /** 重置 */
+            reset(): void;
         }
     }
 }
@@ -4566,6 +4570,8 @@ declare namespace materials {
             updateActionId: string;
             /** 初始化数据 */
             protected init(): void;
+            /** 重置 */
+            reset(): void;
             /** 可用量（库存+已订购-已承诺） */
             onAvailable(): number;
         }
@@ -5108,6 +5114,8 @@ declare namespace materials {
             updateActionId: string;
             /** 初始化数据 */
             protected init(): void;
+            /** 重置 */
+            reset(): void;
         }
     }
 }
@@ -5387,6 +5395,8 @@ declare namespace materials {
             organization: string;
             /** 初始化数据 */
             protected init(): void;
+            /** 重置 */
+            reset(): void;
             /** 可用量（库存+已订购-已承诺） */
             onAvailable(): number;
         }

@@ -2453,6 +2453,13 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 		};
 	}
 
+	@Override
+	public void reset() {
+		super.reset();
+		this.setClosedAmount(Decimal.ZERO);
+		this.setClosedQuantity(Decimal.ZERO);
+	}
+
 	/**
 	 * 父项
 	 */

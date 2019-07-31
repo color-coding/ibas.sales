@@ -609,8 +609,8 @@ namespace sales {
                 ];
             }
             /** 重置 */
-            resetStatus(): void {
-                super.resetStatus();
+            reset(): void {
+                super.reset();
                 this.paidTotal = 0;
                 this.documentStatus = ibas.emDocumentStatus.RELEASED;
             }
@@ -1376,8 +1376,8 @@ namespace sales {
                 ];
             }
             /** 重置 */
-            resetStatus(): void {
-                super.resetStatus();
+            reset(): void {
+                super.reset();
                 this.closedAmount = 0;
                 this.closedQuantity = 0;
             }

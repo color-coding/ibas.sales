@@ -2429,6 +2429,13 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 		this.getMaterialSerials().check();
 	}
 
+	@Override
+	public void reset() {
+		super.reset();
+		this.setClosedAmount(Decimal.ZERO);
+		this.setClosedQuantity(Decimal.ZERO);
+	}
+
 	/**
 	 * 父项
 	 */

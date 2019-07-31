@@ -1883,6 +1883,12 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 	}
 
 	@Override
+	public void reset() {
+		super.reset();
+		this.setPaidTotal(Decimal.ZERO);
+	}
+
+	@Override
 	public IBusinessLogicContract[] getContracts() {
 		return new IBusinessLogicContract[] {
 				// 客户检查

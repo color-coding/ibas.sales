@@ -2122,6 +2122,8 @@ declare namespace businesspartner {
             remark2: string;
             /** 初始化数据 */
             protected init(): void;
+            /** 重置 */
+            reset(): void;
             protected registerRules(): ibas.IBusinessRule[];
         }
         /** 客户资产 */
