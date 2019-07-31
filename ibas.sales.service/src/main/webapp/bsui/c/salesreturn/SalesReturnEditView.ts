@@ -477,6 +477,14 @@ namespace sales {
                                     maxLength: 8
                                 })
                             }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_paidtotal") }),
+                            new sap.extension.m.Input("", {
+                                editable: false,
+                                type: sap.m.InputType.Number
+                            }).bindProperty("bindingValue", {
+                                path: "paidTotal",
+                                type: new sap.extension.data.Sum()
+                            }),
                         ]
                     });
                     return this.page = new sap.extension.m.DataPage("", {

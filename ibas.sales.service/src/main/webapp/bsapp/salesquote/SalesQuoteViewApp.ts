@@ -104,7 +104,9 @@ namespace sales {
                     let value: string = criteria;
                     criteria = new ibas.Criteria();
                     criteria.result = 1;
-                    // 添加查询条件
+                    let condition: ibas.ICondition = criteria.conditions.create();
+                    condition.alias = ibas.BO_PROPERTY_NAME_DOCENTRY;
+                    condition.value = value;
                 }
                 let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
                 boRepository.fetchSalesQuote({

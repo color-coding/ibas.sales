@@ -479,6 +479,14 @@ namespace sales {
                                     maxLength: 8
                                 })
                             }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_paidtotal") }),
+                            new sap.extension.m.Input("", {
+                                editable: false,
+                                type: sap.m.InputType.Number
+                            }).bindProperty("bindingValue", {
+                                path: "paidTotal",
+                                type: new sap.extension.data.Sum()
+                            }),
                         ]
                     });
                     return this.page = new sap.extension.m.DataPage("", {
@@ -530,6 +538,15 @@ namespace sales {
                                             }),
                                         ],
                                     })
+                                }),
+                                new sap.m.ToolbarSeparator(""),
+                                new sap.m.Button("", {
+                                    text: ibas.i18n.prop("sales_receipt"),
+                                    type: sap.m.ButtonType.Transparent,
+                                    icon: "sap-icon://lead",
+                                    press: function (): void {
+                                        that.fireViewEvents(that.receiptSalesOrderEvent);
+                                    }
                                 }),
                             ]
                         }),

@@ -653,6 +653,12 @@ namespace sales {
                         if (item.lineStatus !== ibas.emDocumentStatus.RELEASED) {
                             continue;
                         }
+                        if (this.salesDeliveryItems.firstOrDefault(
+                            c => c.baseDocumentType === item.objectCode
+                                && c.baseDocumentEntry === item.docEntry
+                                && c.baseDocumentLineId === item.lineId) !== null) {
+                            continue;
+                        }
                         // 计算未交货数量
                         let openQty: number = item.quantity - item.closedQuantity;
                         if (openQty <= 0) {

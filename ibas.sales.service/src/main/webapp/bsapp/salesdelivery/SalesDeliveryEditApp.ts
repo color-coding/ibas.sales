@@ -187,7 +187,7 @@ namespace sales {
             }
             /** 选择销售交货客户事件 */
             private chooseSalesDeliveryCustomer(): void {
-                if (!ibas.objects.isNull(this.editData) && this.editData.salesDeliveryItems.length > 0) {
+                if (!ibas.objects.isNull(this.editData) && this.editData.salesDeliveryItems.where(c => !ibas.strings.isEmpty(c.baseDocumentType)).length > 0) {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_existing_items_not_allowed_operation"));
                     return;
                 }

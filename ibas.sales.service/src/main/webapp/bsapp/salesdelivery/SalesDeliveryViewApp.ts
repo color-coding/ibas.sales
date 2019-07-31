@@ -41,6 +41,7 @@ namespace sales {
                 }
                 this.view.showSalesDelivery(this.viewData);
                 this.view.showSalesDeliveryItems(this.viewData.salesDeliveryItems.filterDeleted());
+                this.view.showShippingAddresses(this.viewData.shippingAddresss.filterDeleted());
             }
             /** 编辑数据，参数：目标数据 */
             protected editData(): void {
@@ -105,8 +106,9 @@ namespace sales {
                     let value: string = criteria;
                     criteria = new ibas.Criteria();
                     criteria.result = 1;
-                    // 添加查询条件
-
+                    let condition: ibas.ICondition = criteria.conditions.create();
+                    condition.alias = ibas.BO_PROPERTY_NAME_DOCENTRY;
+                    condition.value = value;
                 }
                 let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
                 boRepository.fetchSalesDelivery({
@@ -134,6 +136,7 @@ namespace sales {
         export interface ISalesDeliveryViewView extends ibas.IBOViewView {
             showSalesDelivery(viewData: bo.SalesDelivery): void;
             showSalesDeliveryItems(salesDeliveryItem: bo.SalesDeliveryItem[]): void;
+            showShippingAddresses(datas: bo.ShippingAddress[]): void;
         }
         /** 销售交货连接服务映射 */
         export class SalesDeliveryLinkServiceMapping extends ibas.BOLinkServiceMapping {

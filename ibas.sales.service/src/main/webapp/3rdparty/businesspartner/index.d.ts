@@ -345,6 +345,8 @@ declare namespace businesspartner {
             code: string;
             /** 名称 */
             name: string;
+            /** 标识 */
+            sign: string;
             /** 组代码 */
             group: string;
             /** 激活 */
@@ -439,6 +441,8 @@ declare namespace businesspartner {
             code: string;
             /** 名称 */
             name: string;
+            /** 标识 */
+            sign: string;
             /** 组代码 */
             group: string;
             /** 激活 */
@@ -1335,6 +1339,11 @@ declare namespace businesspartner {
             /** 获取-名称 */
             /** 设置-名称 */
             name: string;
+            /** 映射的属性名称-标识 */
+            static PROPERTY_SIGN_NAME: string;
+            /** 获取-标识 */
+            /** 设置-标识 */
+            sign: string;
             /** 映射的属性名称-组代码 */
             static PROPERTY_GROUP_NAME: string;
             /** 获取-组代码 */
@@ -1555,6 +1564,11 @@ declare namespace businesspartner {
             /** 获取-名称 */
             /** 设置-名称 */
             name: string;
+            /** 映射的属性名称-标识 */
+            static PROPERTY_SIGN_NAME: string;
+            /** 获取-标识 */
+            /** 设置-标识 */
+            sign: string;
             /** 映射的属性名称-组代码 */
             static PROPERTY_GROUP_NAME: string;
             /** 获取-组代码 */

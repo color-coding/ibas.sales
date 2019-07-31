@@ -40,6 +40,7 @@ namespace sales {
                 }
                 this.view.showSalesReturn(this.viewData);
                 this.view.showSalesReturnItems(this.viewData.salesReturnItems.filterDeleted());
+                this.view.showShippingAddresses(this.viewData.shippingAddresss.filterDeleted());
             }
             /** 编辑数据，参数：目标数据 */
             protected editData(): void {
@@ -104,7 +105,9 @@ namespace sales {
                     let value: string = criteria;
                     criteria = new ibas.Criteria();
                     criteria.result = 1;
-                    // 添加查询条件
+                    let condition: ibas.ICondition = criteria.conditions.create();
+                    condition.alias = ibas.BO_PROPERTY_NAME_DOCENTRY;
+                    condition.value = value;
                 }
                 let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
                 boRepository.fetchSalesReturn({
@@ -132,6 +135,7 @@ namespace sales {
         export interface ISalesReturnViewView extends ibas.IBOViewView {
             showSalesReturn(viewData: bo.SalesReturn): void;
             showSalesReturnItems(salesOrderItems: bo.SalesReturnItem[]): void;
+            showShippingAddresses(datas: bo.ShippingAddress[]): void;
         }
         /** 销售退货连接服务映射 */
         export class SalesReturnLinkServiceMapping extends ibas.BOLinkServiceMapping {
