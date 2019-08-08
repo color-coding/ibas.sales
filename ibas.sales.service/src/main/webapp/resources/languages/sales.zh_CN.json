@@ -50,6 +50,6 @@
   "sales_not_found_product_suit_skipped": "产品[{0}]没有找到其产品套装，操作被跳过",
   "sales_use_product_suit_version": "产品[{0}]存在多个版本，是否使用[{1}]版本？",
   "sales_subitems_not_allowed_operation": "子项不允许执行此操作",
-  "sales_existing_items_not_allowed_operation": "已存在行项目，不允许执行此操作",
+  "sales_remove_base_items_continue": "此操作会移出基于的行项目，是否继续？",
   "sales_closing_delimiter": "----结束----"
 }

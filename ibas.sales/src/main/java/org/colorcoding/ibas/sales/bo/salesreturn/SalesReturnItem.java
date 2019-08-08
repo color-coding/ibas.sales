@@ -35,7 +35,6 @@ import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItems;
 import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItems;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
-import org.colorcoding.ibas.materials.logic.IMaterialCompletionContract;
 import org.colorcoding.ibas.materials.logic.IMaterialReceiptContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
@@ -2571,38 +2570,6 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem>
 						return SalesReturnItem.this.getOriginalDocumentLineId();
 					}
 
-				},
-				// 物料信息补全
-				new IMaterialCompletionContract() {
-					@Override
-					public String getIdentifiers() {
-						return SalesReturnItem.this.getIdentifiers();
-					}
-
-					@Override
-					public String getItemCode() {
-						return SalesReturnItem.this.getItemCode();
-					}
-
-					@Override
-					public String getItemSign() {
-						return SalesReturnItem.this.getItemSign();
-					}
-
-					@Override
-					public void setItemSign(String value) {
-						SalesReturnItem.this.setItemSign(value);
-					}
-
-					@Override
-					public String getItemDescription() {
-						return SalesReturnItem.this.getItemDescription();
-					}
-
-					@Override
-					public void setItemDescription(String value) {
-						SalesReturnItem.this.setItemDescription(value);
-					}
 				}
 
 		};

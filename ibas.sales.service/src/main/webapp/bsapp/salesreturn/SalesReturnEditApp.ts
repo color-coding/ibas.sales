@@ -187,8 +187,22 @@ namespace sales {
             }
             /** 选择销售退货客户事件 */
             private chooseSalesReturnCustomer(): void {
-                if (!ibas.objects.isNull(this.editData) && this.editData.salesReturnItems.where(c => !ibas.strings.isEmpty(c.baseDocumentType)).length > 0) {
-                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_existing_items_not_allowed_operation"));
+                let items: bo.SalesReturnItem[] = this.editData.salesReturnItems.where(c => !ibas.strings.isEmpty(c.baseDocumentType));
+                if (items.length > 0) {
+                    this.messages({
+                        type: ibas.emMessageType.WARNING,
+                        message: ibas.i18n.prop("sales_remove_base_items_continue"),
+                        actions: [
+                            ibas.emMessageAction.YES,
+                            ibas.emMessageAction.NO,
+                        ],
+                        onCompleted: (action) => {
+                            if (action === ibas.emMessageAction.YES) {
+                                this.removeSalesReturnItem(items);
+                                this.chooseSalesReturnCustomer();
+                            }
+                        }
+                    });
                     return;
                 }
                 let that: this = this;

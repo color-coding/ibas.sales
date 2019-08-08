@@ -571,6 +571,27 @@ namespace sales {
                     if (!ibas.strings.equals(this.customerCode, document.customerCode)) {
                         return;
                     }
+                    // 复制头信息
+                    this.contactPerson = document.contactPerson;
+                    this.deliveryDate = document.deliveryDate;
+                    this.documentDate = document.documentDate;
+                    this.postingDate = document.postingDate;
+                    this.reference1 = document.reference1;
+                    this.reference2 = document.reference2;
+                    this.remarks = document.remarks;
+                    this.project = document.project;
+                    this.consumer = document.consumer;
+                    // 复制自定义字段
+                    for (let item of document.userFields.forEach()) {
+                        let myItem: ibas.IUserField = this.userFields.get(item.name);
+                        if (ibas.objects.isNull(myItem)) {
+                            continue;
+                        }
+                        if (myItem.valueType !== item.valueType) {
+                            continue;
+                        }
+                        myItem.value = item.value;
+                    }
                     // 复制行项目
                     for (let item of document.salesQuoteItems) {
                         if (item.canceled === ibas.emYesNo.YES) {

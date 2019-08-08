@@ -36,7 +36,6 @@ import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItems;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.logic.IMaterialCommitedJournalContract;
-import org.colorcoding.ibas.materials.logic.IMaterialCompletionContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
 
@@ -2510,39 +2509,6 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 
 			});
 		}
-		// 物料信息补全
-		contracts.add(new IMaterialCompletionContract() {
-
-			@Override
-			public String getIdentifiers() {
-				return SalesOrderItem.this.getIdentifiers();
-			}
-
-			@Override
-			public String getItemCode() {
-				return SalesOrderItem.this.getItemCode();
-			}
-
-			@Override
-			public String getItemSign() {
-				return SalesOrderItem.this.getItemSign();
-			}
-
-			@Override
-			public void setItemSign(String value) {
-				SalesOrderItem.this.setItemSign(value);
-			}
-
-			@Override
-			public String getItemDescription() {
-				return SalesOrderItem.this.getItemDescription();
-			}
-
-			@Override
-			public void setItemDescription(String value) {
-				SalesOrderItem.this.setItemDescription(value);
-			}
-		});
 		return contracts.toArray(new IBusinessLogicContract[] {});
 	}
 
