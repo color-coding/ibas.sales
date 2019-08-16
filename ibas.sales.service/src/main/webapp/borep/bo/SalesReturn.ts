@@ -653,26 +653,7 @@ namespace sales {
                         return;
                     }
                     // 复制头信息
-                    this.contactPerson = document.contactPerson;
-                    this.deliveryDate = document.deliveryDate;
-                    this.documentDate = document.documentDate;
-                    this.postingDate = document.postingDate;
-                    this.reference1 = document.reference1;
-                    this.reference2 = document.reference2;
-                    this.remarks = document.remarks;
-                    this.project = document.project;
-                    this.consumer = document.consumer;
-                    // 复制自定义字段
-                    for (let item of document.userFields.forEach()) {
-                        let myItem: ibas.IUserField = this.userFields.get(item.name);
-                        if (ibas.objects.isNull(myItem)) {
-                            continue;
-                        }
-                        if (myItem.valueType !== item.valueType) {
-                            continue;
-                        }
-                        myItem.value = item.value;
-                    }
+                    bo.baseDocument(this, document);
                     // 复制行项目
                     for (let item of document.salesOrderItems) {
                         if (item.canceled === ibas.emYesNo.YES) {
@@ -692,29 +673,7 @@ namespace sales {
                             continue;
                         }
                         let myItem: SalesReturnItem = this.salesReturnItems.create();
-                        myItem.baseDocumentType = item.objectCode;
-                        myItem.baseDocumentEntry = item.docEntry;
-                        myItem.baseDocumentLineId = item.lineId;
-                        myItem.originalDocumentType = item.baseDocumentType;
-                        myItem.originalDocumentEntry = item.baseDocumentEntry;
-                        myItem.originalDocumentLineId = item.baseDocumentLineId;
-                        myItem.distributionRule1 = item.distributionRule1;
-                        myItem.distributionRule2 = item.distributionRule2;
-                        myItem.distributionRule3 = item.distributionRule3;
-                        myItem.distributionRule4 = item.distributionRule4;
-                        myItem.distributionRule5 = item.distributionRule5;
-                        myItem.itemCode = item.itemCode;
-                        myItem.itemDescription = item.itemDescription;
-                        myItem.itemSign = item.itemSign;
-                        myItem.batchManagement = item.batchManagement;
-                        myItem.serialManagement = item.serialManagement;
-                        myItem.price = item.price;
-                        myItem.currency = item.currency;
-                        myItem.quantity = quantity;
-                        myItem.uom = item.uom;
-                        myItem.warehouse = item.warehouse;
-                        myItem.reference1 = item.reference1;
-                        myItem.reference2 = item.reference2;
+                        bo.baseDocumentItem(myItem, item);
                         // 复制批次
                         for (let batch of item.materialBatches) {
                             let myBatch: materials.bo.IMaterialBatchItem = myItem.materialBatches.create();
@@ -744,26 +703,7 @@ namespace sales {
                         return;
                     }
                     // 复制头信息
-                    this.contactPerson = document.contactPerson;
-                    this.deliveryDate = document.deliveryDate;
-                    this.documentDate = document.documentDate;
-                    this.postingDate = document.postingDate;
-                    this.reference1 = document.reference1;
-                    this.reference2 = document.reference2;
-                    this.remarks = document.remarks;
-                    this.project = document.project;
-                    this.consumer = document.consumer;
-                    // 复制自定义字段
-                    for (let item of document.userFields.forEach()) {
-                        let myItem: ibas.IUserField = this.userFields.get(item.name);
-                        if (ibas.objects.isNull(myItem)) {
-                            continue;
-                        }
-                        if (myItem.valueType !== item.valueType) {
-                            continue;
-                        }
-                        myItem.value = item.value;
-                    }
+                    bo.baseDocument(this, document);
                     // 复制行项目
                     for (let item of document.salesDeliveryItems) {
                         if (item.canceled === ibas.emYesNo.YES) {
@@ -779,29 +719,7 @@ namespace sales {
                             continue;
                         }
                         let myItem: SalesReturnItem = this.salesReturnItems.create();
-                        myItem.baseDocumentType = item.objectCode;
-                        myItem.baseDocumentEntry = item.docEntry;
-                        myItem.baseDocumentLineId = item.lineId;
-                        myItem.originalDocumentType = item.baseDocumentType;
-                        myItem.originalDocumentEntry = item.baseDocumentEntry;
-                        myItem.originalDocumentLineId = item.baseDocumentLineId;
-                        myItem.distributionRule1 = item.distributionRule1;
-                        myItem.distributionRule2 = item.distributionRule2;
-                        myItem.distributionRule3 = item.distributionRule3;
-                        myItem.distributionRule4 = item.distributionRule4;
-                        myItem.distributionRule5 = item.distributionRule5;
-                        myItem.itemCode = item.itemCode;
-                        myItem.itemDescription = item.itemDescription;
-                        myItem.itemSign = item.itemSign;
-                        myItem.batchManagement = item.batchManagement;
-                        myItem.serialManagement = item.serialManagement;
-                        myItem.price = item.price;
-                        myItem.currency = item.currency;
-                        myItem.quantity = item.quantity;
-                        myItem.uom = item.uom;
-                        myItem.warehouse = item.warehouse;
-                        myItem.reference1 = item.reference1;
-                        myItem.reference2 = item.reference2;
+                        bo.baseDocumentItem(myItem, item);
                         // 复制批次
                         for (let batch of item.materialBatches) {
                             let myBatch: materials.bo.IMaterialBatchItem = myItem.materialBatches.create();

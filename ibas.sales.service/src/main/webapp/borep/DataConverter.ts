@@ -145,5 +145,81 @@ namespace sales {
                 return super.parsingData(boName, property, value);
             }
         }
+        /**
+         * 基于单据
+         * @param target 目标
+         * @param source 源
+         */
+        export function baseDocument(
+            target: ISalesOrder | ISalesDelivery | ISalesReturn,
+            source: ISalesQuote | ISalesOrder | ISalesDelivery
+        ): void {
+            // 复制头信息
+            target.contactPerson = source.contactPerson;
+            target.deliveryDate = source.deliveryDate;
+            target.documentDate = source.documentDate;
+            target.postingDate = source.postingDate;
+            target.reference1 = source.reference1;
+            target.reference2 = source.reference2;
+            target.remarks = source.remarks;
+            target.project = source.project;
+            target.consumer = source.consumer;
+            // 复制自定义字段
+            for (let item of source.userFields.forEach()) {
+                let myItem: ibas.IUserField = target.userFields.get(item.name);
+                if (ibas.objects.isNull(myItem)) {
+                    continue;
+                }
+                if (myItem.valueType !== item.valueType) {
+                    continue;
+                }
+                myItem.value = item.value;
+            }
+        }
+        /**
+         * 基于单据
+         * @param target 目标
+         * @param source 源
+         */
+        export function baseDocumentItem(
+            target: ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem,
+            source: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem
+        ): void {
+            target.baseDocumentType = source.objectCode;
+            target.baseDocumentEntry = source.docEntry;
+            target.baseDocumentLineId = source.lineId;
+            target.originalDocumentType = source.baseDocumentType;
+            target.originalDocumentEntry = source.baseDocumentEntry;
+            target.originalDocumentLineId = source.baseDocumentLineId;
+            target.distributionRule1 = source.distributionRule1;
+            target.distributionRule2 = source.distributionRule2;
+            target.distributionRule3 = source.distributionRule3;
+            target.distributionRule4 = source.distributionRule4;
+            target.distributionRule5 = source.distributionRule5;
+            target.itemCode = source.itemCode;
+            target.itemDescription = source.itemDescription;
+            target.itemSign = source.itemSign;
+            target.batchManagement = source.batchManagement;
+            target.serialManagement = source.serialManagement;
+            target.price = source.price;
+            target.currency = source.currency;
+            target.quantity = source.quantity;
+            target.uom = source.uom;
+            target.warehouse = source.warehouse;
+            target.deliveryDate = source.deliveryDate;
+            target.reference1 = source.reference1;
+            target.reference2 = source.reference2;
+            // 复制自定义字段
+            for (let item of source.userFields.forEach()) {
+                let myItem: ibas.IUserField = target.userFields.get(item.name);
+                if (ibas.objects.isNull(myItem)) {
+                    continue;
+                }
+                if (myItem.valueType !== item.valueType) {
+                    continue;
+                }
+                myItem.value = item.value;
+            }
+        }
     }
 }

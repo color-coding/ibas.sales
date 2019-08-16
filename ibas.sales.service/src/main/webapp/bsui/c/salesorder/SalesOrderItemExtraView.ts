@@ -169,7 +169,7 @@ namespace sales {
                         ],
                         buttons: [
                             new sap.m.Button("", {
-                                text: ibas.i18n.prop("shell_exit"),
+                                text: ibas.i18n.prop("shell_confirm"),
                                 type: sap.m.ButtonType.Transparent,
                                 press: function (): void {
                                     that.fireViewEvents(that.closeEvent);
