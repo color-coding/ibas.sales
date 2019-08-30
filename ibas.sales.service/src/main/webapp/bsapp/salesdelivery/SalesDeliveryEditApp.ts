@@ -355,6 +355,9 @@ namespace sales {
                                                         if (ibas.strings.isEmpty(parentItem.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
                                                             parentItem.warehouse = that.view.defaultWarehouse;
                                                         }
+                                                        if (!ibas.strings.isEmpty(pData.extend.salesTaxGroup)) {
+                                                            parentItem.tax = pData.extend.salesTaxGroup;
+                                                        }
                                                         // 子项
                                                         for (let sItem of pData.productSuitItems) {
                                                             let subItem: bo.SalesDeliveryItem = that.editData.salesDeliveryItems.create();
@@ -376,6 +379,9 @@ namespace sales {
                                                             subItem.uom = sItem.extend.inventoryUOM;
                                                             if (ibas.strings.isEmpty(subItem.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
                                                                 subItem.warehouse = that.view.defaultWarehouse;
+                                                            }
+                                                            if (!ibas.strings.isEmpty(sItem.extend.salesTaxGroup)) {
+                                                                subItem.tax = sItem.extend.salesTaxGroup;
                                                             }
                                                         }
                                                         created = true;
@@ -429,6 +435,9 @@ namespace sales {
                                 item.currency = selected.currency;
                                 if (ibas.strings.isEmpty(item.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
                                     item.warehouse = that.view.defaultWarehouse;
+                                }
+                                if (!ibas.strings.isEmpty(selected.salesTaxGroup)) {
+                                    item.tax = selected.salesTaxGroup;
                                 }
                                 item = null;
                                 sNext();

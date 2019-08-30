@@ -74,8 +74,8 @@ namespace sales {
                                 repository: businesspartner.bo.BORepositoryBusinessPartner,
                                 dataInfo: {
                                     type: businesspartner.bo.ContactPerson,
-                                    key: "ObjectKey",
-                                    text: "Name"
+                                    key: businesspartner.bo.ContactPerson.PROPERTY_OBJECTKEY_NAME,
+                                    text: businesspartner.bo.ContactPerson.PROPERTY_NAME_NAME
                                 },
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseSalesDeliveryContactPersonEvent);
@@ -90,8 +90,8 @@ namespace sales {
                                 repository: materials.bo.BORepositoryMaterials,
                                 dataInfo: {
                                     type: materials.bo.MaterialPriceList,
-                                    key: "ObjectKey",
-                                    text: "Name"
+                                    key: materials.bo.MaterialPriceList.PROPERTY_OBJECTKEY_NAME,
+                                    text: materials.bo.MaterialPriceList.PROPERTY_NAME_NAME
                                 },
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseSalesDeliveryPriceListEvent);
@@ -352,6 +352,19 @@ namespace sales {
                                         }),
                                     }),
                                     new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salesdeliveryitem_tax"),
+                                        template: new component.TaxGroupSelect("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "tax",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            })
+                                        }).bindProperty("rate", {
+                                            path: "taxRate",
+                                            type: new sap.extension.data.Rate()
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesdeliveryitem_reference1"),
                                         template: new sap.extension.m.Input("", {
                                         }).bindProperty("bindingValue", {
@@ -392,8 +405,8 @@ namespace sales {
                                 repository: accounting.bo.BORepositoryAccounting,
                                 dataInfo: {
                                     type: accounting.bo.Project,
-                                    key: "Code",
-                                    text: "Name"
+                                    key: accounting.bo.Project.PROPERTY_CODE_NAME,
+                                    text: accounting.bo.Project.PROPERTY_NAME_NAME,
                                 },
                                 criteria: [
                                     new ibas.Condition(accounting.bo.Project.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES.toString())
@@ -450,6 +463,14 @@ namespace sales {
                                 type: sap.m.InputType.Number
                             }).bindProperty("bindingValue", {
                                 path: "shippingsExpenseTotal",
+                                type: new sap.extension.data.Sum()
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_itemstaxtotal") }),
+                            new sap.extension.m.Input("", {
+                                editable: false,
+                                type: sap.m.InputType.Number
+                            }).bindProperty("bindingValue", {
+                                path: "itemsTaxTotal",
                                 type: new sap.extension.data.Sum()
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documenttotal") }),

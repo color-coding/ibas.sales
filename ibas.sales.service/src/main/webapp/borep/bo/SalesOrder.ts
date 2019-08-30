@@ -1446,7 +1446,7 @@ namespace sales {
                 this.materialSerials = new materials.bo.MaterialSerialItems(this);
                 this.currency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
                 this.discount = 1;
-                this.taxRate = 1;
+                this.taxRate = 0;
             }
 
             protected registerRules(): ibas.IBusinessRule[] {
@@ -1458,7 +1458,7 @@ namespace sales {
                     new ibas.BusinessRuleMultiplication(
                         SalesOrderItem.PROPERTY_LINETOTAL_NAME, SalesOrderItem.PROPERTY_QUANTITY_NAME, SalesOrderItem.PROPERTY_PRICE_NAME),
                     // 计算毛价 = 价格 * 税率
-                    new ibas.BusinessRuleMultiplication(
+                    new BusinessRuleCalculateGrossPrice(
                         SalesOrderItem.PROPERTY_GROSSPRICE_NAME, SalesOrderItem.PROPERTY_PRICE_NAME, SalesOrderItem.PROPERTY_TAXRATE_NAME),
                     // 计算毛总额 = 数量 * 毛价
                     new ibas.BusinessRuleMultiplication(

@@ -77,8 +77,8 @@ namespace sales {
                                 repository: businesspartner.bo.BORepositoryBusinessPartner,
                                 dataInfo: {
                                     type: businesspartner.bo.ContactPerson,
-                                    key: "ObjectKey",
-                                    text: "Name"
+                                    key: businesspartner.bo.ContactPerson.PROPERTY_OBJECTKEY_NAME,
+                                    text: businesspartner.bo.ContactPerson.PROPERTY_NAME_NAME
                                 },
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseSalesReturnContactPersonEvent);
@@ -93,8 +93,8 @@ namespace sales {
                                 repository: materials.bo.BORepositoryMaterials,
                                 dataInfo: {
                                     type: materials.bo.MaterialPriceList,
-                                    key: "ObjectKey",
-                                    text: "Name"
+                                    key: materials.bo.MaterialPriceList.PROPERTY_OBJECTKEY_NAME,
+                                    text: materials.bo.MaterialPriceList.PROPERTY_NAME_NAME
                                 },
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseSalesReturnPriceListEvent);
@@ -401,8 +401,8 @@ namespace sales {
                                 repository: accounting.bo.BORepositoryAccounting,
                                 dataInfo: {
                                     type: accounting.bo.Project,
-                                    key: "Code",
-                                    text: "Name"
+                                    key: accounting.bo.Project.PROPERTY_CODE_NAME,
+                                    text: accounting.bo.Project.PROPERTY_NAME_NAME,
                                 },
                                 criteria: [
                                     new ibas.Condition(accounting.bo.Project.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES.toString())

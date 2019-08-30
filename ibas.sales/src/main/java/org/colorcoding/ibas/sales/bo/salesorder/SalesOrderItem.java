@@ -38,6 +38,7 @@ import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.logic.IMaterialCommitedJournalContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emProductTreeType;
+import org.colorcoding.ibas.sales.rules.BusinessRuleCalculateGrossPrice;
 
 /**
  * 获取-销售订单-行
@@ -2418,7 +2419,7 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 		this.setMaterialSerials(new MaterialSerialItems(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 		this.setDiscount(Decimal.ONE);
-		this.setTaxRate(Decimal.ONE);
+		this.setTaxRate(Decimal.ZERO);
 	}
 
 	@Override
@@ -2440,7 +2441,7 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 				// 计算总计 = 数量 * 价格
 				new BusinessRuleMultiplication(PROPERTY_LINETOTAL, PROPERTY_QUANTITY, PROPERTY_PRICE),
 				// 计算毛价 = 价格 * 税率
-				new BusinessRuleMultiplication(PROPERTY_GROSSPRICE, PROPERTY_PRICE, PROPERTY_TAXRATE),
+				new BusinessRuleCalculateGrossPrice(PROPERTY_GROSSPRICE, PROPERTY_PRICE, PROPERTY_TAXRATE),
 				// 计算毛总额 = 数量 * 毛价
 				new BusinessRuleMultiplication(PROPERTY_GROSSTOTAL, PROPERTY_QUANTITY, PROPERTY_GROSSPRICE),
 				// 计算税总额 = 毛总额 - 总计

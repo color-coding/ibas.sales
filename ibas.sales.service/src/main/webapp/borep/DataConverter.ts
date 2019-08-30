@@ -209,6 +209,8 @@ namespace sales {
             target.deliveryDate = source.deliveryDate;
             target.reference1 = source.reference1;
             target.reference2 = source.reference2;
+            target.tax = source.tax;
+            target.taxRate = source.taxRate;
             // 复制自定义字段
             for (let item of source.userFields.forEach()) {
                 let myItem: ibas.IUserField = target.userFields.get(item.name);
@@ -219,6 +221,39 @@ namespace sales {
                     continue;
                 }
                 myItem.value = item.value;
+            }
+        }
+
+        /** 业务规则-计算毛价 */
+        export class BusinessRuleCalculateGrossPrice extends ibas.BusinessRuleCommon {
+            /**
+             *
+             * @param result 属性-结果
+             * @param original 属性-原价
+             * @param taxRate 属性-税率
+             */
+            constructor(result: string, original: string, taxRate: string) {
+                super();
+                this.name = ibas.i18n.prop("sales_business_rule_calculate_gross_price");
+                this.result = result;
+                this.original = original;
+                this.taxRate = taxRate;
+                this.inputProperties.add(this.original);
+                this.inputProperties.add(this.taxRate);
+                this.affectedProperties.add(this.result);
+            }
+            /** 结果 */
+            result: string;
+            /** 原价 */
+            original: string;
+            /** 税率 */
+            taxRate: string;
+            /** 计算规则 */
+            protected compute(context: ibas.BusinessRuleContextCommon): void {
+                let original: number = ibas.numbers.valueOf(context.inputValues.get(this.original));
+                let taxRate: number = ibas.numbers.valueOf(context.inputValues.get(this.taxRate));
+                let result: number = original * (1 + taxRate);
+                context.outputValues.set(this.result, ibas.numbers.round(result));
             }
         }
     }

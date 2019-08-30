@@ -314,6 +314,9 @@ namespace sales {
                                                         parentItem.uom = pData.extend.inventoryUOM;
                                                         parentItem.price = selected.price;
                                                         parentItem.currency = selected.currency;
+                                                        if (!ibas.strings.isEmpty(pData.extend.salesTaxGroup)) {
+                                                            parentItem.tax = pData.extend.salesTaxGroup;
+                                                        }
                                                         // 子项
                                                         for (let sItem of pData.productSuitItems) {
                                                             let subItem: bo.SalesQuoteItem = that.editData.salesQuoteItems.create();
@@ -333,6 +336,9 @@ namespace sales {
                                                             subItem.warehouse = sItem.extend.warehouse;
                                                             subItem.quantity = subItem.basisQuantity;
                                                             subItem.uom = sItem.extend.inventoryUOM;
+                                                            if (!ibas.strings.isEmpty(sItem.extend.salesTaxGroup)) {
+                                                                subItem.tax = sItem.extend.salesTaxGroup;
+                                                            }
                                                         }
                                                         created = true;
                                                         // 数据处理完，上级队列下一条
@@ -383,6 +389,9 @@ namespace sales {
                                 item.uom = selected.inventoryUOM;
                                 item.price = selected.price;
                                 item.currency = selected.currency;
+                                if (!ibas.strings.isEmpty(selected.salesTaxGroup)) {
+                                    item.tax = selected.salesTaxGroup;
+                                }
                                 item = null;
                                 sNext();
                             }

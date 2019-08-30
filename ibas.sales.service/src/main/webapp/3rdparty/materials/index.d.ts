@@ -201,6 +201,8 @@ declare namespace materials {
                 const CONDITION_ALIAS_ITEMCODE: string;
                 /** 查询条件字段-物料名称 */
                 const CONDITION_ALIAS_ITEMNAME: string;
+                /** 查询条件字段-物料标记 */
+                const CONDITION_ALIAS_ITEMSIGN: string;
                 /** 查询条件字段-价格清单 */
                 const CONDITION_ALIAS_PRICELIST: string;
             }
@@ -776,6 +778,10 @@ declare namespace materials {
             serialManagement: ibas.emYesNo;
             /** 批号管理 */
             batchManagement: ibas.emYesNo;
+            /** 采购税收组 */
+            purchaseTaxGroup: string;
+            /** 销售税收组 */
+            salesTaxGroup: string;
             /** 生效日期 */
             validDate: Date;
             /** 失效日期 */
@@ -1779,6 +1785,10 @@ declare namespace materials {
             serialManagement: ibas.emYesNo;
             /** 批号管理 */
             batchManagement: ibas.emYesNo;
+            /** 采购税收组 */
+            purchaseTaxGroup: string;
+            /** 销售税收组 */
+            salesTaxGroup: string;
             /** 生效日期 */
             validDate: Date;
             /** 失效日期 */
@@ -3871,6 +3881,16 @@ declare namespace materials {
             /** 获取-批号管理 */
             /** 设置-批号管理 */
             batchManagement: ibas.emYesNo;
+            /** 映射的属性名称-采购税收组 */
+            static PROPERTY_PURCHASETAXGROUP_NAME: string;
+            /** 获取-采购税收组 */
+            /** 设置-采购税收组 */
+            purchaseTaxGroup: string;
+            /** 映射的属性名称-销售税收组 */
+            static PROPERTY_SALESTAXGROUP_NAME: string;
+            /** 获取-销售税收组 */
+            /** 设置-销售税收组 */
+            salesTaxGroup: string;
             /** 映射的属性名称-生效日期 */
             static PROPERTY_VALIDDATE_NAME: string;
             /** 获取-生效日期 */
@@ -5358,6 +5378,16 @@ declare namespace materials {
             /** 获取-批号管理 */
             /** 设置-批号管理 */
             batchManagement: ibas.emYesNo;
+            /** 映射的属性名称-采购税收组 */
+            static PROPERTY_PURCHASETAXGROUP_NAME: string;
+            /** 获取-采购税收组 */
+            /** 设置-采购税收组 */
+            purchaseTaxGroup: string;
+            /** 映射的属性名称-销售税收组 */
+            static PROPERTY_SALESTAXGROUP_NAME: string;
+            /** 获取-销售税收组 */
+            /** 设置-销售税收组 */
+            salesTaxGroup: string;
             /** 映射的属性名称-生效日期 */
             static PROPERTY_VALIDDATE_NAME: string;
             /** 获取-生效日期 */
@@ -8485,6 +8515,8 @@ declare namespace materials {
             protected fetchPrice(criteria: ibas.ICriteria): void;
             /** 保存价格清单项目 */
             protected savePriceListItem(data: bo.MaterialPriceItem | bo.MaterialPriceItem[]): void;
+            /** 导出价格 */
+            protected exportPrice(criteria: ibas.ICriteria): void;
         }
         /** 视图-物料价格清单 */
         interface IMaterialPriceListListView extends ibas.IBOListView {
@@ -8500,6 +8532,10 @@ declare namespace materials {
             showPrices(datas: bo.MaterialPrice[]): void;
             /** 保存价格项目事件 */
             savePriceListItemEvent: Function;
+            /** 导出价格事件 */
+            exportPriceEvent: Function;
+            /** 保存数据 */
+            savePrices(datas: bo.MaterialPrice[]): void;
         }
     }
 }

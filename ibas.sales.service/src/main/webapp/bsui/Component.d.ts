@@ -45,6 +45,20 @@ declare namespace sales {
                 /** 触发地址改变事件 */
                 protected fireSelectionChange(param: { address: object }): this;
             }
+            /**
+             * 税收组选择-选择框
+             */
+            class TaxGroupSelect extends sap.extension.m.Select {
+                loadItems(): TaxGroupSelect;
+                addItem(oItem: sap.ui.core.Item): TaxGroupSelect;
+                addItem(oItem: { code: string, name: string, rate: number }): TaxGroupSelect;
+                getRate(): number;
+                setRate(rate: number): TaxGroupItem;
+            }
+            class TaxGroupItem extends sap.ui.core.Item {
+                getRate(): number;
+                setRate(rate: number): TaxGroupItem;
+            }
         }
     }
 }

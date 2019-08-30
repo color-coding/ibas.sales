@@ -67,8 +67,8 @@ namespace sales {
                         }
                         this.setCriteria(criteria);
                     }
-                    if (SELECT_ITEM_CACHE.size > 0) {
-                        SELECT_ITEM_CACHE.forEach((value, key) => {
+                    if (WAREHOUSE_ITEM_CACHE.size > 0) {
+                        WAREHOUSE_ITEM_CACHE.forEach((value, key) => {
                             sap.extension.m.RepositorySelect.prototype.addItem.call(this,
                                 new sap.ui.core.ListItem("", {
                                     key: key,
@@ -81,14 +81,14 @@ namespace sales {
                     return this;
                 },
                 addItem(this: WarehouseSelect, oItem: sap.ui.core.Item): WarehouseSelect {
-                    if (!SELECT_ITEM_CACHE.has(oItem.getKey())) {
-                        SELECT_ITEM_CACHE.set(oItem.getKey(), oItem.getText());
+                    if (!WAREHOUSE_ITEM_CACHE.has(oItem.getKey())) {
+                        WAREHOUSE_ITEM_CACHE.set(oItem.getKey(), oItem.getText());
                     }
                     sap.extension.m.RepositorySelect.prototype.addItem.apply(this, arguments);
                     return this;
                 }
             });
-            const SELECT_ITEM_CACHE: Map<string, string> = new Map<string, string>();
+            const WAREHOUSE_ITEM_CACHE: Map<string, string> = new Map<string, string>();
             /**
              * 送货地址-选择框
              */
@@ -307,6 +307,108 @@ namespace sales {
                     return this;
                 },
             });
+            /**
+             * 税选择-选择框
+             */
+            sap.extension.m.Select.extend("sales.ui.component.TaxGroupSelect", {
+                metadata: {
+                    properties: {
+                        rate: { type: "float" },
+                    },
+                    events: {
+                    },
+                },
+                renderer: {
+                },
+                /** 重构设置 */
+                applySettings(this: TaxGroupSelect): TaxGroupSelect {
+                    sap.extension.m.Select.prototype.applySettings.apply(this, arguments);
+                    if (TAXGROUP_ITEM_CACHE === undefined) {
+                        TAXGROUP_ITEM_CACHE = null;
+                        this.loadItems();
+                    } else {
+                        let id: number = null;
+                        id = setInterval(() => {
+                            if (TAXGROUP_ITEM_CACHE instanceof Array) {
+                                clearInterval(id);
+                                for (let item of TAXGROUP_ITEM_CACHE) {
+                                    this.addItem(item);
+                                }
+                            }
+                        }, 100);
+                    }
+                    this.attachChange(undefined, function (event: sap.ui.base.Event): void {
+                        let source: any = event.getSource();
+                        if (source instanceof sales.ui.component.TaxGroupSelect) {
+                            let select: any = source.getSelectedItem();
+                            if (select instanceof sales.ui.component.TaxGroupItem) {
+                                if (source.getRate() !== select.getRate()) {
+                                    source.setRate(select.getRate());
+                                }
+                            }
+                        }
+                    });
+                    return this;
+                },
+                /**
+                 * 设置绑定值
+                 * @param value 值
+                 */
+                setBindingValue(this: TaxGroupSelect, value: string): TaxGroupSelect {
+                    sap.extension.m.Select.prototype.setBindingValue.apply(this, arguments);
+                    let select: any = this.getSelectedItem();
+                    if (select instanceof sales.ui.component.TaxGroupItem) {
+                        if (this.getRate() !== select.getRate()) {
+                            this.setRate(select.getRate());
+                        }
+                    }
+                    return this;
+                },
+                /**
+                 * 加载可选值
+                 */
+                loadItems(this: TaxGroupSelect): TaxGroupSelect {
+                    this.destroyItems();
+                    let boRepository: accounting.bo.BORepositoryAccounting = new accounting.bo.BORepositoryAccounting();
+                    boRepository.fetchTaxGroup({
+                        criteria: accounting.app.conditions.taxgroup.create(accounting.bo.emTaxGroupCategory.OUTPUT),
+                        onCompleted: (opRslt) => {
+                            TAXGROUP_ITEM_CACHE = new ibas.ArrayList<{ code: string, name: string, rate: number }>();
+                            for (let item of opRslt.resultObjects) {
+                                TAXGROUP_ITEM_CACHE.add({
+                                    code: item.code,
+                                    name: item.name,
+                                    rate: item.rate,
+                                });
+                                this.addItem(item);
+                            }
+                        }
+                    });
+                    return this;
+                },
+                addItem(this: TaxGroupSelect, oItem: sap.ui.core.Item | { code: string, name: string, rate: number }): TaxGroupSelect {
+                    if (oItem instanceof sap.ui.core.Item) {
+                        sap.extension.m.Select.prototype.addItem.apply(this, arguments);
+                    } else {
+                        this.addItem(new sales.ui.component.TaxGroupItem("", {
+                            key: oItem.code,
+                            text: oItem.name,
+                            rate: oItem.rate
+                        }));
+                    }
+                    return this;
+                }
+            });
+            sap.ui.core.Item.extend("sales.ui.component.TaxGroupItem", {
+                metadata: {
+                    properties: {
+                        /** 率 */
+                        rate: { type: "float", defalultValue: 0 },
+                    },
+                    events: {}
+                },
+            });
+            let TAXGROUP_ITEM_CACHE: ibas.IList<{ code: string, name: string, rate: number }> = undefined;
         }
     }
 }

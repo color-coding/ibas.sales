@@ -257,8 +257,8 @@ namespace sales {
                                         repository: materials.bo.BORepositoryMaterials,
                                         dataInfo: {
                                             type: materials.bo.MaterialPriceList,
-                                            key: "ObjectKey",
-                                            text: "Name"
+                                            key: materials.bo.MaterialPriceList.PROPERTY_OBJECTKEY_NAME,
+                                            text: materials.bo.MaterialPriceList.PROPERTY_NAME_NAME
                                         },
                                     }),
                                     new sap.extension.m.PropertyObjectAttribute("", {
@@ -418,8 +418,8 @@ namespace sales {
                                                         repository: accounting.bo.BORepositoryAccounting,
                                                         dataInfo: {
                                                             type: accounting.bo.Project,
-                                                            key: "Code",
-                                                            text: "Name"
+                                                            key: accounting.bo.Project.PROPERTY_CODE_NAME,
+                                                            text: accounting.bo.Project.PROPERTY_NAME_NAME,
                                                         },
                                                     }),
                                                 ]

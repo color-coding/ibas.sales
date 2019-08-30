@@ -299,6 +299,9 @@ namespace sales {
                             if (ibas.strings.isEmpty(item.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
                                 item.warehouse = that.view.defaultWarehouse;
                             }
+                            if (!ibas.strings.isEmpty(selected.salesTaxGroup)) {
+                                item.tax = selected.salesTaxGroup;
+                            }
                             item = null;
                         }
                         if (created) {
