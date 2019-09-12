@@ -283,7 +283,8 @@ namespace sales {
                         // 选择返回数量多余触发数量时,自动创建新的项目
                         let created: boolean = false;
                         ibas.queues.execute(selecteds, (selected, sNext) => {
-                            if (selected.phantomItem === ibas.emYesNo.YES) {
+                            if (selected.phantomItem === ibas.emYesNo.YES
+                                && selected.itemType === materials.bo.emItemType.ITEM) {
                                 // 虚拟物料，需要处理子项
                                 let criteria: ibas.Criteria = new ibas.Criteria();
                                 let condition: ibas.ICondition = criteria.conditions.create();
