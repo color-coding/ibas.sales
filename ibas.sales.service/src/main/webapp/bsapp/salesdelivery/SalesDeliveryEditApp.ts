@@ -53,6 +53,26 @@ namespace sales {
                 }
                 this.view.showSalesDelivery(this.editData);
                 this.view.showSalesDeliveryItems(this.editData.salesDeliveryItems.filterDeleted());
+                // 查询额外信息
+                if (!ibas.strings.isEmpty(this.editData.customerCode)) {
+                    let boRepository: businesspartner.bo.BORepositoryBusinessPartner = new businesspartner.bo.BORepositoryBusinessPartner();
+                    boRepository.fetchCustomer({
+                        criteria: [
+                            new ibas.Condition(businesspartner.bo.Customer.PROPERTY_CODE_NAME, ibas.emConditionOperation.EQUAL, this.editData.customerCode)
+                        ],
+                        onCompleted: (opRslt) => {
+                            let customer: businesspartner.bo.Customer = opRslt.resultObjects.firstOrDefault();
+                            if (!ibas.objects.isNull(customer)) {
+                                if (!ibas.strings.isEmpty(customer.warehouse)) {
+                                    this.view.defaultWarehouse = customer.warehouse;
+                                }
+                                if (!ibas.strings.isEmpty(customer.taxGroup)) {
+                                    this.view.defaultTaxGroup = customer.taxGroup;
+                                }
+                            }
+                        }
+                    });
+                }
             }
             /** 运行,覆盖原方法 */
             run(): void;
@@ -103,7 +123,6 @@ namespace sales {
             }
             /** 待编辑的数据 */
             protected editData: bo.SalesDelivery;
-            protected lineEditData: bo.SalesDeliveryItem;
             /** 保存数据 */
             protected saveData(): void {
                 this.busy(true);
@@ -218,6 +237,7 @@ namespace sales {
                         that.editData.contactPerson = selected.contactPerson;
                         that.editData.documentCurrency = selected.currency;
                         that.view.defaultWarehouse = selected.warehouse;
+                        that.view.defaultTaxGroup = selected.taxGroup;
                     }
                 });
             }
@@ -356,8 +376,12 @@ namespace sales {
                                                         if (ibas.strings.isEmpty(parentItem.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
                                                             parentItem.warehouse = that.view.defaultWarehouse;
                                                         }
-                                                        if (!ibas.strings.isEmpty(pData.extend.salesTaxGroup)) {
-                                                            parentItem.tax = pData.extend.salesTaxGroup;
+                                                        if (ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
+                                                            if (!ibas.strings.isEmpty(pData.extend.salesTaxGroup)) {
+                                                                parentItem.tax = pData.extend.salesTaxGroup;
+                                                            }
+                                                        } else {
+                                                            parentItem.tax = that.view.defaultTaxGroup;
                                                         }
                                                         // 子项
                                                         for (let sItem of pData.productSuitItems) {
@@ -381,8 +405,12 @@ namespace sales {
                                                             if (ibas.strings.isEmpty(subItem.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
                                                                 subItem.warehouse = that.view.defaultWarehouse;
                                                             }
-                                                            if (!ibas.strings.isEmpty(sItem.extend.salesTaxGroup)) {
-                                                                subItem.tax = sItem.extend.salesTaxGroup;
+                                                            if (ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
+                                                                if (!ibas.strings.isEmpty(sItem.extend.salesTaxGroup)) {
+                                                                    subItem.tax = sItem.extend.salesTaxGroup;
+                                                                }
+                                                            } else {
+                                                                subItem.tax = that.view.defaultTaxGroup;
                                                             }
                                                         }
                                                         created = true;
@@ -437,8 +465,12 @@ namespace sales {
                                 if (ibas.strings.isEmpty(item.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
                                     item.warehouse = that.view.defaultWarehouse;
                                 }
-                                if (!ibas.strings.isEmpty(selected.salesTaxGroup)) {
-                                    item.tax = selected.salesTaxGroup;
+                                if (ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
+                                    if (!ibas.strings.isEmpty(selected.salesTaxGroup)) {
+                                        item.tax = selected.salesTaxGroup;
+                                    }
+                                } else {
+                                    item.tax = that.view.defaultTaxGroup;
                                 }
                                 item = null;
                                 sNext();
@@ -744,6 +776,8 @@ namespace sales {
             editShippingAddressesEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
+            /** 默认税组 */
+            defaultTaxGroup: string;
         }
     }
 }

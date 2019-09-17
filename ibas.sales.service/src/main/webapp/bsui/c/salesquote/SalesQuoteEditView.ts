@@ -471,6 +471,8 @@ namespace sales {
                 }
                 private page: sap.extension.m.Page;
                 private tableSalesQuoteItem: sap.extension.table.Table;
+                /** 默认税组 */
+                defaultTaxGroup: string;
                 /** 显示数据 */
                 showSalesQuote(data: bo.SalesQuote): void {
                     this.page.setModel(new sap.extension.model.JSONModel(data));

@@ -103,7 +103,6 @@ namespace sales {
             }
             /** 待编辑的数据 */
             protected editData: bo.SalesReturn;
-            protected lineEditData: bo.SalesDeliveryItem;
             /** 保存数据 */
             protected saveData(): void {
                 this.busy(true);

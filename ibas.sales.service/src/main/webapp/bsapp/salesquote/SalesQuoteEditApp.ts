@@ -49,6 +49,23 @@ namespace sales {
                 }
                 this.view.showSalesQuote(this.editData);
                 this.view.showSalesQuoteItems(this.editData.salesQuoteItems.filterDeleted());
+                // 查询额外信息
+                if (!ibas.strings.isEmpty(this.editData.customerCode)) {
+                    let boRepository: businesspartner.bo.BORepositoryBusinessPartner = new businesspartner.bo.BORepositoryBusinessPartner();
+                    boRepository.fetchCustomer({
+                        criteria: [
+                            new ibas.Condition(businesspartner.bo.Customer.PROPERTY_CODE_NAME, ibas.emConditionOperation.EQUAL, this.editData.customerCode)
+                        ],
+                        onCompleted: (opRslt) => {
+                            let customer: businesspartner.bo.Customer = opRslt.resultObjects.firstOrDefault();
+                            if (!ibas.objects.isNull(customer)) {
+                                if (!ibas.strings.isEmpty(customer.taxGroup)) {
+                                    this.view.defaultTaxGroup = customer.taxGroup;
+                                }
+                            }
+                        }
+                    });
+                }
             }
             /** 运行,覆盖原方法 */
             run(): void;
@@ -99,7 +116,6 @@ namespace sales {
             }
             /** 待编辑的数据 */
             protected editData: bo.SalesQuote;
-            protected lineEditData: bo.SalesQuoteItem;
             /** 保存数据 */
             protected saveData(): void {
                 this.busy(true);
@@ -195,6 +211,7 @@ namespace sales {
                         that.editData.priceList = selected.priceList;
                         that.editData.contactPerson = selected.contactPerson;
                         that.editData.documentCurrency = selected.currency;
+                        that.view.defaultTaxGroup = selected.taxGroup;
                     }
                 });
             }
@@ -315,8 +332,12 @@ namespace sales {
                                                         parentItem.uom = pData.extend.inventoryUOM;
                                                         parentItem.price = selected.price;
                                                         parentItem.currency = selected.currency;
-                                                        if (!ibas.strings.isEmpty(pData.extend.salesTaxGroup)) {
-                                                            parentItem.tax = pData.extend.salesTaxGroup;
+                                                        if (ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
+                                                            if (!ibas.strings.isEmpty(pData.extend.salesTaxGroup)) {
+                                                                parentItem.tax = pData.extend.salesTaxGroup;
+                                                            }
+                                                        } else {
+                                                            parentItem.tax = that.view.defaultTaxGroup;
                                                         }
                                                         // 子项
                                                         for (let sItem of pData.productSuitItems) {
@@ -337,8 +358,12 @@ namespace sales {
                                                             subItem.warehouse = sItem.extend.warehouse;
                                                             subItem.quantity = subItem.basisQuantity;
                                                             subItem.uom = sItem.extend.inventoryUOM;
-                                                            if (!ibas.strings.isEmpty(sItem.extend.salesTaxGroup)) {
-                                                                subItem.tax = sItem.extend.salesTaxGroup;
+                                                            if (ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
+                                                                if (!ibas.strings.isEmpty(sItem.extend.salesTaxGroup)) {
+                                                                    subItem.tax = sItem.extend.salesTaxGroup;
+                                                                }
+                                                            } else {
+                                                                subItem.tax = that.view.defaultTaxGroup;
                                                             }
                                                         }
                                                         created = true;
@@ -390,8 +415,12 @@ namespace sales {
                                 item.uom = selected.inventoryUOM;
                                 item.price = selected.price;
                                 item.currency = selected.currency;
-                                if (!ibas.strings.isEmpty(selected.salesTaxGroup)) {
-                                    item.tax = selected.salesTaxGroup;
+                                if (ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
+                                    if (!ibas.strings.isEmpty(selected.salesTaxGroup)) {
+                                        item.tax = selected.salesTaxGroup;
+                                    }
+                                } else {
+                                    item.tax = that.view.defaultTaxGroup;
                                 }
                                 item = null;
                                 sNext();
@@ -558,6 +587,8 @@ namespace sales {
             chooseSalesQuoteItemWarehouseEvent: Function;
             /** 显示销售报价额外信息事件 */
             showSalesQuoteItemExtraEvent: Function;
+            /** 默认税组 */
+            defaultTaxGroup: string;
         }
     }
 }
