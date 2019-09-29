@@ -36,17 +36,21 @@ namespace sales {
                 this.view.showExtraDatas(this.editData.salesQuoteItemExtras.filterDeleted());
             }
             run(): void;
-            run(data: bo.SalesQuoteItem): void;
+            run(data: bo.SalesQuoteItem, parent?: bo.SalesQuote): void;
             run(): void {
                 let data: bo.SalesQuoteItem = arguments[0];
                 if (data instanceof bo.SalesQuoteItem) {
                     this.editData = data;
+                    if (arguments[1] instanceof bo.SalesQuote) {
+                        this.dataParent = arguments[1];
+                    }
                     super.run();
                 } else {
                     throw new Error(ibas.i18n.prop("sys_unrecognized_data"));
                 }
             }
             private editData: bo.SalesQuoteItem;
+            private dataParent: bo.SalesQuote;
             /** 添加销售报价-行事件 */
             private addSalesQuoteItemExtra(type: string | FormData): void {
                 if (type === materials.bo.MaterialSpecification.BUSINESS_OBJECT_CODE) {
@@ -64,6 +68,8 @@ namespace sales {
                                 ibas.servicesManager.runApplicationService<materials.app.ISpecificationTreeContract, materials.bo.MaterialSpecification>({
                                     proxy: new materials.app.SpecificationTreeServiceProxy({
                                         target: that.editData.itemCode,
+                                        customer: that.dataParent ? that.dataParent.customerCode : undefined,
+                                        project: that.dataParent ? that.dataParent.project : undefined,
                                     }),
                                     onCompleted(result: materials.bo.MaterialSpecification): void {
                                         let item: bo.SalesQuoteItemExtra = that.editData.salesQuoteItemExtras.create();

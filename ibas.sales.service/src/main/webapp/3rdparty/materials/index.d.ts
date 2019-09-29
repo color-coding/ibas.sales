@@ -98,6 +98,21 @@ declare namespace materials {
              */
             MATERIAL_GROUP = 1
         }
+        /** 规格分配 */
+        enum emSpecificationAssigned {
+            /**
+             * 业务伙伴组
+             */
+            BUSINESS_PARTNER_GROUP = 0,
+            /**
+             * 客户
+             */
+            CUSTOMER = 1,
+            /**
+             * 供应商
+             */
+            SUPPLIER = 2
+        }
     }
     namespace app {
         /** 批次服务契约 */
@@ -148,10 +163,18 @@ declare namespace materials {
         }
         /** 规格服务契约 */
         interface ISpecificationTreeContract extends ibas.IServiceContract {
-            /** 目标（物料编码或物料规格） */
+            /** 目标：物料编码或物料规格 */
             target: string | bo.IMaterialSpecification;
+            /** 目标：客户 */
+            customer?: string;
+            /** 目标：供应商 */
+            supplier?: string;
+            /** 目标：日期 */
+            date?: Date;
             /** 名称 */
             name?: string;
+            /** 项目 */
+            project?: string;
             /** 备注 */
             remarks?: string;
         }
@@ -213,6 +236,18 @@ declare namespace materials {
                 const CONDITION_ALIAS_ITEMNAME: string;
                 /** 查询条件字段-仓库（关系为或） */
                 const CONDITION_ALIAS_WAREHOUSE: string;
+            }
+            namespace specificationtree {
+                /** 查询条件字段-规格模板 */
+                const CONDITION_ALIAS_TEMPLATE: string;
+                /** 查询条件字段-物料 */
+                const CONDITION_ALIAS_MATERIAL: string;
+                /** 查询条件字段-日期 */
+                const CONDITION_ALIAS_DATE: string;
+                /** 查询条件字段-客户 */
+                const CONDITION_ALIAS_CUSTOMER: string;
+                /** 查询条件字段-供应商 */
+                const CONDITION_ALIAS_SUPPLIER: string;
             }
         }
     }
@@ -2075,6 +2110,10 @@ declare namespace materials {
             name: string;
             /** 规格模板 */
             specification: number;
+            /** 业务伙伴类型 */
+            businessPartnerType: businesspartner.bo.emBusinessPartnerType;
+            /** 业务伙伴编码 */
+            businessPartnerCode: string;
             /** 项目代码 */
             project: string;
             /** 参考1 */
@@ -2127,6 +2166,10 @@ declare namespace materials {
             description: string;
             /** 内容 */
             content: string;
+            /** 值 */
+            value: string;
+            /** 关联的 */
+            associated: string;
             /** 备注 */
             note: string;
         }
@@ -2185,6 +2228,14 @@ declare namespace materials {
             target: string;
             /** 是否激活 */
             activated: ibas.emYesNo;
+            /** 生效日期 */
+            validDate: Date;
+            /** 失效日期 */
+            invalidDate: Date;
+            /** 分配类型 */
+            assignedType: emSpecificationAssigned;
+            /** 分配目标 */
+            assigned: string;
             /** 备注 */
             remarks: string;
             /** 规格模板-项目集合 */
@@ -2277,6 +2328,8 @@ declare namespace materials {
             value: string;
             /** 描述 */
             description: string;
+            /** 关联的 */
+            associated: string;
         }
     }
 }
@@ -2299,6 +2352,8 @@ declare namespace materials {
             remarks: string;
             /** 规格模板-项目集合 */
             items: ibas.IList<ISpecificationTreeItem>;
+            /** 转换对象 */
+            convert(): IMaterialSpecification;
         }
         /** 规格模板-项目 */
         interface ISpecificationTreeItem {
@@ -2313,9 +2368,18 @@ declare namespace materials {
             /** 可编辑 */
             editable: boolean;
             /** 可选值 */
-            vaildValues: ibas.IList<ibas.KeyText>;
+            vaildValues: ibas.IList<ISpecificationTreeItemValue>;
             /** 规格模板-项目集合 */
             items: ibas.IList<ISpecificationTreeItem>;
+        }
+        /** 规格模板-项目值 */
+        interface ISpecificationTreeItemValue {
+            /** 值 */
+            value: string;
+            /** 描述 */
+            description: string;
+            /** 关联 */
+            associated: string;
         }
     }
 }
@@ -6063,6 +6127,16 @@ declare namespace materials {
             /** 获取-规格模板 */
             /** 设置-规格模板 */
             specification: number;
+            /** 映射的属性名称-业务伙伴类型 */
+            static PROPERTY_BUSINESSPARTNERTYPE_NAME: string;
+            /** 获取-业务伙伴类型 */
+            /** 设置-业务伙伴类型 */
+            businessPartnerType: businesspartner.bo.emBusinessPartnerType;
+            /** 映射的属性名称-业务伙伴编码 */
+            static PROPERTY_BUSINESSPARTNERCODE_NAME: string;
+            /** 获取-业务伙伴编码 */
+            /** 设置-业务伙伴编码 */
+            businessPartnerCode: string;
             /** 映射的属性名称-项目代码 */
             static PROPERTY_PROJECT_NAME: string;
             /** 获取-项目代码 */
@@ -6185,6 +6259,16 @@ declare namespace materials {
             /** 获取-内容 */
             /** 设置-内容 */
             content: string;
+            /** 映射的属性名称-值 */
+            static PROPERTY_VALUE_NAME: string;
+            /** 获取-值 */
+            /** 设置-值 */
+            value: string;
+            /** 映射的属性名称-关联的 */
+            static PROPERTY_ASSOCIATED_NAME: string;
+            /** 获取-关联的 */
+            /** 设置-关联的 */
+            associated: string;
             /** 映射的属性名称-备注 */
             static PROPERTY_NOTE_NAME: string;
             /** 获取-备注 */
@@ -6315,6 +6399,26 @@ declare namespace materials {
             /** 获取-是否激活 */
             /** 设置-是否激活 */
             activated: ibas.emYesNo;
+            /** 映射的属性名称-生效日期 */
+            static PROPERTY_VALIDDATE_NAME: string;
+            /** 获取-生效日期 */
+            /** 设置-生效日期 */
+            validDate: Date;
+            /** 映射的属性名称-失效日期 */
+            static PROPERTY_INVALIDDATE_NAME: string;
+            /** 获取-失效日期 */
+            /** 设置-失效日期 */
+            invalidDate: Date;
+            /** 映射的属性名称-分配类型 */
+            static PROPERTY_ASSIGNEDTYPE_NAME: string;
+            /** 获取-分配类型 */
+            /** 设置-分配类型 */
+            assignedType: emSpecificationAssigned;
+            /** 映射的属性名称-分配目标 */
+            static PROPERTY_ASSIGNED_NAME: string;
+            /** 获取-分配目标 */
+            /** 设置-分配目标 */
+            assigned: string;
             /** 映射的属性名称-备注 */
             static PROPERTY_REMARKS_NAME: string;
             /** 获取-备注 */
@@ -6529,6 +6633,11 @@ declare namespace materials {
             /** 获取-描述 */
             /** 设置-描述 */
             description: string;
+            /** 映射的属性名称-关联的 */
+            static PROPERTY_ASSOCIATED_NAME: string;
+            /** 获取-关联的 */
+            /** 设置-关联的 */
+            associated: string;
             /** 初始化数据 */
             protected init(): void;
         }
@@ -6554,6 +6663,8 @@ declare namespace materials {
             remarks: string;
             /** 规格模板-项目集合 */
             items: ibas.IList<ISpecificationTreeItem>;
+            /** 转换对象 */
+            convert(): MaterialSpecification;
         }
         /** 规格模板-项目 */
         class SpecificationTreeItem implements ISpecificationTreeItem {
@@ -6569,9 +6680,18 @@ declare namespace materials {
             /** 可编辑 */
             editable: boolean;
             /** 可选值 */
-            vaildValues: ibas.IList<ibas.KeyText>;
+            vaildValues: ibas.IList<ISpecificationTreeItemValue>;
             /** 规格模板-项目集合 */
             items: ibas.IList<ISpecificationTreeItem>;
+        }
+        /** 规格模板-项目值 */
+        class SpecificationTreeItemValue implements ISpecificationTreeItemValue {
+            /** 值 */
+            value: string;
+            /** 描述 */
+            description: string;
+            /** 关联 */
+            associated: string;
         }
     }
 }
@@ -6628,9 +6748,18 @@ declare namespace materials {
                 /** 可编辑 */
                 Editable: boolean;
                 /** 可选值 */
-                VaildValues: ibas.KeyText[];
+                VaildValues: ISpecificationTreeItemValue[];
                 /** 规格模板-项目集合 */
                 Items: ISpecificationTreeItem[];
+            }
+            /** 规格模板-项目值 */
+            interface ISpecificationTreeItemValue extends IDataDeclaration {
+                /** 标记 */
+                Value: string;
+                /** 描述 */
+                Description: string;
+                /** 关联 */
+                Associated: string;
             }
         }
     }
@@ -9401,6 +9530,8 @@ declare namespace materials {
             remarks: string;
             /** 项目集合 */
             items: ibas.IList<bo.ISpecificationTreeItem>;
+            /** 转换 */
+            convert(): bo.MaterialSpecification;
         }
         class MaterialSpecificationTreeItem implements bo.ISpecificationTreeItem {
             constructor(data: bo.MaterialSpecificationItem);
@@ -9413,10 +9544,12 @@ declare namespace materials {
             editable: boolean;
             /** 内容 */
             content: string;
+            /** 关联 */
+            associated: string;
             /** 备注 */
             note: string;
             /** 可选值 */
-            vaildValues: ibas.IList<ibas.KeyText>;
+            vaildValues: ibas.IList<bo.ISpecificationTreeItemValue>;
             /** 项目集合 */
             items: ibas.IList<bo.ISpecificationTreeItem>;
         }
@@ -9459,6 +9592,8 @@ declare namespace materials {
             protected addMaterialSpecificationItem(): void;
             /** 删除物料规格-项目事件 */
             protected removeMaterialSpecificationItem(items: bo.MaterialSpecificationItem[]): void;
+            /** 选择业务伙伴事件 */
+            private chooseBusinessPartner;
         }
         /** 视图-物料规格 */
         interface IMaterialSpecificationEditView extends ibas.IBOEditView {
@@ -9472,6 +9607,8 @@ declare namespace materials {
             addMaterialSpecificationItemEvent: Function;
             /** 删除物料规格-项目事件 */
             removeMaterialSpecificationItemEvent: Function;
+            /** 选择业务伙伴事件 */
+            chooseBusinessPartnerEvent: Function;
             /** 显示数据 */
             showMaterialSpecificationItems(datas: bo.MaterialSpecificationItem[]): void;
         }
@@ -9630,6 +9767,7 @@ declare namespace materials {
             /** 删除规格模板-项目事件 */
             protected removeSpecificationItem(items: bo.SpecificationItem[]): void;
             private chooseSpecificationTarget;
+            private chooseSpecificationAssigned;
             private editSpecificationItemData;
             /** 编辑属性值事件 */
             private editSpecificationItem;
@@ -9652,6 +9790,8 @@ declare namespace materials {
             removeSpecificationItemEvent: Function;
             /** 选择规格模板目标事件 */
             chooseSpecificationTargetEvent: Function;
+            /** 选择规格模板分配事件 */
+            chooseSpecificationAssignedEvent: Function;
             /** 显示数据 */
             showSpecificationItems(datas: bo.SpecificationItem[]): void;
             /** 编辑规格模事件 */
@@ -9686,10 +9826,10 @@ declare namespace materials {
             protected registerView(): void;
             /** 视图显示后 */
             protected viewShowed(): void;
+            private specification;
+            private extraData;
             /** 运行服务 */
             runService(contract: ISpecificationTreeContract): void;
-            private extraData;
-            private specification;
             private showSpecification;
             private using;
             private save;

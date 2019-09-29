@@ -558,7 +558,7 @@ namespace sales {
                 let app: SalesQuoteItemExtraApp = new SalesQuoteItemExtraApp();
                 app.navigation = this.navigation;
                 app.viewShower = this.viewShower;
-                app.run(data);
+                app.run(data, this.editData);
             }
         }
         /** 视图-销售报价 */
