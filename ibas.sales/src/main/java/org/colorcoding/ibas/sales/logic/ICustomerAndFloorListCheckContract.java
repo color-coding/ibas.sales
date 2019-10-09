@@ -8,15 +8,15 @@ import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
  * @author Niuren.Zhu
  *
  */
-public interface ICustomerCheckContract
+public interface ICustomerAndFloorListCheckContract
 		extends IBusinessLogicContract, org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract {
 
 	/**
-	 * 获取-底价清单
+	 * 获取-价格清单
 	 * 
 	 * @return 值
 	 */
-	Integer getFloorList();
+	Integer getPriceList();
 
 	/**
 	 * 设置-底价清单

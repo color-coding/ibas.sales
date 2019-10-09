@@ -823,20 +823,6 @@ public interface ISalesOrder extends IBODocument, IShippingAddressParent {
 	void setOrderType(String value);
 
 	/**
-	 * 获取-底价清单
-	 * 
-	 * @return 值
-	 */
-	Integer getFloorList();
-
-	/**
-	 * 设置-底价清单
-	 * 
-	 * @param value 值
-	 */
-	void setFloorList(Integer value);
-
-	/**
 	 * 获取-销售订单-行集合
 	 * 
 	 * @return 值

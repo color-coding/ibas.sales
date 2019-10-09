@@ -38,7 +38,7 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSummation;
 import org.colorcoding.ibas.materials.logic.IMaterialPriceCheckContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
-import org.colorcoding.ibas.sales.logic.ICustomerCheckContract;
+import org.colorcoding.ibas.sales.logic.ICustomerAndFloorListCheckContract;
 
 /**
  * 获取-销售报价
@@ -1720,37 +1720,6 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 	}
 
 	/**
-	 * 属性名称-底价清单
-	 */
-	private static final String PROPERTY_FLOORLIST_NAME = "FloorList";
-
-	/**
-	 * 底价清单 属性
-	 */
-	@DbField(name = "FloorList", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<Integer> PROPERTY_FLOORLIST = registerProperty(PROPERTY_FLOORLIST_NAME,
-			Integer.class, MY_CLASS);
-
-	/**
-	 * 获取-底价清单
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_FLOORLIST_NAME)
-	public final Integer getFloorList() {
-		return this.getProperty(PROPERTY_FLOORLIST);
-	}
-
-	/**
-	 * 设置-底价清单
-	 * 
-	 * @param value 值
-	 */
-	public final void setFloorList(Integer value) {
-		this.setProperty(PROPERTY_FLOORLIST, value);
-	}
-
-	/**
 	 * 属性名称-销售报价-行
 	 */
 	private static final String PROPERTY_SALESQUOTEITEMS_NAME = "SalesQuoteItems";
@@ -1888,11 +1857,13 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 		this.setPaidTotal(Decimal.ZERO);
 	}
 
+	private Integer floorList;
+
 	@Override
 	public IBusinessLogicContract[] getContracts() {
 		return new IBusinessLogicContract[] {
 				// 客户检查
-				new ICustomerCheckContract() {
+				new ICustomerAndFloorListCheckContract() {
 					@Override
 					public String getIdentifiers() {
 						return SalesQuote.this.getIdentifiers();
@@ -1904,13 +1875,13 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 					}
 
 					@Override
-					public Integer getFloorList() {
-						return SalesQuote.this.getFloorList();
+					public Integer getPriceList() {
+						return SalesQuote.this.getPriceList();
 					}
 
 					@Override
 					public void setFloorList(Integer value) {
-						SalesQuote.this.setFloorList(value);
+						SalesQuote.this.floorList = value;
 					}
 
 				},
@@ -1924,7 +1895,7 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 
 					@Override
 					public Integer getPriceList() {
-						return SalesQuote.this.getFloorList();
+						return SalesQuote.this.floorList;
 					}
 
 					@Override

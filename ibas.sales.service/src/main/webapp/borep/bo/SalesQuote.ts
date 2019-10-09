@@ -533,17 +533,6 @@ namespace sales {
                 this.setProperty(SalesQuote.PROPERTY_ORDERTYPE_NAME, value);
             }
 
-            /** 映射的属性名称-底价清单 */
-            static PROPERTY_FLOORLIST_NAME: string = "FloorList";
-            /** 获取-底价清单 */
-            get floorList(): number {
-                return this.getProperty<number>(SalesQuote.PROPERTY_FLOORLIST_NAME);
-            }
-            /** 设置-底价清单 */
-            set floorList(value: number) {
-                this.setProperty(SalesQuote.PROPERTY_FLOORLIST_NAME, value);
-            }
-
             /** 映射的属性名称-销售订单-行集合 */
             static PROPERTY_SALESQUOTEITEMS_NAME: string = "SalesQuoteItems";
             /** 获取-销售订单-行集合 */

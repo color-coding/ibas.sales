@@ -49,7 +49,6 @@
     <Property Name="Project" Description="项目代码" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Project"/>
     <Property Name="Consumer" Description="终端客户" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="Consumer"/>
     <Property Name="OrderType" Description="单据类型" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OrderType"/>
-    <Property Name="FloorList" Description="底价清单" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="FloorList"/>
   </Model>
   <Model Name="SalesOrderItem" Description="销售订单-行" ModelType="DocumentLine" Mapped="${Company}_SL_RDR1">
     <Property Name="DocEntry" Description="编码" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="DocEntry" PrimaryKey="Yes"/>
