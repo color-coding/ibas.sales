@@ -807,6 +807,8 @@ declare namespace materials {
             onOrdered: number;
             /** 最低库存量 */
             minimumInventory: number;
+            /** 最低订购数量 */
+            minimumOrderQuantity: number;
             /** 提前期（天） */
             leadTime: number;
             /** 序号管理 */
@@ -926,6 +928,10 @@ declare namespace materials {
             manufacturingDate: Date;
             /** 准入日期 */
             admissionDate: Date;
+            /** 物料规格 */
+            specification: number;
+            /** 位置 */
+            location: string;
             /** 备注 */
             notes: string;
             /** 基于类型 */
@@ -1500,6 +1506,10 @@ declare namespace materials {
             warrantyStartDate: Date;
             /** 保修结束日期 */
             warrantyEndDate: Date;
+            /** 物料规格 */
+            specification: number;
+            /** 位置 */
+            location: string;
             /** 备注 */
             notes: string;
             /** 基于类型 */
@@ -2108,6 +2118,8 @@ declare namespace materials {
             organization: string;
             /** 名称 */
             name: string;
+            /** 物料编码 */
+            itemCode: string;
             /** 规格模板 */
             specification: number;
             /** 业务伙伴类型 */
@@ -3930,6 +3942,11 @@ declare namespace materials {
             /** 获取-最低库存量 */
             /** 设置-最低库存量 */
             minimumInventory: number;
+            /** 映射的属性名称-最低订购数量 */
+            static PROPERTY_MINIMUMORDERQUANTITY_NAME: string;
+            /** 获取-最低订购数量 */
+            /** 设置-最低订购数量 */
+            minimumOrderQuantity: number;
             /** 映射的属性名称-提前期（天） */
             static PROPERTY_LEADTIME_NAME: string;
             /** 获取-提前期（天） */
@@ -4213,6 +4230,16 @@ declare namespace materials {
             /** 获取-准入日期 */
             /** 设置-准入日期 */
             admissionDate: Date;
+            /** 映射的属性名称-物料规格 */
+            static PROPERTY_SPECIFICATION_NAME: string;
+            /** 获取-物料规格 */
+            /** 设置-物料规格 */
+            specification: number;
+            /** 映射的属性名称-位置 */
+            static PROPERTY_LOCATION_NAME: string;
+            /** 获取-位置 */
+            /** 设置-位置 */
+            location: string;
             /** 映射的属性名称-备注 */
             static PROPERTY_NOTES_NAME: string;
             /** 获取-备注 */
@@ -5109,6 +5136,16 @@ declare namespace materials {
             /** 获取-保修结束日期 */
             /** 设置-保修结束日期 */
             warrantyEndDate: Date;
+            /** 映射的属性名称-物料规格 */
+            static PROPERTY_SPECIFICATION_NAME: string;
+            /** 获取-物料规格 */
+            /** 设置-物料规格 */
+            specification: number;
+            /** 映射的属性名称-位置 */
+            static PROPERTY_LOCATION_NAME: string;
+            /** 获取-位置 */
+            /** 设置-位置 */
+            location: string;
             /** 映射的属性名称-备注 */
             static PROPERTY_NOTES_NAME: string;
             /** 获取-备注 */
@@ -6122,6 +6159,11 @@ declare namespace materials {
             /** 获取-名称 */
             /** 设置-名称 */
             name: string;
+            /** 映射的属性名称-物料编码 */
+            static PROPERTY_ITEMCODE_NAME: string;
+            /** 获取-物料编码 */
+            /** 设置-物料编码 */
+            itemCode: string;
             /** 映射的属性名称-规格模板 */
             static PROPERTY_SPECIFICATION_NAME: string;
             /** 获取-规格模板 */

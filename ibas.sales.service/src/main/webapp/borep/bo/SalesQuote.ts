@@ -587,7 +587,8 @@ namespace sales {
                         SalesQuote.PROPERTY_ITEMSTAXTOTAL_NAME, SalesQuote.PROPERTY_SALESQUOTEITEMS_NAME, SalesQuoteItem.PROPERTY_TAXTOTAL_NAME),
                     // 折扣后总计 = 项目-行总计 * 折扣
                     new ibas.BusinessRuleMultiplication(
-                        SalesQuote.PROPERTY_DISCOUNTTOTAL_NAME, SalesQuote.PROPERTY_ITEMSLINETOTAL_NAME, SalesQuote.PROPERTY_DISCOUNT_NAME),
+                        SalesQuote.PROPERTY_DISCOUNTTOTAL_NAME, SalesQuote.PROPERTY_ITEMSLINETOTAL_NAME, SalesQuote.PROPERTY_DISCOUNT_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
                     // 单据总计 = 折扣后总计 + 运输费用 + 税总额
                     new ibas.BusinessRuleSummation(
                         SalesQuote.PROPERTY_DOCUMENTTOTAL_NAME, SalesQuote.PROPERTY_DISCOUNTTOTAL_NAME, SalesQuote.PROPERTY_ITEMSTAXTOTAL_NAME),
@@ -1349,16 +1350,23 @@ namespace sales {
                 return [
                     // 推导 价格 = 折扣前价格 * 折扣
                     new ibas.BusinessRuleMultiplicativeDeductionEx(
-                        SalesQuoteItem.PROPERTY_DISCOUNT_NAME, SalesQuoteItem.PROPERTY_UNITPRICE_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME),
+                        SalesQuoteItem.PROPERTY_DISCOUNT_NAME, SalesQuoteItem.PROPERTY_UNITPRICE_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PRICE)
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PRICE)
+                        , undefined // 折扣使用默认小数位，以减小误差
+                    ),
                     // 计算总计 = 数量 * 价格
                     new ibas.BusinessRuleMultiplication(
-                        SalesQuoteItem.PROPERTY_LINETOTAL_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME),
+                        SalesQuoteItem.PROPERTY_LINETOTAL_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
                     // 计算毛价 = 价格 * 税率
                     new BusinessRuleCalculateGrossPrice(
-                        SalesQuoteItem.PROPERTY_GROSSPRICE_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME, SalesQuoteItem.PROPERTY_TAXRATE_NAME),
+                        SalesQuoteItem.PROPERTY_GROSSPRICE_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME, SalesQuoteItem.PROPERTY_TAXRATE_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PRICE)),
                     // 计算毛总额 = 数量 * 毛价
                     new ibas.BusinessRuleMultiplication(
-                        SalesQuoteItem.PROPERTY_GROSSTOTAL_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME, SalesQuoteItem.PROPERTY_GROSSPRICE_NAME),
+                        SalesQuoteItem.PROPERTY_GROSSTOTAL_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME, SalesQuoteItem.PROPERTY_GROSSPRICE_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
                     // 计算税总额 = 毛总额 - 总计
                     new ibas.BusinessRuleSubtraction(
                         SalesQuoteItem.PROPERTY_TAXTOTAL_NAME, SalesQuoteItem.PROPERTY_GROSSTOTAL_NAME, SalesQuoteItem.PROPERTY_LINETOTAL_NAME),

@@ -232,12 +232,13 @@ namespace sales {
              * @param original 属性-原价
              * @param taxRate 属性-税率
              */
-            constructor(result: string, original: string, taxRate: string) {
+            constructor(result: string, original: string, taxRate: string, decimalPlaces: number = undefined) {
                 super();
                 this.name = ibas.i18n.prop("sales_business_rule_calculate_gross_price");
                 this.result = result;
                 this.original = original;
                 this.taxRate = taxRate;
+                this.decimalPlaces = decimalPlaces;
                 this.inputProperties.add(this.original);
                 this.inputProperties.add(this.taxRate);
                 this.affectedProperties.add(this.result);
@@ -248,12 +249,14 @@ namespace sales {
             original: string;
             /** 税率 */
             taxRate: string;
+            /** 结果保留小数位 */
+            decimalPlaces: number;
             /** 计算规则 */
             protected compute(context: ibas.BusinessRuleContextCommon): void {
                 let original: number = ibas.numbers.valueOf(context.inputValues.get(this.original));
                 let taxRate: number = ibas.numbers.valueOf(context.inputValues.get(this.taxRate));
                 let result: number = original * (1 + taxRate);
-                context.outputValues.set(this.result, ibas.numbers.round(result));
+                context.outputValues.set(this.result, ibas.numbers.round(result, this.decimalPlaces));
             }
         }
     }

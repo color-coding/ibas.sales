@@ -520,7 +520,7 @@ namespace sales {
             private chooseSalesQuoteContactPerson(): void {
                 if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
-                        ibas.i18n.prop("bo_salesquote_suppliercode")
+                        ibas.i18n.prop("bo_salesquote_customercode")
                     ));
                     return;
                 }

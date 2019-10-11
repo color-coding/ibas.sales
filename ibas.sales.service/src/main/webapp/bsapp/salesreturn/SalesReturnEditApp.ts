@@ -500,7 +500,7 @@ namespace sales {
             private chooseSalesReturnContactPerson(): void {
                 if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
-                        ibas.i18n.prop("bo_salesreturn_suppliercode")
+                        ibas.i18n.prop("bo_salesreturn_customercode")
                     ));
                     return;
                 }
