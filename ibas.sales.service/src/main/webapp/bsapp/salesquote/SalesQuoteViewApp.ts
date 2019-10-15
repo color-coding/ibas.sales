@@ -105,7 +105,7 @@ namespace sales {
                     criteria = new ibas.Criteria();
                     criteria.result = 1;
                     let condition: ibas.ICondition = criteria.conditions.create();
-                    condition.alias = ibas.BO_PROPERTY_NAME_DOCENTRY;
+                    condition.alias = bo.SalesQuote.PROPERTY_DOCENTRY_NAME;
                     condition.value = value;
                 }
                 let boRepository: bo.BORepositorySales = new bo.BORepositorySales();

@@ -669,10 +669,6 @@ namespace sales {
                                 && c.baseDocumentLineId === item.lineId) !== null) {
                             continue;
                         }
-                        let quantity: number = item.quantity - item.closedQuantity;
-                        if (quantity <= 0) {
-                            continue;
-                        }
                         let myItem: SalesReturnItem = this.salesReturnItems.create();
                         bo.baseDocumentItem(myItem, item);
                         // 复制批次

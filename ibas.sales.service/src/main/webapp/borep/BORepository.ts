@@ -129,14 +129,14 @@ namespace sales {
                                 let criteria: ibas.ICriteria = new ibas.Criteria();
                                 for (let item of psRslt.resultObjects) {
                                     let condition: ibas.ICondition = criteria.conditions.create();
-                                    condition.alias = "code";
+                                    condition.alias = materials.bo.Product.PROPERTY_CODE_NAME;
                                     condition.value = item.product;
                                     if (criteria.conditions.length > 0) {
                                         condition.relationship = ibas.emConditionRelationship.OR;
                                     }
                                     for (let sItem of item.productSuitItems) {
                                         condition = criteria.conditions.create();
-                                        condition.alias = "code";
+                                        condition.alias = materials.bo.Product.PROPERTY_CODE_NAME;
                                         condition.value = sItem.itemCode;
                                         condition.relationship = ibas.emConditionRelationship.OR;
                                     }

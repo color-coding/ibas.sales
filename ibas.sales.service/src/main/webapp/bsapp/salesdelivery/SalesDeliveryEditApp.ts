@@ -616,17 +616,17 @@ namespace sales {
                 let criteria: ibas.ICriteria = new ibas.Criteria();
                 let condition: ibas.ICondition = criteria.conditions.create();
                 // 未取消的
-                condition.alias = ibas.BO_PROPERTY_NAME_CANCELED;
+                condition.alias = bo.SalesOrder.PROPERTY_CANCELED_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emYesNo.NO.toString();
                 // 未删除的
                 condition = criteria.conditions.create();
-                condition.alias = ibas.BO_PROPERTY_NAME_DELETED;
+                condition.alias = bo.SalesOrder.PROPERTY_DELETED_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emYesNo.NO.toString();
                 // 仅下达的
                 condition = criteria.conditions.create();
-                condition.alias = ibas.BO_PROPERTY_NAME_DOCUMENTSTATUS;
+                condition.alias = bo.SalesOrder.PROPERTY_DOCUMENTSTATUS_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emDocumentStatus.RELEASED.toString();
                 // 当前客户的
