@@ -179,9 +179,7 @@ namespace sales {
             }
             /** 添加产品套装-项目事件 */
             private addProductSuitItem(): void {
-                this.editData.productSuitItems.create();
-                // 仅显示没有标记删除的
-                this.view.showProductSuitItems(this.editData.productSuitItems.filterDeleted());
+                this.chooseProductSuitItemMaterial(undefined);
             }
             /** 删除产品套装-项目事件 */
             private removeProductSuitItem(items: bo.ProductSuitItem[]): void {

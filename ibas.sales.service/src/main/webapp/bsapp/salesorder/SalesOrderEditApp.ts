@@ -490,9 +490,7 @@ namespace sales {
             }
             /** 添加销售订单-行事件 */
             private addSalesOrderItem(): void {
-                this.editData.salesOrderItems.create();
-                // 仅显示没有标记删除的
-                this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
+                this.chooseSalesOrderItemMaterial(undefined);
             }
             /** 删除销售订单-行事件 */
             private removeSalesOrderItem(items: bo.SalesOrderItem[]): void {

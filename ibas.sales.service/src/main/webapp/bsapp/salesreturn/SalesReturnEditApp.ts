@@ -340,9 +340,7 @@ namespace sales {
             }
             /** 添加销售退货-行事件 */
             private addSalesReturnItem(): void {
-                this.editData.salesReturnItems.create();
-                // 仅显示没有标记删除的
-                this.view.showSalesReturnItems(this.editData.salesReturnItems.filterDeleted());
+                this.chooseSalesReturnItemMaterial(undefined);
             }
             /** 删除销售退货-行事件 */
             private removeSalesReturnItem(items: bo.SalesReturnItem[]): void {

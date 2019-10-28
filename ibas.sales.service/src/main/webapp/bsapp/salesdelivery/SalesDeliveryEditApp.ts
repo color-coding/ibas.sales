@@ -517,9 +517,7 @@ namespace sales {
             }
             /** 添加销售交货-行事件 */
             private addSalesDeliveryItem(): void {
-                this.editData.salesDeliveryItems.create();
-                // 仅显示没有标记删除的
-                this.view.showSalesDeliveryItems(this.editData.salesDeliveryItems.filterDeleted());
+                this.chooseSalesDeliveryItemMaterial(undefined);
             }
             /** 删除销售交货-行事件 */
             private removeSalesDeliveryItem(items: bo.SalesDeliveryItem[]): void {

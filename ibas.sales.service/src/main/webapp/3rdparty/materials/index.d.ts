@@ -198,6 +198,8 @@ declare namespace materials {
                 const CONDITION_ALIAS_INVENTORY_ITEM: string;
                 /** 查询条件字段-物料类型 */
                 const CONDITION_ALIAS_ITEM_TYPE: string;
+                /** 查询条件字段-虚拟物料 */
+                const CONDITION_ALIAS_PHANTOM_ITEM: string;
                 /** 默认查询条件 */
                 function create(): ibas.IList<ibas.ICondition>;
             }

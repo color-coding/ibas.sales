@@ -438,9 +438,7 @@ namespace sales {
             }
             /** 添加销售报价-行事件 */
             private addSalesQuoteItem(): void {
-                this.editData.salesQuoteItems.create();
-                // 仅显示没有标记删除的
-                this.view.showSalesQuoteItems(this.editData.salesQuoteItems.filterDeleted());
+                this.chooseSalesQuoteItemMaterial(undefined);
             }
             /** 删除销售报价-行事件 */
             private removeSalesQuoteItem(items: bo.SalesQuoteItem[]): void {
