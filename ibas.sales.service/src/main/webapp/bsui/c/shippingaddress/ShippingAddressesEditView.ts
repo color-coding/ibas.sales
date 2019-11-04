@@ -68,19 +68,37 @@ namespace sales {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress") }),
                             new sap.extension.m.AddressArea("", {
                                 countryVisible: true,
-                                zipCodeVisible: false,
+                                zipCodeVisible: true,
                             }).bindProperty("country", {
                                 path: "/country",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 100
+                                })
                             }).bindProperty("province", {
                                 path: "/province",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 100
+                                })
                             }).bindProperty("city", {
                                 path: "/city",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 100
+                                })
                             }).bindProperty("district", {
                                 path: "/district",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 100
+                                })
                             }).bindProperty("street", {
                                 path: "/street",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 100
+                                })
                             }).bindProperty("zipCode", {
                                 path: "/zipCode",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 10
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_trackingnumber") }),
                             new sap.extension.m.Input("", {

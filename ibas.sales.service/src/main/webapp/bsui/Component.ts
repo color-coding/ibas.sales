@@ -358,8 +358,10 @@ namespace sales {
                     sap.extension.m.Select.prototype.setBindingValue.apply(this, arguments);
                     let select: any = this.getSelectedItem();
                     if (select instanceof sales.ui.component.TaxGroupItem) {
-                        if (this.getRate() !== select.getRate()) {
-                            this.setRate(select.getRate());
+                        if (ibas.numbers.valueOf(this.getRate()) !== select.getRate()) {
+                            setTimeout(() => {
+                                this.setRate(select.getRate());
+                            }, 50);
                         }
                     }
                     return this;
@@ -374,12 +376,19 @@ namespace sales {
                         criteria: accounting.app.conditions.taxgroup.create(accounting.bo.emTaxGroupCategory.OUTPUT),
                         onCompleted: (opRslt) => {
                             TAXGROUP_ITEM_CACHE = new ibas.ArrayList<{ code: string, name: string, rate: number }>();
+                            TAXGROUP_ITEM_CACHE.add({
+                                code: "",
+                                name: ibas.i18n.prop("openui5_please_select_data"),
+                                rate: 0.0,
+                            });
                             for (let item of opRslt.resultObjects) {
                                 TAXGROUP_ITEM_CACHE.add({
                                     code: item.code,
                                     name: item.name,
                                     rate: item.rate,
                                 });
+                            }
+                            for (let item of TAXGROUP_ITEM_CACHE) {
                                 this.addItem(item);
                             }
                         }

@@ -244,10 +244,19 @@ namespace sales {
                                         width: "16rem",
                                         template: new sap.extension.m.Text("", {
                                         }).bindProperty("bindingValue", {
-                                            path: "itemDescription",
-                                            type: new sap.extension.data.Alphanumeric({
-                                                maxLength: 100
-                                            })
+                                            parts: [
+                                                {
+                                                    path: "itemDescription",
+                                                    type: new sap.extension.data.Alphanumeric()
+                                                },
+                                                {
+                                                    path: "itemSign",
+                                                    type: new sap.extension.data.Alphanumeric(),
+                                                    formatter(data: string): string {
+                                                        return ibas.strings.isEmpty(data) ? "" : ibas.strings.format(" ({0})", data);
+                                                    }
+                                                },
+                                            ]
                                         }),
                                     }),
                                     new sap.extension.table.DataColumn("", {
