@@ -413,7 +413,7 @@ namespace sales {
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_others") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_dataowner") }),
-                            new sap.extension.m.UserInput("", {
+                            new sap.extension.m.DataOwnerInput("", {
                                 showValueHelp: true,
                             }).bindProperty("bindingValue", {
                                 path: "dataOwner",
