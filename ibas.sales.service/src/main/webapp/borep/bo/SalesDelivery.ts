@@ -445,17 +445,6 @@ namespace sales {
                 this.setProperty(SalesDelivery.PROPERTY_PAIDTOTAL_NAME, value);
             }
 
-            /** 映射的属性名称-毛利 */
-            static PROPERTY_GROSSPROFIT_NAME: string = "GrossProfit";
-            /** 获取-毛利 */
-            get grossProfit(): number {
-                return this.getProperty<number>(SalesDelivery.PROPERTY_GROSSPROFIT_NAME);
-            }
-            /** 设置-毛利 */
-            set grossProfit(value: number) {
-                this.setProperty(SalesDelivery.PROPERTY_GROSSPROFIT_NAME, value);
-            }
-
             /** 映射的属性名称-价格清单 */
             static PROPERTY_PRICELIST_NAME: string = "PriceList";
             /** 获取-价格清单 */
@@ -612,10 +601,9 @@ namespace sales {
                     new ibas.BusinessRuleMultiplication(
                         SalesDelivery.PROPERTY_DISCOUNTTOTAL_NAME, SalesDelivery.PROPERTY_ITEMSLINETOTAL_NAME, SalesDelivery.PROPERTY_DISCOUNT_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
-                    // 单据总计 = 折扣后总计 + 运输费用 + 税总额
+                    // 单据总计 = 折扣后总计 + 运输费用
                     new ibas.BusinessRuleSummation(
-                        SalesDelivery.PROPERTY_DOCUMENTTOTAL_NAME, SalesDelivery.PROPERTY_DISCOUNTTOTAL_NAME,
-                        SalesDelivery.PROPERTY_ITEMSTAXTOTAL_NAME, SalesDelivery.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME),
+                        SalesDelivery.PROPERTY_DOCUMENTTOTAL_NAME, SalesDelivery.PROPERTY_DISCOUNTTOTAL_NAME, SalesDelivery.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME),
                     // 小数舍入（单据总计）
                     new ibas.BusinessRuleRoundingOff(
                         SalesDelivery.PROPERTY_DIFFAMOUNT_NAME, SalesDelivery.PROPERTY_DOCUMENTTOTAL_NAME,
@@ -1228,17 +1216,6 @@ namespace sales {
                 this.setProperty(SalesDeliveryItem.PROPERTY_CLOSEDAMOUNT_NAME, value);
             }
 
-            /** 映射的属性名称-产品类型 */
-            static PROPERTY_TREETYPE_NAME: string = "TreeType";
-            /** 获取-产品类型 */
-            get treeType(): emProductTreeType {
-                return this.getProperty<emProductTreeType>(SalesDeliveryItem.PROPERTY_TREETYPE_NAME);
-            }
-            /** 设置-产品类型 */
-            set treeType(value: emProductTreeType) {
-                this.setProperty(SalesDeliveryItem.PROPERTY_TREETYPE_NAME, value);
-            }
-
             /** 映射的属性名称-基础数量 */
             static PROPERTY_BASISQUANTITY_NAME: string = "BasisQuantity";
             /** 获取-基础数量 */
@@ -1270,17 +1247,6 @@ namespace sales {
             /** 设置-父项行标志号 */
             set parentLineSign(value: string) {
                 this.setProperty(SalesDeliveryItem.PROPERTY_PARENTLINESIGN_NAME, value);
-            }
-
-            /** 映射的属性名称-科目代码 */
-            static PROPERTY_ACCOUNTCODE_NAME: string = "AccountCode";
-            /** 获取-科目代码 */
-            get accountCode(): string {
-                return this.getProperty<string>(SalesDeliveryItem.PROPERTY_ACCOUNTCODE_NAME);
-            }
-            /** 设置-科目代码 */
-            set accountCode(value: string) {
-                this.setProperty(SalesDeliveryItem.PROPERTY_ACCOUNTCODE_NAME, value);
             }
 
             /** 映射的属性名称-折扣前价格 */
@@ -1327,39 +1293,28 @@ namespace sales {
                 this.setProperty(SalesDeliveryItem.PROPERTY_TAXTOTAL_NAME, value);
             }
 
-            /** 映射的属性名称-毛价 */
-            static PROPERTY_GROSSPRICE_NAME: string = "GrossPrice";
-            /** 获取-毛价 */
-            get grossPrice(): number {
-                return this.getProperty<number>(SalesDeliveryItem.PROPERTY_GROSSPRICE_NAME);
+
+            /** 映射的属性名称-税前价格 */
+            static PROPERTY_PRETAXPRICE_NAME: string = "PreTaxPrice";
+            /** 获取-税前价格 */
+            get preTaxPrice(): number {
+                return this.getProperty<number>(SalesDeliveryItem.PROPERTY_PRETAXPRICE_NAME);
             }
-            /** 设置-毛价 */
-            set grossPrice(value: number) {
-                this.setProperty(SalesDeliveryItem.PROPERTY_GROSSPRICE_NAME, value);
+            /** 设置-税前价格 */
+            set preTaxPrice(value: number) {
+                this.setProperty(SalesDeliveryItem.PROPERTY_PRETAXPRICE_NAME, value);
             }
 
-            /** 映射的属性名称-毛总额 */
-            static PROPERTY_GROSSTOTAL_NAME: string = "GrossTotal";
-            /** 获取-毛总额 */
-            get grossTotal(): number {
-                return this.getProperty<number>(SalesDeliveryItem.PROPERTY_GROSSTOTAL_NAME);
+            /** 映射的属性名称-税前行总计 */
+            static PROPERTY_PRETAXLINETOTAL_NAME: string = "PreTaxLineTotal";
+            /** 获取-税前行总计 */
+            get preTaxLineTotal(): number {
+                return this.getProperty<number>(SalesDeliveryItem.PROPERTY_PRETAXLINETOTAL_NAME);
             }
-            /** 设置-毛总额 */
-            set grossTotal(value: number) {
-                this.setProperty(SalesDeliveryItem.PROPERTY_GROSSTOTAL_NAME, value);
+            /** 设置-税前行总计 */
+            set preTaxLineTotal(value: number) {
+                this.setProperty(SalesDeliveryItem.PROPERTY_PRETAXLINETOTAL_NAME, value);
             }
-
-            /** 映射的属性名称-毛利 */
-            static PROPERTY_GROSSPROFIT_NAME: string = "GrossProfit";
-            /** 获取-毛利 */
-            get grossProfit(): number {
-                return this.getProperty<number>(SalesDeliveryItem.PROPERTY_GROSSPROFIT_NAME);
-            }
-            /** 设置-毛利 */
-            set grossProfit(value: number) {
-                this.setProperty(SalesDeliveryItem.PROPERTY_GROSSPROFIT_NAME, value);
-            }
-
             /** 映射的属性名称-分配规则1 */
             static PROPERTY_DISTRIBUTIONRULE1_NAME: string = "DistributionRule1";
             /** 获取-分配规则1 */
@@ -1445,31 +1400,36 @@ namespace sales {
                 this.discount = 1;
                 this.taxRate = 0;
             }
+            /** 赋值产品 */
+            baseProduct(source: materials.bo.IProduct): void {
+                if (ibas.objects.isNull(source)) {
+                    return;
+                }
+                bo.baseProduct(this, source);
+            }
 
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
-                    // 推导 价格 = 折扣前价格 * 折扣
-                    new ibas.BusinessRuleMultiplicativeDeductionEx(
+                    // 计算折扣价格 = 折扣前价格 * 折扣
+                    new BusinessRuleDeductionDiscountPrice(
                         SalesDeliveryItem.PROPERTY_DISCOUNT_NAME, SalesDeliveryItem.PROPERTY_UNITPRICE_NAME, SalesDeliveryItem.PROPERTY_PRICE_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PRICE)
-                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PRICE)
-                        , undefined // 折扣使用默认小数位，以减小误差
                     ),
                     // 计算总计 = 数量 * 价格
                     new ibas.BusinessRuleMultiplication(
                         SalesDeliveryItem.PROPERTY_LINETOTAL_NAME, SalesDeliveryItem.PROPERTY_QUANTITY_NAME, SalesDeliveryItem.PROPERTY_PRICE_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
-                    // 计算毛价 = 价格 * 税率
-                    new BusinessRuleCalculateGrossPrice(
-                        SalesDeliveryItem.PROPERTY_GROSSPRICE_NAME, SalesDeliveryItem.PROPERTY_PRICE_NAME, SalesDeliveryItem.PROPERTY_TAXRATE_NAME
+                    // 计算税前价格 = 税后价格 * 税率
+                    new BusinessRuleDeductionTaxPrice(
+                        SalesDeliveryItem.PROPERTY_TAXRATE_NAME, SalesDeliveryItem.PROPERTY_PRETAXPRICE_NAME, SalesDeliveryItem.PROPERTY_PRICE_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PRICE)),
-                    // 计算毛总额 = 数量 * 毛价
+                    // 计算税前总计 = 数量 * 税前价格
                     new ibas.BusinessRuleMultiplication(
-                        SalesDeliveryItem.PROPERTY_GROSSTOTAL_NAME, SalesDeliveryItem.PROPERTY_QUANTITY_NAME, SalesDeliveryItem.PROPERTY_GROSSPRICE_NAME
+                        SalesDeliveryItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesDeliveryItem.PROPERTY_QUANTITY_NAME, SalesDeliveryItem.PROPERTY_PRETAXPRICE_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
-                    // 计算税总额 = 毛总额 - 总计
+                    // 计算税总额 = 税后总计 - 税前总计
                     new ibas.BusinessRuleSubtraction(
-                        SalesDeliveryItem.PROPERTY_TAXTOTAL_NAME, SalesDeliveryItem.PROPERTY_GROSSTOTAL_NAME, SalesDeliveryItem.PROPERTY_LINETOTAL_NAME),
+                        SalesDeliveryItem.PROPERTY_TAXTOTAL_NAME, SalesDeliveryItem.PROPERTY_LINETOTAL_NAME, SalesDeliveryItem.PROPERTY_PRETAXLINETOTAL_NAME),
                 ];
             }
             /** 重置 */
@@ -1478,6 +1438,7 @@ namespace sales {
                 this.closedAmount = 0;
                 this.closedQuantity = 0;
             }
+
         }
     }
 }

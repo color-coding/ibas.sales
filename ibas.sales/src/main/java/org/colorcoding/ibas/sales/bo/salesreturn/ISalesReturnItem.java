@@ -9,7 +9,6 @@ import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchReceiptParent;
 import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialReceiptParent;
-import org.colorcoding.ibas.sales.data.emProductTreeType;
 
 /**
  * 销售退货-行 接口
@@ -767,20 +766,6 @@ public interface ISalesReturnItem extends IBODocumentLine, IMaterialBatchReceipt
 	void setClosedAmount(double value);
 
 	/**
-	 * 获取-产品类型
-	 * 
-	 * @return 值
-	 */
-	emProductTreeType getTreeType();
-
-	/**
-	 * 设置-产品类型
-	 * 
-	 * @param value 值
-	 */
-	void setTreeType(emProductTreeType value);
-
-	/**
 	 * 获取-基础数量
 	 * 
 	 * @return 值
@@ -842,20 +827,6 @@ public interface ISalesReturnItem extends IBODocumentLine, IMaterialBatchReceipt
 	 * @param value 值
 	 */
 	void setParentLineSign(String value);
-
-	/**
-	 * 获取-科目代码
-	 * 
-	 * @return 值
-	 */
-	String getAccountCode();
-
-	/**
-	 * 设置-科目代码
-	 * 
-	 * @param value 值
-	 */
-	void setAccountCode(String value);
 
 	/**
 	 * 获取-折扣前价格
@@ -977,109 +948,74 @@ public interface ISalesReturnItem extends IBODocumentLine, IMaterialBatchReceipt
 	void setTaxTotal(double value);
 
 	/**
-	 * 获取-毛价
+	 * 获取-税前价格
 	 * 
 	 * @return 值
 	 */
-	BigDecimal getGrossPrice();
+	BigDecimal getPreTaxPrice();
 
 	/**
-	 * 设置-毛价
+	 * 设置-税前价格
 	 * 
 	 * @param value 值
 	 */
-	void setGrossPrice(BigDecimal value);
+	void setPreTaxPrice(BigDecimal value);
 
 	/**
-	 * 设置-毛价
+	 * 设置-税前价格
 	 * 
 	 * @param value 值
 	 */
-	void setGrossPrice(String value);
+	void setPreTaxPrice(String value);
 
 	/**
-	 * 设置-毛价
+	 * 设置-税前价格
 	 * 
 	 * @param value 值
 	 */
-	void setGrossPrice(int value);
+	void setPreTaxPrice(int value);
 
 	/**
-	 * 设置-毛价
+	 * 设置-税前价格
 	 * 
 	 * @param value 值
 	 */
-	void setGrossPrice(double value);
+	void setPreTaxPrice(double value);
 
 	/**
-	 * 获取-毛总额
+	 * 获取-税前行总计
 	 * 
 	 * @return 值
 	 */
-	BigDecimal getGrossTotal();
+	BigDecimal getPreTaxLineTotal();
 
 	/**
-	 * 设置-毛总额
+	 * 设置-税前行总计
 	 * 
 	 * @param value 值
 	 */
-	void setGrossTotal(BigDecimal value);
+	void setPreTaxLineTotal(BigDecimal value);
 
 	/**
-	 * 设置-毛总额
+	 * 设置-税前行总计
 	 * 
 	 * @param value 值
 	 */
-	void setGrossTotal(String value);
+	void setPreTaxLineTotal(String value);
 
 	/**
-	 * 设置-毛总额
+	 * 设置-税前行总计
 	 * 
 	 * @param value 值
 	 */
-	void setGrossTotal(int value);
+	void setPreTaxLineTotal(int value);
 
 	/**
-	 * 设置-毛总额
+	 * 设置-税前行总计
 	 * 
 	 * @param value 值
 	 */
-	void setGrossTotal(double value);
-
-	/**
-	 * 获取-毛利
-	 * 
-	 * @return 值
-	 */
-	BigDecimal getGrossProfit();
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	void setGrossProfit(BigDecimal value);
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	void setGrossProfit(String value);
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	void setGrossProfit(int value);
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	void setGrossProfit(double value);
+	void setPreTaxLineTotal(double value);
 
 	/**
 	 * 获取-分配规则1

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE Domain>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE Domain>
 <Domain Name="Sales" ShortName="SL">
   <Model Name="SalesDelivery" Description="销售交货" ModelType="Document" Mapped="${Company}_SL_ODLN">
     <Property Name="DocEntry" Description="凭证编号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="DocEntry" PrimaryKey="Yes"/>
@@ -41,7 +40,6 @@
     <Property Name="DocumentRate" Description="单据汇率" DataType="Decimal" DataSubType="Rate" EditSize="8" Mapped="DocRate"/>
     <Property Name="DocumentTotal" Description="单据总计" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="DocTotal"/>
     <Property Name="PaidTotal" Description="已付款总计" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="PaidTotal"/>
-    <Property Name="GrossProfit" Description="毛利" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="GrossProfit"/>
     <Property Name="PriceList" Description="价格清单" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="PriceList"/>
     <Property Name="PaymentCode" Description="付款条款代码" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="PaymentCode"/>
     <Property Name="Rounding" Description="舍入" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emYesNo" Mapped="Rounding"/>
@@ -94,18 +92,15 @@
     <Property Name="ClosedQuantity" Description="已清数量" DataType="Decimal" DataSubType="Quantity" EditSize="8" Mapped="ClosedQty"/>
     <Property Name="Discount" Description="行折扣" DataType="Decimal" DataSubType="Percentage" EditSize="8" Mapped="DiscPrcnt"/>
     <Property Name="ClosedAmount" Description="已清金额" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="ClosedAmt"/>
-    <Property Name="TreeType" Description="产品类型" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emProductTreeType" Mapped="TreeType"/>
     <Property Name="BasisQuantity" Description="基础数量" DataType="Decimal" DataSubType="Quantity" EditSize="8" Mapped="BasisQty"/>
     <Property Name="LineSign" Description="行标志号" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="LineSign"/>
     <Property Name="ParentLineSign" Description="父项行标志号" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="ParentSign"/>
-    <Property Name="AccountCode" Description="科目代码" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="AcctCode"/>
     <Property Name="UnitPrice" Description="折扣前价格" DataType="Decimal" DataSubType="Price" EditSize="8" Mapped="UnitPrice"/>
     <Property Name="Tax" Description="税定义" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Tax"/>
     <Property Name="TaxRate" Description="税率" DataType="Decimal" DataSubType="Rate" EditSize="8" Mapped="TaxRate"/>
     <Property Name="TaxTotal" Description="税总额" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="TaxTotal"/>
-    <Property Name="GrossPrice" Description="毛价" DataType="Decimal" DataSubType="Price" EditSize="8" Mapped="GrossPrice"/>
-    <Property Name="GrossTotal" Description="毛总额" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="GrossTotal"/>
-    <Property Name="GrossProfit" Description="毛利" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="GrossProfit"/>
+    <Property Name="PreTaxPrice" Description="税前价格" DataType="Decimal" DataSubType="Price" EditSize="8" Mapped="PreTaxPrice"/>
+    <Property Name="PreTaxLineTotal" Description="税前行总计" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="PreTaxTotal"/>
     <Property Name="DistributionRule1" Description="分配规则1" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OcrCode1"/>
     <Property Name="DistributionRule2" Description="分配规则2" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OcrCode2"/>
     <Property Name="DistributionRule3" Description="分配规则3" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OcrCode3"/>

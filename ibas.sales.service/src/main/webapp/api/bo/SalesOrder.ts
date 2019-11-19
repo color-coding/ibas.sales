@@ -7,7 +7,6 @@
  */
 namespace sales {
     export namespace bo {
-
         /** 销售订单 */
         export interface ISalesOrder extends ibas.IBODocument, ibas.IBOUserFields {
 
@@ -127,9 +126,6 @@ namespace sales {
 
             /** 已付款总计 */
             paidTotal: number;
-
-            /** 毛利 */
-            grossProfit: number;
 
             /** 价格清单 */
             priceList: number;
@@ -303,9 +299,6 @@ namespace sales {
             /** 已清金额 */
             closedAmount: number;
 
-            /** 产品类型 */
-            treeType: emProductTreeType;
-
             /** 基础数量 */
             basisQuantity: number;
 
@@ -314,9 +307,6 @@ namespace sales {
 
             /** 父项行标志号 */
             parentLineSign: string;
-
-            /** 科目代码 */
-            accountCode: string;
 
             /** 折扣前价格 */
             unitPrice: number;
@@ -330,14 +320,11 @@ namespace sales {
             /** 税总额 */
             taxTotal: number;
 
-            /** 毛价 */
-            grossPrice: number;
+            /** 税前价格 */
+            preTaxPrice: number;
 
-            /** 毛总额 */
-            grossTotal: number;
-
-            /** 毛利 */
-            grossProfit: number;
+            /** 税前行总计 */
+            preTaxLineTotal: number;
 
             /** 分配规则1 */
             distributionRule1: string;
@@ -357,6 +344,8 @@ namespace sales {
             /** 销售订单-行-额外信息集合 */
             salesOrderItemExtras: ISalesOrderItemExtras;
 
+            /** 赋值产品 */
+            baseProduct(source: materials.bo.IProduct): void;
         }
 
         /** 销售订单-行-额外信息 集合 */

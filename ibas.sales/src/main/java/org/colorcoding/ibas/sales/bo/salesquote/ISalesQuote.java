@@ -667,41 +667,6 @@ public interface ISalesQuote extends IBODocument {
 	void setPaidTotal(double value);
 
 	/**
-	 * 获取-毛利
-	 * 
-	 * @return 值
-	 */
-	BigDecimal getGrossProfit();
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	void setGrossProfit(BigDecimal value);
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	void setGrossProfit(String value);
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	void setGrossProfit(int value);
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	void setGrossProfit(double value);
-
-	/**
 	 * 获取-价格清单
 	 * 
 	 * @return 值
@@ -839,11 +804,5 @@ public interface ISalesQuote extends IBODocument {
 	 * 
 	 */
 	BigDecimal getItemsLineTotal();
-
-	/**
-	 * 获取-项目的税总计
-	 * 
-	 */
-	BigDecimal getItemsTaxTotal();
 
 }

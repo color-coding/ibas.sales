@@ -1425,64 +1425,6 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	}
 
 	/**
-	 * 属性名称-毛利
-	 */
-	private static final String PROPERTY_GROSSPROFIT_NAME = "GrossProfit";
-
-	/**
-	 * 毛利 属性
-	 */
-	@DbField(name = "GrossProfit", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<BigDecimal> PROPERTY_GROSSPROFIT = registerProperty(PROPERTY_GROSSPROFIT_NAME,
-			BigDecimal.class, MY_CLASS);
-
-	/**
-	 * 获取-毛利
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_GROSSPROFIT_NAME)
-	public final BigDecimal getGrossProfit() {
-		return this.getProperty(PROPERTY_GROSSPROFIT);
-	}
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	public final void setGrossProfit(BigDecimal value) {
-		this.setProperty(PROPERTY_GROSSPROFIT, value);
-	}
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	public final void setGrossProfit(String value) {
-		this.setGrossProfit(Decimal.valueOf(value));
-	}
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	public final void setGrossProfit(int value) {
-		this.setGrossProfit(Decimal.valueOf(value));
-	}
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	public final void setGrossProfit(double value) {
-		this.setGrossProfit(Decimal.valueOf(value));
-	}
-
-	/**
 	 * 属性名称-价格清单
 	 */
 	private static final String PROPERTY_PRICELIST_NAME = "PriceList";
@@ -1837,35 +1779,6 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	}
 
 	/**
-	 * 属性名称-项目的税总计
-	 */
-	private static final String PROPERTY_ITEMSTAXTOTAL_NAME = "ItemsTaxTotal";
-
-	/**
-	 * 项目的税总计 属性
-	 */
-	public static final IPropertyInfo<BigDecimal> PROPERTY_ITEMSTAXTOTAL = registerProperty(PROPERTY_ITEMSTAXTOTAL_NAME,
-			BigDecimal.class, MY_CLASS);
-
-	/**
-	 * 获取-项目的税总计
-	 * 
-	 * @return 值
-	 */
-	public final BigDecimal getItemsTaxTotal() {
-		return this.getProperty(PROPERTY_ITEMSTAXTOTAL);
-	}
-
-	/**
-	 * 设置-项目的税总计
-	 * 
-	 * @param value 值
-	 */
-	final void setItemsTaxTotal(BigDecimal value) {
-		this.setProperty(PROPERTY_ITEMSTAXTOTAL, value);
-	}
-
-	/**
 	 * 属性名称-运送费用总计
 	 */
 	private static final String PROPERTY_SHIPPINGSEXPENSETOTAL_NAME = "ShippingsExpenseTotal";
@@ -1896,7 +1809,8 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 
 	@Override
 	protected IBusinessRule[] registerRules() {
-		return new IBusinessRule[] { // 注册的业务规则
+		return new IBusinessRule[] {
+				// 注册的业务规则
 				new BusinessRuleRequired(PROPERTY_CUSTOMERCODE), // 要求有值
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DISCOUNT), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DOCUMENTRATE), // 不能低于0
@@ -1906,14 +1820,12 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 						SalesReturnItem.PROPERTY_LINESTATUS), // 使用集合元素状态
 				new BusinessRuleSumElements(PROPERTY_ITEMSLINETOTAL, PROPERTY_SALESRETURNITEMS,
 						SalesReturnItem.PROPERTY_LINETOTAL), // 计算项目-行总计
-				new BusinessRuleSumElements(PROPERTY_ITEMSTAXTOTAL, PROPERTY_SALESRETURNITEMS,
-						SalesReturnItem.PROPERTY_TAXTOTAL), // 计算项目-税总计
 				new BusinessRuleSumElements(PROPERTY_SHIPPINGSEXPENSETOTAL, PROPERTY_SHIPPINGADDRESSS,
 						ShippingAddress.PROPERTY_EXPENSE), // 计算运输-费用总计
 				// 折扣后总计 = 项目-行总计 * 折扣
 				new BusinessRuleMultiplication(PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMSLINETOTAL, PROPERTY_DISCOUNT),
 				// 单据总计 = 折扣后总计 + 运输费用 + 税总额
-				new BusinessRuleSummation(PROPERTY_DOCUMENTTOTAL, PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMSTAXTOTAL,
+				new BusinessRuleSummation(PROPERTY_DOCUMENTTOTAL, PROPERTY_DISCOUNTTOTAL,
 						PROPERTY_SHIPPINGSEXPENSETOTAL),
 				// 小数舍入（单据总计）
 				new BusinessRuleRoundingOff(PROPERTY_DIFFAMOUNT, PROPERTY_DOCUMENTTOTAL, PROPERTY_ROUNDING),

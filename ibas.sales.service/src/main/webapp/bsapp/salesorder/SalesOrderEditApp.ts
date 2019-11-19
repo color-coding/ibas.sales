@@ -359,59 +359,34 @@ namespace sales {
                                                             }
                                                             item = null;
                                                         }
-                                                        if (ibas.objects.isNull(parentItem)) {
-                                                            parentItem = that.editData.salesOrderItems.create();
-                                                        }
-                                                        // 父项
-                                                        parentItem.lineSign = ibas.uuids.random();
-                                                        parentItem.itemCode = pData.extend.code;
-                                                        parentItem.itemDescription = pData.extend.name;
-                                                        parentItem.itemSign = pData.extend.sign;
-                                                        parentItem.serialManagement = pData.extend.serialManagement;
-                                                        parentItem.batchManagement = pData.extend.batchManagement;
-                                                        parentItem.warehouse = pData.extend.warehouse;
-                                                        parentItem.quantity = 1;
-                                                        parentItem.uom = pData.extend.inventoryUOM;
-                                                        parentItem.price = selected.price;
-                                                        parentItem.currency = selected.currency;
-                                                        if (ibas.strings.isEmpty(parentItem.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
-                                                            parentItem.warehouse = that.view.defaultWarehouse;
-                                                        }
-                                                        if (ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
-                                                            if (!ibas.strings.isEmpty(pData.extend.salesTaxGroup)) {
-                                                                parentItem.tax = pData.extend.salesTaxGroup;
+                                                        for (let sItem of bo.baseProductSuit(that.editData.salesOrderItems, pData)) {
+                                                            if (!ibas.strings.isEmpty(that.view.defaultWarehouse)) {
+                                                                sItem.warehouse = that.view.defaultWarehouse;
                                                             }
-                                                        } else {
-                                                            parentItem.tax = that.view.defaultTaxGroup;
-                                                        }
-                                                        // 子项
-                                                        for (let sItem of pData.productSuitItems) {
-                                                            let subItem: bo.SalesOrderItem = that.editData.salesOrderItems.create();
-                                                            // 构建父项关系
-                                                            subItem.lineSign = ibas.uuids.random();
-                                                            subItem.parentLineSign = parentItem.lineSign;
-                                                            // 计算单位数量
-                                                            subItem.basisQuantity = sItem.quantity / pData.unitQuantity;
-                                                            subItem.price = sItem.price;
-                                                            subItem.currency = sItem.currency;
-                                                            // 基本信息赋值
-                                                            subItem.itemCode = sItem.extend.code;
-                                                            subItem.itemDescription = sItem.extend.name;
-                                                            subItem.itemSign = sItem.extend.sign;
-                                                            subItem.serialManagement = sItem.extend.serialManagement;
-                                                            subItem.batchManagement = sItem.extend.batchManagement;
-                                                            subItem.warehouse = sItem.extend.warehouse;
-                                                            subItem.quantity = subItem.basisQuantity;
-                                                            subItem.uom = sItem.extend.inventoryUOM;
-                                                            if (ibas.strings.isEmpty(subItem.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
-                                                                subItem.warehouse = that.view.defaultWarehouse;
+                                                            if (!ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
+                                                                sItem.tax = that.view.defaultTaxGroup;
                                                             }
-                                                            if (ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
-                                                                if (!ibas.strings.isEmpty(sItem.extend.salesTaxGroup)) {
-                                                                    subItem.tax = sItem.extend.salesTaxGroup;
+                                                            if (ibas.strings.isEmpty(sItem.parentLineSign)) {
+                                                                // 父项赋值价格，子项价格使用组件定义
+                                                                if (selected.taxed === ibas.emYesNo.NO) {
+                                                                    sItem.preTaxPrice = selected.price;
+                                                                } else {
+                                                                    sItem.price = selected.price;
                                                                 }
-                                                            } else {
-                                                                subItem.tax = that.view.defaultTaxGroup;
+                                                            }
+                                                            if (!ibas.strings.isEmpty(sItem.tax)) {
+                                                                accounting.taxrate.assign(sItem.tax, (rate) => {
+                                                                    if (rate >= 0) {
+                                                                        sItem.taxRate = rate;
+                                                                        // 重新激活计算
+                                                                        if (ibas.strings.isEmpty(sItem.parentLineSign)) {
+                                                                            // 父项赋值价格，子项价格使用组件定义
+                                                                            if (selected.taxed === ibas.emYesNo.NO) {
+                                                                                sItem.preTaxPrice = selected.price;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
                                                             }
                                                         }
                                                         created = true;
@@ -453,25 +428,22 @@ namespace sales {
                                     item = that.editData.salesOrderItems.create();
                                     created = true;
                                 }
-                                item.itemCode = selected.code;
-                                item.itemDescription = selected.name;
-                                item.itemSign = selected.sign;
-                                item.serialManagement = selected.serialManagement;
-                                item.batchManagement = selected.batchManagement;
-                                item.warehouse = selected.warehouse;
-                                item.quantity = 1;
-                                item.uom = selected.inventoryUOM;
-                                item.price = selected.price;
-                                item.currency = selected.currency;
-                                if (ibas.strings.isEmpty(item.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
+                                item.baseProduct(selected);
+                                if (!ibas.strings.isEmpty(that.view.defaultWarehouse)) {
                                     item.warehouse = that.view.defaultWarehouse;
                                 }
-                                if (ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
-                                    if (!ibas.strings.isEmpty(selected.salesTaxGroup)) {
-                                        item.tax = selected.salesTaxGroup;
-                                    }
-                                } else {
+                                if (!ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
                                     item.tax = that.view.defaultTaxGroup;
+                                    if (!ibas.strings.isEmpty(item.tax)) {
+                                        accounting.taxrate.assign(item.tax, (rate) => {
+                                            if (rate >= 0) {
+                                                item.taxRate = rate;
+                                                if (selected.taxed === ibas.emYesNo.NO) {
+                                                    item.preTaxPrice = selected.price;
+                                                }
+                                            }
+                                        });
+                                    }
                                 }
                                 item = null;
                                 sNext();

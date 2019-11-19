@@ -220,6 +220,11 @@ namespace sales {
                                         }).bindProperty("bindingValue", {
                                             path: "lineStatus",
                                             type: new sap.extension.data.DocumentStatus()
+                                        }).bindProperty("editable", {
+                                            path: "parentLineSign",
+                                            formatter(data: string): boolean {
+                                                return ibas.strings.isEmpty(data);
+                                            }
                                         }),
                                     }),
                                     new sap.extension.table.DataColumn("", {
@@ -237,6 +242,11 @@ namespace sales {
                                             type: new sap.extension.data.Alphanumeric({
                                                 maxLength: 20
                                             })
+                                        }).bindProperty("editable", {
+                                            path: "parentLineSign",
+                                            formatter(data: string): boolean {
+                                                return ibas.strings.isEmpty(data);
+                                            }
                                         }),
                                     }),
                                     new sap.extension.table.DataColumn("", {
@@ -266,6 +276,11 @@ namespace sales {
                                         }).bindProperty("bindingValue", {
                                             path: "quantity",
                                             type: new sap.extension.data.Quantity()
+                                        }).bindProperty("editable", {
+                                            path: "parentLineSign",
+                                            formatter(data: string): boolean {
+                                                return ibas.strings.isEmpty(data);
+                                            }
                                         }),
                                     }),
                                     new sap.extension.table.DataColumn("", {
@@ -285,6 +300,11 @@ namespace sales {
                                         }).bindProperty("bindingValue", {
                                             path: "price",
                                             type: new sap.extension.data.Price()
+                                        }).bindProperty("editable", {
+                                            path: "parentLineSign",
+                                            formatter(data: string): boolean {
+                                                return ibas.strings.isEmpty(data);
+                                            }
                                         }),
                                     }),
                                     new sap.extension.table.DataColumn("", {
@@ -393,7 +413,7 @@ namespace sales {
                                 path: "discount",
                                 type: new sap.extension.data.Percentage()
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_itemstaxtotal") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_itemstaxtotal") + ibas.i18n.prop("sales_inclusion") }),
                             new sap.extension.m.Input("", {
                                 editable: false,
                                 type: sap.m.InputType.Number

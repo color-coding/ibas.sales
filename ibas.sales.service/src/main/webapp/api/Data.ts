@@ -29,11 +29,6 @@ namespace sales {
         /** 业务对象编码-送货地址 */
         export const BO_CODE_SHIPPINGADDRESS: string = "${Company}_SL_SHIPADDRESS";
 
-        /** 产品树类型 */
-        export enum emProductTreeType {
-            /** 捆绑 */
-            BUNDLED,
-        }
         /** 运输状态 */
         export enum emShippingStatus {
             /**

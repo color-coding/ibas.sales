@@ -21,12 +21,11 @@ import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMultiplication;
-import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMultiplicativeDeductionEx;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSubtraction;
 import org.colorcoding.ibas.sales.MyConfiguration;
-import org.colorcoding.ibas.sales.data.emProductTreeType;
-import org.colorcoding.ibas.sales.rules.BusinessRuleCalculateGrossPrice;
+import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountPrice;
+import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionTaxPrice;
 
 /**
  * 获取-销售报价-行
@@ -1581,37 +1580,6 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	}
 
 	/**
-	 * 属性名称-产品类型
-	 */
-	private static final String PROPERTY_TREETYPE_NAME = "TreeType";
-
-	/**
-	 * 产品类型 属性
-	 */
-	@DbField(name = "TreeType", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<emProductTreeType> PROPERTY_TREETYPE = registerProperty(PROPERTY_TREETYPE_NAME,
-			emProductTreeType.class, MY_CLASS);
-
-	/**
-	 * 获取-产品类型
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_TREETYPE_NAME)
-	public final emProductTreeType getTreeType() {
-		return this.getProperty(PROPERTY_TREETYPE);
-	}
-
-	/**
-	 * 设置-产品类型
-	 * 
-	 * @param value 值
-	 */
-	public final void setTreeType(emProductTreeType value) {
-		this.setProperty(PROPERTY_TREETYPE, value);
-	}
-
-	/**
 	 * 属性名称-基础数量
 	 */
 	private static final String PROPERTY_BASISQUANTITY_NAME = "BasisQuantity";
@@ -1729,37 +1697,6 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 */
 	public final void setParentLineSign(String value) {
 		this.setProperty(PROPERTY_PARENTLINESIGN, value);
-	}
-
-	/**
-	 * 属性名称-科目代码
-	 */
-	private static final String PROPERTY_ACCOUNTCODE_NAME = "AccountCode";
-
-	/**
-	 * 科目代码 属性
-	 */
-	@DbField(name = "AcctCode", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<String> PROPERTY_ACCOUNTCODE = registerProperty(PROPERTY_ACCOUNTCODE_NAME,
-			String.class, MY_CLASS);
-
-	/**
-	 * 获取-科目代码
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_ACCOUNTCODE_NAME)
-	public final String getAccountCode() {
-		return this.getProperty(PROPERTY_ACCOUNTCODE);
-	}
-
-	/**
-	 * 设置-科目代码
-	 * 
-	 * @param value 值
-	 */
-	public final void setAccountCode(String value) {
-		this.setProperty(PROPERTY_ACCOUNTCODE, value);
 	}
 
 	/**
@@ -1968,177 +1905,119 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	}
 
 	/**
-	 * 属性名称-毛价
+	 * 属性名称-税前价格
 	 */
-	private static final String PROPERTY_GROSSPRICE_NAME = "GrossPrice";
+	private static final String PROPERTY_PRETAXPRICE_NAME = "PreTaxPrice";
 
 	/**
-	 * 毛价 属性
+	 * 税前价格 属性
 	 */
-	@DbField(name = "GrossPrice", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<BigDecimal> PROPERTY_GROSSPRICE = registerProperty(PROPERTY_GROSSPRICE_NAME,
+	@DbField(name = "PreTaxPrice", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<BigDecimal> PROPERTY_PRETAXPRICE = registerProperty(PROPERTY_PRETAXPRICE_NAME,
 			BigDecimal.class, MY_CLASS);
 
 	/**
-	 * 获取-毛价
+	 * 获取-税前价格
 	 * 
 	 * @return 值
 	 */
-	@XmlElement(name = PROPERTY_GROSSPRICE_NAME)
-	public final BigDecimal getGrossPrice() {
-		return this.getProperty(PROPERTY_GROSSPRICE);
+	@XmlElement(name = PROPERTY_PRETAXPRICE_NAME)
+	public final BigDecimal getPreTaxPrice() {
+		return this.getProperty(PROPERTY_PRETAXPRICE);
 	}
 
 	/**
-	 * 设置-毛价
+	 * 设置-税前价格
 	 * 
 	 * @param value 值
 	 */
-	public final void setGrossPrice(BigDecimal value) {
-		this.setProperty(PROPERTY_GROSSPRICE, value);
+	public final void setPreTaxPrice(BigDecimal value) {
+		this.setProperty(PROPERTY_PRETAXPRICE, value);
 	}
 
 	/**
-	 * 设置-毛价
+	 * 设置-税前价格
 	 * 
 	 * @param value 值
 	 */
-	public final void setGrossPrice(String value) {
-		this.setGrossPrice(Decimal.valueOf(value));
+	public final void setPreTaxPrice(String value) {
+		this.setPreTaxPrice(Decimal.valueOf(value));
 	}
 
 	/**
-	 * 设置-毛价
+	 * 设置-税前价格
 	 * 
 	 * @param value 值
 	 */
-	public final void setGrossPrice(int value) {
-		this.setGrossPrice(Decimal.valueOf(value));
+	public final void setPreTaxPrice(int value) {
+		this.setPreTaxPrice(Decimal.valueOf(value));
 	}
 
 	/**
-	 * 设置-毛价
+	 * 设置-税前价格
 	 * 
 	 * @param value 值
 	 */
-	public final void setGrossPrice(double value) {
-		this.setGrossPrice(Decimal.valueOf(value));
+	public final void setPreTaxPrice(double value) {
+		this.setPreTaxPrice(Decimal.valueOf(value));
 	}
 
 	/**
-	 * 属性名称-毛总额
+	 * 属性名称-税前行总计
 	 */
-	private static final String PROPERTY_GROSSTOTAL_NAME = "GrossTotal";
+	private static final String PROPERTY_PRETAXLINETOTAL_NAME = "PreTaxLineTotal";
 
 	/**
-	 * 毛总额 属性
+	 * 税前行总计 属性
 	 */
-	@DbField(name = "GrossTotal", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<BigDecimal> PROPERTY_GROSSTOTAL = registerProperty(PROPERTY_GROSSTOTAL_NAME,
-			BigDecimal.class, MY_CLASS);
+	@DbField(name = "PreTaxTotal", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<BigDecimal> PROPERTY_PRETAXLINETOTAL = registerProperty(
+			PROPERTY_PRETAXLINETOTAL_NAME, BigDecimal.class, MY_CLASS);
 
 	/**
-	 * 获取-毛总额
+	 * 获取-税前行总计
 	 * 
 	 * @return 值
 	 */
-	@XmlElement(name = PROPERTY_GROSSTOTAL_NAME)
-	public final BigDecimal getGrossTotal() {
-		return this.getProperty(PROPERTY_GROSSTOTAL);
+	@XmlElement(name = PROPERTY_PRETAXLINETOTAL_NAME)
+	public final BigDecimal getPreTaxLineTotal() {
+		return this.getProperty(PROPERTY_PRETAXLINETOTAL);
 	}
 
 	/**
-	 * 设置-毛总额
+	 * 设置-税前行总计
 	 * 
 	 * @param value 值
 	 */
-	public final void setGrossTotal(BigDecimal value) {
-		this.setProperty(PROPERTY_GROSSTOTAL, value);
+	public final void setPreTaxLineTotal(BigDecimal value) {
+		this.setProperty(PROPERTY_PRETAXLINETOTAL, value);
 	}
 
 	/**
-	 * 设置-毛总额
+	 * 设置-税前行总计
 	 * 
 	 * @param value 值
 	 */
-	public final void setGrossTotal(String value) {
-		this.setGrossTotal(Decimal.valueOf(value));
+	public final void setPreTaxLineTotal(String value) {
+		this.setPreTaxLineTotal(Decimal.valueOf(value));
 	}
 
 	/**
-	 * 设置-毛总额
+	 * 设置-税前行总计
 	 * 
 	 * @param value 值
 	 */
-	public final void setGrossTotal(int value) {
-		this.setGrossTotal(Decimal.valueOf(value));
+	public final void setPreTaxLineTotal(int value) {
+		this.setPreTaxLineTotal(Decimal.valueOf(value));
 	}
 
 	/**
-	 * 设置-毛总额
+	 * 设置-税前行总计
 	 * 
 	 * @param value 值
 	 */
-	public final void setGrossTotal(double value) {
-		this.setGrossTotal(Decimal.valueOf(value));
-	}
-
-	/**
-	 * 属性名称-毛利
-	 */
-	private static final String PROPERTY_GROSSPROFIT_NAME = "GrossProfit";
-
-	/**
-	 * 毛利 属性
-	 */
-	@DbField(name = "GrossProfit", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME, primaryKey = false)
-	public static final IPropertyInfo<BigDecimal> PROPERTY_GROSSPROFIT = registerProperty(PROPERTY_GROSSPROFIT_NAME,
-			BigDecimal.class, MY_CLASS);
-
-	/**
-	 * 获取-毛利
-	 * 
-	 * @return 值
-	 */
-	@XmlElement(name = PROPERTY_GROSSPROFIT_NAME)
-	public final BigDecimal getGrossProfit() {
-		return this.getProperty(PROPERTY_GROSSPROFIT);
-	}
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	public final void setGrossProfit(BigDecimal value) {
-		this.setProperty(PROPERTY_GROSSPROFIT, value);
-	}
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	public final void setGrossProfit(String value) {
-		this.setGrossProfit(Decimal.valueOf(value));
-	}
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	public final void setGrossProfit(int value) {
-		this.setGrossProfit(Decimal.valueOf(value));
-	}
-
-	/**
-	 * 设置-毛利
-	 * 
-	 * @param value 值
-	 */
-	public final void setGrossProfit(double value) {
-		this.setGrossProfit(Decimal.valueOf(value));
+	public final void setPreTaxLineTotal(double value) {
+		this.setPreTaxLineTotal(Decimal.valueOf(value));
 	}
 
 	/**
@@ -2342,7 +2221,8 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 
 	@Override
 	protected IBusinessRule[] registerRules() {
-		return new IBusinessRule[] { // 注册的业务规则
+		return new IBusinessRule[] {
+				// 注册的业务规则
 				new BusinessRuleRequired(PROPERTY_ITEMCODE), // 要求有值
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_CLOSEDQUANTITY), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_CLOSEDAMOUNT), // 不能低于0
@@ -2350,21 +2230,21 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_PRICE), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_UNITPRICE), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DISCOUNT), // 不能低于0
-				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_GROSSPRICE), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_PRETAXPRICE), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_RATE), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_TAXRATE), // 不能低于0
 				// 推导 价格 = 折扣前价格 * 折扣
-				new BusinessRuleMultiplicativeDeductionEx(PROPERTY_DISCOUNT, PROPERTY_UNITPRICE, PROPERTY_PRICE),
+				new BusinessRuleDeductionDiscountPrice(PROPERTY_DISCOUNT, PROPERTY_UNITPRICE, PROPERTY_PRICE),
 				// 计算总计 = 数量 * 价格
 				new BusinessRuleMultiplication(PROPERTY_LINETOTAL, PROPERTY_QUANTITY, PROPERTY_PRICE),
-				// 计算毛价 = 价格 * 税率
-				new BusinessRuleCalculateGrossPrice(PROPERTY_GROSSPRICE, PROPERTY_PRICE, PROPERTY_TAXRATE),
-				// 计算毛总额 = 数量 * 毛价
-				new BusinessRuleMultiplication(PROPERTY_GROSSTOTAL, PROPERTY_QUANTITY, PROPERTY_GROSSPRICE),
-				// 计算税总额 = 毛总额 - 总计
-				new BusinessRuleSubtraction(PROPERTY_TAXTOTAL, PROPERTY_GROSSTOTAL, PROPERTY_LINETOTAL),
+				// 计算税前价格 = 税后价格 * 税率
+				new BusinessRuleDeductionTaxPrice(PROPERTY_TAXRATE, PROPERTY_PRETAXPRICE, PROPERTY_PRICE),
+				// 计算税前总计 = 数量 * 税前价格
+				new BusinessRuleMultiplication(PROPERTY_PRETAXLINETOTAL, PROPERTY_QUANTITY, PROPERTY_PRETAXPRICE),
+				// 计算税总额 = 税后总计 - 税前总计
+				new BusinessRuleSubtraction(PROPERTY_TAXTOTAL, PROPERTY_LINETOTAL, PROPERTY_PRETAXLINETOTAL),
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
-				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_GROSSTOTAL), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_PRETAXLINETOTAL), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_TAXTOTAL), // 不能低于0
 
 		};

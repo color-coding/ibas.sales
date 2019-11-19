@@ -285,21 +285,9 @@ namespace sales {
                                 item = that.editData.salesReturnItems.create();
                                 created = true;
                             }
-                            item.itemCode = selected.code;
-                            item.itemDescription = selected.name;
-                            item.itemSign = selected.sign;
-                            item.serialManagement = selected.serialManagement;
-                            item.batchManagement = selected.batchManagement;
-                            item.warehouse = selected.warehouse;
-                            item.quantity = 1;
-                            item.uom = selected.inventoryUOM;
-                            item.price = selected.price;
-                            item.currency = selected.currency;
-                            if (ibas.strings.isEmpty(item.warehouse) && !ibas.strings.isEmpty(that.view.defaultWarehouse)) {
+                            item.baseProduct(selected);
+                            if (!ibas.strings.isEmpty(that.view.defaultWarehouse)) {
                                 item.warehouse = that.view.defaultWarehouse;
-                            }
-                            if (!ibas.strings.isEmpty(selected.salesTaxGroup)) {
-                                item.tax = selected.salesTaxGroup;
                             }
                             item = null;
                         }
@@ -413,7 +401,7 @@ namespace sales {
                 let criteria: ibas.ICriteria = new ibas.Criteria();
                 let condition: ibas.ICondition = criteria.conditions.create();
                 // 未取消的
-                condition.alias =bo.SalesOrder.PROPERTY_CANCELED_NAME;
+                condition.alias = bo.SalesOrder.PROPERTY_CANCELED_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emYesNo.NO.toString();
                 // 未删除的
@@ -423,7 +411,7 @@ namespace sales {
                 condition.value = ibas.emYesNo.NO.toString();
                 // 非计划的
                 condition = criteria.conditions.create();
-                condition.alias =bo.SalesOrder.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.alias = bo.SalesOrder.PROPERTY_DOCUMENTSTATUS_NAME;
                 condition.operation = ibas.emConditionOperation.NOT_EQUAL;
                 condition.value = ibas.emDocumentStatus.PLANNED.toString();
                 // 审批通过的或未进审批
@@ -476,7 +464,7 @@ namespace sales {
                 condition.value = ibas.emYesNo.NO.toString();
                 // 未删除的
                 condition = criteria.conditions.create();
-                condition.alias =bo.SalesDelivery.PROPERTY_DELETED_NAME;
+                condition.alias = bo.SalesDelivery.PROPERTY_DELETED_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emYesNo.NO.toString();
                 // 非计划的

@@ -425,6 +425,8 @@ declare namespace materials {
             rate: number;
             /** 行总计 */
             lineTotal: number;
+            /** 赋值物料 */
+            baseMaterial(source: materials.bo.IMaterial): void;
         }
     }
 }
@@ -591,6 +593,8 @@ declare namespace materials {
             rate: number;
             /** 行总计 */
             lineTotal: number;
+            /** 赋值物料 */
+            baseMaterial(source: materials.bo.IMaterial): void;
         }
     }
 }
@@ -759,6 +763,8 @@ declare namespace materials {
             rate: number;
             /** 行总计 */
             lineTotal: number;
+            /** 赋值物料 */
+            baseMaterial(source: materials.bo.IMaterial): void;
         }
     }
 }
@@ -907,6 +913,8 @@ declare namespace materials {
             price: number;
             /** 货币 */
             currency: string;
+            /** 含税 */
+            taxed: ibas.emYesNo;
         }
     }
 }
@@ -1428,6 +1436,8 @@ declare namespace materials {
             basedOnList: number;
             /** 系数 */
             factor: number;
+            /** 含税 */
+            taxed: ibas.emYesNo;
             /** 生效日期 */
             validDate: Date;
             /** 失效日期 */
@@ -1859,6 +1869,8 @@ declare namespace materials {
             price: number;
             /** 货币 */
             currency: string;
+            /** 含税 */
+            taxed: ibas.emYesNo;
             /** 库存 */
             onHand: number;
             /** 已承诺 */
@@ -3121,6 +3133,8 @@ declare namespace materials {
             set materialSerials(value: MaterialSerialItems);
             /** 初始化数据 */
             protected init(): void;
+            /** 赋值物料 */
+            baseMaterial(source: materials.bo.IMaterial): void;
             protected registerRules(): ibas.IBusinessRule[];
         }
     }
@@ -3601,6 +3615,8 @@ declare namespace materials {
             set materialSerials(value: MaterialSerialItems);
             /** 初始化数据 */
             protected init(): void;
+            /** 赋值物料 */
+            baseMaterial(source: materials.bo.IMaterial): void;
             protected registerRules(): ibas.IBusinessRule[];
         }
     }
@@ -4087,6 +4103,8 @@ declare namespace materials {
             set materialSerials(value: MaterialSerialItems);
             /** 初始化数据 */
             protected init(): void;
+            /** 赋值物料 */
+            baseMaterial(source: materials.bo.IMaterial): void;
             protected registerRules(): ibas.IBusinessRule[];
         }
     }
@@ -4498,6 +4516,12 @@ declare namespace materials {
             get currency(): string;
             /** 设置-货币 */
             set currency(value: string);
+            /** 映射的属性名称-含税 */
+            static PROPERTY_TAXED_NAME: string;
+            /** 获取-含税 */
+            get taxed(): ibas.emYesNo;
+            /** 设置-含税 */
+            set taxed(value: ibas.emYesNo);
             /** 字符串 */
             toString(): string;
             /** 获取查询 */
@@ -5334,6 +5358,12 @@ declare namespace materials {
             get factor(): number;
             /** 设置-系数 */
             set factor(value: number);
+            /** 映射的属性名称-含税 */
+            static PROPERTY_TAXED_NAME: string;
+            /** 获取-含税 */
+            get taxed(): ibas.emYesNo;
+            /** 设置-含税 */
+            set taxed(value: ibas.emYesNo);
             /** 映射的属性名称-生效日期 */
             static PROPERTY_VALIDDATE_NAME: string;
             /** 获取-生效日期 */
@@ -5998,6 +6028,12 @@ declare namespace materials {
             get currency(): string;
             /** 设置-货币 */
             set currency(value: string);
+            /** 映射的属性名称-含税 */
+            static PROPERTY_TAXED_NAME: string;
+            /** 获取-含税 */
+            get taxed(): ibas.emYesNo;
+            /** 设置-含税 */
+            set taxed(value: ibas.emYesNo);
             /** 映射的属性名称-库存 */
             static PROPERTY_ONHAND_NAME: string;
             /** 获取-库存 */
@@ -7537,6 +7573,7 @@ declare namespace materials {
         }
         /** 模块业务对象工厂 */
         const boFactory: ibas.BOFactory;
+        function baseMaterial(target: IGoodsIssueLine | IGoodsReceiptLine | IInventoryTransferLine, source: materials.bo.IMaterial): void;
         namespace bo4j {
             /** 操作消息 */
             interface IDataDeclaration {
