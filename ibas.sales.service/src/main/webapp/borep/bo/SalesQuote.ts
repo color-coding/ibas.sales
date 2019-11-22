@@ -542,6 +542,7 @@ namespace sales {
                 this.rounding = ibas.emYesNo.YES;
                 this.discount = 1;
             }
+
             /** 映射的属性名称-项目的税总计 */
             static PROPERTY_ITEMSTAXTOTAL_NAME: string = "ItemsTaxTotal";
             /** 获取-项目的税总计 */
@@ -563,11 +564,20 @@ namespace sales {
             set itemsLineTotal(value: number) {
                 this.setProperty(SalesQuote.PROPERTY_ITEMSLINETOTAL_NAME, value);
             }
+
+            /** 映射的属性名称-单据税总计 */
+            static PROPERTY_DOCUMENTTAXTOTAL_NAME: string = "DocumentTaxTotal";
+            /** 获取-单据税总计 */
+            get documentTaxTotal(): number {
+                return this.getProperty<number>(SalesQuote.PROPERTY_DOCUMENTTAXTOTAL_NAME);
+            }
+            /** 设置-单据税总计 */
+            set documentTaxTotal(value: number) {
+                this.setProperty(SalesQuote.PROPERTY_DOCUMENTTAXTOTAL_NAME, value);
+            }
+
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
-                    // 计算项目-到期日期
-                    new ibas.BusinessRuleDateCalculation(
-                        SalesQuote.PROPERTY_DOCUMENTDATE_NAME, SalesQuote.PROPERTY_DELIVERYDATE_NAME, 30),
                     // 计算项目-行总计
                     new ibas.BusinessRuleSumElements(
                         SalesQuote.PROPERTY_ITEMSLINETOTAL_NAME, SalesQuote.PROPERTY_SALESQUOTEITEMS_NAME, SalesQuoteItem.PROPERTY_LINETOTAL_NAME),
@@ -578,7 +588,10 @@ namespace sales {
                     new ibas.BusinessRuleMultiplication(
                         SalesQuote.PROPERTY_DISCOUNTTOTAL_NAME, SalesQuote.PROPERTY_ITEMSLINETOTAL_NAME, SalesQuote.PROPERTY_DISCOUNT_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
-                    // 单据总计 = 折扣后总计 + 运输费用
+                    // 单据税总计 = 行税总计 + 运输税总计
+                    new ibas.BusinessRuleSummation(
+                        SalesQuote.PROPERTY_DOCUMENTTAXTOTAL_NAME, SalesQuote.PROPERTY_ITEMSTAXTOTAL_NAME),
+                    // 单据总计 = 行总计 + 运输费用
                     new ibas.BusinessRuleSummation(
                         SalesQuote.PROPERTY_DOCUMENTTOTAL_NAME, SalesQuote.PROPERTY_DISCOUNTTOTAL_NAME),
                     // 小数舍入（单据总计）
@@ -599,10 +612,12 @@ namespace sales {
             afterParsing(): void {
                 // 计算部分业务逻辑
                 for (let rule of ibas.businessRulesManager.getRules(ibas.objects.typeOf(this))) {
-                    if (!(rule instanceof ibas.BusinessRuleSumElements)) {
-                        continue;
+                    if (rule instanceof ibas.BusinessRuleSumElements) {
+                        rule.execute(this);
+                    } else if (rule instanceof ibas.BusinessRuleSummation
+                        && rule.result === SalesQuote.PROPERTY_DOCUMENTTAXTOTAL_NAME) {
+                        rule.execute(this);
                     }
-                    rule.execute(this);
                 }
             }
         }

@@ -335,6 +335,125 @@ public interface IShippingAddress extends IBOSimple {
 	void setTrackingNumber(String value);
 
 	/**
+	 * 获取-税定义
+	 * 
+	 * @return 值
+	 */
+	String getTax();
+
+	/**
+	 * 设置-税定义
+	 * 
+	 * @param value 值
+	 */
+	void setTax(String value);
+
+	/**
+	 * 获取-税率
+	 * 
+	 * @return 值
+	 */
+	BigDecimal getTaxRate();
+
+	/**
+	 * 设置-税率
+	 * 
+	 * @param value 值
+	 */
+	void setTaxRate(BigDecimal value);
+
+	/**
+	 * 设置-税率
+	 * 
+	 * @param value 值
+	 */
+	void setTaxRate(String value);
+
+	/**
+	 * 设置-税率
+	 * 
+	 * @param value 值
+	 */
+	void setTaxRate(int value);
+
+	/**
+	 * 设置-税率
+	 * 
+	 * @param value 值
+	 */
+	void setTaxRate(double value);
+
+	/**
+	 * 获取-税总额
+	 * 
+	 * @return 值
+	 */
+	BigDecimal getTaxTotal();
+
+	/**
+	 * 设置-税总额
+	 * 
+	 * @param value 值
+	 */
+	void setTaxTotal(BigDecimal value);
+
+	/**
+	 * 设置-税总额
+	 * 
+	 * @param value 值
+	 */
+	void setTaxTotal(String value);
+
+	/**
+	 * 设置-税总额
+	 * 
+	 * @param value 值
+	 */
+	void setTaxTotal(int value);
+
+	/**
+	 * 设置-税总额
+	 * 
+	 * @param value 值
+	 */
+	void setTaxTotal(double value);
+
+	/**
+	 * 获取-税前费用
+	 * 
+	 * @return 值
+	 */
+	BigDecimal getPreTaxExpense();
+
+	/**
+	 * 设置-税前费用
+	 * 
+	 * @param value 值
+	 */
+	void setPreTaxExpense(BigDecimal value);
+
+	/**
+	 * 设置-税前费用
+	 * 
+	 * @param value 值
+	 */
+	void setPreTaxExpense(String value);
+
+	/**
+	 * 设置-税前费用
+	 * 
+	 * @param value 值
+	 */
+	void setPreTaxExpense(int value);
+
+	/**
+	 * 设置-税前费用
+	 * 
+	 * @param value 值
+	 */
+	void setPreTaxExpense(double value);
+
+	/**
 	 * 获取-对象编号
 	 * 
 	 * @return 值

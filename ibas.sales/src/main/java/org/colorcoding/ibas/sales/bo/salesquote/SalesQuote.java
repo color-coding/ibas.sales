@@ -1753,7 +1753,7 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 						SalesQuoteItem.PROPERTY_LINETOTAL), // 计算项目-行总计
 				// 折扣后总计 = 项目-行总计 * 折扣
 				new BusinessRuleMultiplication(PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMSLINETOTAL, PROPERTY_DISCOUNT),
-				// 单据总计 = 折扣后总计 + 运输费用 + 税总额
+				// 单据总计 = 折扣后总计 + 运输费用
 				new BusinessRuleSummation(PROPERTY_DOCUMENTTOTAL, PROPERTY_DISCOUNTTOTAL),
 				// 小数舍入（单据总计）
 				new BusinessRuleRoundingOff(PROPERTY_DIFFAMOUNT, PROPERTY_DOCUMENTTOTAL, PROPERTY_ROUNDING),

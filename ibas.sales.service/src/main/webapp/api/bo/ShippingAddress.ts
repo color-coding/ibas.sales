@@ -71,6 +71,18 @@ namespace sales {
             /** 快递单号 */
             trackingNumber: string;
 
+            /** 税定义 */
+            tax: string;
+
+            /** 税率 */
+            taxRate: number;
+
+            /** 税总额 */
+            taxTotal: number;
+
+            /** 税前费用 */
+            preTaxExpense: number;
+
             /** 对象编号 */
             objectKey: number;
 

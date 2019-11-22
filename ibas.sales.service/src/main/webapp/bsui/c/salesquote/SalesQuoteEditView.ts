@@ -413,12 +413,12 @@ namespace sales {
                                 path: "discount",
                                 type: new sap.extension.data.Percentage()
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_itemstaxtotal") + ibas.i18n.prop("sales_inclusion") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_documenttaxtotal") }),
                             new sap.extension.m.Input("", {
                                 editable: false,
                                 type: sap.m.InputType.Number
                             }).bindProperty("bindingValue", {
-                                path: "itemsTaxTotal",
+                                path: "documentTaxTotal",
                                 type: new sap.extension.data.Sum()
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_documenttotal") }),

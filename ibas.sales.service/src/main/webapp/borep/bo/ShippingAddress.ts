@@ -236,6 +236,50 @@ namespace sales {
                 this.setProperty(ShippingAddress.PROPERTY_TRACKINGNUMBER_NAME, value);
             }
 
+            /** 映射的属性名称-税定义 */
+            static PROPERTY_TAX_NAME: string = "Tax";
+            /** 获取-税定义 */
+            get tax(): string {
+                return this.getProperty<string>(ShippingAddress.PROPERTY_TAX_NAME);
+            }
+            /** 设置-税定义 */
+            set tax(value: string) {
+                this.setProperty(ShippingAddress.PROPERTY_TAX_NAME, value);
+            }
+
+            /** 映射的属性名称-税率 */
+            static PROPERTY_TAXRATE_NAME: string = "TaxRate";
+            /** 获取-税率 */
+            get taxRate(): number {
+                return this.getProperty<number>(ShippingAddress.PROPERTY_TAXRATE_NAME);
+            }
+            /** 设置-税率 */
+            set taxRate(value: number) {
+                this.setProperty(ShippingAddress.PROPERTY_TAXRATE_NAME, value);
+            }
+
+            /** 映射的属性名称-税总额 */
+            static PROPERTY_TAXTOTAL_NAME: string = "TaxTotal";
+            /** 获取-税总额 */
+            get taxTotal(): number {
+                return this.getProperty<number>(ShippingAddress.PROPERTY_TAXTOTAL_NAME);
+            }
+            /** 设置-税总额 */
+            set taxTotal(value: number) {
+                this.setProperty(ShippingAddress.PROPERTY_TAXTOTAL_NAME, value);
+            }
+
+            /** 映射的属性名称-税前费用 */
+            static PROPERTY_PRETAXEXPENSE_NAME: string = "PreTaxExpense";
+            /** 获取-税前费用 */
+            get preTaxExpense(): number {
+                return this.getProperty<number>(ShippingAddress.PROPERTY_PRETAXEXPENSE_NAME);
+            }
+            /** 设置-税前费用 */
+            set preTaxExpense(value: number) {
+                this.setProperty(ShippingAddress.PROPERTY_PRETAXEXPENSE_NAME, value);
+            }
+
             /** 映射的属性名称-对象编号 */
             static PROPERTY_OBJECTKEY_NAME: string = "ObjectKey";
             /** 获取-对象编号 */
@@ -406,6 +450,18 @@ namespace sales {
                 this.expense = 0;
                 this.currency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
             }
+
+            protected registerRules(): ibas.IBusinessRule[] {
+                return [
+                    // 计算税前费用 = 税后费用 * 税率
+                    new BusinessRuleDeductionTaxPrice(
+                        ShippingAddress.PROPERTY_TAXRATE_NAME, ShippingAddress.PROPERTY_PRETAXEXPENSE_NAME, ShippingAddress.PROPERTY_EXPENSE_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
+                    // 计算税总额 = 税后费用 - 税前费用
+                    new ibas.BusinessRuleSubtraction(
+                        ShippingAddress.PROPERTY_TAXTOTAL_NAME, ShippingAddress.PROPERTY_EXPENSE_NAME, ShippingAddress.PROPERTY_PRETAXEXPENSE_NAME),
+                ];
+            }
         }
 
 
@@ -437,6 +493,22 @@ namespace sales {
                     }
                 }
                 item.objectKey = max + 1;
+                if (ibas.strings.isEmpty(item.tax)) {
+                    let first: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem;
+                    if (this.parent instanceof SalesQuote) {
+                        first = this.parent.salesQuoteItems.firstOrDefault();
+                    } else if (this.parent instanceof SalesOrder) {
+                        first = this.parent.salesOrderItems.firstOrDefault();
+                    } else if (this.parent instanceof SalesDelivery) {
+                        first = this.parent.salesDeliveryItems.firstOrDefault();
+                    } else if (this.parent instanceof SalesReturn) {
+                        first = this.parent.salesReturnItems.firstOrDefault();
+                    }
+                    if (!ibas.objects.isNull(first)) {
+                        item.tax = first.tax;
+                        item.taxRate = first.taxRate;
+                    }
+                }
             }
 
             /** 主表属性发生变化后 子项属性赋值  */

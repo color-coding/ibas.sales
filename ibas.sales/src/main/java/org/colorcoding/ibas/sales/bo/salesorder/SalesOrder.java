@@ -1826,7 +1826,7 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 						ShippingAddress.PROPERTY_EXPENSE), // 计算运输-费用总计
 				// 折扣后总计 = 项目-行总计 * 折扣
 				new BusinessRuleMultiplication(PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMSLINETOTAL, PROPERTY_DISCOUNT),
-				// 单据总计 = 折扣后总计 + 运输费用 + 税总额
+				// 单据总计 = 折扣后总计 + 运输费用
 				new BusinessRuleSummation(PROPERTY_DOCUMENTTOTAL, PROPERTY_DISCOUNTTOTAL,
 						PROPERTY_SHIPPINGSEXPENSETOTAL),
 				// 小数舍入（单据总计）

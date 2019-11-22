@@ -110,13 +110,25 @@ namespace sales {
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_expense") }),
                             new sap.extension.m.Input("", {
-                                type: sap.m.InputType.Number
+                                type: sap.m.InputType.Number,
+                                fieldWidth: "70%",
                             }).bindProperty("bindingValue", {
                                 path: "/expense",
                                 type: new sap.extension.data.Sum()
                             }).bindProperty("description", {
                                 path: "/currency",
                                 type: new sap.extension.data.Alphanumeric()
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_tax") }),
+                            new component.TaxGroupSelect("", {
+                            }).bindProperty("bindingValue", {
+                                path: "/tax",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 8
+                                })
+                            }).bindProperty("rate", {
+                                path: "/taxRate",
+                                type: new sap.extension.data.Rate()
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_remark1") }),
                             new sap.extension.m.Input("", {

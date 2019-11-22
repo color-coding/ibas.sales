@@ -577,6 +577,17 @@ namespace sales {
                 this.setProperty(SalesReturn.PROPERTY_ITEMSLINETOTAL_NAME, value);
             }
 
+            /** 映射的属性名称-运送费税总计 */
+            static PROPERTY_SHIPPINGSTAXTOTAL_NAME: string = "ShippingsTaxTotal";
+            /** 获取-运送费税总计 */
+            get shippingsTaxTotal(): number {
+                return this.getProperty<number>(SalesReturn.PROPERTY_SHIPPINGSTAXTOTAL_NAME);
+            }
+            /** 设置-运送费税总计 */
+            set shippingsTaxTotal(value: number) {
+                this.setProperty(SalesReturn.PROPERTY_SHIPPINGSTAXTOTAL_NAME, value);
+            }
+
             /** 映射的属性名称-运送费用总计 */
             static PROPERTY_SHIPPINGSEXPENSETOTAL_NAME: string = "ShippingsExpenseTotal";
             /** 获取-运送费用总计 */
@@ -587,6 +598,18 @@ namespace sales {
             set shippingsExpenseTotal(value: number) {
                 this.setProperty(SalesReturn.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME, value);
             }
+
+            /** 映射的属性名称-单据税总计 */
+            static PROPERTY_DOCUMENTTAXTOTAL_NAME: string = "DocumentTaxTotal";
+            /** 获取-单据税总计 */
+            get documentTaxTotal(): number {
+                return this.getProperty<number>(SalesReturn.PROPERTY_DOCUMENTTAXTOTAL_NAME);
+            }
+            /** 设置-单据税总计 */
+            set documentTaxTotal(value: number) {
+                this.setProperty(SalesReturn.PROPERTY_DOCUMENTTAXTOTAL_NAME, value);
+            }
+
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
                     // 计算项目-行总计
@@ -598,11 +621,17 @@ namespace sales {
                     // 计算运输-费用总计
                     new ibas.BusinessRuleSumElements(
                         SalesReturn.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME, SalesReturn.PROPERTY_SHIPPINGADDRESSS_NAME, ShippingAddress.PROPERTY_EXPENSE_NAME),
+                    // 计算运输-税总计
+                    new ibas.BusinessRuleSumElements(
+                        SalesReturn.PROPERTY_SHIPPINGSTAXTOTAL_NAME, SalesReturn.PROPERTY_SHIPPINGADDRESSS_NAME, ShippingAddress.PROPERTY_TAXTOTAL_NAME),
                     // 折扣后总计 = 项目-行总计 * 折扣
                     new ibas.BusinessRuleMultiplication(
                         SalesReturn.PROPERTY_DISCOUNTTOTAL_NAME, SalesReturn.PROPERTY_ITEMSLINETOTAL_NAME, SalesReturn.PROPERTY_DISCOUNT_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
-                    // 单据总计 = 折扣后总计 + 运输费用
+                    // 单据税总计 = 行税总计 + 运输税总计
+                    new ibas.BusinessRuleSummation(
+                        SalesReturn.PROPERTY_DOCUMENTTAXTOTAL_NAME, SalesReturn.PROPERTY_ITEMSTAXTOTAL_NAME, SalesReturn.PROPERTY_SHIPPINGSTAXTOTAL_NAME),
+                    // 单据总计 = 行总计 + 运输费用
                     new ibas.BusinessRuleSummation(
                         SalesReturn.PROPERTY_DOCUMENTTOTAL_NAME, SalesReturn.PROPERTY_DISCOUNTTOTAL_NAME, SalesReturn.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME),
                     // 小数舍入（单据总计）
@@ -623,10 +652,12 @@ namespace sales {
             afterParsing(): void {
                 // 计算部分业务逻辑
                 for (let rule of ibas.businessRulesManager.getRules(ibas.objects.typeOf(this))) {
-                    if (!(rule instanceof ibas.BusinessRuleSumElements)) {
-                        continue;
+                    if (rule instanceof ibas.BusinessRuleSumElements) {
+                        rule.execute(this);
+                    } else if (rule instanceof ibas.BusinessRuleSummation
+                        && rule.result === SalesReturn.PROPERTY_DOCUMENTTAXTOTAL_NAME) {
+                        rule.execute(this);
                     }
-                    rule.execute(this);
                 }
             }
             /** 基于销售订单 */
