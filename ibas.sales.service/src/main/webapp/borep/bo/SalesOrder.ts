@@ -551,6 +551,8 @@ namespace sales {
                     }
                     // 复制头信息
                     bo.baseDocument(this, document);
+                    // 交货日期带报价的
+                    this.deliveryDate = document.deliveryDate;
                     // 复制行项目
                     for (let item of document.salesQuoteItems) {
                         if (item.canceled === ibas.emYesNo.YES) {
@@ -567,6 +569,8 @@ namespace sales {
                         }
                         let myItem: SalesOrderItem = this.salesOrderItems.create();
                         bo.baseDocumentItem(myItem, item);
+                        // 交货日期带报价的
+                        myItem.deliveryDate = item.deliveryDate;
                         // 复制额外信息
                         for (let extra of item.salesQuoteItemExtras) {
                             let myExtra: SalesOrderItemExtra = myItem.salesOrderItemExtras.create();
@@ -659,10 +663,24 @@ namespace sales {
                 return [
                     // 计算项目-行总计
                     new ibas.BusinessRuleSumElements(
-                        SalesOrder.PROPERTY_ITEMSLINETOTAL_NAME, SalesOrder.PROPERTY_SALESORDERITEMS_NAME, SalesOrderItem.PROPERTY_LINETOTAL_NAME),
+                        SalesOrder.PROPERTY_ITEMSLINETOTAL_NAME, SalesOrder.PROPERTY_SALESORDERITEMS_NAME, SalesOrderItem.PROPERTY_LINETOTAL_NAME,
+                        // 不计产品套装子项的金额
+                        (data: SalesOrderItem): boolean => {
+                            if (!ibas.strings.isEmpty(data.parentLineSign)) {
+                                return false;
+                            }
+                            return true;
+                        }),
                     // 计算项目-税总计
                     new ibas.BusinessRuleSumElements(
-                        SalesOrder.PROPERTY_ITEMSTAXTOTAL_NAME, SalesOrder.PROPERTY_SALESORDERITEMS_NAME, SalesOrderItem.PROPERTY_TAXTOTAL_NAME),
+                        SalesOrder.PROPERTY_ITEMSTAXTOTAL_NAME, SalesOrder.PROPERTY_SALESORDERITEMS_NAME, SalesOrderItem.PROPERTY_TAXTOTAL_NAME,
+                        // 不计产品套装子项的金额
+                        (data: SalesOrderItem): boolean => {
+                            if (!ibas.strings.isEmpty(data.parentLineSign)) {
+                                return false;
+                            }
+                            return true;
+                        }),
                     // 计算运输-费用总计
                     new ibas.BusinessRuleSumElements(
                         SalesOrder.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME, SalesOrder.PROPERTY_SHIPPINGADDRESSS_NAME, ShippingAddress.PROPERTY_EXPENSE_NAME),

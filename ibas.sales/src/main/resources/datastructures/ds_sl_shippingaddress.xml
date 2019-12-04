@@ -21,7 +21,7 @@
     <Property Name="Expense" Description="费用" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="Expense"/>
     <Property Name="Currency" Description="货币" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Currency"/>
     <Property Name="Rate" Description="汇率" DataType="Decimal" DataSubType="Rate" EditSize="8" Mapped="Rate"/>
-    <Property Name="TrackingNumber" Description="快递单号" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="Tracking"/>
+    <Property Name="TrackingNumber" Description="快递单号" DataType="Alphanumeric" DataSubType="Default" EditSize="60" Mapped="Tracking"/>
     <Property Name="Tax" Description="税定义" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Tax"/>
     <Property Name="TaxRate" Description="税率" DataType="Decimal" DataSubType="Rate" EditSize="8" Mapped="TaxRate"/>
     <Property Name="TaxTotal" Description="税总额" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="TaxTotal"/>

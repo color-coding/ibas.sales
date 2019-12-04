@@ -93,7 +93,7 @@ public class SalesQuoteItems extends BusinessObjects<ISalesQuoteItem, ISalesQuot
 	}
 
 	@Override
-	public void onParentPropertyChanged(PropertyChangeEvent evt) {
+	protected void onParentPropertyChanged(PropertyChangeEvent evt) {
 		super.onParentPropertyChanged(evt);
 		if (SalesQuote.PROPERTY_DOCUMENTCURRENCY.getName().equals(evt.getPropertyName())) {
 			this.forEach(c -> c.setCurrency(this.getParent().getDocumentCurrency()));

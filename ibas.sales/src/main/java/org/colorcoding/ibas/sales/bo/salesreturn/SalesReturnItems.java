@@ -97,7 +97,7 @@ public class SalesReturnItems extends BusinessObjects<ISalesReturnItem, ISalesRe
 	}
 
 	@Override
-	public void onParentPropertyChanged(PropertyChangeEvent evt) {
+	protected void onParentPropertyChanged(PropertyChangeEvent evt) {
 		super.onParentPropertyChanged(evt);
 		if (SalesReturn.PROPERTY_DOCUMENTCURRENCY.getName().equals(evt.getPropertyName())) {
 			this.forEach(c -> c.setCurrency(this.getParent().getDocumentCurrency()));

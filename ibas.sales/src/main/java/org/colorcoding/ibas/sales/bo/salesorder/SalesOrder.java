@@ -2,6 +2,7 @@ package org.colorcoding.ibas.sales.bo.salesorder;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.function.Predicate;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -1821,7 +1822,16 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 				new BusinessRuleDocumentStatus(PROPERTY_DOCUMENTSTATUS, PROPERTY_SALESORDERITEMS,
 						SalesOrderItem.PROPERTY_LINESTATUS), // 使用集合元素状态
 				new BusinessRuleSumElements(PROPERTY_ITEMSLINETOTAL, PROPERTY_SALESORDERITEMS,
-						SalesOrderItem.PROPERTY_LINETOTAL), // 计算项目-行总计
+						SalesOrderItem.PROPERTY_LINETOTAL, new Predicate<SalesOrderItem>() {
+							// 过滤，产品套件子项的价格
+							@Override
+							public boolean test(SalesOrderItem t) {
+								if (t.getParentLineSign() != null && !t.getParentLineSign().isEmpty()) {
+									return false;
+								}
+								return true;
+							}
+						}), // 计算项目-行总计
 				new BusinessRuleSumElements(PROPERTY_SHIPPINGSEXPENSETOTAL, PROPERTY_SHIPPINGADDRESSS,
 						ShippingAddress.PROPERTY_EXPENSE), // 计算运输-费用总计
 				// 折扣后总计 = 项目-行总计 * 折扣

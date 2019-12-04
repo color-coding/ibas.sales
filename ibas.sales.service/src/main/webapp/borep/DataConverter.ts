@@ -41,12 +41,18 @@ namespace sales {
              * @returns 转换的值
              */
             protected convertData(boName: string, property: string, value: any): any {
-                if (boName === bo.SalesOrder.name) {
-                    if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
+                if (boName === bo.SalesQuote.name) {
+                    if (property === bo.SalesQuote.PROPERTY_ROUNDING_NAME) {
                         return ibas.enums.toString(ibas.emYesNo, value);
                     }
-                } else if (boName === bo.SalesQuote.name) {
-                    if (property === bo.SalesQuote.PROPERTY_ROUNDING_NAME) {
+                } else if (boName === bo.SalesQuoteItem.name) {
+                    if (property === bo.SalesQuoteItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    } else if (property === bo.SalesQuoteItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.SalesOrder.name) {
+                    if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
                         return ibas.enums.toString(ibas.emYesNo, value);
                     }
                 } else if (boName === bo.SalesOrderItem.name) {
@@ -91,12 +97,18 @@ namespace sales {
              * @returns 解析的值
              */
             protected parsingData(boName: string, property: string, value: any): any {
-                if (boName === bo.SalesOrder.name) {
-                    if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
+                if (boName === bo.SalesQuote.name) {
+                    if (property === bo.SalesQuote.PROPERTY_ROUNDING_NAME) {
                         return ibas.enums.valueOf(ibas.emYesNo, value);
                     }
-                } else if (boName === bo.SalesQuote.name) {
-                    if (property === bo.SalesQuote.PROPERTY_ROUNDING_NAME) {
+                } else if (boName === bo.SalesQuoteItem.name) {
+                    if (property === bo.SalesQuoteItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    } else if (property === bo.SalesQuoteItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.SalesOrder.name) {
+                    if (property === bo.SalesOrder.PROPERTY_ROUNDING_NAME) {
                         return ibas.enums.valueOf(ibas.emYesNo, value);
                     }
                 } else if (boName === bo.SalesOrderItem.name) {
@@ -152,11 +164,13 @@ namespace sales {
             target.remarks = source.remarks;
             target.project = source.project;
             target.consumer = source.consumer;
+            target.priceList = source.priceList;
+            target.documentCurrency = source.documentCurrency;
             // 复制自定义字段
             for (let item of source.userFields.forEach()) {
                 let myItem: ibas.IUserField = target.userFields.get(item.name);
                 if (ibas.objects.isNull(myItem)) {
-                    continue;
+                    myItem = target.userFields.register(item.name, item.valueType);
                 }
                 if (myItem.valueType !== item.valueType) {
                     continue;
@@ -203,7 +217,7 @@ namespace sales {
             for (let item of source.userFields.forEach()) {
                 let myItem: ibas.IUserField = target.userFields.get(item.name);
                 if (ibas.objects.isNull(myItem)) {
-                    continue;
+                    myItem = target.userFields.register(item.name, item.valueType);
                 }
                 if (myItem.valueType !== item.valueType) {
                     continue;
@@ -319,7 +333,7 @@ namespace sales {
                             // 差异小于近似位，则忽略
                             let oData: number = afterTax * Math.pow(10, this.decimalPlaces);
                             let nData: number = result * Math.pow(10, this.decimalPlaces);
-                            if (Math.abs(oData - nData) <= 1) {
+                            if (Math.abs(oData - nData) < Math.pow(10, this.decimalPlaces)) {
                                 return;
                             }
                         }
@@ -334,7 +348,7 @@ namespace sales {
                             // 差异小于近似位，则忽略
                             let oData: number = preTax * Math.pow(10, this.decimalPlaces);
                             let nData: number = result * Math.pow(10, this.decimalPlaces);
-                            if (Math.abs(oData - nData) <= 1) {
+                            if (Math.abs(oData - nData) < Math.pow(10, this.decimalPlaces)) {
                                 return;
                             }
                         }
@@ -394,7 +408,7 @@ namespace sales {
                         // 差异小于近似位，则忽略
                         let oData: number = afterDiscount * Math.pow(10, this.decimalPlaces);
                         let nData: number = result * Math.pow(10, this.decimalPlaces);
-                        if (Math.abs(oData - nData) <= 1) {
+                        if (Math.abs(oData - nData) < Math.pow(10, this.decimalPlaces)) {
                             return;
                         }
                     }
@@ -405,7 +419,8 @@ namespace sales {
                     // 差异小于近似位，则忽略
                     let oData: number = discount * Math.pow(10, 6);
                     let nData: number = result * Math.pow(10, 6);
-                    if (Math.abs(oData - nData) <= 1) {
+                    if (Math.abs(oData - nData) < 10) {
+                        // 4舍
                         return;
                     }
                     context.outputValues.set(this.discount, ibas.numbers.round(result, 6));

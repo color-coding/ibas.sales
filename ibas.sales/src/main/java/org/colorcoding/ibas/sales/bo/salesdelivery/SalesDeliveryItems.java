@@ -98,7 +98,7 @@ public class SalesDeliveryItems extends BusinessObjects<ISalesDeliveryItem, ISal
 	}
 
 	@Override
-	public void onParentPropertyChanged(PropertyChangeEvent evt) {
+	protected void onParentPropertyChanged(PropertyChangeEvent evt) {
 		super.onParentPropertyChanged(evt);
 		if (SalesDelivery.PROPERTY_DOCUMENTCURRENCY.getName().equals(evt.getPropertyName())) {
 			this.forEach(c -> c.setCurrency(this.getParent().getDocumentCurrency()));

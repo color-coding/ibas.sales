@@ -88,7 +88,7 @@ public class ShippingAddresss extends BusinessObjects<IShippingAddress, IShippin
 	}
 
 	@Override
-	public void onParentPropertyChanged(PropertyChangeEvent evt) {
+	protected void onParentPropertyChanged(PropertyChangeEvent evt) {
 		super.onParentPropertyChanged(evt);
 		if (evt.getPropertyName().equals(IBODocument.MASTER_PRIMARY_KEY_NAME)) {
 			this.forEach(c -> c.setBaseDocumentEntry(this.getParent().getDocEntry()));

@@ -105,7 +105,7 @@ namespace sales {
                             }).bindProperty("bindingValue", {
                                 path: "/trackingNumber",
                                 type: new sap.extension.data.Alphanumeric({
-                                    maxLength: 30
+                                    maxLength: 60
                                 })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_expense") }),
