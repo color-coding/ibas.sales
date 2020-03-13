@@ -279,6 +279,8 @@ namespace sales {
                 baseProduct(subTargetItem, sItem.extend);
                 // 使用组件定义价格
                 subTargetItem.price = sItem.price;
+                // 计算组件数量
+                subTargetItem.quantity = subTargetItem.basisQuantity * targetItem.quantity;
                 items.add(subTargetItem);
             }
             return items;

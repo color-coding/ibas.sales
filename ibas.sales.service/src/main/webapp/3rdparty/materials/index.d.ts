@@ -8043,7 +8043,6 @@ declare namespace materials {
             protected viewShowed(): void;
             /** 编辑数据，参数：目标数据 */
             protected editData(): void;
-            /** 运行,覆盖原方法 */
             run(): void;
             run(data: bo.GoodsIssue): void;
             protected viewData: bo.GoodsIssue;
@@ -8054,7 +8053,7 @@ declare namespace materials {
         interface IGoodsIssueViewView extends ibas.IBOViewView {
             /** 显示数据 */
             showGoodsIssue(data: bo.GoodsIssue): void;
-            /** 显示数据 */
+            /** 显示数据-库存发货-行 */
             showGoodsIssueLines(datas: bo.GoodsIssueLine[]): void;
         }
         /** 库存发货连接服务映射 */
@@ -8062,7 +8061,7 @@ declare namespace materials {
             /** 构造函数 */
             constructor();
             /** 创建服务实例 */
-            create(): ibas.IService<ibas.IBOLinkServiceCaller>;
+            create(): ibas.IBOLinkService;
         }
     }
 }
@@ -8284,7 +8283,6 @@ declare namespace materials {
             protected viewShowed(): void;
             /** 编辑数据，参数：目标数据 */
             protected editData(): void;
-            /** 运行,覆盖原方法 */
             run(): void;
             run(data: bo.GoodsReceipt): void;
             protected viewData: bo.GoodsReceipt;
@@ -8295,7 +8293,7 @@ declare namespace materials {
         interface IGoodsReceiptViewView extends ibas.IBOViewView {
             /** 显示数据 */
             showGoodsReceipt(data: bo.GoodsReceipt): void;
-            /** 显示数据 */
+            /** 显示数据-库存收货-行 */
             showGoodsReceiptLines(datas: bo.GoodsReceiptLine[]): void;
         }
         /** 库存收货连接服务映射 */
@@ -8303,7 +8301,7 @@ declare namespace materials {
             /** 构造函数 */
             constructor();
             /** 创建服务实例 */
-            create(): ibas.IService<ibas.IBOLinkServiceCaller>;
+            create(): ibas.IBOLinkService;
         }
     }
 }
@@ -8527,7 +8525,6 @@ declare namespace materials {
             protected viewShowed(): void;
             /** 编辑数据，参数：目标数据 */
             protected editData(): void;
-            /** 运行,覆盖原方法 */
             run(): void;
             run(data: bo.InventoryTransfer): void;
             protected viewData: bo.InventoryTransfer;
@@ -8538,7 +8535,7 @@ declare namespace materials {
         interface IInventoryTransferViewView extends ibas.IBOViewView {
             /** 显示数据 */
             showInventoryTransfer(data: bo.InventoryTransfer): void;
-            /** 显示数据 */
+            /** 显示数据-库存转储-行 */
             showInventoryTransferLines(datas: bo.InventoryTransferLine[]): void;
         }
         /** 库存转储连接服务映射 */
@@ -8546,7 +8543,7 @@ declare namespace materials {
             /** 构造函数 */
             constructor();
             /** 创建服务实例 */
-            create(): ibas.IService<ibas.IBOLinkServiceCaller>;
+            create(): ibas.IBOLinkService;
         }
     }
 }
@@ -9140,7 +9137,7 @@ declare namespace materials {
             constructor();
             /** 注册视图 */
             protected registerView(): void;
-            protected deleteMaterialBatchItem(data: bo.IMaterialBatchItem): void;
+            protected deleteMaterialBatchItem(data: bo.IMaterialBatchItem | bo.IMaterialBatchItem[]): void;
             protected createMaterialBatchItem(): void;
         }
         /** 物料批次列表服务 */
@@ -9791,7 +9788,7 @@ declare namespace materials {
             constructor();
             /** 注册视图 */
             protected registerView(): void;
-            protected deleteMaterialSerialItem(data: bo.IMaterialSerialItem): void;
+            protected deleteMaterialSerialItem(data: bo.IMaterialSerialItem | bo.IMaterialSerialItem[]): void;
             protected createMaterialSerialItem(): void;
         }
         /** 物料序列列表服务 */
@@ -10262,6 +10259,53 @@ declare namespace materials {
             defaultWarehouse: string;
             /** 刷新库存 */
             refreshMaterialInventoryEvent: Function;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 查看应用-库存盘点 */
+        class InventoryCountingViewApp extends ibas.BOViewService<IInventoryCountingViewView, bo.InventoryCounting> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 编辑数据，参数：目标数据 */
+            protected editData(): void;
+            run(): void;
+            run(data: bo.InventoryCounting): void;
+            protected viewData: bo.InventoryCounting;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria | string): void;
+        }
+        /** 视图-库存盘点 */
+        interface IInventoryCountingViewView extends ibas.IBOViewView {
+            /** 显示数据 */
+            showInventoryCounting(data: bo.InventoryCounting): void;
+            /** 显示数据-库存盘点-行 */
+            showInventoryCountingLines(datas: bo.InventoryCountingLine[]): void;
+        }
+        /** 库存盘点连接服务映射 */
+        class InventoryCountingLinkServiceMapping extends ibas.BOLinkServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IBOLinkService;
         }
     }
 }
