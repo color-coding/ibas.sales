@@ -8,7 +8,7 @@
 namespace sales {
     export namespace app {
         /** 编辑应用-销售报价 */
-        export class SalesQuoteEditApp extends ibas.BOEditApplication<ISalesQuoteEditView, bo.SalesQuote> {
+        export class SalesQuoteEditApp extends ibas.BOEditService<ISalesQuoteEditView, bo.SalesQuote> {
             /** 应用标识 */
             static APPLICATION_ID: string = "4d08905a-76de-4b64-be11-334305e76dfa";
             /** 应用名称 */
@@ -114,8 +114,6 @@ namespace sales {
                 }
                 super.run.apply(this, arguments);
             }
-            /** 待编辑的数据 */
-            protected editData: bo.SalesQuote;
             /** 保存数据 */
             protected saveData(): void {
                 this.busy(true);
@@ -561,6 +559,21 @@ namespace sales {
             showSalesQuoteItemExtraEvent: Function;
             /** 默认税组 */
             defaultTaxGroup: string;
+        }
+        /** 销售报价编辑服务映射 */
+        export class SalesQuoteEditServiceMapping extends ibas.BOEditServiceMapping {
+            /** 构造函数 */
+            constructor() {
+                super();
+                this.id = SalesQuoteEditApp.APPLICATION_ID;
+                this.name = SalesQuoteEditApp.APPLICATION_NAME;
+                this.boCode = SalesQuoteEditApp.BUSINESS_OBJECT_CODE;
+                this.description = ibas.i18n.prop(this.name);
+            }
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IBOEditServiceCaller<bo.SalesQuote>> {
+                return new SalesQuoteEditApp();
+            }
         }
     }
 }

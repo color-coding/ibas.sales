@@ -45,12 +45,16 @@ namespace sales {
                 this.register(new ProductSuitLinkServiceMapping());
                 this.register(new SalesDeliveryChooseServiceMapping());
                 this.register(new SalesDeliveryLinkServiceMapping());
+                this.register(new SalesDeliveryEditServiceMapping());
                 this.register(new SalesOrderChooseServiceMapping());
                 this.register(new SalesOrderLinkServiceMapping());
+                this.register(new SalesOrderEditServiceMapping());
                 this.register(new SalesReturnChooseServiceMapping());
                 this.register(new SalesReturnLinkServiceMapping());
+                this.register(new SalesReturnEditServiceMapping());
                 this.register(new SalesQuoteChooseServiceMapping());
                 this.register(new SalesQuoteLinkServiceMapping());
+                this.register(new SalesQuoteEditServiceMapping());
                 // 注册常驻应用
 
             }

@@ -8,7 +8,7 @@
 namespace sales {
     export namespace app {
         /** 编辑应用-销售订单 */
-        export class SalesOrderEditApp extends ibas.BOEditApplication<ISalesOrderEditView, bo.SalesOrder> {
+        export class SalesOrderEditApp extends ibas.BOEditService<ISalesOrderEditView, bo.SalesOrder> {
             /** 应用标识 */
             static APPLICATION_ID: string = "87362150-9238-42de-b227-6e9086c660d6";
             /** 应用名称 */
@@ -122,8 +122,6 @@ namespace sales {
                 }
                 super.run.apply(this, arguments);
             }
-            /** 待编辑的数据 */
-            protected editData: bo.SalesOrder;
             /** 保存数据 */
             protected saveData(): void {
                 this.busy(true);
@@ -781,6 +779,21 @@ namespace sales {
             defaultWarehouse: string;
             /** 默认税组 */
             defaultTaxGroup: string;
+        }
+        /** 销售订单编辑服务映射 */
+        export class SalesOrderEditServiceMapping extends ibas.BOEditServiceMapping {
+            /** 构造函数 */
+            constructor() {
+                super();
+                this.id = SalesOrderEditApp.APPLICATION_ID;
+                this.name = SalesOrderEditApp.APPLICATION_NAME;
+                this.boCode = SalesOrderEditApp.BUSINESS_OBJECT_CODE;
+                this.description = ibas.i18n.prop(this.name);
+            }
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IBOEditServiceCaller<bo.SalesOrder>> {
+                return new SalesOrderEditApp();
+            }
         }
     }
 }

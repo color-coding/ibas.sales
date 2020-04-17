@@ -97,7 +97,6 @@ namespace sales {
                 }
                 super.run.apply(this, arguments);
             }
-            protected viewData: bo.SalesDelivery;
             /** 查询数据 */
             protected fetchData(criteria: ibas.ICriteria | string): void {
                 this.busy(true);

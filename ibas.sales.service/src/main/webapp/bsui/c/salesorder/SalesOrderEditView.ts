@@ -483,7 +483,7 @@ namespace sales {
                                 type: new sap.extension.data.Alphanumeric()
                             }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_total") }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_discount") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_discounttotal") }),
                             new sap.extension.m.Input("", {
                                 editable: false,
                                 type: sap.m.InputType.Number

@@ -8,7 +8,7 @@
 namespace sales {
     export namespace app {
         /** 编辑应用-销售退货 */
-        export class SalesReturnEditApp extends ibas.BOEditApplication<ISalesReturnEditView, bo.SalesReturn> {
+        export class SalesReturnEditApp extends ibas.BOEditService<ISalesReturnEditView, bo.SalesReturn> {
             /** 应用标识 */
             static APPLICATION_ID: string = "b1b7d93c-ab24-4e3b-af95-810fdf3f2622";
             /** 应用名称 */
@@ -101,8 +101,6 @@ namespace sales {
                 }
                 super.run.apply(this, arguments);
             }
-            /** 待编辑的数据 */
-            protected editData: bo.SalesReturn;
             /** 保存数据 */
             protected saveData(): void {
                 this.busy(true);
@@ -607,6 +605,21 @@ namespace sales {
             editShippingAddressesEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
+        }
+        /** 销售退货编辑服务映射 */
+        export class SalesReturnEditServiceMapping extends ibas.BOEditServiceMapping {
+            /** 构造函数 */
+            constructor() {
+                super();
+                this.id = SalesReturnEditApp.APPLICATION_ID;
+                this.name = SalesReturnEditApp.APPLICATION_NAME;
+                this.boCode = SalesReturnEditApp.BUSINESS_OBJECT_CODE;
+                this.description = ibas.i18n.prop(this.name);
+            }
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IBOEditServiceCaller<bo.SalesReturn>> {
+                return new SalesReturnEditApp();
+            }
         }
     }
 }
