@@ -27,7 +27,6 @@ import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMultiplication;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
-import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSubtraction;
 import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchItems;
 import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItem;
 import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItems;
@@ -2292,8 +2291,8 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 				new BusinessRuleDeductionTaxPrice(PROPERTY_TAXRATE, PROPERTY_PRETAXPRICE, PROPERTY_PRICE),
 				// 计算税前总计 = 数量 * 税前价格
 				new BusinessRuleMultiplication(PROPERTY_PRETAXLINETOTAL, PROPERTY_QUANTITY, PROPERTY_PRETAXPRICE),
-				// 计算税总额 = 税后总计 - 税前总计
-				new BusinessRuleSubtraction(PROPERTY_TAXTOTAL, PROPERTY_LINETOTAL, PROPERTY_PRETAXLINETOTAL),
+				// 计算税总额 = 总计 * 税率
+				new BusinessRuleMultiplication(PROPERTY_TAXTOTAL, PROPERTY_LINETOTAL, PROPERTY_TAXRATE),
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_PRETAXLINETOTAL), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_TAXTOTAL), // 不能低于0

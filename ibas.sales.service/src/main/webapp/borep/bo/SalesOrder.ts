@@ -1474,9 +1474,10 @@ namespace sales {
                     new ibas.BusinessRuleMultiplication(
                         SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesOrderItem.PROPERTY_QUANTITY_NAME, SalesOrderItem.PROPERTY_PRETAXPRICE_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
-                    // 计算税总额 = 税后总计 - 税前总计
-                    new ibas.BusinessRuleSubtraction(
-                        SalesOrderItem.PROPERTY_TAXTOTAL_NAME, SalesOrderItem.PROPERTY_LINETOTAL_NAME, SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME),
+                    // 计算税总额 = 总计 * 税率
+                    new ibas.BusinessRuleMultiplication(
+                        SalesOrderItem.PROPERTY_TAXTOTAL_NAME, SalesOrderItem.PROPERTY_LINETOTAL_NAME, SalesOrderItem.PROPERTY_TAXRATE_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
                 ];
             }
             /** 重置 */
