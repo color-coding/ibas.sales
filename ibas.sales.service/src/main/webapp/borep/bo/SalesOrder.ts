@@ -1462,6 +1462,10 @@ namespace sales {
                     new ibas.BusinessRuleMultiplication(
                         SalesOrderItem.PROPERTY_LINETOTAL_NAME, SalesOrderItem.PROPERTY_QUANTITY_NAME, SalesOrderItem.PROPERTY_PRICE_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
+                    // 计算税总计 = 计算总计 * 税率
+                    new ibas.BusinessRuleMultiplication(
+                        SalesOrderItem.PROPERTY_LINETOTAL_NAME, SalesOrderItem.PROPERTY_QUANTITY_NAME, SalesOrderItem.PROPERTY_PRICE_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
                     // 计算税前价格 = 税后价格 * 税率
                     new BusinessRuleDeductionTaxPrice(
                         SalesOrderItem.PROPERTY_TAXRATE_NAME, SalesOrderItem.PROPERTY_PRETAXPRICE_NAME, SalesOrderItem.PROPERTY_PRICE_NAME
