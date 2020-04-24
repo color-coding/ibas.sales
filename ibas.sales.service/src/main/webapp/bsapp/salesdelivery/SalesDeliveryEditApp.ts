@@ -636,7 +636,7 @@ namespace sales {
                     throw new Error(ibas.i18n.prop("shell_data_saved_first"));
                 }
                 let amount: number = this.editData.documentTotal - this.editData.paidTotal;
-                if (amount <= 0) {
+                if (amount < 0 || (amount === 0 && this.editData.documentTotal !== 0)) {
                     throw new Error(ibas.i18n.prop("sales_receipted"));
                 }
                 ibas.servicesManager.runApplicationService<businesspartner.app.IReceiptContract>({
