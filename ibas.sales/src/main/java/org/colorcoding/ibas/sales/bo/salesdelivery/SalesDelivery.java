@@ -39,6 +39,7 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRoundingOff;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSummation;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
+import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
@@ -52,8 +53,9 @@ import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
 @XmlType(name = SalesDelivery.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = SalesDelivery.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BusinessObjectUnit(code = SalesDelivery.BUSINESS_OBJECT_CODE)
-public class SalesDelivery extends BusinessObject<SalesDelivery> implements ISalesDelivery, IDataOwnership,
-		IApprovalData, IPeriodData, IProjectData, IBOTagDeleted, IBOTagCanceled, IBusinessLogicsHost, IBOUserFields {
+public class SalesDelivery extends BusinessObject<SalesDelivery>
+		implements ISalesDelivery, IDataOwnership, IApprovalData, IPeriodData, IProjectData, IBOTagDeleted,
+		IBOTagCanceled, IBusinessLogicsHost, IBOUserFields, IDocumentPaidTotalOperator {
 
 	/**
 	 * 序列化版本标记
