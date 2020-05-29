@@ -2291,8 +2291,8 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 				new BusinessRuleDeductionTaxPrice(PROPERTY_TAXRATE, PROPERTY_PRETAXPRICE, PROPERTY_PRICE),
 				// 计算税前总计 = 数量 * 税前价格
 				new BusinessRuleMultiplication(PROPERTY_PRETAXLINETOTAL, PROPERTY_QUANTITY, PROPERTY_PRETAXPRICE),
-				// 计算税总额 = 总计 * 税率
-				new BusinessRuleMultiplication(PROPERTY_TAXTOTAL, PROPERTY_LINETOTAL, PROPERTY_TAXRATE),
+				// 计算税总额 = 稅前总计 * 税率
+				new BusinessRuleMultiplication(PROPERTY_TAXTOTAL, PROPERTY_PRETAXLINETOTAL, PROPERTY_TAXRATE),
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_PRETAXLINETOTAL), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_TAXTOTAL), // 不能低于0
