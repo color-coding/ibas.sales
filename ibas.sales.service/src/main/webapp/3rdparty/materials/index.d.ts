@@ -1333,6 +1333,10 @@ declare namespace materials {
             name: string;
             /** 激活 */
             activated: ibas.emYesNo;
+            /** 虚拟的 */
+            phantom: ibas.emYesNo;
+            /** 父项 */
+            parents: string;
             /** 对象编号 */
             docEntry: number;
             /** 对象类型 */
@@ -2430,6 +2434,8 @@ declare namespace materials {
             note: string;
             /** 可编辑 */
             editable: ibas.emYesNo;
+            /** 必填的 */
+            required: ibas.emYesNo;
             /** 规格模板-项目值集合 */
             specificationItemValues: ISpecificationItemValues;
         }
@@ -2511,6 +2517,8 @@ declare namespace materials {
             note: string;
             /** 可编辑 */
             editable: boolean;
+            /** 必填的 */
+            required: boolean;
             /** 可选值 */
             vaildValues: ibas.IList<ISpecificationTreeItemValue>;
             /** 规格模板-项目集合 */
@@ -4968,6 +4976,18 @@ declare namespace materials {
             get activated(): ibas.emYesNo;
             /** 设置-激活 */
             set activated(value: ibas.emYesNo);
+            /** 映射的属性名称-虚拟的 */
+            static PROPERTY_PHANTOM_NAME: string;
+            /** 获取-虚拟的 */
+            get phantom(): ibas.emYesNo;
+            /** 设置-虚拟的 */
+            set phantom(value: ibas.emYesNo);
+            /** 映射的属性名称-父项 */
+            static PROPERTY_PARENTS_NAME: string;
+            /** 获取-父项 */
+            get parents(): string;
+            /** 设置-父项 */
+            set parents(value: string);
             /** 映射的属性名称-对象编号 */
             static PROPERTY_DOCENTRY_NAME: string;
             /** 获取-对象编号 */
@@ -7448,6 +7468,12 @@ declare namespace materials {
             get editable(): ibas.emYesNo;
             /** 设置-可编辑 */
             set editable(value: ibas.emYesNo);
+            /** 映射的属性名称-必填的 */
+            static PROPERTY_REQUIRED_NAME: string;
+            /** 获取-必填的 */
+            get required(): ibas.emYesNo;
+            /** 设置-必填的 */
+            set required(value: ibas.emYesNo);
             /** 映射的属性名称-规格模板-项目值集合 */
             static PROPERTY_SPECIFICATIONITEMVALUES_NAME: string;
             /** 获取-规格模板-项目值集合 */
@@ -7609,6 +7635,8 @@ declare namespace materials {
             note: string;
             /** 可编辑 */
             editable: boolean;
+            /** 必填的 */
+            required: boolean;
             /** 可选值 */
             vaildValues: ibas.IList<ISpecificationTreeItemValue>;
             /** 规格模板-项目集合 */
@@ -7678,6 +7706,8 @@ declare namespace materials {
                 Note: string;
                 /** 可编辑 */
                 Editable: boolean;
+                /** 必填的 */
+                Required: boolean;
                 /** 可选值 */
                 VaildValues: ISpecificationTreeItemValue[];
                 /** 规格模板-项目集合 */
@@ -9101,11 +9131,15 @@ declare namespace materials {
             run(data: bo.MaterialBatch): void;
             /** 保存数据 */
             protected saveData(): void;
+            /** 选择物料规格 */
+            private chooseSpecification;
         }
         /** 视图-物料批次 */
         interface IMaterialBatchEditView extends ibas.IBOEditView {
             /** 显示数据 */
             showMaterialBatch(data: bo.MaterialBatch): void;
+            /** 选择物料规格 */
+            chooseSpecificationEvent: Function;
         }
     }
 }
@@ -9459,6 +9493,8 @@ declare namespace materials {
             protected deleteData(): void;
             /** 新建数据，参数1：是否克隆 */
             protected createData(clone: boolean): void;
+            /** 选择父项 */
+            protected chooseParents(): void;
         }
         /** 视图-物料组 */
         interface IMaterialGroupEditView extends ibas.IBOEditView {
@@ -9468,6 +9504,8 @@ declare namespace materials {
             deleteDataEvent: Function;
             /** 新建数据事件，参数1：是否克隆 */
             createDataEvent: Function;
+            /** 选择父项 */
+            chooseParentsEvent: Function;
         }
     }
 }
@@ -9830,11 +9868,15 @@ declare namespace materials {
             run(data: bo.MaterialSerial): void;
             /** 保存数据 */
             protected saveData(): void;
+            /** 选择物料规格 */
+            private chooseSpecification;
         }
         /** 视图-物料序列 */
         interface IMaterialSerialEditView extends ibas.IBOEditView {
             /** 显示数据 */
             showMaterialSerial(data: bo.MaterialSerial): void;
+            /** 选择物料规格 */
+            chooseSpecificationEvent: Function;
         }
     }
 }
@@ -10753,6 +10795,8 @@ declare namespace materials {
             set description(value: string);
             /** 可编辑 */
             editable: boolean;
+            /** 必填的 */
+            required: boolean;
             /** 内容 */
             get content(): string;
             set content(value: string);

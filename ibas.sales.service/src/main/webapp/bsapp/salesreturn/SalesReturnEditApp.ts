@@ -132,7 +132,7 @@ namespace sales {
                                                 that.messages(error);
                                             }
                                         }
-                                    )
+                                    );
                                 }
                                 // 保存批次号信息
                                 if (!ibas.objects.isNull(that.batches) && that.batches.save instanceof Function) {
@@ -142,7 +142,7 @@ namespace sales {
                                                 that.messages(error);
                                             }
                                         }
-                                    )
+                                    );
                                 }
                             }
                             // 刷新当前视图
@@ -457,6 +457,15 @@ namespace sales {
                 condition.alias = bo.SalesOrder.PROPERTY_CUSTOMERCODE_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = this.editData.customerCode;
+                // 已清数量大于0
+                let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
+                cCriteria.propertyPath = bo.SalesOrder.PROPERTY_SALESORDERITEMS_NAME;
+                cCriteria.onlyHasChilds = true;
+                cCriteria.noChilds = false;
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesOrderItem.PROPERTY_CLOSEDQUANTITY_NAME;
+                condition.operation = ibas.emConditionOperation.GRATER_THAN;
+                condition.value = "0";
                 // 调用选择服务
                 let that: this = this;
                 ibas.servicesManager.runChooseService<bo.SalesOrder>({
