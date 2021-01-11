@@ -97,6 +97,10 @@ namespace sales {
         export class ConsolePhone extends Console {
             /** 初始化 */
             protected registers(): void {
+                this.register(new SalesQuoteFunc());
+                this.register(new SalesOrderFunc());
+                this.register(new SalesOrderChooseServiceMapping());
+                this.register(new SalesQuoteChooseServiceMapping());
             }
         }
     }
