@@ -128,7 +128,7 @@ namespace sales {
                             })
                         },
                     });
-                    return new sap.extension.m.Dialog("", {
+                    return new sap.m.Dialog("", {
                         title: this.title,
                         type: sap.m.DialogType.Standard,
                         state: sap.ui.core.ValueState.None,
@@ -159,7 +159,7 @@ namespace sales {
                                 }
                             }),
                         ]
-                    });
+                    }).addStyleClass("sapUiNoContentPadding");
                 }
                 private list: sap.extension.m.List;
                 private input: sap.m.Input;

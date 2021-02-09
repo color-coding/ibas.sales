@@ -146,8 +146,9 @@ namespace sales {
                                 subSections: [
                                     new sap.uxap.ObjectPageSubSection("", {
                                         blocks: [
-                                            new sap.extension.layout.SimpleForm("", {
+                                            new sap.ui.layout.form.SimpleForm("", {
                                                 editable: false,
+                                                width: "auto",
                                                 content: [
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_customercode") }),
                                                     new sap.extension.m.Text("", {
@@ -198,7 +199,7 @@ namespace sales {
                                                         type: new sap.extension.data.Alphanumeric()
                                                     }),
                                                 ]
-                                            }).addStyleClass("sapUiNoContentPadding"),
+                                            }).addStyleClass("sapUxAPObjectPageSubSectionAlignContent"),
                                         ]
                                     }),
                                 ]
@@ -208,8 +209,9 @@ namespace sales {
                                 subSections: [
                                     new sap.uxap.ObjectPageSubSection("", {
                                         blocks: [
-                                            new sap.extension.layout.SimpleForm("", {
+                                            new sap.ui.layout.form.SimpleForm("", {
                                                 editable: false,
+                                                width: "auto",
                                                 content: [
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentstatus") }),
                                                     new sap.extension.m.Text("", {
@@ -257,7 +259,7 @@ namespace sales {
                                                         type: new sap.extension.data.Alphanumeric()
                                                     }),
                                                 ]
-                                            }).addStyleClass("sapUiNoContentPadding"),
+                                            }).addStyleClass("sapUxAPObjectPageSubSectionAlignContent"),
                                         ]
                                     }),
                                 ]
@@ -267,139 +269,141 @@ namespace sales {
                                 subSections: [
                                     new sap.uxap.ObjectPageSubSection("", {
                                         blocks: [
-                                            new sap.extension.layout.SimpleForm("", {
-                                                editable: false,
-                                                content: [
-                                                    this.listSalesOrderItem = <any>new sap.extension.m.List("", {
-                                                        inset: false,
-                                                        growing: false,
-                                                        mode: sap.m.ListMode.None,
-                                                        swipeDirection: sap.m.SwipeDirection.RightToLeft,
-                                                        backgroundDesign: sap.m.BackgroundDesign.Transparent,
-                                                        showNoData: true,
-                                                        swipeContent: new sap.m.FlexBox("", {
-                                                            height: "100%",
-                                                            alignItems: sap.m.FlexAlignItems.Start,
-                                                            justifyContent: sap.m.FlexJustifyContent.End,
+                                            this.listSalesOrderItem = new sap.extension.m.List("", {
+                                                inset: false,
+                                                width: "auto",
+                                                growing: false,
+                                                mode: sap.m.ListMode.None,
+                                                swipeDirection: sap.m.SwipeDirection.RightToLeft,
+                                                backgroundDesign: sap.m.BackgroundDesign.Transparent,
+                                                showNoData: true,
+                                                swipeContent: new sap.m.FlexBox("", {
+                                                    height: "100%",
+                                                    alignItems: sap.m.FlexAlignItems.Start,
+                                                    justifyContent: sap.m.FlexJustifyContent.End,
+                                                    items: [
+                                                        new sap.m.SegmentedButton("", {
+                                                            width: "3rem",
                                                             items: [
-                                                                new sap.m.SegmentedButton("", {
+                                                                new sap.m.SegmentedButtonItem("", {
                                                                     width: "3rem",
-                                                                    items: [
-                                                                        new sap.m.SegmentedButtonItem("", {
-                                                                            width: "3rem",
-                                                                            icon: "sap-icon://sap-box",
-                                                                            press(oEvent: any): void {
+                                                                    icon: "sap-icon://sap-box",
+                                                                    press(oEvent: any): void {
 
-                                                                            }
-                                                                        }),
-                                                                    ]
+                                                                    }
                                                                 }),
                                                             ]
-                                                        }).addStyleClass("sapUiSmallMarginTop"),
-                                                        items: {
-                                                            path: "/rows",
-                                                            template: new sap.m.ObjectListItem("", {
-                                                                title: "# {lineId}",
-                                                                number: {
-                                                                    path: "lineStatus",
-                                                                    type: new sap.extension.data.DocumentStatus(true),
+                                                        }),
+                                                    ]
+                                                }).addStyleClass("sapUiSmallMarginTop"),
+                                                items: {
+                                                    path: "/rows",
+                                                    template: new sap.m.ObjectListItem("", {
+                                                        title: "# {lineId}",
+                                                        number: {
+                                                            path: "lineStatus",
+                                                            type: new sap.extension.data.DocumentStatus(true),
+                                                        },
+                                                        attributes: [
+                                                            new sap.extension.m.ObjectAttribute("", {
+                                                                title: ibas.i18n.prop("bo_material"),
+                                                                bindingValue: "{itemDescription} ({itemCode})"
+                                                            }),
+                                                            new sap.extension.m.RepositoryObjectAttribute("", {
+                                                                title: ibas.i18n.prop("bo_warehouse"),
+                                                                bindingValue: {
+                                                                    path: "warehouse",
+                                                                    type: new sap.extension.data.Alphanumeric(),
                                                                 },
-                                                                attributes: [
-                                                                    new sap.extension.m.ObjectAttribute("", {
-                                                                        title: ibas.i18n.prop("bo_material"),
-                                                                        bindingValue: "{itemDescription} ({itemCode})"
-                                                                    }),
-                                                                    new sap.extension.m.RepositoryObjectAttribute("", {
-                                                                        title: ibas.i18n.prop("bo_warehouse"),
-                                                                        bindingValue: {
-                                                                            path: "warehouse",
-                                                                            type: new sap.extension.data.Alphanumeric(),
-                                                                        },
-                                                                        repository: materials.bo.BORepositoryMaterials,
-                                                                        dataInfo: {
-                                                                            type: materials.bo.Warehouse,
-                                                                            key: materials.bo.Warehouse.PROPERTY_CODE_NAME,
-                                                                            text: materials.bo.Warehouse.PROPERTY_NAME_NAME
-                                                                        },
-                                                                    }),
-                                                                    new sap.extension.m.ObjectAttribute("", {
-                                                                        title: ibas.i18n.prop("bo_salesorderitem_quantity"),
-                                                                        bindingValue: {
-                                                                            parts: [
-                                                                                {
-                                                                                    path: "quantity",
-                                                                                    type: new sap.extension.data.Quantity(),
-                                                                                },
-                                                                                {
-                                                                                    path: "uom",
-                                                                                    type: new sap.extension.data.Alphanumeric()
-                                                                                },
-                                                                            ]
-                                                                        }
-                                                                    }),
-                                                                    new sap.extension.m.ObjectAttribute("", {
-                                                                        title: ibas.i18n.prop("bo_salesorderitem_price"),
-                                                                        bindingValue: {
-                                                                            parts: [
-                                                                                {
-                                                                                    path: "price",
-                                                                                    type: new sap.extension.data.Price(),
-                                                                                },
-                                                                                {
-                                                                                    path: "currency",
-                                                                                    type: new sap.extension.data.Alphanumeric(),
-                                                                                },
-                                                                            ]
-                                                                        }
-                                                                    }),
-                                                                    new sap.extension.m.ObjectAttribute("", {
-                                                                        title: ibas.i18n.prop("bo_salesorderitem_linetotal"),
-                                                                        bindingValue: {
-                                                                            parts: [
-                                                                                {
-                                                                                    path: "lineTotal",
-                                                                                    type: new sap.extension.data.Sum(),
-                                                                                },
-                                                                                {
-                                                                                    path: "currency",
-                                                                                    type: new sap.extension.data.Alphanumeric(),
-                                                                                },
-                                                                            ]
-                                                                        }
-                                                                    }),
-                                                                    new sap.extension.m.ObjectAttribute("", {
-                                                                        title: ibas.i18n.prop("bo_salesorderitem_tax"),
-                                                                        bindingValue: {
-                                                                            path: "taxRate",
-                                                                            type: new sap.extension.data.Percentage(),
-                                                                        },
-                                                                        visible: {
-                                                                            path: "taxRate",
-                                                                            formatter(data: number): boolean {
-                                                                                return data > 0 ? true : false;
-                                                                            }
-                                                                        }
-                                                                    }),
-                                                                    new sap.extension.m.ObjectAttribute("", {
-                                                                        bindingValue: {
-                                                                            path: "reference1",
-                                                                            type: new sap.extension.data.Alphanumeric(),
-                                                                        }
-                                                                    }),
-                                                                    new sap.extension.m.ObjectAttribute("", {
-                                                                        bindingValue: {
-                                                                            path: "reference2",
-                                                                            type: new sap.extension.data.Alphanumeric(),
-                                                                        }
-                                                                    }),
-                                                                ],
-                                                                type: sap.m.ListType.Active,
-                                                                press: function (oEvent: sap.ui.base.Event): void {
-                                                                    that.viewSalesOrderItem(this.getBindingContext().getObject());
+                                                                repository: materials.bo.BORepositoryMaterials,
+                                                                dataInfo: {
+                                                                    type: materials.bo.Warehouse,
+                                                                    key: materials.bo.Warehouse.PROPERTY_CODE_NAME,
+                                                                    text: materials.bo.Warehouse.PROPERTY_NAME_NAME
                                                                 },
-                                                            })
-                                                        }
-                                                    }).addStyleClass("sapUiNoContentPadding"),
+                                                            }),
+                                                            new sap.extension.m.ObjectAttribute("", {
+                                                                title: ibas.i18n.prop("bo_salesorderitem_quantity"),
+                                                                bindingValue: {
+                                                                    parts: [
+                                                                        {
+                                                                            path: "quantity",
+                                                                            type: new sap.extension.data.Quantity(),
+                                                                        },
+                                                                        {
+                                                                            path: "uom",
+                                                                            type: new sap.extension.data.Alphanumeric()
+                                                                        },
+                                                                    ]
+                                                                }
+                                                            }),
+                                                            new sap.extension.m.ObjectAttribute("", {
+                                                                title: ibas.i18n.prop("bo_salesorderitem_price"),
+                                                                bindingValue: {
+                                                                    parts: [
+                                                                        {
+                                                                            path: "price",
+                                                                            type: new sap.extension.data.Price(),
+                                                                        },
+                                                                        {
+                                                                            path: "currency",
+                                                                            type: new sap.extension.data.Alphanumeric(),
+                                                                        },
+                                                                    ]
+                                                                }
+                                                            }),
+                                                            new sap.extension.m.ObjectAttribute("", {
+                                                                title: ibas.i18n.prop("bo_salesorderitem_linetotal"),
+                                                                bindingValue: {
+                                                                    parts: [
+                                                                        {
+                                                                            path: "lineTotal",
+                                                                            type: new sap.extension.data.Sum(),
+                                                                        },
+                                                                        {
+                                                                            path: "currency",
+                                                                            type: new sap.extension.data.Alphanumeric(),
+                                                                        },
+                                                                    ]
+                                                                }
+                                                            }),
+                                                            new sap.extension.m.ObjectAttribute("", {
+                                                                title: ibas.i18n.prop("bo_salesorderitem_tax"),
+                                                                bindingValue: {
+                                                                    path: "taxRate",
+                                                                    type: new sap.extension.data.Percentage(),
+                                                                },
+                                                                visible: {
+                                                                    path: "taxRate",
+                                                                    formatter(data: number): boolean {
+                                                                        return data > 0 ? true : false;
+                                                                    }
+                                                                }
+                                                            }),
+                                                            new sap.extension.m.ObjectAttribute("", {
+                                                                bindingValue: {
+                                                                    path: "reference1",
+                                                                    type: new sap.extension.data.Alphanumeric(),
+                                                                }
+                                                            }),
+                                                            new sap.extension.m.ObjectAttribute("", {
+                                                                bindingValue: {
+                                                                    path: "reference2",
+                                                                    type: new sap.extension.data.Alphanumeric(),
+                                                                }
+                                                            }),
+                                                        ],
+                                                        type: sap.m.ListType.Active,
+                                                        press: function (oEvent: sap.ui.base.Event): void {
+                                                            that.viewSalesOrderItem(this.getBindingContext().getObject());
+                                                        },
+                                                    })
+                                                }
+                                            }).addStyleClass("sapUxAPObjectPageSubSectionAlignContent"),
+                                            new sap.ui.layout.form.SimpleForm("", {
+                                                editable: false,
+                                                width: "auto",
+                                                content: [
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_discounttotal") }),
                                                     new sap.extension.m.Text("", {
                                                     }).bindProperty("bindingValue", {
@@ -449,7 +453,7 @@ namespace sales {
                                                         ],
                                                     }),
                                                 ]
-                                            }).addStyleClass("sapUiNoContentPadding"),
+                                            }).addStyleClass("sapUxAPObjectPageSubSectionAlignContent"),
                                         ]
                                     }),
                                 ]
@@ -459,8 +463,9 @@ namespace sales {
                                 subSections: [
                                     new sap.uxap.ObjectPageSubSection("", {
                                         blocks: [
-                                            new sap.extension.layout.SimpleForm("", {
+                                            new sap.ui.layout.form.SimpleForm("", {
                                                 editable: false,
+                                                width: "auto",
                                                 content: [
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress") }),
                                                     new component.ShippingAddressSelect("", {
@@ -469,7 +474,7 @@ namespace sales {
                                                         path: "shippingAddresss",
                                                     }),
                                                 ]
-                                            }).addStyleClass("sapUiNoContentPadding"),
+                                            }).addStyleClass("sapUxAPObjectPageSubSectionAlignContent"),
                                         ]
                                     }),
                                 ]
@@ -479,8 +484,9 @@ namespace sales {
                                 subSections: [
                                     new sap.uxap.ObjectPageSubSection("", {
                                         blocks: [
-                                            new sap.extension.layout.SimpleForm("", {
+                                            new sap.ui.layout.form.SimpleForm("", {
                                                 editable: false,
+                                                width: "auto",
                                                 content: [
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_dataowner") }),
                                                     new sap.extension.m.UserText("", {
@@ -514,7 +520,7 @@ namespace sales {
                                                         type: new sap.extension.data.Alphanumeric()
                                                     }),
                                                 ]
-                                            }).addStyleClass("sapUiNoContentPadding"),
+                                            }).addStyleClass("sapUxAPObjectPageSubSectionAlignContent"),
                                         ]
                                     }),
                                 ]
@@ -539,9 +545,9 @@ namespace sales {
                 /** 编辑数据行（销售订单-行） */
                 viewSalesOrderItem(data: bo.SalesOrderItem): void {
                     let that: this = this;
-                    let editForm: sap.m.Dialog = new sap.extension.m.Dialog("", {
+                    let editForm: sap.m.Dialog = new sap.m.Dialog("", {
                         title: {
-                            path: "/lineId",
+                            path: "lineId",
                             type: new sap.extension.data.Numeric(),
                             formatter(data: string): string {
                                 return ibas.strings.format("{0} - {1}", ibas.i18n.prop("bo_salesorderitem"), data);
@@ -553,25 +559,25 @@ namespace sales {
                         horizontalScrolling: true,
                         verticalScrolling: true,
                         content: [
-                            new sap.extension.layout.SimpleForm("", {
+                            new sap.ui.layout.form.SimpleForm("", {
                                 editable: false,
                                 content: [
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_lineid") }),
                                     new sap.extension.m.Text("", {
                                     }).bindProperty("bindingValue", {
-                                        path: "/lineId",
+                                        path: "lineId",
                                         type: new sap.extension.data.Numeric(),
                                     }),
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_linestatus") }),
                                     new sap.extension.m.Text("", {
                                     }).bindProperty("bindingValue", {
-                                        path: "/lineStatus",
+                                        path: "lineStatus",
                                         type: new sap.extension.data.DocumentStatus(true),
                                     }),
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_itemcode") }),
                                     new sap.extension.m.Text("", {
                                     }).bindProperty("bindingValue", {
-                                        path: "/itemCode",
+                                        path: "itemCode",
                                         type: new sap.extension.data.Alphanumeric(),
                                     }),
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_itemdescription") }),
@@ -579,11 +585,11 @@ namespace sales {
                                     }).bindProperty("bindingValue", {
                                         parts: [
                                             {
-                                                path: "/itemDescription",
+                                                path: "itemDescription",
                                                 type: new sap.extension.data.Alphanumeric()
                                             },
                                             {
-                                                path: "/itemSign",
+                                                path: "itemSign",
                                                 type: new sap.extension.data.Alphanumeric(),
                                                 formatter(data: string): string {
                                                     return ibas.strings.isEmpty(data) ? "" : ibas.strings.format(" ({0})", data);
@@ -600,7 +606,7 @@ namespace sales {
                                             text: materials.bo.Warehouse.PROPERTY_NAME_NAME
                                         },
                                     }).bindProperty("bindingValue", {
-                                        path: "/warehouse",
+                                        path: "warehouse",
                                         type: new sap.extension.data.Alphanumeric()
                                     }),
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_quantity") }),
@@ -608,11 +614,11 @@ namespace sales {
                                     }).bindProperty("bindingValue", {
                                         parts: [
                                             {
-                                                path: "/quantity",
+                                                path: "quantity",
                                                 type: new sap.extension.data.Quantity(),
                                             },
                                             {
-                                                path: "/uom",
+                                                path: "uom",
                                                 type: new sap.extension.data.Alphanumeric(),
                                             }
                                         ]
@@ -622,11 +628,11 @@ namespace sales {
                                     }).bindProperty("bindingValue", {
                                         parts: [
                                             {
-                                                path: "/price",
+                                                path: "price",
                                                 type: new sap.extension.data.Price(),
                                             },
                                             {
-                                                path: "/currency",
+                                                path: "currency",
                                                 type: new sap.extension.data.Alphanumeric(),
                                             }
                                         ]
@@ -636,11 +642,11 @@ namespace sales {
                                     }).bindProperty("bindingValue", {
                                         parts: [
                                             {
-                                                path: "/lineTotal",
+                                                path: "lineTotal",
                                                 type: new sap.extension.data.Sum(),
                                             },
                                             {
-                                                path: "/currency",
+                                                path: "currency",
                                                 type: new sap.extension.data.Alphanumeric(),
                                             }
                                         ]
@@ -650,11 +656,11 @@ namespace sales {
                                     }).bindProperty("bindingValue", {
                                         parts: [
                                             {
-                                                path: "/tax",
+                                                path: "tax",
                                                 type: new sap.extension.data.Alphanumeric(),
                                             },
                                             {
-                                                path: "/taxRate",
+                                                path: "taxRate",
                                                 type: new sap.extension.data.Rate(),
                                             }
                                         ]
@@ -662,13 +668,13 @@ namespace sales {
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_reference1") }),
                                     new sap.extension.m.Text("", {
                                     }).bindProperty("bindingValue", {
-                                        path: "/reference1",
+                                        path: "reference1",
                                         type: new sap.extension.data.Alphanumeric(),
                                     }),
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_reference2") }),
                                     new sap.extension.m.Text("", {
                                     }).bindProperty("bindingValue", {
-                                        path: "/reference2",
+                                        path: "reference2",
                                         type: new sap.extension.data.Alphanumeric(),
                                     }),
                                 ],
@@ -731,8 +737,8 @@ namespace sales {
                                 }
                             }),
                         ]
-                    });
-                    editForm.setModel(new sap.extension.model.JSONModel(data));
+                    }).addStyleClass("sapUiNoContentPadding");
+                    editForm.bindObject("/").setModel(new sap.extension.model.JSONModel(data));
                     editForm.open();
                 }
                 showShippingAddresses(datas: bo.ShippingAddress[]): void {

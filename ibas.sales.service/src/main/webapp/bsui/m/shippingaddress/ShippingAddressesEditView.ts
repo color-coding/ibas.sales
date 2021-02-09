@@ -19,7 +19,7 @@ namespace sales {
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
-                    this.formTop = <any>new sap.ui.layout.form.SimpleForm("", {
+                    this.formTop = new sap.ui.layout.form.SimpleForm("", {
                         editable: true,
                         content: [
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_name") }),
@@ -148,7 +148,7 @@ namespace sales {
                             }),
                         ]
                     }).addStyleClass("sapUiNoContentPadding");
-                    return new sap.extension.m.Dialog("", {
+                    return new sap.m.Dialog("", {
                         title: this.title,
                         type: sap.m.DialogType.Standard,
                         state: sap.ui.core.ValueState.None,
@@ -174,7 +174,7 @@ namespace sales {
                                 }
                             }),
                         ]
-                    });
+                    }).addStyleClass("sapUiNoContentPadding");
                 }
                 private formTop: sap.ui.layout.form.SimpleForm;
                 private buttonAddress: sap.m.MenuButton;
