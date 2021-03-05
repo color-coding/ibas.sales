@@ -11,6 +11,8 @@
 /// <reference path="./salesorder/index.ts" />
 /// <reference path="./salesreturn/index.ts" />
 /// <reference path="./salesquote/index.ts" />
+/// <reference path="./salesinvoice/index.ts" />
+/// <reference path="./salescreditnote/index.ts" />
 /// <reference path="./shippingaddress/index.ts" />
 namespace sales {
     export namespace app {
@@ -39,6 +41,8 @@ namespace sales {
                 this.register(new SalesOrderFunc());
                 this.register(new SalesDeliveryFunc());
                 this.register(new SalesReturnFunc());
+                this.register(new SalesInvoiceFunc());
+                this.register(new SalesCreditNoteFunc());
                 this.register(new ProductSuitFunc());
                 // 注册服务应用
                 this.register(new ProductSuitChooseServiceMapping());
@@ -52,6 +56,12 @@ namespace sales {
                 this.register(new SalesReturnChooseServiceMapping());
                 this.register(new SalesReturnLinkServiceMapping());
                 this.register(new SalesReturnEditServiceMapping());
+                this.register(new SalesInvoiceChooseServiceMapping());
+                this.register(new SalesInvoiceLinkServiceMapping());
+                this.register(new SalesInvoiceEditServiceMapping());
+                this.register(new SalesCreditNoteChooseServiceMapping());
+                this.register(new SalesCreditNoteLinkServiceMapping());
+                this.register(new SalesCreditNoteEditServiceMapping());
                 this.register(new SalesQuoteChooseServiceMapping());
                 this.register(new SalesQuoteLinkServiceMapping());
                 this.register(new SalesQuoteEditServiceMapping());
@@ -99,8 +109,29 @@ namespace sales {
             protected registers(): void {
                 this.register(new SalesQuoteFunc());
                 this.register(new SalesOrderFunc());
+                this.register(new SalesDeliveryFunc());
+                this.register(new SalesReturnFunc());
+                this.register(new SalesInvoiceFunc());
+                this.register(new SalesCreditNoteFunc());
+
+                this.register(new SalesDeliveryChooseServiceMapping());
+                this.register(new SalesDeliveryLinkServiceMapping());
+                this.register(new SalesDeliveryEditServiceMapping());
                 this.register(new SalesOrderChooseServiceMapping());
+                this.register(new SalesOrderLinkServiceMapping());
+                this.register(new SalesOrderEditServiceMapping());
+                this.register(new SalesReturnChooseServiceMapping());
+                this.register(new SalesReturnLinkServiceMapping());
+                this.register(new SalesReturnEditServiceMapping());
+                this.register(new SalesInvoiceChooseServiceMapping());
+                this.register(new SalesInvoiceLinkServiceMapping());
+                this.register(new SalesInvoiceEditServiceMapping());
+                this.register(new SalesCreditNoteChooseServiceMapping());
+                this.register(new SalesCreditNoteLinkServiceMapping());
+                this.register(new SalesCreditNoteEditServiceMapping());
                 this.register(new SalesQuoteChooseServiceMapping());
+                this.register(new SalesQuoteLinkServiceMapping());
+                this.register(new SalesQuoteEditServiceMapping());
             }
         }
     }

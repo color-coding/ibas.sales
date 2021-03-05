@@ -80,6 +80,27 @@ namespace sales {
              * @param fetcher 查询者
              */
             fetchProductSuitEx(fetcher: ibas.IFetchCaller<bo.IProductSuitEx>): void;
+            /**
+             * 查询 销售贷项
+             * @param fetcher 查询者
+             */
+            fetchSalesCreditNote(fetcher: ibas.IFetchCaller<bo.ISalesCreditNote>): void;
+            /**
+             * 保存 销售贷项
+             * @param saver 保存者
+             */
+            saveSalesCreditNote(saver: ibas.ISaveCaller<bo.ISalesCreditNote>): void;
+            /**
+             * 查询 销售发票
+             * @param fetcher 查询者
+             */
+            fetchSalesInvoice(fetcher: ibas.IFetchCaller<bo.ISalesInvoice>): void;
+            /**
+             * 保存 销售发票
+             * @param saver 保存者
+             */
+            saveSalesInvoice(saver: ibas.ISaveCaller<bo.ISalesInvoice>): void;
+
         }
     }
 

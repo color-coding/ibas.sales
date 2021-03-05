@@ -689,6 +689,7 @@ namespace sales {
                         }
                         let myItem: SalesDeliveryItem = this.salesDeliveryItems.create();
                         bo.baseDocumentItem(myItem, item);
+                        myItem.quantity = openQty;
                         // 复制批次
                         for (let batch of item.materialBatches) {
                             let myBatch: materials.bo.IMaterialBatchItem = myItem.materialBatches.create();

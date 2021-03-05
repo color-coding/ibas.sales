@@ -17,6 +17,7 @@ namespace sales {
                         dataInfo: {
                             code: bo.SalesOrder.BUSINESS_OBJECT_CODE,
                         },
+                        userFieldsMode: "text",
                         showFooter: false,
                         headerTitle: new sap.uxap.ObjectPageHeader("", {
                             objectTitle: {

@@ -81,6 +81,26 @@ namespace sales {
                     } else if (property === bo.SalesReturnItem.PROPERTY_SERIALMANAGEMENT_NAME) {
                         return ibas.enums.toString(ibas.emYesNo, value);
                     }
+                } else if (boName === bo.SalesInvoice.name) {
+                    if (property === bo.SalesInvoice.PROPERTY_ROUNDING_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.SalesInvoiceItem.name) {
+                    if (property === bo.SalesInvoiceItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    } else if (property === bo.SalesInvoiceItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.SalesCreditNote.name) {
+                    if (property === bo.SalesCreditNote.PROPERTY_ROUNDING_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.SalesCreditNoteItem.name) {
+                    if (property === bo.SalesCreditNoteItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    } else if (property === bo.SalesCreditNoteItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    }
                 } else if (boName === bo.ShippingAddress.name) {
                     if (property === bo.ShippingAddress.PROPERTY_SHIPPINGSTATUS_NAME) {
                         return ibas.enums.toString(emShippingStatus, value);
@@ -137,6 +157,26 @@ namespace sales {
                     } else if (property === bo.SalesReturnItem.PROPERTY_SERIALMANAGEMENT_NAME) {
                         return ibas.enums.valueOf(ibas.emYesNo, value);
                     }
+                } else if (boName === bo.SalesInvoice.name) {
+                    if (property === bo.SalesInvoice.PROPERTY_ROUNDING_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.SalesInvoiceItem.name) {
+                    if (property === bo.SalesInvoiceItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    } else if (property === bo.SalesInvoiceItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.SalesCreditNote.name) {
+                    if (property === bo.SalesCreditNote.PROPERTY_ROUNDING_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.SalesCreditNoteItem.name) {
+                    if (property === bo.SalesCreditNoteItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    } else if (property === bo.SalesCreditNoteItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    }
                 } else if (boName === bo.ShippingAddress.name) {
                     if (property === bo.ShippingAddress.PROPERTY_SHIPPINGSTATUS_NAME) {
                         return ibas.enums.valueOf(emShippingStatus, value);
@@ -151,8 +191,8 @@ namespace sales {
          * @param source 源
          */
         export function baseDocument(
-            target: ISalesOrder | ISalesDelivery | ISalesReturn,
-            source: ISalesQuote | ISalesOrder | ISalesDelivery
+            target: ISalesOrder | ISalesDelivery | ISalesReturn | ISalesCreditNote | ISalesInvoice,
+            source: ISalesQuote | ISalesOrder | ISalesDelivery | ISalesReturn | ISalesInvoice
         ): void {
             // 复制头信息
             target.contactPerson = source.contactPerson;
@@ -184,7 +224,7 @@ namespace sales {
          * @param source 源
          */
         export function baseDocumentItem(
-            target: ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem,
+            target: ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem | ISalesCreditNoteItem | ISalesInvoiceItem,
             source: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem
         ): void {
             target.baseDocumentType = source.objectCode;
@@ -226,7 +266,7 @@ namespace sales {
             }
         }
         export function baseProduct(
-            target: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem,
+            target: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem | ISalesInvoiceItem | ISalesCreditNoteItem,
             source: materials.bo.IProduct
         ): void {
             target.itemCode = source.code;

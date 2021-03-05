@@ -38,6 +38,10 @@ namespace sales {
         export const BO_CODE_SALESQUOTE: string = "${Company}_SL_SALESQUOTE";
         /** 业务对象编码-送货地址 */
         export const BO_CODE_SHIPPINGADDRESS: string = "${Company}_SL_SHIPADDRESS";
+        /** 业务对象编码-销售贷项 */
+        export const BO_CODE_SALESCREDITNOTE: string = "${Company}_SL_SALESCREDIT";
+        /** 业务对象编码-销售发票 */
+        export const BO_CODE_SALESINVOICE: string = "${Company}_SL_SALESINVOICE";
 
         /** 运输状态 */
         export enum emShippingStatus {

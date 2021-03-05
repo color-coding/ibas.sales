@@ -10,7 +10,9 @@ import javax.ws.rs.core.MediaType;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.sales.bo.productsuit.ProductSuit;
+import org.colorcoding.ibas.sales.bo.salescreditnote.SalesCreditNote;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
+import org.colorcoding.ibas.sales.bo.salesinvoice.SalesInvoice;
 import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.bo.salesquote.SalesQuote;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
@@ -175,6 +177,68 @@ public class DataService extends BORepositorySales {
 	@Path("saveSalesQuote")
 	public OperationResult<SalesQuote> saveSalesQuote(SalesQuote bo, @QueryParam("token") String token) {
 		return super.saveSalesQuote(bo, token);
+	}
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-销售贷项
+	 * 
+	 * @param criteria 查询
+	 * @param token    口令
+	 * @return 操作结果
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("fetchSalesCreditNote")
+	public OperationResult<SalesCreditNote> fetchSalesCreditNote(Criteria criteria, @QueryParam("token") String token) {
+		return super.fetchSalesCreditNote(criteria, token);
+	}
+
+	/**
+	 * 保存-销售贷项
+	 * 
+	 * @param bo    对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("saveSalesCreditNote")
+	public OperationResult<SalesCreditNote> saveSalesCreditNote(SalesCreditNote bo, @QueryParam("token") String token) {
+		return super.saveSalesCreditNote(bo, token);
+	}
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-销售发票
+	 * 
+	 * @param criteria 查询
+	 * @param token    口令
+	 * @return 操作结果
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("fetchSalesInvoice")
+	public OperationResult<SalesInvoice> fetchSalesInvoice(Criteria criteria, @QueryParam("token") String token) {
+		return super.fetchSalesInvoice(criteria, token);
+	}
+
+	/**
+	 * 保存-销售发票
+	 * 
+	 * @param bo    对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("saveSalesInvoice")
+	public OperationResult<SalesInvoice> saveSalesInvoice(SalesInvoice bo, @QueryParam("token") String token) {
+		return super.saveSalesInvoice(bo, token);
 	}
 
 	// --------------------------------------------------------------------------------------------//

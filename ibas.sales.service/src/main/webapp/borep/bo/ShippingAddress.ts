@@ -432,6 +432,7 @@ namespace sales {
                     return;
                 }
                 this.name = address.name;
+                this.consignee = address.contacts;
                 this.street = address.street;
                 this.district = address.district;
                 this.city = address.city;
@@ -467,7 +468,8 @@ namespace sales {
 
         /** 送货地址 集合 */
         export class ShippingAddresss
-            extends ibas.BusinessObjects<ShippingAddress, ISalesQuote | ISalesOrder | ISalesDelivery | ISalesReturn> implements IShippingAddresss {
+            extends ibas.BusinessObjects<ShippingAddress, ISalesQuote | ISalesOrder | ISalesDelivery | ISalesReturn | ISalesInvoice | ISalesCreditNote>
+            implements IShippingAddresss {
 
             /** 创建并添加子项 */
             create(): ShippingAddress {

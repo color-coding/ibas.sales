@@ -4,7 +4,9 @@ import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.repository.IBORepositoryApplication;
 import org.colorcoding.ibas.sales.bo.productsuit.IProductSuit;
+import org.colorcoding.ibas.sales.bo.salescreditnote.ISalesCreditNote;
 import org.colorcoding.ibas.sales.bo.salesdelivery.ISalesDelivery;
+import org.colorcoding.ibas.sales.bo.salesinvoice.ISalesInvoice;
 import org.colorcoding.ibas.sales.bo.salesorder.ISalesOrder;
 import org.colorcoding.ibas.sales.bo.salesquote.ISalesQuote;
 import org.colorcoding.ibas.sales.bo.salesreturn.ISalesReturn;
@@ -99,6 +101,39 @@ public interface IBORepositorySalesApp extends IBORepositoryApplication {
 	 */
 	IOperationResult<ISalesQuote> saveSalesQuote(ISalesQuote bo);
 
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-销售贷项
+	 * 
+	 * @param criteria 查询
+	 * @return 操作结果
+	 */
+	IOperationResult<ISalesCreditNote> fetchSalesCreditNote(ICriteria criteria);
+
+	/**
+	 * 保存-销售贷项
+	 * 
+	 * @param bo 对象实例
+	 * @return 操作结果
+	 */
+	IOperationResult<ISalesCreditNote> saveSalesCreditNote(ISalesCreditNote bo);
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-销售发票
+	 * 
+	 * @param criteria 查询
+	 * @return 操作结果
+	 */
+	IOperationResult<ISalesInvoice> fetchSalesInvoice(ICriteria criteria);
+
+	/**
+	 * 保存-销售发票
+	 * 
+	 * @param bo 对象实例
+	 * @return 操作结果
+	 */
+	IOperationResult<ISalesInvoice> saveSalesInvoice(ISalesInvoice bo);
 	// --------------------------------------------------------------------------------------------//
 
 }

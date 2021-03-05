@@ -169,6 +169,35 @@ namespace sales {
                     }
                 });
             }
+            /**
+             * 查询 销售贷项
+             * @param fetcher 查询者
+             */
+            fetchSalesCreditNote(fetcher: ibas.IFetchCaller<bo.SalesCreditNote>): void {
+                super.fetch(bo.SalesCreditNote.name, fetcher);
+            }
+            /**
+             * 保存 销售贷项
+             * @param saver 保存者
+             */
+            saveSalesCreditNote(saver: ibas.ISaveCaller<bo.SalesCreditNote>): void {
+                super.save(bo.SalesCreditNote.name, saver);
+            }
+
+            /**
+             * 查询 销售发票
+             * @param fetcher 查询者
+             */
+            fetchSalesInvoice(fetcher: ibas.IFetchCaller<bo.SalesInvoice>): void {
+                super.fetch(bo.SalesInvoice.name, fetcher);
+            }
+            /**
+             * 保存 销售发票
+             * @param saver 保存者
+             */
+            saveSalesInvoice(saver: ibas.ISaveCaller<bo.SalesInvoice>): void {
+                super.save(bo.SalesInvoice.name, saver);
+            }
         }
     }
 }

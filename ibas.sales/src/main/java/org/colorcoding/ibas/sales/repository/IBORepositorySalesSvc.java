@@ -4,7 +4,9 @@ import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.repository.IBORepositorySmartService;
 import org.colorcoding.ibas.sales.bo.productsuit.ProductSuit;
+import org.colorcoding.ibas.sales.bo.salescreditnote.SalesCreditNote;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
+import org.colorcoding.ibas.sales.bo.salesinvoice.SalesInvoice;
 import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.bo.salesquote.SalesQuote;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
@@ -109,6 +111,43 @@ public interface IBORepositorySalesSvc extends IBORepositorySmartService {
 	 */
 	OperationResult<SalesQuote> saveSalesQuote(SalesQuote bo, String token);
 
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-销售贷项
+	 * 
+	 * @param criteria 查询
+	 * @param token    口令
+	 * @return 操作结果
+	 */
+	OperationResult<SalesCreditNote> fetchSalesCreditNote(ICriteria criteria, String token);
+
+	/**
+	 * 保存-销售贷项
+	 * 
+	 * @param bo    对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	OperationResult<SalesCreditNote> saveSalesCreditNote(SalesCreditNote bo, String token);
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-销售发票
+	 * 
+	 * @param criteria 查询
+	 * @param token    口令
+	 * @return 操作结果
+	 */
+	OperationResult<SalesInvoice> fetchSalesInvoice(ICriteria criteria, String token);
+
+	/**
+	 * 保存-销售发票
+	 * 
+	 * @param bo    对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	OperationResult<SalesInvoice> saveSalesInvoice(SalesInvoice bo, String token);
 	// --------------------------------------------------------------------------------------------//
 
 }

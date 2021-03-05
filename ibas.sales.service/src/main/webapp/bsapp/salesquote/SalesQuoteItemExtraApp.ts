@@ -218,7 +218,7 @@ namespace sales {
                 }
                 this.removeSalesQuoteItemExtra([data]);
             }
-            private viewSalesQuoteItemExtra(data: bo.SalesOrderItemExtra): void {
+            private viewSalesQuoteItemExtra(data: bo.SalesQuoteItemExtra): void {
                 if (ibas.objects.isNull(data)) {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
                         ibas.i18n.prop("shell_data_view")

@@ -6,8 +6,12 @@ import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.repository.BORepositoryServiceApplication;
 import org.colorcoding.ibas.sales.bo.productsuit.IProductSuit;
 import org.colorcoding.ibas.sales.bo.productsuit.ProductSuit;
+import org.colorcoding.ibas.sales.bo.salescreditnote.ISalesCreditNote;
+import org.colorcoding.ibas.sales.bo.salescreditnote.SalesCreditNote;
 import org.colorcoding.ibas.sales.bo.salesdelivery.ISalesDelivery;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
+import org.colorcoding.ibas.sales.bo.salesinvoice.ISalesInvoice;
+import org.colorcoding.ibas.sales.bo.salesinvoice.SalesInvoice;
 import org.colorcoding.ibas.sales.bo.salesorder.ISalesOrder;
 import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.bo.salesquote.ISalesQuote;
@@ -234,6 +238,93 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 */
 	public IOperationResult<ISalesQuote> saveSalesQuote(ISalesQuote bo) {
 		return new OperationResult<ISalesQuote>(this.saveSalesQuote((SalesQuote) bo, this.getUserToken()));
+	}
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-销售贷项
+	 * 
+	 * @param criteria 查询
+	 * @param token    口令
+	 * @return 操作结果
+	 */
+	public OperationResult<SalesCreditNote> fetchSalesCreditNote(ICriteria criteria, String token) {
+		return super.fetch(criteria, token, SalesCreditNote.class);
+	}
+
+	/**
+	 * 查询-销售贷项（提前设置用户口令）
+	 * 
+	 * @param criteria 查询
+	 * @return 操作结果
+	 */
+	public IOperationResult<ISalesCreditNote> fetchSalesCreditNote(ICriteria criteria) {
+		return new OperationResult<ISalesCreditNote>(this.fetchSalesCreditNote(criteria, this.getUserToken()));
+	}
+
+	/**
+	 * 保存-销售贷项
+	 * 
+	 * @param bo    对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	public OperationResult<SalesCreditNote> saveSalesCreditNote(SalesCreditNote bo, String token) {
+		return super.save(bo, token);
+	}
+
+	/**
+	 * 保存-销售贷项（提前设置用户口令）
+	 * 
+	 * @param bo 对象实例
+	 * @return 操作结果
+	 */
+	public IOperationResult<ISalesCreditNote> saveSalesCreditNote(ISalesCreditNote bo) {
+		return new OperationResult<ISalesCreditNote>(
+				this.saveSalesCreditNote((SalesCreditNote) bo, this.getUserToken()));
+	}
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-销售发票
+	 * 
+	 * @param criteria 查询
+	 * @param token    口令
+	 * @return 操作结果
+	 */
+	public OperationResult<SalesInvoice> fetchSalesInvoice(ICriteria criteria, String token) {
+		return super.fetch(criteria, token, SalesInvoice.class);
+	}
+
+	/**
+	 * 查询-销售发票（提前设置用户口令）
+	 * 
+	 * @param criteria 查询
+	 * @return 操作结果
+	 */
+	public IOperationResult<ISalesInvoice> fetchSalesInvoice(ICriteria criteria) {
+		return new OperationResult<ISalesInvoice>(this.fetchSalesInvoice(criteria, this.getUserToken()));
+	}
+
+	/**
+	 * 保存-销售发票
+	 * 
+	 * @param bo    对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	public OperationResult<SalesInvoice> saveSalesInvoice(SalesInvoice bo, String token) {
+		return super.save(bo, token);
+	}
+
+	/**
+	 * 保存-销售发票（提前设置用户口令）
+	 * 
+	 * @param bo 对象实例
+	 * @return 操作结果
+	 */
+	public IOperationResult<ISalesInvoice> saveSalesInvoice(ISalesInvoice bo) {
+		return new OperationResult<ISalesInvoice>(this.saveSalesInvoice((SalesInvoice) bo, this.getUserToken()));
 	}
 
 	// --------------------------------------------------------------------------------------------//

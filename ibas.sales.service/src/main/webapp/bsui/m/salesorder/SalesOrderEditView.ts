@@ -38,6 +38,7 @@ namespace sales {
                         dataInfo: {
                             code: bo.SalesOrder.BUSINESS_OBJECT_CODE,
                         },
+                        userFieldsMode: "input",
                         showFooter: sap.ui.getCore().getConfiguration().getVersion().getMajor() >= 1
                             && sap.ui.getCore().getConfiguration().getVersion().getMinor() >= 73 ? false : true,
                         footer: new sap.m.Toolbar("", {
@@ -605,7 +606,7 @@ namespace sales {
                                                         })
                                                     }),
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_organization") }),
-                                                    new sap.extension.m.OrganizationInput("", {
+                                                    new sap.extension.m.DataOrganizationInput("", {
                                                         showValueHelp: true,
                                                     }).bindProperty("bindingValue", {
                                                         path: "organization",
