@@ -205,7 +205,9 @@ namespace sales {
             }
             /** 选择销售订单客户事件 */
             private chooseSalesOrderCustomer(): void {
-                let items: bo.SalesOrderItem[] = this.editData.salesOrderItems.where(c => !ibas.strings.isEmpty(c.baseDocumentType));
+                let items: bo.SalesOrderItem[] = this.editData.salesOrderItems.where(c =>
+                    !ibas.strings.isEmpty(c.baseDocumentType) && c.isDeleted !== true
+                );
                 if (items.length > 0) {
                     this.messages({
                         type: ibas.emMessageType.WARNING,

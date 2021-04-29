@@ -204,7 +204,9 @@ namespace sales {
             }
             /** 选择销售退货客户事件 */
             private chooseSalesReturnCustomer(): void {
-                let items: bo.SalesReturnItem[] = this.editData.salesReturnItems.where(c => !ibas.strings.isEmpty(c.baseDocumentType));
+                let items: bo.SalesReturnItem[] = this.editData.salesReturnItems.where(c =>
+                    !ibas.strings.isEmpty(c.baseDocumentType) && c.isDeleted !== true
+                );
                 if (items.length > 0) {
                     this.messages({
                         type: ibas.emMessageType.WARNING,

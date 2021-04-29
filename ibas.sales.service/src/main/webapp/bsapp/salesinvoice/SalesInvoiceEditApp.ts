@@ -205,7 +205,9 @@ namespace sales {
             }
             /** 选择销售发票客户事件 */
             private chooseSalesInvoiceCustomer(): void {
-                let items: bo.SalesInvoiceItem[] = this.editData.salesInvoiceItems.where(c => !ibas.strings.isEmpty(c.baseDocumentType));
+                let items: bo.SalesInvoiceItem[] = this.editData.salesInvoiceItems.where(c =>
+                    !ibas.strings.isEmpty(c.baseDocumentType) && c.isDeleted !== true
+                );
                 if (items.length > 0) {
                     this.messages({
                         type: ibas.emMessageType.WARNING,

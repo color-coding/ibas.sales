@@ -204,7 +204,9 @@ namespace sales {
             }
             /** 选择销售交货客户事件 */
             private chooseSalesDeliveryCustomer(): void {
-                let items: bo.SalesDeliveryItem[] = this.editData.salesDeliveryItems.where(c => !ibas.strings.isEmpty(c.baseDocumentType));
+                let items: bo.SalesDeliveryItem[] = this.editData.salesDeliveryItems.where(c =>
+                    !ibas.strings.isEmpty(c.baseDocumentType) && c.isDeleted !== true
+                );
                 if (items.length > 0) {
                     this.messages({
                         type: ibas.emMessageType.WARNING,
