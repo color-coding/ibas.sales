@@ -303,7 +303,7 @@ namespace sales {
                                                         type: new sap.extension.data.DocumentStatus()
                                                     }),
                                                     new sap.extension.m.TipsCheckBox("", {
-                                                        text: ibas.i18n.prop("bo_receipt_canceled"),
+                                                        text: ibas.i18n.prop("bo_salesorder_canceled"),
                                                         tipsOnSelection: ibas.i18n.prop(["shell_data_cancel", "shell_data_status"]),
                                                     }).bindProperty("bindingValue", {
                                                         path: "canceled",
@@ -661,8 +661,14 @@ namespace sales {
                         horizontalScrolling: true,
                         verticalScrolling: true,
                         content: [
-                            new sap.ui.layout.form.SimpleForm("", {
+                            new sap.extension.layout.DataSimpleForm("", {
                                 editable: true,
+                                userFieldsTitle: "",
+                                userFieldsMode: "input",
+                                dataInfo: {
+                                    code: bo.SalesOrder.BUSINESS_OBJECT_CODE,
+                                    name: bo.SalesOrderItem.name,
+                                },
                                 content: [
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_lineid") }),
                                     new sap.extension.m.Input("", {
@@ -701,19 +707,8 @@ namespace sales {
                                     new sap.extension.m.Input("", {
                                         editable: false,
                                     }).bindProperty("bindingValue", {
-                                        parts: [
-                                            {
-                                                path: "itemDescription",
-                                                type: new sap.extension.data.Alphanumeric()
-                                            },
-                                            {
-                                                path: "itemSign",
-                                                type: new sap.extension.data.Alphanumeric(),
-                                                formatter(data: string): string {
-                                                    return ibas.strings.isEmpty(data) ? "" : ibas.strings.format(" ({0})", data);
-                                                }
-                                            },
-                                        ]
+                                        path: "itemDescription",
+                                        type: new sap.extension.data.Alphanumeric()
                                     }),
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_warehouse") }),
                                     new sap.extension.m.RepositoryInput("", {

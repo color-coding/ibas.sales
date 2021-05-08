@@ -14,6 +14,7 @@ namespace sales {
                 draw(): any {
                     let that: this = this;
                     this.tableSalesDeliveryItem = new sap.extension.m.DataTable("", {
+                        autoPopinMode: true,
                         dataInfo: {
                             code: bo.SalesDelivery.BUSINESS_OBJECT_CODE,
                             name: bo.SalesDeliveryItem.name
@@ -21,9 +22,7 @@ namespace sales {
                         columns: [
                             new sap.extension.m.Column("", {
                                 header: ibas.i18n.prop("bo_salesdeliveryitem_lineid"),
-                            }),
-                            new sap.extension.m.Column("", {
-                                header: ibas.i18n.prop("bo_salesdeliveryitem_linestatus"),
+                                width: "5rem",
                             }),
                             new sap.extension.m.Column("", {
                                 header: ibas.i18n.prop("bo_salesdeliveryitem_itemdescription"),
@@ -56,12 +55,6 @@ namespace sales {
                                         bindingValue: {
                                             path: "lineId",
                                             type: new sap.extension.data.Numeric(),
-                                        }
-                                    }),
-                                    new sap.extension.m.ObjectDocumentStatus("", {
-                                        text: {
-                                            path: "lineStatus",
-                                            type: new sap.extension.data.DocumentStatus(true),
                                         }
                                     }),
                                     new sap.extension.m.ObjectIdentifier("", {

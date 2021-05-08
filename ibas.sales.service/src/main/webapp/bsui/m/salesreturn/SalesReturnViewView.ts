@@ -226,7 +226,7 @@ namespace sales {
                                                                 path: "canceled",
                                                                 type: new sap.extension.data.YesNo(true),
                                                                 formatter(data: ibas.emYesNo): string {
-                                                                    return ibas.emYesNo.YES === data ? ibas.i18n.prop("bo_receipt_canceled") : "";
+                                                                    return ibas.emYesNo.YES === data ? ibas.i18n.prop("bo_salesreturn_canceled") : "";
                                                                 },
                                                             },
                                                         ]
@@ -515,7 +515,6 @@ namespace sales {
                                                     }),
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_remarks") }),
                                                     new sap.extension.m.Text("", {
-                                                        rows: 3,
                                                     }).bindProperty("bindingValue", {
                                                         path: "remarks",
                                                         type: new sap.extension.data.Alphanumeric()
@@ -560,8 +559,14 @@ namespace sales {
                         horizontalScrolling: true,
                         verticalScrolling: true,
                         content: [
-                            new sap.ui.layout.form.SimpleForm("", {
+                            new sap.extension.layout.DataSimpleForm("", {
                                 editable: false,
+                                userFieldsTitle: "",
+                                userFieldsMode: "text",
+                                dataInfo: {
+                                    code: bo.SalesReturn.BUSINESS_OBJECT_CODE,
+                                    name: bo.SalesReturnItem.name,
+                                },
                                 content: [
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturnitem_lineid") }),
                                     new sap.extension.m.Text("", {
@@ -584,19 +589,8 @@ namespace sales {
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturnitem_itemdescription") }),
                                     new sap.extension.m.Text("", {
                                     }).bindProperty("bindingValue", {
-                                        parts: [
-                                            {
-                                                path: "itemDescription",
-                                                type: new sap.extension.data.Alphanumeric()
-                                            },
-                                            {
-                                                path: "itemSign",
-                                                type: new sap.extension.data.Alphanumeric(),
-                                                formatter(data: string): string {
-                                                    return ibas.strings.isEmpty(data) ? "" : ibas.strings.format(" ({0})", data);
-                                                }
-                                            },
-                                        ]
+                                        path: "itemDescription",
+                                        type: new sap.extension.data.Alphanumeric()
                                     }),
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturnitem_warehouse") }),
                                     new sap.extension.m.RepositoryText("", {

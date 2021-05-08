@@ -226,7 +226,7 @@ namespace sales {
                                                                 path: "canceled",
                                                                 type: new sap.extension.data.YesNo(true),
                                                                 formatter(data: ibas.emYesNo): string {
-                                                                    return ibas.emYesNo.YES === data ? ibas.i18n.prop("bo_receipt_canceled") : "";
+                                                                    return ibas.emYesNo.YES === data ? ibas.i18n.prop("bo_salesquote_canceled") : "";
                                                                 },
                                                             },
                                                         ]
@@ -502,7 +502,6 @@ namespace sales {
                                                     }),
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_remarks") }),
                                                     new sap.extension.m.Text("", {
-                                                        rows: 3,
                                                     }).bindProperty("bindingValue", {
                                                         path: "remarks",
                                                         type: new sap.extension.data.Alphanumeric()
@@ -547,8 +546,14 @@ namespace sales {
                         horizontalScrolling: true,
                         verticalScrolling: true,
                         content: [
-                            new sap.ui.layout.form.SimpleForm("", {
+                            new sap.extension.layout.DataSimpleForm("", {
                                 editable: false,
+                                userFieldsTitle: "",
+                                userFieldsMode: "text",
+                                dataInfo: {
+                                    code: bo.SalesQuote.BUSINESS_OBJECT_CODE,
+                                    name: bo.SalesQuoteItem.name,
+                                },
                                 content: [
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquoteitem_lineid") }),
                                     new sap.extension.m.Text("", {
@@ -571,19 +576,8 @@ namespace sales {
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquoteitem_itemdescription") }),
                                     new sap.extension.m.Text("", {
                                     }).bindProperty("bindingValue", {
-                                        parts: [
-                                            {
-                                                path: "itemDescription",
-                                                type: new sap.extension.data.Alphanumeric()
-                                            },
-                                            {
-                                                path: "itemSign",
-                                                type: new sap.extension.data.Alphanumeric(),
-                                                formatter(data: string): string {
-                                                    return ibas.strings.isEmpty(data) ? "" : ibas.strings.format(" ({0})", data);
-                                                }
-                                            },
-                                        ]
+                                        path: "itemDescription",
+                                        type: new sap.extension.data.Alphanumeric()
                                     }),
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquoteitem_quantity") }),
                                     new sap.extension.m.Text("", {

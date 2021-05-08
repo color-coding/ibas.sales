@@ -15,6 +15,7 @@ namespace sales {
                 draw(): any {
                     let that: this = this;
                     this.tableSalesCreditNoteItem = new sap.extension.m.DataTable("", {
+                        autoPopinMode: true,
                         dataInfo: {
                             code: bo.SalesCreditNote.BUSINESS_OBJECT_CODE,
                             name: bo.SalesCreditNoteItem.name
@@ -22,9 +23,7 @@ namespace sales {
                         columns: [
                             new sap.extension.m.Column("", {
                                 header: ibas.i18n.prop("bo_salescreditnoteitem_lineid"),
-                            }),
-                            new sap.extension.m.Column("", {
-                                header: ibas.i18n.prop("bo_salescreditnoteitem_linestatus"),
+                                width: "5rem",
                             }),
                             new sap.extension.m.Column("", {
                                 header: ibas.i18n.prop("bo_salescreditnoteitem_itemdescription"),
@@ -57,12 +56,6 @@ namespace sales {
                                         bindingValue: {
                                             path: "lineId",
                                             type: new sap.extension.data.Numeric(),
-                                        }
-                                    }),
-                                    new sap.extension.m.ObjectDocumentStatus("", {
-                                        text: {
-                                            path: "lineStatus",
-                                            type: new sap.extension.data.DocumentStatus(true),
                                         }
                                     }),
                                     new sap.extension.m.ObjectIdentifier("", {

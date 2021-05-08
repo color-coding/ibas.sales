@@ -237,8 +237,12 @@ namespace sales {
                         that.editData.priceList = selected.priceList;
                         that.editData.contactPerson = selected.contactPerson;
                         that.editData.documentCurrency = selected.currency;
-                        that.view.defaultWarehouse = selected.warehouse;
-                        that.view.defaultTaxGroup = selected.taxGroup;
+                        if (!ibas.strings.isEmpty(selected.warehouse)) {
+                            that.view.defaultWarehouse = selected.warehouse;
+                        }
+                        if (!ibas.strings.isEmpty(selected.taxGroup)) {
+                            that.view.defaultTaxGroup = selected.taxGroup;
+                        }
                     }
                 });
             }

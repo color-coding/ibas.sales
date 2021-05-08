@@ -64,7 +64,7 @@ namespace sales {
                                             return;
                                         }
                                         let fileData: FormData = new FormData();
-                                        fileData.append("file", files[0]);
+                                        fileData.append("file", files[0], encodeURI(files[0].name));
                                         that.fireViewEvents(that.addSalesQuoteItemExtraEvent, fileData);
                                     },
                                 }),
@@ -98,12 +98,10 @@ namespace sales {
                                         return ibas.businessobjects.describe(data);
                                     }
                                 },
-                                firstStatus: new sap.extension.m.ObjectApprovalStatus("", {
-                                    text: {
-                                        path: "quantity",
-                                        type: new sap.extension.data.Quantity(),
-                                    },
-                                }),
+                                number: {
+                                    path: "quantity",
+                                    type: new sap.extension.data.Quantity(),
+                                },
                                 attributes: [
                                     new sap.extension.m.ObjectAttribute("", {
                                         title: ibas.i18n.prop("bo_salesquoteitemextra_extrakey"),
@@ -137,14 +135,12 @@ namespace sales {
                         verticalScrolling: true,
                         subHeader: new sap.m.Toolbar("", {
                             content: [
-                                new sap.m.ToolbarSpacer("", { width: "5px" }),
                                 new sap.m.Label("", {
                                     text: ibas.i18n.prop("sales_summary"),
-                                }),
+                                }).addStyleClass("sapUiSmallMarginBegin"),
                                 this.input = new sap.m.Input("", {
                                     editable: false,
-                                }),
-                                new sap.m.ToolbarSpacer("", { width: "5px" }),
+                                }).addStyleClass("sapUiSmallMarginBegin"),
                             ]
                         }),
                         content: [

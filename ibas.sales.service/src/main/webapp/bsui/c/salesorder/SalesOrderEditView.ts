@@ -146,7 +146,7 @@ namespace sales {
                                 type: new sap.extension.data.DocumentStatus()
                             }),
                             new sap.extension.m.TipsCheckBox("", {
-                                text: ibas.i18n.prop("bo_receipt_canceled"),
+                                text: ibas.i18n.prop("bo_salesorder_canceled"),
                                 tipsOnSelection: ibas.i18n.prop(["shell_data_cancel", "shell_data_status"]),
                             }).bindProperty("bindingValue", {
                                 path: "canceled",
@@ -308,19 +308,8 @@ namespace sales {
                                         width: "16rem",
                                         template: new sap.extension.m.Text("", {
                                         }).bindProperty("bindingValue", {
-                                            parts: [
-                                                {
-                                                    path: "itemDescription",
-                                                    type: new sap.extension.data.Alphanumeric()
-                                                },
-                                                {
-                                                    path: "itemSign",
-                                                    type: new sap.extension.data.Alphanumeric(),
-                                                    formatter(data: string): string {
-                                                        return ibas.strings.isEmpty(data) ? "" : ibas.strings.format(" ({0})", data);
-                                                    }
-                                                },
-                                            ]
+                                            path: "itemDescription",
+                                            type: new sap.extension.data.Alphanumeric()
                                         }),
                                     }),
                                     new sap.extension.table.DataColumn("", {

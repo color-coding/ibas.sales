@@ -10,11 +10,11 @@ namespace sales {
         export namespace c {
             /** 查看视图-销售订单 */
             export class SalesOrderViewView extends ibas.BOViewView implements app.ISalesOrderViewView {
-
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
                     this.tableSalesOrderItem = new sap.extension.m.DataTable("", {
+                        autoPopinMode: true,
                         dataInfo: {
                             code: bo.SalesOrder.BUSINESS_OBJECT_CODE,
                             name: bo.SalesOrderItem.name
@@ -22,9 +22,7 @@ namespace sales {
                         columns: [
                             new sap.extension.m.Column("", {
                                 header: ibas.i18n.prop("bo_salesorderitem_lineid"),
-                            }),
-                            new sap.extension.m.Column("", {
-                                header: ibas.i18n.prop("bo_salesorderitem_linestatus"),
+                                width: "5rem",
                             }),
                             new sap.extension.m.Column("", {
                                 header: ibas.i18n.prop("bo_salesorderitem_itemdescription"),
@@ -57,12 +55,6 @@ namespace sales {
                                         bindingValue: {
                                             path: "lineId",
                                             type: new sap.extension.data.Numeric(),
-                                        }
-                                    }),
-                                    new sap.extension.m.ObjectDocumentStatus("", {
-                                        bindingValue: {
-                                            path: "lineStatus",
-                                            type: new sap.extension.data.DocumentStatus(true),
                                         }
                                     }),
                                     new sap.extension.m.ObjectIdentifier("", {

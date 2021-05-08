@@ -22,8 +22,6 @@ namespace sales {
                 draw(): any {
                     let that: this = this;
                     this.list = new sap.extension.m.List("", {
-                        inset: false,
-                        growing: false,
                         mode: sap.m.ListMode.None,
                         swipeDirection: sap.m.SwipeDirection.RightToLeft,
                         swipeContent: new sap.m.FlexBox("", {
@@ -128,8 +126,25 @@ namespace sales {
                                 }),
                                 attributes: [
                                     new sap.extension.m.ObjectAttribute("", {
-                                        title: ibas.i18n.prop("bo_customer"),
-                                        bindingValue: "{customerName} ({customerCode})"
+                                        title: ibas.i18n.prop("bo_salesreturn_documentdate"),
+                                        bindingValue: {
+                                            path: "documentDate",
+                                            type: new sap.extension.data.Date(),
+                                        }
+                                    }),
+                                    new sap.extension.m.ObjectAttribute("", {
+                                        title: ibas.i18n.prop("bo_salesreturn_customercode"),
+                                        bindingValue: {
+                                            path: "customerCode",
+                                            type: new sap.extension.data.Alphanumeric(),
+                                        }
+                                    }),
+                                    new sap.extension.m.ObjectAttribute("", {
+                                        title: ibas.i18n.prop("bo_salesreturn_customername"),
+                                        bindingValue: {
+                                            path: "customerName",
+                                            type: new sap.extension.data.Alphanumeric(),
+                                        }
                                     }),
                                     new sap.extension.m.ObjectAttribute("", {
                                         title: ibas.i18n.prop("bo_salesreturn_consumer"),
@@ -142,13 +157,6 @@ namespace sales {
                                             formatter(data: string): boolean {
                                                 return ibas.strings.isEmpty(data) ? false : true;
                                             }
-                                        }
-                                    }),
-                                    new sap.extension.m.ObjectAttribute("", {
-                                        title: ibas.i18n.prop("bo_salesreturn_documentdate"),
-                                        bindingValue: {
-                                            path: "documentDate",
-                                            type: new sap.extension.data.Date(),
                                         }
                                     }),
                                     new sap.extension.m.ObjectAttribute("", {
