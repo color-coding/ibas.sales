@@ -371,10 +371,6 @@ namespace sales {
                                         }
                                         created = true;
                                     }
-                                    if (!item.isNew) {
-                                        item.delete();
-                                        item = null;
-                                    }
                                 }
                                 if (ibas.objects.isNull(item)) {
                                     item = that.editData.salesQuoteItems.create();

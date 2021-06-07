@@ -196,7 +196,7 @@ namespace sales {
         ): void {
             // 复制头信息
             target.contactPerson = source.contactPerson;
-            target.deliveryDate = ibas.dates.today();
+            target.deliveryDate = source.deliveryDate;
             target.documentDate = ibas.dates.today();
             target.postingDate = ibas.dates.today();
             target.reference1 = source.reference1;
@@ -248,7 +248,7 @@ namespace sales {
             target.quantity = source.quantity;
             target.uom = source.uom;
             target.warehouse = source.warehouse;
-            target.deliveryDate = ibas.dates.today();
+            target.deliveryDate = source.deliveryDate;
             target.reference1 = source.reference1;
             target.reference2 = source.reference2;
             target.tax = source.tax;
