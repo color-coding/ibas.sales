@@ -27,8 +27,8 @@ public abstract class SalesReturnService<L extends IBusinessLogicContract> exten
 
 	@Override
 	protected boolean checkDataStatus(Object data) {
-		if (data instanceof ISalesBaseDoucment) {
-			ISalesBaseDoucment contract = (ISalesBaseDoucment) data;
+		if (data instanceof ISalesBaseDocument) {
+			ISalesBaseDocument contract = (ISalesBaseDocument) data;
 			if (!MyConfiguration.applyVariables(SalesReturn.BUSINESS_OBJECT_CODE)
 					.equals(contract.getBaseDocumentType())) {
 				Logger.log(MessageLevel.DEBUG, MSG_LOGICS_SKIP_LOGIC_EXECUTION, this.getClass().getName(),

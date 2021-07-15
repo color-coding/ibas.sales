@@ -5,12 +5,12 @@ import java.math.BigDecimal;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
 
 /**
- * 销售订单，发货契约
+ * 销售交货，退货契约
  * 
  * @author Niuren.Zhu
  *
  */
-public interface ISalesOrderIssueContract extends IBusinessLogicContract, ISalesBaseDocumentItem {
+public interface ISalesDeliveryReturnContract extends IBusinessLogicContract, ISalesBaseDocumentItem {
 
 	/**
 	 * 数量

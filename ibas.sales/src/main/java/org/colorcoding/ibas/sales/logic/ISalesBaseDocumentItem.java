@@ -6,7 +6,7 @@ package org.colorcoding.ibas.sales.logic;
  * @author Niuren.Zhu
  *
  */
-public interface ISalesBaseDoucmentItem extends ISalesBaseDoucment {
+public interface ISalesBaseDocumentItem extends ISalesBaseDocument {
 
 	/**
 	 * 基于单据行号

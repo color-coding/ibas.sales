@@ -35,6 +35,7 @@ import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.logic.IMaterialReceiptContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.logic.ISalesDeliveryReturnContract;
 import org.colorcoding.ibas.sales.logic.ISalesOrderReturnContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountPrice;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionTaxPrice;
@@ -2448,6 +2449,34 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem>
 					@Override
 					public Integer getBaseDocumentLineId() {
 						return SalesReturnItem.this.getOriginalDocumentLineId();
+					}
+
+				},
+				// 销售交货的退货
+				new ISalesDeliveryReturnContract() {
+					@Override
+					public String getIdentifiers() {
+						return SalesReturnItem.this.getIdentifiers();
+					}
+
+					@Override
+					public BigDecimal getQuantity() {
+						return SalesReturnItem.this.getQuantity();
+					}
+
+					@Override
+					public String getBaseDocumentType() {
+						return SalesReturnItem.this.getBaseDocumentType();
+					}
+
+					@Override
+					public Integer getBaseDocumentEntry() {
+						return SalesReturnItem.this.getBaseDocumentEntry();
+					}
+
+					@Override
+					public Integer getBaseDocumentLineId() {
+						return SalesReturnItem.this.getBaseDocumentLineId();
 					}
 
 				}

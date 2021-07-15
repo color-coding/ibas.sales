@@ -8,7 +8,7 @@ import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
  * @author Niuren.Zhu
  *
  */
-public interface ISalesBaseDoucment extends IBusinessLogicContract {
+public interface ISalesBaseDocument extends IBusinessLogicContract {
 
 	/**
 	 * 基于单据类型

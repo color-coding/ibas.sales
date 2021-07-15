@@ -10,7 +10,7 @@ import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
  * @author Niuren.Zhu
  *
  */
-public interface ISalesDeliveryInvoiceContract extends IBusinessLogicContract, ISalesBaseDoucmentItem {
+public interface ISalesDeliveryInvoiceContract extends IBusinessLogicContract, ISalesBaseDocumentItem {
 
 	/**
 	 * 数量
