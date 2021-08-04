@@ -476,6 +476,19 @@ namespace sales {
                                                     that.fireViewEvents(that.createDataEvent, true);
                                                 }
                                             }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("shell_data_read"),
+                                                icon: "sap-icon://excel-attachment",
+                                                press: function (): void {
+                                                    // 读取当前对象
+                                                    ibas.files.open((files) => {
+                                                        that.fireViewEvents(that.createDataEvent, files[0]);
+                                                    }, {
+                                                        accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                                        multiple: false
+                                                    });
+                                                }
+                                            }),
                                         ],
                                     })
                                 }),
