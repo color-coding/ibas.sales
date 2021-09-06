@@ -1840,6 +1840,8 @@ public class SalesReturn extends BusinessObject<SalesReturn>
 	public void reset() {
 		super.reset();
 		this.setPaidTotal(Decimal.ZERO);
+		this.setDocumentStatus(emDocumentStatus.RELEASED);
+		this.getSalesReturnItems().forEach(c -> c.setLineStatus(emDocumentStatus.RELEASED));
 	}
 
 	@Override

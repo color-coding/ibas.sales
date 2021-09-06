@@ -1777,6 +1777,8 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 	public void reset() {
 		super.reset();
 		this.setPaidTotal(Decimal.ZERO);
+		this.setDocumentStatus(emDocumentStatus.RELEASED);
+		this.getSalesQuoteItems().forEach(c -> c.setLineStatus(emDocumentStatus.RELEASED));
 	}
 
 	private Integer floorList;

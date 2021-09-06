@@ -1853,6 +1853,8 @@ public class SalesOrder extends BusinessObject<SalesOrder>
 	public void reset() {
 		super.reset();
 		this.setPaidTotal(Decimal.ZERO);
+		this.setDocumentStatus(emDocumentStatus.RELEASED);
+		this.getSalesOrderItems().forEach(c -> c.setLineStatus(emDocumentStatus.RELEASED));
 	}
 
 	private Integer floorList;

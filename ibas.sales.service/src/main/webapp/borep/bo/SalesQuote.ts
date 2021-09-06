@@ -619,6 +619,7 @@ namespace sales {
                 super.reset();
                 this.paidTotal = 0;
                 this.documentStatus = ibas.emDocumentStatus.RELEASED;
+                this.salesQuoteItems.forEach(c => c.lineStatus = ibas.emDocumentStatus.RELEASED);
             }
             /** 转换之前 */
             beforeConvert(): void { }

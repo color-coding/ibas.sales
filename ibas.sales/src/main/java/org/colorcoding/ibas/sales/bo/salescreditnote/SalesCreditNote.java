@@ -1841,6 +1841,8 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 	public void reset() {
 		super.reset();
 		this.setPaidTotal(Decimal.ZERO);
+		this.setDocumentStatus(emDocumentStatus.RELEASED);
+		this.getSalesCreditNoteItems().forEach(c -> c.setLineStatus(emDocumentStatus.RELEASED));
 	}
 
 	@Override

@@ -45,18 +45,15 @@ namespace sales {
                                     }
                                 ],
                             },
+                            sideContentButton: new sap.m.Button("", {
+                                text: ibas.i18n.prop("shell_data_edit"),
+                                type: sap.m.ButtonType.Transparent,
+                                icon: "sap-icon://edit",
+                                press(): void {
+                                    that.fireViewEvents(that.editDataEvent);
+                                }
+                            }),
                             actions: [
-                                new sap.uxap.ObjectPageHeaderActionButton("", {
-                                    hideText: true,
-                                    importance: sap.uxap.Importance.High,
-                                    text: ibas.i18n.prop("shell_data_edit"),
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://edit",
-                                    visible: this.mode === ibas.emViewMode.VIEW ? false : true,
-                                    press(): void {
-                                        that.fireViewEvents(that.editDataEvent);
-                                    }
-                                }),
                                 new sap.uxap.ObjectPageHeaderActionButton("", {
                                     hideText: true,
                                     importance: sap.uxap.Importance.Medium,
@@ -313,7 +310,11 @@ namespace sales {
                                                 }).addStyleClass("sapUiSmallMarginTop"),
                                                 items: {
                                                     path: "/rows",
-                                                    template: new sap.m.ObjectListItem("", {
+                                                    template: new sap.extension.m.DataObjectListItem("", {
+                                                        dataInfo: {
+                                                            code: bo.SalesQuote.BUSINESS_OBJECT_CODE,
+                                                            name: bo.SalesQuoteItem.name
+                                                        },
                                                         title: "# {lineId}",
                                                         number: {
                                                             path: "lineStatus",
@@ -370,25 +371,14 @@ namespace sales {
                                                                 }
                                                             }),
                                                             new sap.extension.m.ObjectAttribute("", {
-                                                                title: ibas.i18n.prop("bo_salesquoteitem_tax"),
-                                                                bindingValue: {
-                                                                    path: "taxRate",
-                                                                    type: new sap.extension.data.Percentage(),
-                                                                },
-                                                                visible: {
-                                                                    path: "taxRate",
-                                                                    formatter(data: number): boolean {
-                                                                        return data > 0 ? true : false;
-                                                                    }
-                                                                }
-                                                            }),
-                                                            new sap.extension.m.ObjectAttribute("", {
+                                                                title: ibas.i18n.prop("bo_salesquoteitem_reference1"),
                                                                 bindingValue: {
                                                                     path: "reference1",
                                                                     type: new sap.extension.data.Alphanumeric(),
                                                                 }
                                                             }),
                                                             new sap.extension.m.ObjectAttribute("", {
+                                                                title: ibas.i18n.prop("bo_salesquoteitem_reference2"),
                                                                 bindingValue: {
                                                                     path: "reference2",
                                                                     type: new sap.extension.data.Alphanumeric(),

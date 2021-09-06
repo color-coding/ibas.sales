@@ -259,6 +259,8 @@ namespace sales {
                         if (!ibas.strings.isEmpty(selected.warehouse)) {
                             that.view.defaultWarehouse = selected.warehouse;
                         }
+                        // 客户改变，清除旧地址
+                        that.editData.shippingAddresss.clear();
                         that.changeSalesCreditNoteItemPrice(that.editData.priceList);
                     }
                 });

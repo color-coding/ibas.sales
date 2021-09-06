@@ -1841,6 +1841,8 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 	public void reset() {
 		super.reset();
 		this.setPaidTotal(Decimal.ZERO);
+		this.setDocumentStatus(emDocumentStatus.RELEASED);
+		this.getSalesInvoiceItems().forEach(c -> c.setLineStatus(emDocumentStatus.RELEASED));
 	}
 
 	@Override

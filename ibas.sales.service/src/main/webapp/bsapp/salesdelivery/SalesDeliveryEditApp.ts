@@ -265,6 +265,8 @@ namespace sales {
                         if (!ibas.strings.isEmpty(selected.taxGroup)) {
                             that.view.defaultTaxGroup = selected.taxGroup;
                         }
+                        // 客户改变，清除旧地址
+                        that.editData.shippingAddresss.clear();
                         that.changeSalesDeliveryItemPrice(that.editData.priceList);
                     }
                 });
