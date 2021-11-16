@@ -14,6 +14,7 @@
 /// <reference path="./salesinvoice/index.ts" />
 /// <reference path="./salescreditnote/index.ts" />
 /// <reference path="./shippingaddress/index.ts" />
+/// <reference path="./others/index.ts" />
 namespace sales {
     export namespace app {
         /** 属性-导航 */
@@ -66,6 +67,10 @@ namespace sales {
                 this.register(new SalesQuoteLinkServiceMapping());
                 this.register(new SalesQuoteEditServiceMapping());
                 // 注册常驻应用
+                // 收付款服务
+                this.register(new SalesReturnPaymentServiceMapping());
+                this.register(new SalesDeliveryReceiptServiceMapping());
+                this.register(new SalesOrderReceiptServiceMapping());
 
             }
             /** 运行 */

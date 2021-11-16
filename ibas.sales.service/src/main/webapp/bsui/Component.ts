@@ -335,7 +335,6 @@ namespace sales {
                             }
                         }
                     });
-                    this.loadItems();
                     return this;
                 },
                 /**
