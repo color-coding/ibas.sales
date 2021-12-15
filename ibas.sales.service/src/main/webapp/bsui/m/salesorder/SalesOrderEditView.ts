@@ -206,31 +206,34 @@ namespace sales {
                             ],
                         }).addStyleClass("sapUiNoContentPadding"),
                         headerContent: [
-                            new sap.extension.m.ObjectDocumentStatus("", {
-                                title: ibas.i18n.prop("bo_salesorder_documentstatus"),
-                                text: {
-                                    path: "documentStatus",
-                                    type: new sap.extension.data.DocumentStatus(true),
-                                },
-                            }),
-                            new sap.extension.m.ObjectYesNoStatus("", {
-                                title: ibas.i18n.prop("bo_salesorder_canceled"),
-                                negative: true,
-                                text: {
-                                    path: "canceled",
-                                    type: new sap.extension.data.YesNo(true),
+                            new sap.extension.m.ObjectApprovalStatus("", {
+                                title: ibas.i18n.prop("bo_salesorder_approvalstatus"),
+                                enumValue: {
+                                    path: "approvalStatus",
+                                    type: new sap.extension.data.ApprovalStatus(),
                                 },
                                 visible: {
-                                    path: "canceled",
-                                    formatter(data: ibas.emYesNo): boolean {
-                                        return data === ibas.emYesNo.YES ? true : false;
+                                    path: "approvalStatus",
+                                    formatter(data: ibas.emApprovalStatus): boolean {
+                                        return ibas.objects.isNull(data) || data === ibas.emApprovalStatus.UNAFFECTED ? false : true;
                                     }
                                 }
                             }),
+                            new sap.extension.m.ObjectDocumentCanceledStatus("", {
+                                title: ibas.i18n.prop("bo_salesorder_documentstatus"),
+                                canceledStatus: {
+                                    path: "canceled",
+                                    type: new sap.extension.data.YesNo(),
+                                },
+                                documentStatus: {
+                                    path: "documentStatus",
+                                    type: new sap.extension.data.DocumentStatus(),
+                                },
+                            }),
                             new sap.extension.m.ObjectAttribute("", {
-                                title: ibas.i18n.prop("bo_salesorder_deliverydate"),
+                                title: ibas.i18n.prop("bo_salesorder_documentdate"),
                                 bindingValue: {
-                                    path: "deliveryDate",
+                                    path: "documentDate",
                                     type: new sap.extension.data.Date(),
                                 },
                             }),
@@ -779,16 +782,45 @@ namespace sales {
                                         })
                                     }),
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_quantity") }),
-                                    new sap.extension.m.Input("", {
-                                        type: sap.m.InputType.Number
-                                    }).bindProperty("bindingValue", {
-                                        path: "quantity",
-                                        type: new sap.extension.data.Quantity(),
-                                    }).bindProperty("description", {
-                                        path: "uom",
-                                        type: new sap.extension.data.Alphanumeric({
-                                            maxLength: 8
-                                        }),
+                                    new sap.m.FlexBox("", {
+                                        width: "100%",
+                                        justifyContent: sap.m.FlexJustifyContent.Start,
+                                        renderType: sap.m.FlexRendertype.Bare,
+                                        items: [
+                                            new sap.extension.m.Input("", {
+                                                type: sap.m.InputType.Number
+                                            }).bindProperty("bindingValue", {
+                                                path: "quantity",
+                                                type: new sap.extension.data.Quantity(),
+                                            }).bindProperty("description", {
+                                                path: "uom",
+                                                type: new sap.extension.data.Alphanumeric({
+                                                    maxLength: 8
+                                                }),
+                                            }),
+                                            new sap.m.Button("", {
+                                                icon: "sap-icon://tags",
+                                                type: sap.m.ButtonType.Transparent,
+                                                visible: {
+                                                    path: "serialManagement",
+                                                    type: new sap.extension.data.YesNo(),
+                                                },
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.chooseSalesOrderItemMaterialSerialEvent);
+                                                },
+                                            }).addStyleClass("sapUiTinyMarginBegin"),
+                                            new sap.m.Button("", {
+                                                icon: "sap-icon://tags",
+                                                type: sap.m.ButtonType.Transparent,
+                                                visible: {
+                                                    path: "batchManagement",
+                                                    type: new sap.extension.data.YesNo(),
+                                                },
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.chooseSalesOrderItemMaterialBatchEvent);
+                                                },
+                                            }).addStyleClass("sapUiTinyMarginBegin"),
+                                        ]
                                     }),
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorderitem_price") }),
                                     new sap.extension.m.Input("", {
@@ -916,8 +948,12 @@ namespace sales {
                             new sap.m.Button("", {
                                 text: ibas.i18n.prop("shell_exit"),
                                 type: sap.m.ButtonType.Transparent,
-                                press: function (): void {
-                                    editForm.close();
+                                press(this: sap.m.Button): void {
+                                    if (this.getParent() instanceof sap.m.Dialog) {
+                                        (<sap.m.Dialog>this.getParent()).close();
+                                    } else {
+                                        editForm.close();
+                                    }
                                 }
                             }),
                         ]
