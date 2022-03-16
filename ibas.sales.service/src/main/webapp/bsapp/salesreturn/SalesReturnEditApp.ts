@@ -445,8 +445,37 @@ namespace sales {
                 });
             }
             /** 添加销售退货-行事件 */
-            private addSalesReturnItem(): void {
-                this.chooseSalesReturnItemMaterial(undefined);
+            private addSalesReturnItem(items: bo.SalesReturnItem[]): void {
+                if (items instanceof Array && items.length > 0) {
+                    // 检查项目是否允许复制
+                    for (let item of items) {
+                        if (!ibas.strings.isEmpty(item.parentLineSign)) {
+                            throw new Error(ibas.i18n.prop("sales_subitems_not_allowed_operation"));
+                        }
+                    }
+                    let builder: ibas.StringBuilder = new ibas.StringBuilder();
+                    builder.append(ibas.i18n.prop("shell_data_new_line"));
+                    builder.append(" [");
+                    for (let item of items) {
+                        let newItem: bo.SalesReturnItem = item.clone();
+                        newItem.lineId = undefined;
+                        newItem.visOrder = undefined;
+                        // 序列号清除
+                        newItem.materialSerials.clear();
+                        this.editData.salesReturnItems.add(newItem);
+                        if (builder.length > 2) {
+                            builder.append(", ");
+                        }
+                        builder.append(newItem.lineId);
+                    }
+                    builder.append("] ");
+                    if (builder.length > 3) {
+                        this.proceeding(ibas.emMessageType.WARNING, builder.toString());
+                        this.view.showSalesReturnItems(this.editData.salesReturnItems.filterDeleted());
+                    }
+                } else {
+                    this.chooseSalesReturnItemMaterial(undefined);
+                }
             }
             /** 删除销售退货-行事件 */
             private removeSalesReturnItem(items: bo.SalesReturnItem[]): void {

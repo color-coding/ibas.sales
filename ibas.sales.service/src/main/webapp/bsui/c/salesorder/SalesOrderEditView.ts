@@ -208,6 +208,12 @@ namespace sales {
                                                         }
                                                     }),
                                                     new sap.m.MenuItem("", {
+                                                        text: ibas.i18n.prop("shell_data_clone_line"),
+                                                        press: function (): void {
+                                                            that.fireViewEvents(that.addSalesOrderItemEvent, that.tableSalesOrderItem.getSelecteds());
+                                                        }
+                                                    }),
+                                                    new sap.m.MenuItem("", {
                                                         text: ibas.i18n.prop("bo_salesquote"),
                                                         press: function (): void {
                                                             that.fireViewEvents(that.chooseSalesOrderSalesQuoteEvent);

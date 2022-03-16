@@ -437,6 +437,13 @@ namespace sales {
                                                                 }),
                                                                 new sap.m.SegmentedButtonItem("", {
                                                                     width: "3rem",
+                                                                    icon: "sap-icon://copy",
+                                                                    press(oEvent: any): void {
+                                                                        that.fireViewEvents(that.addSalesOrderItemEvent, that.listSalesOrderItem.getSelecteds());
+                                                                    }
+                                                                }),
+                                                                new sap.m.SegmentedButtonItem("", {
+                                                                    width: "3rem",
                                                                     icon: "sap-icon://delete",
                                                                     press(oEvent: any): void {
                                                                         that.fireViewEvents(that.removeSalesOrderItemEvent, that.listSalesOrderItem.getSelecteds());

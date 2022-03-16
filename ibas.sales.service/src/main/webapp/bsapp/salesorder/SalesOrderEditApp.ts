@@ -556,8 +556,37 @@ namespace sales {
                 });
             }
             /** 添加销售订单-行事件 */
-            private addSalesOrderItem(): void {
-                this.chooseSalesOrderItemMaterial(undefined);
+            private addSalesOrderItem(items: bo.SalesOrderItem[]): void {
+                if (items instanceof Array && items.length > 0) {
+                    // 检查项目是否允许复制
+                    for (let item of items) {
+                        if (!ibas.strings.isEmpty(item.parentLineSign)) {
+                            throw new Error(ibas.i18n.prop("sales_subitems_not_allowed_operation"));
+                        }
+                    }
+                    let builder: ibas.StringBuilder = new ibas.StringBuilder();
+                    builder.append(ibas.i18n.prop("shell_data_new_line"));
+                    builder.append(" [");
+                    for (let item of items) {
+                        let newItem: bo.SalesOrderItem = item.clone();
+                        newItem.lineId = undefined;
+                        newItem.visOrder = undefined;
+                        // 序列号清除
+                        newItem.materialSerials.clear();
+                        this.editData.salesOrderItems.add(newItem);
+                        if (builder.length > 2) {
+                            builder.append(", ");
+                        }
+                        builder.append(newItem.lineId);
+                    }
+                    builder.append("] ");
+                    if (builder.length > 3) {
+                        this.proceeding(ibas.emMessageType.WARNING, builder.toString());
+                        this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
+                    }
+                } else {
+                    this.chooseSalesOrderItemMaterial(undefined);
+                }
             }
             /** 删除销售订单-行事件 */
             private removeSalesOrderItem(items: bo.SalesOrderItem[]): void {
