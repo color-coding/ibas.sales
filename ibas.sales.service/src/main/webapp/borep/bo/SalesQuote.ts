@@ -1343,19 +1343,19 @@ namespace sales {
 
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
-                    // 计算折扣价格 = 折扣前价格 * 折扣
+                    // 计算税前价格 = 折扣前价格 * 折扣
                     new BusinessRuleDeductionDiscountPrice(
-                        SalesQuoteItem.PROPERTY_DISCOUNT_NAME, SalesQuoteItem.PROPERTY_UNITPRICE_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME
+                        SalesQuoteItem.PROPERTY_DISCOUNT_NAME, SalesQuoteItem.PROPERTY_UNITPRICE_NAME, SalesQuoteItem.PROPERTY_PRETAXPRICE_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PRICE)
                     ),
+                    // 计算税后价格 = 税前价格 * （1 + 税率）
+                    new BusinessRuleDeductionTaxPrice(
+                        SalesQuoteItem.PROPERTY_TAXRATE_NAME, SalesQuoteItem.PROPERTY_PRETAXPRICE_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PRICE)),
                     // 计算总计 = 数量 * 价格
                     new ibas.BusinessRuleMultiplication(
                         SalesQuoteItem.PROPERTY_LINETOTAL_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
-                    // 计算税前价格 = 税后价格 * 税率
-                    new BusinessRuleDeductionTaxPrice(
-                        SalesQuoteItem.PROPERTY_TAXRATE_NAME, SalesQuoteItem.PROPERTY_PRETAXPRICE_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME
-                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PRICE)),
                     // 计算税前总计 = 数量 * 税前价格
                     new ibas.BusinessRuleMultiplication(
                         SalesQuoteItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME, SalesQuoteItem.PROPERTY_PRETAXPRICE_NAME
