@@ -816,7 +816,7 @@ namespace sales {
                 let app: ShippingAddressesEditApp = new ShippingAddressesEditApp();
                 app.navigation = this.navigation;
                 app.viewShower = this.viewShower;
-                if (this.editData.shippingAddresss.length === 0 && !ibas.strings.isEmpty(this.editData.customerCode)) {
+                if (this.editData.shippingAddresss.where(c => c.isDeleted === false).length === 0 && !ibas.strings.isEmpty(this.editData.customerCode)) {
                     // 初始化地址
                     let that: this = this;
                     this.messages({
