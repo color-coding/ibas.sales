@@ -543,17 +543,6 @@ namespace sales {
                 this.discount = 1;
             }
 
-            /** 映射的属性名称-项目的税总计 */
-            static PROPERTY_ITEMSTAXTOTAL_NAME: string = "ItemsTaxTotal";
-            /** 获取-项目的税总计 */
-            get itemsTaxTotal(): number {
-                return this.getProperty<number>(SalesQuote.PROPERTY_ITEMSTAXTOTAL_NAME);
-            }
-            /** 设置-项目的税总计 */
-            set itemsTaxTotal(value: number) {
-                this.setProperty(SalesQuote.PROPERTY_ITEMSTAXTOTAL_NAME, value);
-            }
-
             /** 映射的属性名称-项目的行总计 */
             static PROPERTY_ITEMSLINETOTAL_NAME: string = "ItemsLineTotal";
             /** 获取-项目的行总计 */
@@ -565,20 +554,20 @@ namespace sales {
                 this.setProperty(SalesQuote.PROPERTY_ITEMSLINETOTAL_NAME, value);
             }
 
-            /** 映射的属性名称-单据税总计 */
-            static PROPERTY_DOCUMENTTAXTOTAL_NAME: string = "DocumentTaxTotal";
-            /** 获取-单据税总计 */
-            get documentTaxTotal(): number {
-                return this.getProperty<number>(SalesQuote.PROPERTY_DOCUMENTTAXTOTAL_NAME);
+            /** 映射的属性名称-项目的税总计 */
+            static PROPERTY_ITEMSTAXTOTAL_NAME: string = "ItemsTaxTotal";
+            /** 获取-项目的税总计 */
+            get itemsTaxTotal(): number {
+                return this.getProperty<number>(SalesQuote.PROPERTY_ITEMSTAXTOTAL_NAME);
             }
-            /** 设置-单据税总计 */
-            set documentTaxTotal(value: number) {
-                this.setProperty(SalesQuote.PROPERTY_DOCUMENTTAXTOTAL_NAME, value);
+            /** 设置-项目的税总计 */
+            set itemsTaxTotal(value: number) {
+                this.setProperty(SalesQuote.PROPERTY_ITEMSTAXTOTAL_NAME, value);
             }
 
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
-                    // 计算项目-行总计
+                    // 计算行-总计（含税）
                     new ibas.BusinessRuleSumElements(
                         SalesQuote.PROPERTY_ITEMSLINETOTAL_NAME, SalesQuote.PROPERTY_SALESQUOTEITEMS_NAME, SalesQuoteItem.PROPERTY_LINETOTAL_NAME,
                         // 不计产品套装子项的金额
@@ -588,7 +577,7 @@ namespace sales {
                             }
                             return true;
                         }),
-                    // 计算项目-税总计
+                    // 计算行-税总计
                     new ibas.BusinessRuleSumElements(
                         SalesQuote.PROPERTY_ITEMSTAXTOTAL_NAME, SalesQuote.PROPERTY_SALESQUOTEITEMS_NAME, SalesQuoteItem.PROPERTY_TAXTOTAL_NAME,
                         // 不计产品套装子项的金额
@@ -598,16 +587,12 @@ namespace sales {
                             }
                             return true;
                         }),
-                    // 折扣后总计 = 项目-行总计 * 折扣
-                    new ibas.BusinessRuleMultiplication(
+                    // 折扣后总计（含税） = 行-总计（含税）* 折扣
+                    new BusinessRuleDeductionDiscountTotal(
                         SalesQuote.PROPERTY_DISCOUNTTOTAL_NAME, SalesQuote.PROPERTY_ITEMSLINETOTAL_NAME, SalesQuote.PROPERTY_DISCOUNT_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
-                    // 单据税总计 = 行税总计
-                    new ibas.BusinessRuleSummation(
-                        SalesQuote.PROPERTY_DOCUMENTTAXTOTAL_NAME, SalesQuote.PROPERTY_ITEMSTAXTOTAL_NAME),
-                    // 单据总计 = 行总计
-                    new ibas.BusinessRuleSummation(
-                        SalesQuote.PROPERTY_DOCUMENTTOTAL_NAME, SalesQuote.PROPERTY_DISCOUNTTOTAL_NAME),
+                    // 单据总计 = 折扣后总计（含税）+ 运输-总计（含税）
+                    new BusinessRuleDeductionDocumentTotal(SalesQuote.PROPERTY_DOCUMENTTOTAL_NAME, SalesQuote.PROPERTY_DISCOUNTTOTAL_NAME),
                     // 小数舍入（单据总计）
                     new ibas.BusinessRuleRoundingOff(
                         SalesQuote.PROPERTY_DIFFAMOUNT_NAME, SalesQuote.PROPERTY_DOCUMENTTOTAL_NAME,
@@ -628,9 +613,6 @@ namespace sales {
                 // 计算部分业务逻辑
                 for (let rule of ibas.businessRulesManager.getRules(ibas.objects.typeOf(this))) {
                     if (rule instanceof ibas.BusinessRuleSumElements) {
-                        rule.execute(this);
-                    } else if (rule instanceof ibas.BusinessRuleSummation
-                        && rule.result === SalesQuote.PROPERTY_DOCUMENTTAXTOTAL_NAME) {
                         rule.execute(this);
                     }
                 }
@@ -1203,6 +1185,17 @@ namespace sales {
                 this.setProperty(SalesQuoteItem.PROPERTY_UNITPRICE_NAME, value);
             }
 
+            /** 映射的属性名称-折扣前行总计 */
+            static PROPERTY_UNITLINETOTAL_NAME: string = "UnitLineTotal";
+            /** 获取-折扣前行总计 */
+            get unitLineTotal(): number {
+                return this.getProperty<number>(SalesQuoteItem.PROPERTY_UNITLINETOTAL_NAME);
+            }
+            /** 设置-折扣前行总计 */
+            set unitLineTotal(value: number) {
+                this.setProperty(SalesQuoteItem.PROPERTY_UNITLINETOTAL_NAME, value);
+            }
+
             /** 映射的属性名称-税定义 */
             static PROPERTY_TAX_NAME: string = "Tax";
             /** 获取-税定义 */
@@ -1343,26 +1336,29 @@ namespace sales {
 
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
-                    // 计算税前价格 = 折扣前价格 * 折扣
-                    new BusinessRuleDeductionDiscountPrice(
-                        SalesQuoteItem.PROPERTY_DISCOUNT_NAME, SalesQuoteItem.PROPERTY_UNITPRICE_NAME, SalesQuoteItem.PROPERTY_PRETAXPRICE_NAME
-                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PRICE)
-                    ),
-                    // 计算税后价格 = 税前价格 * （1 + 税率）
-                    new BusinessRuleDeductionTaxPrice(
-                        SalesQuoteItem.PROPERTY_TAXRATE_NAME, SalesQuoteItem.PROPERTY_PRETAXPRICE_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME
+                    // 计算折扣前总计 = 数量 * 折扣前价格
+                    new BusinessRuleDeductionPriceQtyTotal(
+                        SalesQuoteItem.PROPERTY_UNITLINETOTAL_NAME, SalesQuoteItem.PROPERTY_UNITPRICE_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
+                    // 计算折扣后总计（税前） = 数量 * 折扣后价格（税前）
+                    new BusinessRuleDeductionPriceQtyTotal(
+                        SalesQuoteItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesQuoteItem.PROPERTY_PRETAXPRICE_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
+                    // 计算总计（含税） = 数量 * 价格（含税）
+                    new BusinessRuleDeductionPriceQtyTotal(
+                        SalesQuoteItem.PROPERTY_LINETOTAL_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
+                    // 计算折扣后总计 = 折扣前总计 * 折扣
+                    new BusinessRuleDeductionDiscount(
+                        SalesQuoteItem.PROPERTY_DISCOUNT_NAME, SalesQuoteItem.PROPERTY_UNITLINETOTAL_NAME, SalesQuoteItem.PROPERTY_PRETAXLINETOTAL_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PRICE)),
-                    // 计算总计 = 数量 * 价格
-                    new ibas.BusinessRuleMultiplication(
-                        SalesQuoteItem.PROPERTY_LINETOTAL_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME
-                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
-                    // 计算税前总计 = 数量 * 税前价格
-                    new ibas.BusinessRuleMultiplication(
-                        SalesQuoteItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME, SalesQuoteItem.PROPERTY_PRETAXPRICE_NAME
-                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
                     // 计算税总额 = 稅前总计 * 税率
-                    new ibas.BusinessRuleMultiplication(
+                    new BusinessRuleDeductionTaxTotal(
                         SalesQuoteItem.PROPERTY_TAXTOTAL_NAME, SalesQuoteItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesQuoteItem.PROPERTY_TAXRATE_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
+                    // 计算总计 = 税前总计 + 税总额
+                    new BusinessRuleDeductionLineTotal(
+                        SalesQuoteItem.PROPERTY_LINETOTAL_NAME, SalesQuoteItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesQuoteItem.PROPERTY_TAXTOTAL_NAME
                         , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM)),
                 ];
             }

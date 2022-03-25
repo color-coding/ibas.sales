@@ -312,6 +312,8 @@ namespace sales {
 
             /** 折扣前价格 */
             unitPrice: number;
+            /** 折扣前行总计 */
+            unitLineTotal: number;
 
             /** 税定义 */
             tax: string;

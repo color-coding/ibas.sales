@@ -96,6 +96,7 @@
     <Property Name="LineSign" Description="行标志号" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="LineSign"/>
     <Property Name="ParentLineSign" Description="父项行标志号" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="ParentSign"/>
     <Property Name="UnitPrice" Description="折扣前价格" DataType="Decimal" DataSubType="Price" EditSize="8" Mapped="UnitPrice"/>
+    <Property Name="UnitLineTotal" Description="折扣前行总计" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="UnitTotal"/>
     <Property Name="Tax" Description="税定义" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Tax"/>
     <Property Name="TaxRate" Description="税率" DataType="Decimal" DataSubType="Rate" EditSize="8" Mapped="TaxRate"/>
     <Property Name="TaxTotal" Description="税总额" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="TaxTotal"/>

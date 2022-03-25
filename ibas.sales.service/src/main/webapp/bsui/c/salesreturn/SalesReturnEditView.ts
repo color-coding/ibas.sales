@@ -424,7 +424,8 @@ namespace sales {
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesreturnitem_linetotal"),
-                                        template: new sap.extension.m.Text("", {
+                                        template: new sap.extension.m.Input("", {
+                                            type: sap.m.InputType.Number
                                         }).bindProperty("bindingValue", {
                                             path: "lineTotal",
                                             type: new sap.extension.data.Sum()
@@ -508,22 +509,60 @@ namespace sales {
                                 type: new sap.extension.data.Alphanumeric()
                             }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_total") }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_discounttotal") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_documentlinetotal") }),
                             new sap.extension.m.Input("", {
                                 editable: false,
                                 type: sap.m.InputType.Number
                             }).bindProperty("bindingValue", {
-                                path: "discountTotal",
-                                type: new sap.extension.data.Sum()
+                                parts: [
+                                    {
+                                        path: "itemsLineTotal",
+                                        type: new sap.extension.data.Sum()
+                                    },
+                                    {
+                                        path: "itemsTaxTotal",
+                                        type: new sap.extension.data.Sum()
+                                    },
+                                ],
+                                formatter(lineTotal: number, taxTotal: number): number {
+                                    return sap.extension.data.formatValue(sap.extension.data.Sum,
+                                        ibas.numbers.valueOf(lineTotal) - ibas.numbers.valueOf(taxTotal)
+                                        , "string");
+                                },
                             }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_documentlinediscount") }),
                             new sap.extension.m.Input("", {
-                                editable: false,
-                                type: sap.m.InputType.Text
+                                editable: true,
                             }).bindProperty("bindingValue", {
                                 path: "discount",
                                 type: new sap.extension.data.Percentage()
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_shippingsexpensetotal") + ibas.i18n.prop("sales_inclusion") }),
+                            new sap.extension.m.Input("", {
+                                editable: false,
+                                type: sap.m.InputType.Number
+                            }).bindProperty("bindingValue", {
+                                parts: [
+                                    {
+                                        path: "itemsLineTotal",
+                                        type: new sap.extension.data.Sum()
+                                    },
+                                    {
+                                        path: "itemsTaxTotal",
+                                        type: new sap.extension.data.Sum()
+                                    },
+                                    {
+                                        path: "discount",
+                                        type: new sap.extension.data.Percentage()
+                                    },
+                                ],
+                                formatter(lineTotal: number, taxTotal: number, discount: number): number {
+                                    return sap.extension.data.formatValue(sap.extension.data.Sum,
+                                        ibas.numbers.valueOf(discount) === 1 ? 0 :
+                                            -(ibas.numbers.valueOf(lineTotal) - (ibas.numbers.valueOf(taxTotal))) * (1 - ibas.numbers.valueOf(discount))
+                                        , "string");
+                                },
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_shippingsexpensetotal") }),
                             new sap.extension.m.Input("", {
                                 editable: false,
                                 type: sap.m.InputType.Number
@@ -531,17 +570,30 @@ namespace sales {
                                 path: "shippingsExpenseTotal",
                                 type: new sap.extension.data.Sum()
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_documenttaxtotal") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_documenttaxtotal") }),
                             new sap.extension.m.Input("", {
                                 editable: false,
                                 type: sap.m.InputType.Number
                             }).bindProperty("bindingValue", {
-                                path: "documentTaxTotal",
-                                type: new sap.extension.data.Sum()
+                                parts: [
+                                    {
+                                        path: "itemsTaxTotal",
+                                        type: new sap.extension.data.Sum()
+                                    },
+                                    {
+                                        path: "shippingsTaxTotal",
+                                        type: new sap.extension.data.Sum()
+                                    },
+                                ],
+                                formatter(lineTax: number, shippingTax: number): number {
+                                    return sap.extension.data.formatValue(sap.extension.data.Sum,
+                                        ibas.numbers.valueOf(lineTax) + ibas.numbers.valueOf(shippingTax)
+                                        , "string");
+                                },
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_documenttotal") }),
                             new sap.extension.m.Input("", {
-                                editable: false,
+                                editable: true,
                                 type: sap.m.InputType.Number
                             }).bindProperty("bindingValue", {
                                 path: "documentTotal",

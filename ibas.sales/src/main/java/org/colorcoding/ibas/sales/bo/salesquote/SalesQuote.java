@@ -31,15 +31,15 @@ import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleDocumentStatus;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
-import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMultiplication;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRoundingOff;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
-import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSummation;
 import org.colorcoding.ibas.materials.logic.IMaterialPriceCheckContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.logic.ICustomerAndFloorListCheckContract;
+import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountTotal;
+import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 
 /**
  * 获取-销售报价
@@ -1739,6 +1739,35 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 		this.setProperty(PROPERTY_ITEMSLINETOTAL, value);
 	}
 
+	/**
+	 * 属性名称-项目的行税总计
+	 */
+	private static final String PROPERTY_ITEMSTAXTOTAL_NAME = "ItemsTaxTotal";
+
+	/**
+	 * 项目的行税总计 属性
+	 */
+	public static final IPropertyInfo<BigDecimal> PROPERTY_ITEMSTAXTOTAL = registerProperty(PROPERTY_ITEMSTAXTOTAL_NAME,
+			BigDecimal.class, MY_CLASS);
+
+	/**
+	 * 获取-项目的行税总计
+	 * 
+	 * @return 值
+	 */
+	public final BigDecimal getItemsTaxTotal() {
+		return this.getProperty(PROPERTY_ITEMSTAXTOTAL);
+	}
+
+	/**
+	 * 设置-项目的行税总计
+	 * 
+	 * @param value 值
+	 */
+	final void setItemsTaxTotal(BigDecimal value) {
+		this.setProperty(PROPERTY_ITEMSTAXTOTAL, value);
+	}
+
 	@Override
 	protected IBusinessRule[] registerRules() {
 		return new IBusinessRule[] {
@@ -1750,6 +1779,7 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 				new BusinessRuleRequiredElements(PROPERTY_SALESQUOTEITEMS), // 要求有元素
 				new BusinessRuleDocumentStatus(PROPERTY_DOCUMENTSTATUS, PROPERTY_SALESQUOTEITEMS,
 						SalesQuoteItem.PROPERTY_LINESTATUS), // 使用集合元素状态
+				// 计算行-总计（含税）
 				new BusinessRuleSumElements(PROPERTY_ITEMSLINETOTAL, PROPERTY_SALESQUOTEITEMS,
 						SalesQuoteItem.PROPERTY_LINETOTAL, new Predicate<SalesQuoteItem>() {
 							// 过滤，产品套件子项的价格
@@ -1760,16 +1790,28 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 								}
 								return true;
 							}
-						}), // 计算项目-行总计
+						}),
+				// 计算行-税总计
+				new BusinessRuleSumElements(PROPERTY_ITEMSTAXTOTAL, PROPERTY_SALESQUOTEITEMS,
+						SalesQuoteItem.PROPERTY_TAXTOTAL, new Predicate<SalesQuoteItem>() {
+							// 过滤，产品套件子项的价格
+							@Override
+							public boolean test(SalesQuoteItem t) {
+								if (t.getParentLineSign() != null && !t.getParentLineSign().isEmpty()) {
+									return false;
+								}
+								return true;
+							}
+						}),
 				// 折扣后总计 = 项目-行总计 * 折扣
-				new BusinessRuleMultiplication(PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMSLINETOTAL, PROPERTY_DISCOUNT),
-				// 单据总计 = 折扣后总计 + 运输费用
-				new BusinessRuleSummation(PROPERTY_DOCUMENTTOTAL, PROPERTY_DISCOUNTTOTAL),
+				new BusinessRuleDeductionDiscountTotal(PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMSLINETOTAL,
+						PROPERTY_DISCOUNT),
+				// 单据总计 = 折扣后总计（含税）
+				new BusinessRuleDeductionDocumentTotal(PROPERTY_DOCUMENTTOTAL, PROPERTY_DISCOUNTTOTAL, null),
 				// 小数舍入（单据总计）
 				new BusinessRuleRoundingOff(PROPERTY_DIFFAMOUNT, PROPERTY_DOCUMENTTOTAL, PROPERTY_ROUNDING),
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DISCOUNTTOTAL), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DOCUMENTTOTAL), // 不能低于0
-
 		};
 	}
 

@@ -8,44 +8,43 @@
 namespace sales {
     export namespace ui {
         export namespace c {
-            /** 查看视图-销售退货 */
-            export class SalesReturnViewView extends ibas.BOViewView implements app.ISalesReturnViewView {
-
+            /** 查看视图-销售订单 */
+            export class SalesOrderViewView extends ibas.BOViewView implements app.ISalesOrderViewView {
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
-                    this.tableSalesReturnItem = new sap.extension.m.DataTable("", {
+                    this.tableSalesOrderItem = new sap.extension.m.DataTable("", {
                         autoPopinMode: true,
                         dataInfo: {
-                            code: bo.SalesReturn.BUSINESS_OBJECT_CODE,
-                            name: bo.SalesReturnItem.name
+                            code: bo.SalesOrder.BUSINESS_OBJECT_CODE,
+                            name: bo.SalesOrderItem.name
                         },
                         columns: [
                             new sap.extension.m.Column("", {
-                                header: ibas.i18n.prop("bo_salesreturnitem_lineid"),
+                                header: ibas.i18n.prop("bo_salesorderitem_lineid"),
                                 width: "5rem",
                             }),
                             new sap.extension.m.Column("", {
-                                header: ibas.i18n.prop("bo_salesreturnitem_itemdescription"),
+                                header: ibas.i18n.prop("bo_salesorderitem_itemdescription"),
                                 width: "20rem",
                             }),
                             new sap.extension.m.Column("", {
-                                header: ibas.i18n.prop("bo_salesreturnitem_quantity"),
+                                header: ibas.i18n.prop("bo_salesorderitem_quantity"),
                             }),
                             new sap.extension.m.Column("", {
-                                header: ibas.i18n.prop("bo_salesreturnitem_warehouse"),
+                                header: ibas.i18n.prop("bo_salesorderitem_warehouse"),
                             }),
                             new sap.extension.m.Column("", {
-                                header: ibas.i18n.prop("bo_salesreturnitem_price"),
+                                header: ibas.i18n.prop("bo_salesorderitem_price"),
                             }),
                             new sap.extension.m.Column("", {
-                                header: ibas.i18n.prop("bo_salesreturnitem_linetotal"),
+                                header: ibas.i18n.prop("bo_salesorderitem_linetotal"),
                             }),
                             new sap.extension.m.Column("", {
-                                header: ibas.i18n.prop("bo_salesreturnitem_reference1"),
+                                header: ibas.i18n.prop("bo_salesorderitem_reference1"),
                             }),
                             new sap.extension.m.Column("", {
-                                header: ibas.i18n.prop("bo_salesreturnitem_reference2"),
+                                header: ibas.i18n.prop("bo_salesorderitem_reference2"),
                             }),
                         ],
                         items: {
@@ -128,7 +127,7 @@ namespace sales {
                     });
                     return this.page = new sap.extension.uxap.DataObjectPageLayout("", {
                         dataInfo: {
-                            code: bo.SalesReturn.BUSINESS_OBJECT_CODE,
+                            code: bo.SalesOrder.BUSINESS_OBJECT_CODE,
                         },
                         headerTitle: new sap.uxap.ObjectPageHeader("", {
                             objectTitle: {
@@ -218,14 +217,14 @@ namespace sales {
                             }),
                             actions: [
                                 new sap.extension.m.ObjectDocumentStatus("", {
-                                    title: ibas.i18n.prop("bo_salesreturn_documentstatus"),
+                                    title: ibas.i18n.prop("bo_salesorder_documentstatus"),
                                     enumValue: {
                                         path: "documentStatus",
                                         type: new sap.extension.data.DocumentStatus(),
                                     },
                                 }),
                                 new sap.extension.m.ObjectYesNoStatus("", {
-                                    title: ibas.i18n.prop("bo_salesreturn_canceled"),
+                                    title: ibas.i18n.prop("bo_salesorder_canceled"),
                                     negative: true,
                                     enumValue: {
                                         path: "canceled",
@@ -248,21 +247,15 @@ namespace sales {
                             new sap.ui.layout.VerticalLayout("", {
                                 width: "30%",
                                 content: [
-                                    new sap.extension.m.RepositoryObjectAttribute("", {
-                                        title: ibas.i18n.prop("bo_salesreturn_contactperson"),
+                                    new sap.extension.m.ObjectAttribute("", {
+                                        title: ibas.i18n.prop("bo_salesorder_consumer"),
                                         bindingValue: {
-                                            path: "contactPerson",
+                                            path: "consumer",
                                             type: new sap.extension.data.Alphanumeric(),
-                                        },
-                                        repository: businesspartner.bo.BORepositoryBusinessPartner,
-                                        dataInfo: {
-                                            type: businesspartner.bo.ContactPerson,
-                                            key: businesspartner.bo.ContactPerson.PROPERTY_OBJECTKEY_NAME,
-                                            text: businesspartner.bo.ContactPerson.PROPERTY_NAME_NAME
-                                        },
+                                        }
                                     }),
                                     new sap.extension.m.RepositoryObjectAttribute("", {
-                                        title: ibas.i18n.prop("bo_salesreturn_pricelist"),
+                                        title: ibas.i18n.prop("bo_salesorder_pricelist"),
                                         bindingValue: {
                                             path: "priceList",
                                             type: new sap.extension.data.Alphanumeric(),
@@ -275,13 +268,13 @@ namespace sales {
                                         },
                                     }),
                                     new sap.extension.m.PropertyObjectAttribute("", {
-                                        title: ibas.i18n.prop("bo_salesreturn_ordertype"),
+                                        title: ibas.i18n.prop("bo_salesorder_ordertype"),
                                         bindingValue: {
                                             path: "orderType",
                                             type: new sap.extension.data.Alphanumeric(),
                                         },
                                         dataInfo: {
-                                            code: bo.SalesReturn.BUSINESS_OBJECT_CODE,
+                                            code: bo.SalesOrder.BUSINESS_OBJECT_CODE,
                                         },
                                         propertyName: "orderType",
                                     }),
@@ -291,21 +284,21 @@ namespace sales {
                                 width: "30%",
                                 content: [
                                     new sap.extension.m.ObjectAttribute("", {
-                                        title: ibas.i18n.prop("bo_salesreturn_postingdate"),
+                                        title: ibas.i18n.prop("bo_salesorder_postingdate"),
                                         bindingValue: {
                                             path: "postingDate",
                                             type: new sap.extension.data.Date(),
                                         }
                                     }),
                                     new sap.extension.m.ObjectAttribute("", {
-                                        title: ibas.i18n.prop("bo_salesreturn_documentdate"),
+                                        title: ibas.i18n.prop("bo_salesorder_documentdate"),
                                         bindingValue: {
                                             path: "documentDate",
                                             type: new sap.extension.data.Date(),
                                         }
                                     }),
                                     new sap.extension.m.ObjectAttribute("", {
-                                        title: ibas.i18n.prop("bo_salesreturn_deliverydate"),
+                                        title: ibas.i18n.prop("bo_salesorder_deliverydate"),
                                         bindingValue: {
                                             path: "deliveryDate",
                                             type: new sap.extension.data.Date(),
@@ -317,35 +310,18 @@ namespace sales {
                                 width: "30%",
                                 content: [
                                     new sap.extension.m.ObjectAttribute("", {
-                                        title: ibas.i18n.prop("bo_salesreturn_documenttaxtotal"),
+                                        title: ibas.i18n.prop("bo_salesorder_discount"),
                                         bindingValue: {
-                                            parts: [
-                                                {
-                                                    path: "itemsTaxTotal",
-                                                    type: new sap.extension.data.Sum()
-                                                },
-                                                {
-                                                    path: "shippingsTaxTotal",
-                                                    type: new sap.extension.data.Sum()
-                                                },
-                                                {
-                                                    path: "documentCurrency",
-                                                    type: new sap.extension.data.Alphanumeric()
-                                                },
-                                            ],
-                                            formatter(lineTax: number, shippingTax: number, currency: string): string {
-                                                return ibas.strings.format("{0} {1}", sap.extension.data.formatValue(sap.extension.data.Sum,
-                                                    ibas.numbers.valueOf(lineTax) + ibas.numbers.valueOf(shippingTax)
-                                                    , "string"), currency);
-                                            },
+                                            path: "discount",
+                                            type: new sap.extension.data.Percentage(),
                                         }
                                     }),
                                     new sap.extension.m.ObjectAttribute("", {
-                                        title: ibas.i18n.prop("bo_salesreturn_shippingsexpensetotal"),
+                                        title: ibas.i18n.prop("bo_salesorder_documenttaxtotal"),
                                         bindingValue: {
                                             parts: [
                                                 {
-                                                    path: "shippingsExpenseTotal",
+                                                    path: "documentTaxTotal",
                                                     type: new sap.extension.data.Sum(),
                                                 },
                                                 {
@@ -356,7 +332,7 @@ namespace sales {
                                         }
                                     }),
                                     new sap.extension.m.ObjectAttribute("", {
-                                        title: ibas.i18n.prop("bo_salesreturn_paidtotal"),
+                                        title: ibas.i18n.prop("bo_salesorder_paidtotal"),
                                         bindingValue: {
                                             parts: [
                                                 {
@@ -375,11 +351,11 @@ namespace sales {
                         ],
                         sections: [
                             new sap.uxap.ObjectPageSection("", {
-                                title: ibas.i18n.prop("bo_salesreturn_salesreturnitems"),
+                                title: ibas.i18n.prop("bo_salesorder_salesorderitems"),
                                 subSections: [
                                     new sap.uxap.ObjectPageSubSection("", {
                                         blocks: [
-                                            this.tableSalesReturnItem
+                                            this.tableSalesOrderItem
                                         ],
                                     })
                                 ]
@@ -401,21 +377,21 @@ namespace sales {
                                             new sap.ui.layout.VerticalLayout("", {
                                                 content: [
                                                     new sap.extension.m.ObjectAttribute("", {
-                                                        title: ibas.i18n.prop("bo_salesreturn_remarks"),
+                                                        title: ibas.i18n.prop("bo_salesorder_remarks"),
                                                         bindingValue: {
                                                             path: "remarks",
                                                             type: new sap.extension.data.Alphanumeric(),
                                                         }
                                                     }),
                                                     new sap.extension.m.ObjectAttribute("", {
-                                                        title: ibas.i18n.prop("bo_salesreturn_reference1"),
+                                                        title: ibas.i18n.prop("bo_salesorder_reference1"),
                                                         bindingValue: {
                                                             path: "reference1",
                                                             type: new sap.extension.data.Alphanumeric(),
                                                         }
                                                     }),
                                                     new sap.extension.m.ObjectAttribute("", {
-                                                        title: ibas.i18n.prop("bo_salesreturn_reference2"),
+                                                        title: ibas.i18n.prop("bo_salesorder_reference2"),
                                                         bindingValue: {
                                                             path: "reference2",
                                                             type: new sap.extension.data.Alphanumeric(),
@@ -426,21 +402,21 @@ namespace sales {
                                             new sap.ui.layout.VerticalLayout("", {
                                                 content: [
                                                     new sap.extension.m.UserObjectAttribute("", {
-                                                        title: ibas.i18n.prop("bo_salesreturn_dataowner"),
+                                                        title: ibas.i18n.prop("bo_salesorder_dataowner"),
                                                         bindingValue: {
                                                             path: "dataOwner",
                                                             type: new sap.extension.data.Alphanumeric(),
                                                         }
                                                     }),
                                                     new sap.extension.m.OrganizationObjectAttribute("", {
-                                                        title: ibas.i18n.prop("bo_salesreturn_organization"),
+                                                        title: ibas.i18n.prop("bo_salesorder_organization"),
                                                         bindingValue: {
                                                             path: "organization",
                                                             type: new sap.extension.data.Alphanumeric(),
                                                         }
                                                     }),
                                                     new sap.extension.m.RepositoryObjectAttribute("", {
-                                                        title: ibas.i18n.prop("bo_salesreturn_project"),
+                                                        title: ibas.i18n.prop("bo_salesorder_project"),
                                                         bindingValue: {
                                                             path: "project",
                                                             type: new sap.extension.data.Alphanumeric(),
@@ -463,16 +439,16 @@ namespace sales {
                 }
 
                 private page: sap.extension.uxap.ObjectPageLayout;
-                private tableSalesReturnItem: sap.extension.m.Table;
+                private tableSalesOrderItem: sap.extension.m.Table;
                 private sectionAddress: sap.uxap.ObjectPageSubSection;
 
                 /** 显示数据 */
-                showSalesReturn(data: bo.SalesReturn): void {
+                showSalesOrder(data: bo.SalesOrder): void {
                     this.page.setModel(new sap.extension.model.JSONModel(data));
                 }
-                /** 显示数据-销售退货-行 */
-                showSalesReturnItems(datas: bo.SalesReturnItem[]): void {
-                    this.tableSalesReturnItem.setModel(new sap.extension.model.JSONModel({ rows: datas }));
+                /** 显示数据-销售订单-行 */
+                showSalesOrderItems(datas: bo.SalesOrderItem[]): void {
+                    this.tableSalesOrderItem.setModel(new sap.extension.model.JSONModel({ rows: datas }));
                 }
                 /** 显示数据-配送地址  */
                 showShippingAddresses(datas: bo.ShippingAddress[]): void {
@@ -489,19 +465,19 @@ namespace sales {
                             content: [
                                 new sap.extension.m.ObjectAttribute("", {
                                     title: ibas.i18n.prop("bo_shippingaddress_consignee"),
-                                    bindingValue: value.consignee
+                                    text: value.consignee
                                 }),
                                 new sap.extension.m.ObjectAttribute("", {
                                     title: ibas.i18n.prop("bo_shippingaddress"),
-                                    bindingValue: builder.toString()
+                                    text: builder.toString()
                                 }),
                                 new sap.extension.m.ObjectAttribute("", {
                                     title: ibas.i18n.prop("bo_shippingaddress_trackingnumber"),
-                                    bindingValue: value.trackingNumber
+                                    text: value.trackingNumber
                                 }),
                                 new sap.extension.m.ObjectAttribute("", {
                                     title: ibas.i18n.prop("bo_shippingaddress_expense"),
-                                    bindingValue: ibas.strings.format("{0} {1}", sap.extension.data.formatValue(sap.extension.data.Sum, value.expense, "string"), value.currency)
+                                    text: ibas.strings.format("{0} {1}", sap.extension.data.formatValue(sap.extension.data.Sum, value.expense, "string"), value.currency)
                                 }),
                             ]
                         }));
