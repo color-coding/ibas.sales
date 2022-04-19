@@ -58,6 +58,7 @@
   "sales_business_rule_deductione_discount_total": "推导折扣及总计",
   "sales_business_rule_deductione_document_total": "推导单据总计",
   "sales_business_rule_deductione_price_qty_total": "推导价格数量总计",
+  "sales_business_rule_deductione_price_tax_total": "推导含税价格，税总计及总计",
   "sales_business_rule_deductione_discount": "推导折扣",
   "sales_business_rule_deductione_line_total": "推导行总计",
   "sales_delete_continue": "{0}[{1}]将被彻底删除，是否继续？",
