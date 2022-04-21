@@ -526,28 +526,15 @@ namespace sales {
                                 editable: false,
                                 type: sap.m.InputType.Number
                             }).bindProperty("bindingValue", {
-                                parts: [
-                                    {
-                                        path: "itemsLineTotal",
-                                        type: new sap.extension.data.Sum()
-                                    },
-                                    {
-                                        path: "itemsTaxTotal",
-                                        type: new sap.extension.data.Sum()
-                                    },
-                                ],
-                                formatter(lineTotal: number, taxTotal: number): number {
-                                    return sap.extension.data.formatValue(sap.extension.data.Sum,
-                                        ibas.numbers.valueOf(lineTotal) - ibas.numbers.valueOf(taxTotal)
-                                        , "string");
-                                },
+                                path: "itemsPreTaxTotal",
+                                type: new sap.extension.data.Sum()
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesinvoice_documentlinediscount") }),
                             new sap.extension.m.Input("", {
                                 editable: true,
                             }).bindProperty("bindingValue", {
                                 path: "discount",
-                                type: new sap.extension.data.Percentage()
+                                type: new data.Percentage(),
                             }),
                             new sap.extension.m.Input("", {
                                 editable: false,
@@ -555,11 +542,7 @@ namespace sales {
                             }).bindProperty("bindingValue", {
                                 parts: [
                                     {
-                                        path: "itemsLineTotal",
-                                        type: new sap.extension.data.Sum()
-                                    },
-                                    {
-                                        path: "itemsTaxTotal",
+                                        path: "itemsPreTaxTotal",
                                         type: new sap.extension.data.Sum()
                                     },
                                     {
@@ -567,10 +550,10 @@ namespace sales {
                                         type: new sap.extension.data.Percentage()
                                     },
                                 ],
-                                formatter(lineTotal: number, taxTotal: number, discount: number): number {
+                                formatter(preTaxTotal: number, discount: number): number {
                                     return sap.extension.data.formatValue(sap.extension.data.Sum,
                                         ibas.numbers.valueOf(discount) === 1 ? 0 :
-                                            -(ibas.numbers.valueOf(lineTotal) - (ibas.numbers.valueOf(taxTotal))) * (1 - ibas.numbers.valueOf(discount))
+                                            -ibas.numbers.valueOf(preTaxTotal) * (1 - ibas.numbers.valueOf(discount))
                                         , "string");
                                 },
                             }),

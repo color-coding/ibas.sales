@@ -565,6 +565,17 @@ namespace sales {
                 this.setProperty(SalesQuote.PROPERTY_ITEMSTAXTOTAL_NAME, value);
             }
 
+            /** 映射的属性名称-项目的税前行总计 */
+            static PROPERTY_ITEMSPRETAXTOTAL_NAME: string = "ItemsPreTaxTotal";
+            /** 获取-项目的税前行总计 */
+            get itemsPreTaxTotal(): number {
+                return this.getProperty<number>(SalesQuote.PROPERTY_ITEMSPRETAXTOTAL_NAME);
+            }
+            /** 设置-项目的税前行总计 */
+            set itemsPreTaxTotal(value: number) {
+                this.setProperty(SalesQuote.PROPERTY_ITEMSPRETAXTOTAL_NAME, value);
+            }
+
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
                     // 计算行-总计（含税）
@@ -580,6 +591,16 @@ namespace sales {
                     // 计算行-税总计
                     new ibas.BusinessRuleSumElements(
                         SalesQuote.PROPERTY_ITEMSTAXTOTAL_NAME, SalesQuote.PROPERTY_SALESQUOTEITEMS_NAME, SalesQuoteItem.PROPERTY_TAXTOTAL_NAME,
+                        // 不计产品套装子项的金额
+                        (data: SalesQuoteItem): boolean => {
+                            if (!ibas.strings.isEmpty(data.parentLineSign)) {
+                                return false;
+                            }
+                            return true;
+                        }),
+                    // 计算行-税前总计
+                    new ibas.BusinessRuleSumElements(
+                        SalesQuote.PROPERTY_ITEMSPRETAXTOTAL_NAME, SalesQuote.PROPERTY_SALESQUOTEITEMS_NAME, SalesQuoteItem.PROPERTY_PRETAXLINETOTAL_NAME,
                         // 不计产品套装子项的金额
                         (data: SalesQuoteItem): boolean => {
                             if (!ibas.strings.isEmpty(data.parentLineSign)) {

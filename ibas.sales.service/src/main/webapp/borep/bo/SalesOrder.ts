@@ -626,6 +626,17 @@ namespace sales {
                 this.setProperty(SalesOrder.PROPERTY_ITEMSTAXTOTAL_NAME, value);
             }
 
+            /** 映射的属性名称-项目的税前行总计 */
+            static PROPERTY_ITEMSPRETAXTOTAL_NAME: string = "ItemsPreTaxTotal";
+            /** 获取-项目的税前行总计 */
+            get itemsPreTaxTotal(): number {
+                return this.getProperty<number>(SalesOrder.PROPERTY_ITEMSPRETAXTOTAL_NAME);
+            }
+            /** 设置-项目的税前行总计 */
+            set itemsPreTaxTotal(value: number) {
+                this.setProperty(SalesOrder.PROPERTY_ITEMSPRETAXTOTAL_NAME, value);
+            }
+
             /** 映射的属性名称-运送费用总计 */
             static PROPERTY_SHIPPINGSEXPENSETOTAL_NAME: string = "ShippingsExpenseTotal";
             /** 获取-运送费用总计 */
@@ -663,6 +674,16 @@ namespace sales {
                     // 计算行-税总计
                     new ibas.BusinessRuleSumElements(
                         SalesOrder.PROPERTY_ITEMSTAXTOTAL_NAME, SalesOrder.PROPERTY_SALESORDERITEMS_NAME, SalesOrderItem.PROPERTY_TAXTOTAL_NAME,
+                        // 不计产品套装子项的金额
+                        (data: SalesOrderItem): boolean => {
+                            if (!ibas.strings.isEmpty(data.parentLineSign)) {
+                                return false;
+                            }
+                            return true;
+                        }),
+                    // 计算行-税前总计
+                    new ibas.BusinessRuleSumElements(
+                        SalesOrder.PROPERTY_ITEMSPRETAXTOTAL_NAME, SalesOrder.PROPERTY_SALESORDERITEMS_NAME, SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME,
                         // 不计产品套装子项的金额
                         (data: SalesOrderItem): boolean => {
                             if (!ibas.strings.isEmpty(data.parentLineSign)) {
