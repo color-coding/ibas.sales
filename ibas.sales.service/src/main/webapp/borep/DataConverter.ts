@@ -210,8 +210,8 @@ namespace sales {
             for (let item of source.userFields.forEach()) {
                 let myItem: ibas.IUserField = target.userFields.get(item.name);
                 if (ibas.objects.isNull(myItem)) {
-                    //  myItem = target.userFields.register(item.name, item.valueType);
-                    continue;
+                    myItem = target.userFields.register(item.name, item.valueType);
+                    // continue;
                 }
                 if (myItem.valueType !== item.valueType) {
                     continue;
@@ -265,8 +265,8 @@ namespace sales {
             for (let item of source.userFields.forEach()) {
                 let myItem: ibas.IUserField = target.userFields.get(item.name);
                 if (ibas.objects.isNull(myItem)) {
-                    // myItem = target.userFields.register(item.name, item.valueType);
-                    continue;
+                    myItem = target.userFields.register(item.name, item.valueType);
+                    // continue;
                 }
                 if (myItem.valueType !== item.valueType) {
                     continue;
@@ -339,6 +339,11 @@ namespace sales {
             }
             return items;
         }
+
+        const DECIMAL_PLACES_SUM: number = ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM);
+        const DECIMAL_PLACES_PRICE: number = ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PRICE);
+        const DECIMAL_PLACES_PERCENTAGE: number = ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PERCENTAGE);
+
         /** 业务规则-推导税前税后价格 */
         export class BusinessRuleDeductionTaxPrice extends ibas.BusinessRuleCommon {
             /**
@@ -347,13 +352,12 @@ namespace sales {
              * @param preTax   属性-税前
              * @param afterTax 属性-税后
              */
-            constructor(taxRate: string, preTax: string, afterTax: string, decimalPlaces: number = undefined) {
+            constructor(taxRate: string, preTax: string, afterTax: string) {
                 super();
-                this.name = ibas.i18n.prop("sales_business_rule_deductione_tax_price");
+                this.name = ibas.i18n.prop("sales_business_rule_deduction_tax_price");
                 this.taxRate = taxRate;
                 this.preTax = preTax;
                 this.afterTax = afterTax;
-                this.decimalPlaces = decimalPlaces;
                 this.inputProperties.add(this.taxRate);
                 this.inputProperties.add(this.preTax);
                 this.inputProperties.add(this.afterTax);
@@ -367,8 +371,6 @@ namespace sales {
             preTax: string;
             /** 税后价格 */
             afterTax: string;
-            /** 结果保留小数位 */
-            decimalPlaces: number;
             /** 计算规则 */
             protected compute(context: ibas.BusinessRuleContextCommon): void {
                 let taxRate: number = ibas.numbers.valueOf(context.inputValues.get(this.taxRate));
@@ -385,26 +387,22 @@ namespace sales {
                         context.outputValues.set(this.afterTax, preTax);
                     } else {
                         let result: number = preTax * (1 + taxRate);
-                        if (this.decimalPlaces >= 0) {
-                            // 差异小于近似位，则忽略
-                            if (ibas.numbers.isApproximated(afterTax, result, this.decimalPlaces)) {
-                                return;
-                            }
+                        // 差异小于近似位，则忽略
+                        if (ibas.numbers.isApproximated(afterTax, result, DECIMAL_PLACES_SUM)) {
+                            return;
                         }
-                        context.outputValues.set(this.afterTax, ibas.numbers.round(result, this.decimalPlaces));
+                        context.outputValues.set(this.afterTax, ibas.numbers.round(result, DECIMAL_PLACES_SUM));
                     }
                 } else {
                     if (taxRate === 0) {
                         context.outputValues.set(this.preTax, afterTax);
                     } else {
                         let result: number = afterTax / (1 + taxRate);
-                        if (this.decimalPlaces >= 0) {
-                            // 差异小于近似位，则忽略
-                            if (ibas.numbers.isApproximated(preTax, result, this.decimalPlaces)) {
-                                return;
-                            }
+                        // 差异小于近似位，则忽略
+                        if (ibas.numbers.isApproximated(preTax, result, DECIMAL_PLACES_SUM)) {
+                            return;
                         }
-                        context.outputValues.set(this.preTax, ibas.numbers.round(result, this.decimalPlaces));
+                        context.outputValues.set(this.preTax, ibas.numbers.round(result, DECIMAL_PLACES_SUM));
                     }
                 }
             }
@@ -417,13 +415,12 @@ namespace sales {
              * @param total   属性-税前总计
              * @param taxRate  属性-税率
              */
-            constructor(tax: string, total: string, taxRate: string, decimalPlaces: number = undefined) {
+            constructor(tax: string, total: string, taxRate: string) {
                 super();
-                this.name = ibas.i18n.prop("sales_business_rule_deductione_tax_total");
+                this.name = ibas.i18n.prop("sales_business_rule_deduction_tax_total");
                 this.taxRate = taxRate;
                 this.tax = tax;
                 this.total = total;
-                this.decimalPlaces = decimalPlaces;
                 this.inputProperties.add(this.taxRate);
                 this.inputProperties.add(this.tax);
                 this.inputProperties.add(this.total);
@@ -436,8 +433,6 @@ namespace sales {
             total: string;
             /** 税率 */
             taxRate: string;
-            /** 结果保留小数位 */
-            decimalPlaces: number;
             /** 计算规则 */
             protected compute(context: ibas.BusinessRuleContextCommon): void {
                 let taxRate: number = ibas.numbers.valueOf(context.inputValues.get(this.taxRate));
@@ -455,13 +450,11 @@ namespace sales {
                         context.outputValues.set(this.tax, 0);
                     } else {
                         let result: number = total * taxRate;
-                        if (this.decimalPlaces >= 0) {
-                            // 差异小于近似位，则忽略
-                            if (ibas.numbers.isApproximated(tax, result, this.decimalPlaces)) {
-                                return;
-                            }
+                        // 差异小于近似位，则忽略
+                        if (ibas.numbers.isApproximated(tax, result, DECIMAL_PLACES_SUM)) {
+                            return;
                         }
-                        context.outputValues.set(this.tax, ibas.numbers.round(result, this.decimalPlaces));
+                        context.outputValues.set(this.tax, ibas.numbers.round(result, DECIMAL_PLACES_SUM));
                     }
                 }
             }
@@ -474,18 +467,17 @@ namespace sales {
              * @param preTotal   属性-折扣前总计
              * @param discount  属性-折扣
              */
-            constructor(total: string, preTotal: string, discount: string, decimalPlaces: number = undefined) {
+            constructor(total: string, preTotal: string, discount: string) {
                 super();
-                this.name = ibas.i18n.prop("sales_business_rule_deductione_discount_total");
+                this.name = ibas.i18n.prop("sales_business_rule_deduction_discount_total");
                 this.total = total;
                 this.preTotal = preTotal;
                 this.discount = discount;
-                this.decimalPlaces = decimalPlaces;
                 this.inputProperties.add(this.total);
                 this.inputProperties.add(this.preTotal);
                 this.inputProperties.add(this.discount);
-                this.affectedProperties.add(this.total);
                 this.affectedProperties.add(this.discount);
+                this.affectedProperties.add(this.total);
             }
             /** 折扣后总计 */
             total: string;
@@ -493,8 +485,6 @@ namespace sales {
             preTotal: string;
             /** 折扣 */
             discount: string;
-            /** 结果保留小数位 */
-            decimalPlaces: number;
             /** 计算规则 */
             protected compute(context: ibas.BusinessRuleContextCommon): void {
                 let discount: number = ibas.numbers.valueOf(context.inputValues.get(this.discount));
@@ -513,23 +503,21 @@ namespace sales {
                     } else {
                         let result: number = total / preTotal;
                         // 差异小于近似位，则忽略
-                        if (ibas.numbers.isApproximated(discount, result, this.decimalPlaces, 10)) {
+                        if (ibas.numbers.isApproximated(discount, result, DECIMAL_PLACES_PERCENTAGE, 10)) {
                             return;
                         }
-                        context.outputValues.set(this.discount, ibas.numbers.round(result, 6));
+                        context.outputValues.set(this.discount, ibas.numbers.round(result, DECIMAL_PLACES_PERCENTAGE));
                     }
                 } else {
                     if (discount === 1 || isNaN(discount)) {
                         context.outputValues.set(this.total, preTotal);
                     } else {
                         let result: number = preTotal * discount;
-                        if (this.decimalPlaces >= 0) {
-                            // 差异小于近似位，则忽略
-                            if (ibas.numbers.isApproximated(total, result, this.decimalPlaces)) {
-                                return;
-                            }
+                        // 差异小于近似位，则忽略
+                        if (ibas.numbers.isApproximated(total, result, DECIMAL_PLACES_SUM)) {
+                            return;
                         }
-                        context.outputValues.set(this.total, ibas.numbers.round(result, this.decimalPlaces));
+                        context.outputValues.set(this.total, ibas.numbers.round(result, DECIMAL_PLACES_SUM));
                     }
                 }
             }
@@ -544,15 +532,15 @@ namespace sales {
              */
             constructor(docTotal: string, disTotal: string, shipTotal?: string) {
                 super();
-                this.name = ibas.i18n.prop("sales_business_rule_deductione_document_total");
+                this.name = ibas.i18n.prop("sales_business_rule_deduction_document_total");
                 this.docTotal = docTotal;
                 this.disTotal = disTotal;
                 this.shipTotal = shipTotal;
                 this.inputProperties.add(this.docTotal);
                 this.inputProperties.add(this.disTotal);
                 this.inputProperties.add(this.shipTotal);
-                this.affectedProperties.add(this.docTotal);
                 this.affectedProperties.add(this.disTotal);
+                this.affectedProperties.add(this.docTotal);
             }
             /** 单据总计 */
             docTotal: string;
@@ -568,12 +556,9 @@ namespace sales {
 
                 if (ibas.strings.equalsIgnoreCase(this.docTotal, context.trigger) && docTotal > 0) {
                     // 单据总计触发
-                    context.outputValues.set(this.disTotal, docTotal - shipTotal);
+                    context.outputValues.set(this.disTotal, ibas.numbers.round(docTotal - shipTotal, DECIMAL_PLACES_SUM));
                 } else {
-                    let result: number = disTotal + shipTotal;
-                    if (!ibas.numbers.isApproximated(result, docTotal)) {
-                        context.outputValues.set(this.docTotal, result);
-                    }
+                    context.outputValues.set(this.docTotal, ibas.numbers.round(disTotal + shipTotal, DECIMAL_PLACES_SUM));
                 }
             }
         }
@@ -585,13 +570,12 @@ namespace sales {
              * @param price  属性-价格
              * @param quantity   属性-数量
              */
-            constructor(total: string, price: string, quantity: string, decimalPlaces: number = undefined) {
+            constructor(total: string, price: string, quantity: string) {
                 super();
-                this.name = ibas.i18n.prop("sales_business_rule_deductione_price_qty_total");
+                this.name = ibas.i18n.prop("sales_business_rule_deduction_price_qty_total");
                 this.price = price;
                 this.quantity = quantity;
                 this.total = total;
-                this.decimalPlaces = decimalPlaces;
                 this.inputProperties.add(this.price);
                 this.inputProperties.add(this.quantity);
                 this.inputProperties.add(this.total);
@@ -604,8 +588,6 @@ namespace sales {
             quantity: string;
             /** 总计 */
             total: string;
-            /** 结果保留小数位 */
-            decimalPlaces: number;
             /** 计算规则 */
             protected compute(context: ibas.BusinessRuleContextCommon): void {
                 let price: number = ibas.numbers.valueOf(context.inputValues.get(this.price));
@@ -613,28 +595,23 @@ namespace sales {
                 let total: number = ibas.numbers.valueOf(context.inputValues.get(this.total));
 
                 if (ibas.strings.equalsIgnoreCase(this.total, context.trigger)) {
-                    // 总计触发，价格 = 总计 / 数量
-                    if (quantity === 0) {
-                        context.outputValues.set(this.price, 0);
-                    } else {
-                        let result: number = total / quantity;
-                        if (this.decimalPlaces >= 0) {
-                            // 差异小于近似位，则忽略
-                            if (ibas.numbers.isApproximated(price, result, this.decimalPlaces)) {
-                                return;
-                            }
-                        }
-                        context.outputValues.set(this.price, ibas.numbers.round(result, this.decimalPlaces));
+                    if (quantity <= 0) {
+                        return;
                     }
+                    // 总计触发，价格 = 总计 / 数量
+                    let result: number = total / quantity;
+                    // 差异小于近似位，则忽略
+                    if (ibas.numbers.isApproximated(price, result, DECIMAL_PLACES_PRICE)) {
+                        return;
+                    }
+                    context.outputValues.set(this.price, ibas.numbers.round(result, DECIMAL_PLACES_PRICE));
                 } else {
                     let result: number = price * quantity;
-                    if (this.decimalPlaces >= 0) {
-                        // 差异小于近似位，则忽略
-                        if (ibas.numbers.isApproximated(total, result, this.decimalPlaces)) {
-                            return;
-                        }
+                    // 差异小于近似位，则忽略
+                    if (ibas.numbers.isApproximated(total, result, DECIMAL_PLACES_SUM)) {
+                        return;
                     }
-                    context.outputValues.set(this.total, ibas.numbers.round(result, this.decimalPlaces));
+                    context.outputValues.set(this.total, ibas.numbers.round(result, DECIMAL_PLACES_SUM));
                 }
             }
         }
@@ -646,13 +623,12 @@ namespace sales {
              * @param preDiscount   属性-折扣前
              * @param afterDiscount 属性-折扣后
              */
-            constructor(discount: string, preDiscount: string, afterDiscount: string, decimalPlaces: number = undefined) {
+            constructor(discount: string, preDiscount: string, afterDiscount: string) {
                 super();
-                this.name = ibas.i18n.prop("sales_business_rule_deductione_discount");
+                this.name = ibas.i18n.prop("sales_business_rule_deduction_discount");
                 this.discount = discount;
                 this.preDiscount = preDiscount;
                 this.afterDiscount = afterDiscount;
-                this.decimalPlaces = decimalPlaces;
                 this.inputProperties.add(this.discount);
                 this.inputProperties.add(this.preDiscount);
                 this.inputProperties.add(this.afterDiscount);
@@ -666,8 +642,6 @@ namespace sales {
             preDiscount: string;
             /** 折扣后价格 */
             afterDiscount: string;
-            /** 结果保留小数位 */
-            decimalPlaces: number;
             /** 计算规则 */
             protected compute(context: ibas.BusinessRuleContextCommon): void {
                 let discount: number = ibas.numbers.valueOf(context.inputValues.get(this.discount));
@@ -678,13 +652,11 @@ namespace sales {
                     || ibas.strings.equalsIgnoreCase(this.preDiscount, context.trigger)) {
                     // 折扣触发，算成交价
                     let result: number = preDiscount * discount;
-                    if (this.decimalPlaces >= 0) {
-                        // 差异小于近似位，则忽略
-                        if (ibas.numbers.isApproximated(afterDiscount, result, this.decimalPlaces)) {
-                            return;
-                        }
+                    // 差异小于近似位，则忽略
+                    if (ibas.numbers.isApproximated(afterDiscount, result, DECIMAL_PLACES_SUM)) {
+                        return;
                     }
-                    context.outputValues.set(this.afterDiscount, ibas.numbers.round(result, this.decimalPlaces));
+                    context.outputValues.set(this.afterDiscount, ibas.numbers.round(result, DECIMAL_PLACES_SUM));
                 } else {
                     if (preDiscount === 0) {
                         context.outputValues.set(this.discount, 1);
@@ -693,10 +665,10 @@ namespace sales {
                         // 非折扣触发，算折扣
                         let result: number = afterDiscount / preDiscount;
                         // 差异小于近似位，则忽略
-                        if (ibas.numbers.isApproximated(discount, result, this.decimalPlaces, 10)) {
+                        if (ibas.numbers.isApproximated(discount, result, DECIMAL_PLACES_PERCENTAGE, 10)) {
                             return;
                         }
-                        context.outputValues.set(this.discount, ibas.numbers.round(result, 6));
+                        context.outputValues.set(this.discount, ibas.numbers.round(result, DECIMAL_PLACES_PERCENTAGE));
                     }
                 }
             }
@@ -712,16 +684,15 @@ namespace sales {
              * @param taxTotal   属性-税总计
              * @param preTotal   属性-税前总计
              */
-            constructor(total: string, price: string, quantity: string, taxRate: string, taxTotal: string, preTotal: string, decimalPlaces: number = undefined) {
+            constructor(total: string, price: string, quantity: string, taxRate: string, taxTotal: string, preTotal: string) {
                 super();
-                this.name = ibas.i18n.prop("sales_business_rule_deductione_price_tax_total");
+                this.name = ibas.i18n.prop("sales_business_rule_deduction_price_tax_total");
                 this.price = price;
                 this.quantity = quantity;
                 this.total = total;
                 this.taxRate = taxRate;
                 this.taxTotal = taxTotal;
                 this.preTotal = preTotal;
-                this.decimalPlaces = decimalPlaces;
                 this.inputProperties.add(this.price);
                 this.inputProperties.add(this.quantity);
                 this.inputProperties.add(this.total);
@@ -729,9 +700,9 @@ namespace sales {
                 this.inputProperties.add(this.taxTotal);
                 this.inputProperties.add(this.preTotal);
                 this.affectedProperties.add(this.price);
-                this.affectedProperties.add(this.total);
-                this.affectedProperties.add(this.taxTotal);
                 this.affectedProperties.add(this.preTotal);
+                this.affectedProperties.add(this.taxTotal);
+                this.affectedProperties.add(this.total);
             }
             /** 价格 */
             price: string;
@@ -745,8 +716,6 @@ namespace sales {
             taxTotal: string;
             /** 税前总计 */
             preTotal: string;
-            /** 结果保留小数位 */
-            decimalPlaces: number;
             /** 计算规则 */
             protected compute(context: ibas.BusinessRuleContextCommon): void {
                 let price: number = ibas.numbers.valueOf(context.inputValues.get(this.price));
@@ -763,54 +732,45 @@ namespace sales {
                     let rPrice: number = total / quantity;
                     let rPreTotal: number = total / (1 + taxRate);
                     let rTaxTotal: number = total - rPreTotal;
-                    if (this.decimalPlaces >= 0) {
-                        // 差异小于近似位，则忽略
-                        if (!ibas.numbers.isApproximated(rPrice, price, this.decimalPlaces)) {
-                            context.outputValues.set(this.price, ibas.numbers.round(rPrice, this.decimalPlaces));
-                        }
-                        if (!ibas.numbers.isApproximated(rPreTotal, preTotal, this.decimalPlaces)) {
-                            context.outputValues.set(this.preTotal, ibas.numbers.round(rPreTotal, this.decimalPlaces));
-                        }
-                        if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, this.decimalPlaces)) {
-                            context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, this.decimalPlaces));
-                        }
+                    // 差异小于近似位，则忽略
+                    if (!ibas.numbers.isApproximated(rPrice, price, DECIMAL_PLACES_PRICE)) {
+                        context.outputValues.set(this.price, ibas.numbers.round(rPrice, DECIMAL_PLACES_PRICE));
+                    }
+                    if (!ibas.numbers.isApproximated(rPreTotal, preTotal, DECIMAL_PLACES_SUM)) {
+                        context.outputValues.set(this.preTotal, ibas.numbers.round(rPreTotal, DECIMAL_PLACES_SUM));
+                    }
+                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM)) {
+                        context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, DECIMAL_PLACES_SUM));
                     }
                 } else if (ibas.strings.equalsIgnoreCase(this.taxTotal, context.trigger)) {
                     let rTotal: number = preTotal + taxTotal;
-                    if (this.decimalPlaces >= 0) {
-                        // 差异小于近似位，则忽略
-                        if (!ibas.numbers.isApproximated(rTotal, total, this.decimalPlaces)) {
-                            context.outputValues.set(this.total, ibas.numbers.round(rTotal, this.decimalPlaces));
-                        }
+                    // 差异小于近似位，则忽略
+                    if (!ibas.numbers.isApproximated(rTotal, total, DECIMAL_PLACES_SUM)) {
+                        context.outputValues.set(this.total, ibas.numbers.round(rTotal, DECIMAL_PLACES_SUM));
                     }
                 } else if (ibas.strings.equalsIgnoreCase(this.price, context.trigger) || ibas.strings.equalsIgnoreCase(this.quantity, context.trigger)) {
                     let rTotal: number = price * quantity;
                     let rPreTotal: number = rTotal / (1 + taxRate);
                     let rTaxTotal: number = rTotal - rPreTotal;
-                    if (this.decimalPlaces >= 0) {
-                        // 差异小于近似位，则忽略
-                        if (!ibas.numbers.isApproximated(rTotal, total, this.decimalPlaces)) {
-                            context.outputValues.set(this.total, ibas.numbers.round(rTotal, this.decimalPlaces));
-                        }
-                        if (!ibas.numbers.isApproximated(rPreTotal, preTotal, this.decimalPlaces)) {
-                            context.outputValues.set(this.preTotal, ibas.numbers.round(rPreTotal, this.decimalPlaces));
-                        }
-                        if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, this.decimalPlaces)) {
-                            context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, this.decimalPlaces));
-                        }
+                    // 价格 * 数量 = 总计，核心逻辑最优先使用
+                    context.outputValues.set(this.total, ibas.numbers.round(rTotal, DECIMAL_PLACES_SUM));
+                    // 差异小于近似位，则忽略
+                    if (!ibas.numbers.isApproximated(rPreTotal, preTotal, DECIMAL_PLACES_SUM)) {
+                        context.outputValues.set(this.preTotal, ibas.numbers.round(rPreTotal, DECIMAL_PLACES_SUM));
+                    }
+                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM)) {
+                        context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, DECIMAL_PLACES_SUM));
                     }
                 } else if (ibas.strings.equalsIgnoreCase(this.taxRate, context.trigger)
                     || ibas.strings.equalsIgnoreCase(this.preTotal, context.trigger)) {
                     let rTaxTotal: number = preTotal * taxRate;
                     let rTotal: number = preTotal + rTaxTotal;
-                    if (this.decimalPlaces >= 0) {
-                        // 差异小于近似位，则忽略
-                        if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, this.decimalPlaces)) {
-                            context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, this.decimalPlaces));
-                        }
-                        if (!ibas.numbers.isApproximated(rTotal, total, this.decimalPlaces)) {
-                            context.outputValues.set(this.total, ibas.numbers.round(rTotal, this.decimalPlaces));
-                        }
+                    // 差异小于近似位，则忽略
+                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM)) {
+                        context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, DECIMAL_PLACES_SUM));
+                    }
+                    if (!ibas.numbers.isApproximated(rTotal, total, DECIMAL_PLACES_SUM)) {
+                        context.outputValues.set(this.total, ibas.numbers.round(rTotal, DECIMAL_PLACES_SUM));
                     }
                 }
             }

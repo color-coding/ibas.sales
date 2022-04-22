@@ -832,18 +832,6 @@ namespace sales {
                                         })
                                     }),
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdeliveryitem_quantity") }),
-                                    new sap.extension.m.Input("", {
-                                        type: sap.m.InputType.Number
-                                    }).bindProperty("bindingValue", {
-                                        path: "quantity",
-                                        type: new sap.extension.data.Quantity(),
-                                    }).bindProperty("description", {
-                                        path: "uom",
-                                        type: new sap.extension.data.Alphanumeric({
-                                            maxLength: 8
-                                        }),
-                                    }),
-                                    new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdeliveryitem_price") }),
                                     new sap.m.FlexBox("", {
                                         width: "100%",
                                         justifyContent: sap.m.FlexJustifyContent.Start,
@@ -883,6 +871,18 @@ namespace sales {
                                                 },
                                             }).addStyleClass("sapUiTinyMarginBegin"),
                                         ]
+                                    }),
+                                    new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdeliveryitem_price") }),
+                                    new sap.extension.m.Input("", {
+                                        type: sap.m.InputType.Number
+                                    }).bindProperty("bindingValue", {
+                                        path: "price",
+                                        type: new sap.extension.data.Quantity(),
+                                    }).bindProperty("description", {
+                                        path: "currency",
+                                        type: new sap.extension.data.Alphanumeric({
+                                            maxLength: 8
+                                        }),
                                     }),
                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdeliveryitem_linetotal") }),
                                     new sap.extension.m.Input("", {

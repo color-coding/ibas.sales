@@ -113,13 +113,6 @@ namespace sales {
                                                 that.fireViewEvents(that.editDataEvent, that.list.getSelecteds().firstOrDefault());
                                             }
                                         }),
-                                        new sap.m.SegmentedButtonItem("", {
-                                            width: "3rem",
-                                            icon: "sap-icon://view",
-                                            press(oEvent: any): void {
-                                                that.fireViewEvents(that.viewDataEvent, that.list.getSelecteds().firstOrDefault());
-                                            }
-                                        })
                                     ]
                                 }),
                             ]
