@@ -704,10 +704,6 @@ namespace sales {
                     // 单据总计 = 折扣后总计（含税）+ 运输-总计（含税）
                     new BusinessRuleDeductionDocumentTotal(SalesOrder.PROPERTY_DOCUMENTTOTAL_NAME,
                         SalesOrder.PROPERTY_DISCOUNTTOTAL_NAME, SalesOrder.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME),
-                    // 小数舍入（单据总计）
-                    new ibas.BusinessRuleRoundingOff(
-                        SalesOrder.PROPERTY_DIFFAMOUNT_NAME, SalesOrder.PROPERTY_DOCUMENTTOTAL_NAME,
-                        ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM), SalesOrder.PROPERTY_ROUNDING_NAME),
                 ];
             }
             /** 重置 */
