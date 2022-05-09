@@ -64,6 +64,7 @@ namespace sales {
                         onCompleted: (opRslt) => {
                             let customer: businesspartner.bo.Customer = opRslt.resultObjects.firstOrDefault();
                             if (!ibas.objects.isNull(customer)) {
+                                this.customer = customer;
                                 if (!ibas.strings.isEmpty(customer.warehouse)) {
                                     this.view.defaultWarehouse = customer.warehouse;
                                 }
@@ -226,6 +227,7 @@ namespace sales {
                     createData();
                 }
             }
+            private customer: businesspartner.bo.ICustomer;
             /** 选择销售订单客户事件 */
             private chooseSalesOrderCustomer(): void {
                 let items: bo.SalesOrderItem[] = this.editData.salesOrderItems.where(c =>
@@ -266,6 +268,7 @@ namespace sales {
                         if (!ibas.strings.isEmpty(selected.taxGroup)) {
                             that.view.defaultTaxGroup = selected.taxGroup;
                         }
+                        that.customer = selected;
                         // 客户改变，清除旧地址
                         that.editData.shippingAddresss.clear();
                         that.changeSalesOrderItemPrice(that.editData.priceList);
@@ -740,6 +743,16 @@ namespace sales {
                 condition.alias = bo.SalesQuote.PROPERTY_CUSTOMERCODE_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = this.editData.customerCode;
+                // 潜在客户的
+                if (!ibas.objects.isNull(this.customer) && !ibas.strings.isEmpty(this.customer.lead)) {
+                    condition.bracketOpen = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesQuote.PROPERTY_CUSTOMERCODE_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = this.customer.lead;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition.bracketClose = 1;
+                }
                 // 未过期的
                 condition = criteria.conditions.create();
                 condition.alias = bo.SalesQuote.PROPERTY_DELIVERYDATE_NAME;

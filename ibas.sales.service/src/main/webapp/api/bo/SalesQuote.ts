@@ -100,6 +100,9 @@ namespace sales {
             /** 已删除 */
             deleted: ibas.emYesNo;
 
+            /** 客户类型 */
+            customerType: businesspartner.bo.emBusinessPartnerType;
+
             /** 客户代码 */
             customerCode: string;
 

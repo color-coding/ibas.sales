@@ -462,6 +462,7 @@
         "bo_salesquote_remarks": "备注",
         "bo_salesquote_referenced": "已引用",
         "bo_salesquote_deleted": "已删除",
+        "bo_salesquote_customertype": "客户类型",
         "bo_salesquote_customercode": "客户代码",
         "bo_salesquote_customername": "客户名称",
         "bo_salesquote_contactperson": "联系人",

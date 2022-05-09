@@ -16,6 +16,7 @@ import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
+import org.colorcoding.ibas.bobas.data.ArrayList;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
@@ -34,6 +35,8 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
+import org.colorcoding.ibas.businesspartner.data.emBusinessPartnerType;
+import org.colorcoding.ibas.businesspartner.logic.ILeadCheckContract;
 import org.colorcoding.ibas.materials.logic.IMaterialPriceCheckContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.logic.ICustomerAndFloorListCheckContract;
@@ -1004,6 +1007,37 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 	}
 
 	/**
+	 * 属性名称-客户类型
+	 */
+	private static final String PROPERTY_CUSTOMERTYPE_NAME = "CustomerType";
+
+	/**
+	 * 客户类型 属性
+	 */
+	@DbField(name = "CardType", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<emBusinessPartnerType> PROPERTY_CUSTOMERTYPE = registerProperty(
+			PROPERTY_CUSTOMERTYPE_NAME, emBusinessPartnerType.class, MY_CLASS);
+
+	/**
+	 * 获取-客户类型
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_CUSTOMERTYPE_NAME)
+	public final emBusinessPartnerType getCustomerType() {
+		return this.getProperty(PROPERTY_CUSTOMERTYPE);
+	}
+
+	/**
+	 * 设置-客户类型
+	 * 
+	 * @param value 值
+	 */
+	public final void setCustomerType(emBusinessPartnerType value) {
+		this.setProperty(PROPERTY_CUSTOMERTYPE, value);
+	}
+
+	/**
 	 * 属性名称-客户代码
 	 */
 	private static final String PROPERTY_CUSTOMERCODE_NAME = "CustomerCode";
@@ -1706,7 +1740,7 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 		this.setDeliveryDate(this.getDocumentDate().addDays(30));
 		this.setDocumentStatus(emDocumentStatus.RELEASED);
 		this.setDiscount(Decimal.ONE);
-
+		this.setCustomerType(emBusinessPartnerType.CUSTOMER);
 	}
 
 	/**
@@ -1824,91 +1858,105 @@ public class SalesQuote extends BusinessObject<SalesQuote>
 
 	@Override
 	public IBusinessLogicContract[] getContracts() {
-		return new IBusinessLogicContract[] {
-				// 客户检查
-				new ICustomerAndFloorListCheckContract() {
-					@Override
-					public String getIdentifiers() {
-						return SalesQuote.this.getIdentifiers();
-					}
+		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>(2);
+		if (this.getCustomerType() == emBusinessPartnerType.LEAD) {
+			// 潜在客户检查
+			contracts.add(new ILeadCheckContract() {
 
-					@Override
-					public String getCustomerCode() {
-						return SalesQuote.this.getCustomerCode();
-					}
-
-					@Override
-					public Integer getPriceList() {
-						return SalesQuote.this.getPriceList();
-					}
-
-					@Override
-					public void setFloorList(Integer value) {
-						SalesQuote.this.floorList = value;
-					}
-
-				},
-				// 价格检查
-				new IMaterialPriceCheckContract() {
-
-					@Override
-					public String getIdentifiers() {
-						return SalesQuote.this.getIdentifiers();
-					}
-
-					@Override
-					public Integer getPriceList() {
-						return SalesQuote.this.floorList;
-					}
-
-					@Override
-					public Iterable<IMaterialPrice> getMaterialPrices() {
-						return new Iterable<IMaterialPrice>() {
-
-							@Override
-							public Iterator<IMaterialPrice> iterator() {
-
-								return new Iterator<IMaterialPrice>() {
-
-									Iterator<ISalesQuoteItem> iterator = SalesQuote.this.getSalesQuoteItems().stream()
-											.filter(c -> c.isDeleted() != true && c.getDeleted() != emYesNo.YES)
-											.iterator();
-
-									@Override
-									public boolean hasNext() {
-										return iterator.hasNext();
-									}
-
-									@Override
-									public IMaterialPrice next() {
-
-										return new IMaterialPrice() {
-											ISalesQuoteItem item = iterator.next();
-
-											@Override
-											public String getItemCode() {
-												return item.getItemCode();
-											}
-
-											@Override
-											public BigDecimal getPrice() {
-												return item.getPrice();
-											}
-
-											@Override
-											public String getCurrency() {
-												return item.getCurrency();
-											}
-
-										};
-									}
-								};
-							}
-
-						};
-					}
+				@Override
+				public String getIdentifiers() {
+					return SalesQuote.this.getIdentifiers();
 				}
 
-		};
+				@Override
+				public String getLeadCode() {
+					return SalesQuote.this.getCustomerCode();
+				}
+			});
+		} else if (this.getCustomerType() == emBusinessPartnerType.CUSTOMER) {
+			// 客户检查
+			contracts.add(new ICustomerAndFloorListCheckContract() {
+				@Override
+				public String getIdentifiers() {
+					return SalesQuote.this.getIdentifiers();
+				}
+
+				@Override
+				public String getCustomerCode() {
+					return SalesQuote.this.getCustomerCode();
+				}
+
+				@Override
+				public Integer getPriceList() {
+					return SalesQuote.this.getPriceList();
+				}
+
+				@Override
+				public void setFloorList(Integer value) {
+					SalesQuote.this.floorList = value;
+				}
+
+			});
+		}
+		// 价格检查
+		contracts.add(new IMaterialPriceCheckContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesQuote.this.getIdentifiers();
+			}
+
+			@Override
+			public Integer getPriceList() {
+				return SalesQuote.this.floorList;
+			}
+
+			@Override
+			public Iterable<IMaterialPrice> getMaterialPrices() {
+				return new Iterable<IMaterialPrice>() {
+
+					@Override
+					public Iterator<IMaterialPrice> iterator() {
+
+						return new Iterator<IMaterialPrice>() {
+
+							Iterator<ISalesQuoteItem> iterator = SalesQuote.this.getSalesQuoteItems().stream()
+									.filter(c -> c.isDeleted() != true && c.getDeleted() != emYesNo.YES).iterator();
+
+							@Override
+							public boolean hasNext() {
+								return iterator.hasNext();
+							}
+
+							@Override
+							public IMaterialPrice next() {
+
+								return new IMaterialPrice() {
+									ISalesQuoteItem item = iterator.next();
+
+									@Override
+									public String getItemCode() {
+										return item.getItemCode();
+									}
+
+									@Override
+									public BigDecimal getPrice() {
+										return item.getPrice();
+									}
+
+									@Override
+									public String getCurrency() {
+										return item.getCurrency();
+									}
+
+								};
+							}
+						};
+					}
+
+				};
+			}
+		});
+		return contracts.toArray(new IBusinessLogicContract[] {});
 	}
 }

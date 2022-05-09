@@ -346,6 +346,17 @@ namespace sales {
                 this.setProperty(SalesQuote.PROPERTY_DELETED_NAME, value);
             }
 
+            /** 映射的属性名称-客户类型 */
+            static PROPERTY_CUSTOMERTYPE_NAME: string = "CustomerType";
+            /** 获取-客户类型 */
+            get customerType(): businesspartner.bo.emBusinessPartnerType {
+                return this.getProperty<businesspartner.bo.emBusinessPartnerType>(SalesQuote.PROPERTY_CUSTOMERTYPE_NAME);
+            }
+            /** 设置-客户类型 */
+            set customerType(value: businesspartner.bo.emBusinessPartnerType) {
+                this.setProperty(SalesQuote.PROPERTY_CUSTOMERTYPE_NAME, value);
+            }
+
             /** 映射的属性名称-客户代码 */
             static PROPERTY_CUSTOMERCODE_NAME: string = "CustomerCode";
             /** 获取-客户代码 */
@@ -541,6 +552,7 @@ namespace sales {
                 this.documentCurrency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
                 this.rounding = ibas.emYesNo.YES;
                 this.discount = 1;
+                this.customerType = businesspartner.bo.emBusinessPartnerType.CUSTOMER;
             }
 
             /** 映射的属性名称-项目的行总计 */

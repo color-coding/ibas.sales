@@ -221,21 +221,41 @@ namespace sales {
             /** 选择销售报价客户事件 */
             private chooseSalesQuoteCustomer(): void {
                 let that: this = this;
-                ibas.servicesManager.runChooseService<businesspartner.bo.ICustomer>({
-                    boCode: businesspartner.bo.BO_CODE_CUSTOMER,
-                    chooseType: ibas.emChooseType.SINGLE,
-                    criteria: businesspartner.app.conditions.customer.create(),
-                    onCompleted(selecteds: ibas.IList<businesspartner.bo.ICustomer>): void {
-                        let selected: businesspartner.bo.ICustomer = selecteds.firstOrDefault();
-                        that.editData.customerCode = selected.code;
-                        that.editData.customerName = selected.name;
-                        that.editData.priceList = selected.priceList;
-                        that.editData.contactPerson = selected.contactPerson;
-                        that.editData.documentCurrency = selected.currency;
-                        that.view.defaultTaxGroup = selected.taxGroup;
-                        that.changeSalesQuoteItemPrice(that.editData.priceList);
-                    }
-                });
+                if (this.editData.customerType === businesspartner.bo.emBusinessPartnerType.LEAD) {
+                    ibas.servicesManager.runChooseService<businesspartner.bo.ILead>({
+                        boCode: businesspartner.bo.BO_CODE_LEAD,
+                        chooseType: ibas.emChooseType.SINGLE,
+                        criteria: businesspartner.app.conditions.customer.create(),
+                        onCompleted(selecteds: ibas.IList<businesspartner.bo.ILead>): void {
+                            let selected: businesspartner.bo.ILead = selecteds.firstOrDefault();
+                            that.editData.customerType = businesspartner.bo.emBusinessPartnerType.LEAD;
+                            that.editData.customerCode = selected.code;
+                            that.editData.customerName = selected.name;
+                            that.editData.priceList = selected.priceList;
+                            that.editData.contactPerson = selected.contactPerson;
+                            that.editData.documentCurrency = selected.currency;
+                            that.view.defaultTaxGroup = selected.taxGroup;
+                            that.changeSalesQuoteItemPrice(that.editData.priceList);
+                        }
+                    });
+                } else {
+                    ibas.servicesManager.runChooseService<businesspartner.bo.ICustomer>({
+                        boCode: businesspartner.bo.BO_CODE_CUSTOMER,
+                        chooseType: ibas.emChooseType.SINGLE,
+                        criteria: businesspartner.app.conditions.customer.create(),
+                        onCompleted(selecteds: ibas.IList<businesspartner.bo.ICustomer>): void {
+                            let selected: businesspartner.bo.ICustomer = selecteds.firstOrDefault();
+                            that.editData.customerType = businesspartner.bo.emBusinessPartnerType.CUSTOMER;
+                            that.editData.customerCode = selected.code;
+                            that.editData.customerName = selected.name;
+                            that.editData.priceList = selected.priceList;
+                            that.editData.contactPerson = selected.contactPerson;
+                            that.editData.documentCurrency = selected.currency;
+                            that.view.defaultTaxGroup = selected.taxGroup;
+                            that.changeSalesQuoteItemPrice(that.editData.priceList);
+                        }
+                    });
+                }
             }
             /** 选择销售报价价格清单事件 */
             private chooseSalesQuotePriceList(): void {

@@ -51,6 +51,23 @@ namespace sales {
                                     maxLength: 20
                                 })
                             }),
+                            new sap.extension.m.EnumSelect("", {
+                                items: [
+                                    new sap.extension.m.SelectItem("", {
+                                        key: businesspartner.bo.emBusinessPartnerType.CUSTOMER,
+                                        text: ibas.enums.describe(businesspartner.bo.emBusinessPartnerType, businesspartner.bo.emBusinessPartnerType.CUSTOMER)
+                                    }),
+                                    new sap.extension.m.SelectItem("", {
+                                        key: businesspartner.bo.emBusinessPartnerType.LEAD,
+                                        text: ibas.enums.describe(businesspartner.bo.emBusinessPartnerType, businesspartner.bo.emBusinessPartnerType.LEAD)
+                                    })
+                                ]
+                            }).bindProperty("bindingValue", {
+                                path: "customerType",
+                                type: new sap.extension.data.Enum({
+                                    enumType: businesspartner.bo.emBusinessPartnerType
+                                })
+                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_customername") }),
                             new sap.extension.m.Input("", {
                                 editable: false,

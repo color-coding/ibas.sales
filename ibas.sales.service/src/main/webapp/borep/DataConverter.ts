@@ -44,6 +44,8 @@ namespace sales {
                 if (boName === bo.SalesQuote.name) {
                     if (property === bo.SalesQuote.PROPERTY_ROUNDING_NAME) {
                         return ibas.enums.toString(ibas.emYesNo, value);
+                    } else if (property === bo.SalesQuote.PROPERTY_CUSTOMERTYPE_NAME) {
+                        return ibas.enums.toString(businesspartner.bo.emBusinessPartnerType, value);
                     }
                 } else if (boName === bo.SalesQuoteItem.name) {
                     if (property === bo.SalesQuoteItem.PROPERTY_BATCHMANAGEMENT_NAME) {
@@ -120,6 +122,8 @@ namespace sales {
                 if (boName === bo.SalesQuote.name) {
                     if (property === bo.SalesQuote.PROPERTY_ROUNDING_NAME) {
                         return ibas.enums.valueOf(ibas.emYesNo, value);
+                    } else if (property === bo.SalesQuote.PROPERTY_CUSTOMERTYPE_NAME) {
+                        return ibas.enums.valueOf(businesspartner.bo.emBusinessPartnerType, value);
                     }
                 } else if (boName === bo.SalesQuoteItem.name) {
                     if (property === bo.SalesQuoteItem.PROPERTY_BATCHMANAGEMENT_NAME) {

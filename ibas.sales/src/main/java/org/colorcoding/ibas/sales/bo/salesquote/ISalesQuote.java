@@ -8,6 +8,7 @@ import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.businesspartner.data.emBusinessPartnerType;
 
 /**
  * 销售报价 接口
@@ -434,6 +435,20 @@ public interface ISalesQuote extends IBODocument {
 	 * @param value 值
 	 */
 	void setDeleted(emYesNo value);
+
+	/**
+	 * 获取-客户类型
+	 * 
+	 * @return 值
+	 */
+	emBusinessPartnerType getCustomerType();
+
+	/**
+	 * 设置-客户类型
+	 * 
+	 * @param value 值
+	 */
+	void setCustomerType(emBusinessPartnerType value);
 
 	/**
 	 * 获取-客户代码

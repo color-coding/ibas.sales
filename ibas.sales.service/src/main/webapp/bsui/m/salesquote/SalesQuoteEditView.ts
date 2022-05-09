@@ -233,6 +233,24 @@ namespace sales {
                                                 editable: true,
                                                 width: "auto",
                                                 content: [
+                                                    new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_customertype") }),
+                                                    new sap.extension.m.EnumSelect("", {
+                                                        items: [
+                                                            new sap.extension.m.SelectItem("", {
+                                                                key: businesspartner.bo.emBusinessPartnerType.CUSTOMER,
+                                                                text: ibas.enums.describe(businesspartner.bo.emBusinessPartnerType, businesspartner.bo.emBusinessPartnerType.CUSTOMER)
+                                                            }),
+                                                            new sap.extension.m.SelectItem("", {
+                                                                key: businesspartner.bo.emBusinessPartnerType.LEAD,
+                                                                text: ibas.enums.describe(businesspartner.bo.emBusinessPartnerType, businesspartner.bo.emBusinessPartnerType.LEAD)
+                                                            })
+                                                        ]
+                                                    }).bindProperty("bindingValue", {
+                                                        path: "customerType",
+                                                        type: new sap.extension.data.Enum({
+                                                            enumType: businesspartner.bo.emBusinessPartnerType
+                                                        })
+                                                    }),
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_customercode") }),
                                                     new sap.extension.m.Input("", {
                                                         showValueHelp: true,
