@@ -42,6 +42,9 @@ namespace sales {
                 this.view.receiptSalesOrderEvent = this.receiptSalesOrder;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
                 this.view.showSalesOrderItemExtraEvent = this.showSaleOrderItemExtra;
+                this.view.turnToSalesDeliveryEvent = this.turnToSalesDelivery;
+                this.view.turnToSalesInvoiceEvent = this.turnToSalesInvoice;
+                this.view.turnToSalesReturnEvent = this.turnToSalesReturn;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -877,6 +880,57 @@ namespace sales {
                 app.viewShower = this.viewShower;
                 app.run(data, this.editData);
             }
+            /** 转为销售交货 */
+            protected turnToSalesDelivery(): void {
+                if (ibas.objects.isNull(this.editData) || this.editData.isDirty === true) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
+                    return;
+                }
+                let target: bo.SalesDelivery = new bo.SalesDelivery();
+                target.customerCode = this.editData.customerCode;
+                target.customerName = this.editData.customerName;
+                target.baseDocument(this.editData);
+
+                let app: SalesDeliveryEditApp = new SalesDeliveryEditApp();
+                app.navigation = this.navigation;
+                app.viewShower = this.viewShower;
+                app.run(target);
+
+            }
+            /** 转为销售退货 */
+            protected turnToSalesReturn(): void {
+                if (ibas.objects.isNull(this.editData) || this.editData.isDirty === true) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
+                    return;
+                }
+                let target: bo.SalesReturn = new bo.SalesReturn();
+                target.customerCode = this.editData.customerCode;
+                target.customerName = this.editData.customerName;
+                target.baseDocument(this.editData);
+
+                let app: SalesReturnEditApp = new SalesReturnEditApp();
+                app.navigation = this.navigation;
+                app.viewShower = this.viewShower;
+                app.run(target);
+
+            }
+            /** 转为销售发票 */
+            protected turnToSalesInvoice(): void {
+                if (ibas.objects.isNull(this.editData) || this.editData.isDirty === true) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
+                    return;
+                }
+                let target: bo.SalesInvoice = new bo.SalesInvoice();
+                target.customerCode = this.editData.customerCode;
+                target.customerName = this.editData.customerName;
+                target.baseDocument(this.editData);
+
+                let app: SalesInvoiceEditApp = new SalesInvoiceEditApp();
+                app.navigation = this.navigation;
+                app.viewShower = this.viewShower;
+                app.run(target);
+
+            }
         }
         /** 视图-销售订单 */
         export interface ISalesOrderEditView extends ibas.IBOEditView {
@@ -914,6 +968,12 @@ namespace sales {
             receiptSalesOrderEvent: Function;
             /** 编辑地址事件 */
             editShippingAddressesEvent: Function;
+            /** 转为销售交货事件 */
+            turnToSalesDeliveryEvent: Function;
+            /** 转为销售退货事件 */
+            turnToSalesReturnEvent: Function;
+            /** 转为销售发票事件 */
+            turnToSalesInvoiceEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */

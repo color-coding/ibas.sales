@@ -36,6 +36,10 @@ namespace sales {
                 chooseSalesDeliveryItemMaterialBatchEvent: Function;
                 /** 选择销售交货项目-销售订单事件 */
                 chooseSalesDeliverySalesOrderEvent: Function;
+                /** 转为销售退货事件 */
+                turnToSalesReturnEvent: Function;
+                /** 转为销售发票事件 */
+                turnToSalesInvoiceEvent: Function;
                 /** 收款销售交货 */
                 receiptSalesDeliveryEvent: Function;
                 /** 编辑地址事件 */
@@ -662,6 +666,28 @@ namespace sales {
                                                         accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                                                         multiple: false
                                                     });
+                                                }
+                                            }),
+                                        ],
+                                    })
+                                }),
+                                new sap.m.ToolbarSeparator(""),
+                                new sap.m.MenuButton("", {
+                                    text: ibas.i18n.prop("sales_copy_to"),
+                                    icon: "sap-icon://duplicate",
+                                    type: sap.m.ButtonType.Transparent,
+                                    menu: new sap.m.Menu("", {
+                                        items: [
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("bo_salesinvoice"),
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.turnToSalesInvoiceEvent);
+                                                }
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("bo_salesreturn"),
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.turnToSalesReturnEvent);
                                                 }
                                             }),
                                         ],

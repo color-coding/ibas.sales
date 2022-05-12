@@ -41,6 +41,7 @@ namespace sales {
                 this.view.chooseSalesReturnSalesOrderEvent = this.chooseSalesReturnSalesOrder;
                 this.view.chooseSalesReturnSalesDeliveryEvent = this.chooseSalesReturnSalesDelivery;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
+                this.view.turnToSalesCreditNoteEvent = this.turnToSalesCreditNote;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -706,6 +707,23 @@ namespace sales {
                 app.viewShower = this.viewShower;
                 app.run(this.editData.shippingAddresss);
             }
+            /** 转为销售贷项事件 */
+            protected turnToSalesCreditNote(): void {
+                if (ibas.objects.isNull(this.editData) || this.editData.isDirty === true) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
+                    return;
+                }
+                let target: bo.SalesCreditNote = new bo.SalesCreditNote();
+                target.customerCode = this.editData.customerCode;
+                target.customerName = this.editData.customerName;
+                target.baseDocument(this.editData);
+
+                let app: SalesCreditNoteEditApp = new SalesCreditNoteEditApp();
+                app.navigation = this.navigation;
+                app.viewShower = this.viewShower;
+                app.run(target);
+
+            }
         }
         /** 视图-销售退货 */
         export interface ISalesReturnEditView extends ibas.IBOEditView {
@@ -741,6 +759,8 @@ namespace sales {
             chooseSalesReturnSalesDeliveryEvent: Function;
             /** 编辑地址事件 */
             editShippingAddressesEvent: Function;
+            /** 转为销售贷项事件 */
+            turnToSalesCreditNoteEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
         }

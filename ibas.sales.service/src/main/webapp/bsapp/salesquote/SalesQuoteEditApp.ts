@@ -37,6 +37,7 @@ namespace sales {
                 this.view.chooseSalesQuotePriceListEvent = this.chooseSalesQuotePriceList;
                 this.view.chooseSalesQuoteItemWarehouseEvent = this.chooseSalesQuoteItemWarehouse;
                 this.view.showSalesQuoteItemExtraEvent = this.showSalesQuoteItemExtra;
+                this.view.turnToSalesOrderEvent = this.turnToSalesOrder;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -666,6 +667,25 @@ namespace sales {
                 app.viewShower = this.viewShower;
                 app.run(data, this.editData);
             }
+
+            /** 转为销售订单 */
+            protected turnToSalesOrder(): void {
+                if (ibas.objects.isNull(this.editData) || this.editData.isDirty === true) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
+                    return;
+                }
+                let target: bo.SalesOrder = new bo.SalesOrder();
+                target.customerCode = this.editData.customerCode;
+                target.customerName = this.editData.customerName;
+                target.baseDocument(this.editData);
+
+                let app: SalesOrderEditApp = new SalesOrderEditApp();
+                app.navigation = this.navigation;
+                app.viewShower = this.viewShower;
+                app.run(target);
+
+
+            }
         }
         /** 视图-销售报价 */
         export interface ISalesQuoteEditView extends ibas.IBOEditView {
@@ -693,6 +713,8 @@ namespace sales {
             chooseSalesQuoteItemWarehouseEvent: Function;
             /** 显示销售报价额外信息事件 */
             showSalesQuoteItemExtraEvent: Function;
+            /** 转为销售订单事件 */
+            turnToSalesOrderEvent: Function;
             /** 默认税组 */
             defaultTaxGroup: string;
         }

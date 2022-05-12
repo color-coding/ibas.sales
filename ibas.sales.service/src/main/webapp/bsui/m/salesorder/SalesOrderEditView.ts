@@ -18,17 +18,34 @@ namespace sales {
                 addSalesOrderItemEvent: Function;
                 /** 删除销售订单-行事件 */
                 removeSalesOrderItemEvent: Function;
+                /** 选择销售订单客户信息 */
                 chooseSalesOrderCustomerEvent: Function;
+                /** 选择销售订单联系人信息 */
                 chooseSalesOrderContactPersonEvent: Function;
+                /** 选择销售订单价格清单信息 */
                 chooseSalesOrderPriceListEvent: Function;
+                /** 选择销售订单-行物料主数据 */
                 chooseSalesOrderItemMaterialEvent: Function;
+                /** 选择销售订单-行 仓库 */
                 chooseSalesOrderItemWarehouseEvent: Function;
+                /** 选择销售订单-行 物料序列事件 */
                 chooseSalesOrderItemMaterialSerialEvent: Function;
+                /** 选择销售订单-行 物料批次事件 */
                 chooseSalesOrderItemMaterialBatchEvent: Function;
-                showSalesOrderItemExtraEvent: Function;
+                /** 选择销售订单-销售报价事件 */
                 chooseSalesOrderSalesQuoteEvent: Function;
+                /** 显示销售订单行额外信息事件 */
+                showSalesOrderItemExtraEvent: Function;
+                /** 收款销售订单 */
                 receiptSalesOrderEvent: Function;
+                /** 编辑地址事件 */
                 editShippingAddressesEvent: Function;
+                /** 转为销售交货事件 */
+                turnToSalesDeliveryEvent: Function;
+                /** 转为销售退货事件 */
+                turnToSalesReturnEvent: Function;
+                /** 转为销售发票事件 */
+                turnToSalesInvoiceEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */
@@ -150,6 +167,42 @@ namespace sales {
                                     importance: sap.uxap.Importance.Low,
                                     press: function (): void {
                                         that.fireViewEvents(that.deleteDataEvent);
+                                    }
+                                }),
+                                new sap.uxap.ObjectPageHeaderActionButton("", {
+                                    hideText: true,
+                                    importance: sap.uxap.Importance.Medium,
+                                    text: ibas.i18n.prop("sales_copy_to"),
+                                    type: sap.m.ButtonType.Transparent,
+                                    icon: "sap-icon://duplicate",
+                                    press(event: sap.ui.base.Event): void {
+                                        let actionSheet: sap.m.ActionSheet = new sap.m.ActionSheet("", {
+                                            placement: sap.m.PlacementType.Bottom,
+                                            buttons: [
+                                                new sap.m.Button("", {
+                                                    type: sap.m.ButtonType.Transparent,
+                                                    text: ibas.i18n.prop("bo_salesdelivery"),
+                                                    press(this: sap.m.Button): void {
+                                                        that.fireViewEvents(that.turnToSalesDeliveryEvent);
+                                                    }
+                                                }),
+                                                new sap.m.Button("", {
+                                                    type: sap.m.ButtonType.Transparent,
+                                                    text: ibas.i18n.prop("bo_salesinvoice"),
+                                                    press(this: sap.m.Button): void {
+                                                        that.fireViewEvents(that.turnToSalesInvoiceEvent);
+                                                    }
+                                                }),
+                                                new sap.m.Button("", {
+                                                    type: sap.m.ButtonType.Transparent,
+                                                    text: ibas.i18n.prop("bo_salesreturn"),
+                                                    press(this: sap.m.Button): void {
+                                                        that.fireViewEvents(that.turnToSalesReturnEvent);
+                                                    }
+                                                }),
+                                            ]
+                                        });
+                                        actionSheet.openBy(event.getSource());
                                     }
                                 }),
                                 new sap.uxap.ObjectPageHeaderActionButton("", {

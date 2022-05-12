@@ -42,6 +42,8 @@ namespace sales {
                 receiptSalesReturnEvent: Function;
                 /** 编辑地址事件 */
                 editShippingAddressesEvent: Function;
+                /** 转为销售贷项事件 */
+                turnToSalesCreditNoteEvent: Function;
 
                 /** 绘制视图 */
                 draw(): any {
@@ -658,6 +660,22 @@ namespace sales {
                                                         accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                                                         multiple: false
                                                     });
+                                                }
+                                            }),
+                                        ],
+                                    })
+                                }),
+                                new sap.m.ToolbarSeparator(""),
+                                new sap.m.MenuButton("", {
+                                    text: ibas.i18n.prop("sales_copy_to"),
+                                    icon: "sap-icon://duplicate",
+                                    type: sap.m.ButtonType.Transparent,
+                                    menu: new sap.m.Menu("", {
+                                        items: [
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("bo_salescreditnote"),
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.turnToSalesCreditNoteEvent);
                                                 }
                                             }),
                                         ],

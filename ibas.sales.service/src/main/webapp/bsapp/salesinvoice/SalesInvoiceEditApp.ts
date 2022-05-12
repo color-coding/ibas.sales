@@ -42,6 +42,7 @@ namespace sales {
                 this.view.chooseSalesInvoiceSalesDeliveryEvent = this.chooseSalesInvoiceSalesDelivery;
                 this.view.receiptSalesInvoiceEvent = this.receiptSalesInvoice;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
+                this.view.turnToSalesCreditNoteEvent = this.turnToSalesCreditNote;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -904,6 +905,22 @@ namespace sales {
                     app.run(this.editData.shippingAddresss);
                 }
             }
+            protected turnToSalesCreditNote(): void {
+                if (ibas.objects.isNull(this.editData) || this.editData.isDirty === true) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
+                    return;
+                }
+                let target: bo.SalesCreditNote = new bo.SalesCreditNote();
+                target.customerCode = this.editData.customerCode;
+                target.customerName = this.editData.customerName;
+                target.baseDocument(this.editData);
+
+                let app: SalesCreditNoteEditApp = new SalesCreditNoteEditApp();
+                app.navigation = this.navigation;
+                app.viewShower = this.viewShower;
+                app.run(target);
+
+            }
         }
         /** 视图-销售发票 */
         export interface ISalesInvoiceEditView extends ibas.IBOEditView {
@@ -941,6 +958,8 @@ namespace sales {
             receiptSalesInvoiceEvent: Function;
             /** 编辑地址事件 */
             editShippingAddressesEvent: Function;
+            /** 转为销售交货事件 */
+            turnToSalesCreditNoteEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */

@@ -14,16 +14,24 @@ namespace sales {
                 deleteDataEvent: Function;
                 /** 新建数据事件，参数1：是否克隆 */
                 createDataEvent: Function;
-                /** 添加销售报价-行事件 */
+                /** 添加销售订单-行事件 */
                 addSalesQuoteItemEvent: Function;
-                /** 删除销售报价-行事件 */
+                /** 删除销售订单-行事件 */
                 removeSalesQuoteItemEvent: Function;
+                /** 选择销售订单客户信息 */
                 chooseSalesQuoteCustomerEvent: Function;
+                /** 选择销售报价联系人信息 */
                 chooseSalesQuoteContactPersonEvent: Function;
+                /** 选择销售订单价格清单信息 */
                 chooseSalesQuotePriceListEvent: Function;
+                /** 选择销售订单-行物料主数据 */
                 chooseSalesQuoteItemMaterialEvent: Function;
+                /** 选择销售订单-行 仓库 */
                 chooseSalesQuoteItemWarehouseEvent: Function;
+                /** 显示销售报价额外信息事件 */
                 showSalesQuoteItemExtraEvent: Function;
+                /** 转为销售订单事件 */
+                turnToSalesOrderEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */
@@ -120,6 +128,28 @@ namespace sales {
                                     importance: sap.uxap.Importance.Low,
                                     press: function (): void {
                                         that.fireViewEvents(that.deleteDataEvent);
+                                    }
+                                }),
+                                new sap.uxap.ObjectPageHeaderActionButton("", {
+                                    hideText: true,
+                                    importance: sap.uxap.Importance.Medium,
+                                    text: ibas.i18n.prop("sales_copy_to"),
+                                    type: sap.m.ButtonType.Transparent,
+                                    icon: "sap-icon://duplicate",
+                                    press(event: sap.ui.base.Event): void {
+                                        let actionSheet: sap.m.ActionSheet = new sap.m.ActionSheet("", {
+                                            placement: sap.m.PlacementType.Bottom,
+                                            buttons: [
+                                                new sap.m.Button("", {
+                                                    type: sap.m.ButtonType.Transparent,
+                                                    text: ibas.i18n.prop("bo_salesorder"),
+                                                    press(this: sap.m.Button): void {
+                                                        that.fireViewEvents(that.turnToSalesOrderEvent);
+                                                    }
+                                                }),
+                                            ]
+                                        });
+                                        actionSheet.openBy(event.getSource());
                                     }
                                 }),
                                 new sap.uxap.ObjectPageHeaderActionButton("", {
