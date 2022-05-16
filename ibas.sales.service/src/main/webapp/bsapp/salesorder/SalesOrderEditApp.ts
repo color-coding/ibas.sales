@@ -769,7 +769,8 @@ namespace sales {
                     criteria: criteria,
                     onCompleted(selecteds: ibas.IList<bo.SalesQuote>): void {
                         for (let selected of selecteds) {
-                            if (!ibas.strings.equals(that.editData.customerCode, selected.customerCode)) {
+                            if (!ibas.strings.equals(that.editData.customerCode, selected.customerCode)
+                                && (!ibas.objects.isNull(that.customer) && (!ibas.strings.equals(that.customer.lead, selected.customerCode)))) {
                                 continue;
                             }
                             that.editData.baseDocument(selected);

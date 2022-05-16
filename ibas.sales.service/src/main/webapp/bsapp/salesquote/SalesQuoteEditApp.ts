@@ -635,7 +635,7 @@ namespace sales {
                 let criteria: ibas.ICriteria = new ibas.Criteria();
                 let condition: ibas.ICondition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_OWNERTYPE_NAME;
-                condition.value = businesspartner.bo.emBusinessPartnerType.CUSTOMER.toString();
+                condition.value = this.editData.customerType.toString();
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_BUSINESSPARTNER_NAME;
                 condition.value = this.editData.customerCode;
@@ -669,22 +669,76 @@ namespace sales {
             }
 
             /** 转为销售订单 */
-            protected turnToSalesOrder(): void {
+            protected turnToSalesOrder(salesOrder?: bo.SalesOrder): void {
                 if (ibas.objects.isNull(this.editData) || this.editData.isDirty === true) {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
                     return;
                 }
-                let target: bo.SalesOrder = new bo.SalesOrder();
-                target.customerCode = this.editData.customerCode;
-                target.customerName = this.editData.customerName;
-                target.baseDocument(this.editData);
+                if (ibas.dates.compare(ibas.dates.today(), this.editData.deliveryDate) < 0) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_salesquote_expired_date"));
+                    return;
+                }
+                if (salesOrder instanceof bo.SalesOrder) {
+                    let app: SalesOrderEditApp = new SalesOrderEditApp();
+                    app.navigation = this.navigation;
+                    app.viewShower = this.viewShower;
+                    app.run(salesOrder);
+                } else {
+                    if (this.editData.customerType === businesspartner.bo.emBusinessPartnerType.LEAD) {
+                        let that: this = this;
+                        this.messages({
+                            type: ibas.emMessageType.QUESTION,
+                            title: ibas.i18n.prop(this.name),
+                            message: ibas.i18n.prop("sales_change_lead_to_customer_continue"),
+                            actions: [ibas.emMessageAction.YES, ibas.emMessageAction.NO],
+                            onCompleted(action: ibas.emMessageAction): void {
+                                if (action === ibas.emMessageAction.YES) {
+                                    let criteria: ibas.ICriteria = new ibas.Criteria();
+                                    let condition: ibas.ICondition = criteria.conditions.create();
+                                    condition.alias = businesspartner.bo.Customer.PROPERTY_LEAD_NAME;
+                                    condition.value = that.editData.customerCode;
+                                    let boRepository: businesspartner.bo.BORepositoryBusinessPartner = new businesspartner.bo.BORepositoryBusinessPartner();
+                                    boRepository.fetchCustomer({
+                                        criteria: criteria,
+                                        onCompleted: (opRslt) => {
+                                            try {
+                                                if (opRslt.resultCode !== 0) {
+                                                    throw new Error(opRslt.message);
+                                                }
+                                                if (opRslt.resultObjects.length === 0) {
+                                                    throw new Error(ibas.i18n.prop("sales_not_found_lead's_customer", that.editData.customerCode, that.editData.customerName));
+                                                }
+                                                let customer: businesspartner.bo.ICustomer = opRslt.resultObjects.firstOrDefault();
+                                                let target: bo.SalesOrder = new bo.SalesOrder();
+                                                target.customerCode = that.editData.customerCode;
+                                                target.customerName = that.editData.customerName;
+                                                target.baseDocument(that.editData);
+                                                target.customerCode = customer.code;
+                                                target.customerName = customer.name;
+                                                that.turnToSalesOrder(target);
+                                            } catch (error) {
+                                                that.messages(error);
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    let target: bo.SalesOrder = new bo.SalesOrder();
+                                    target.customerCode = that.editData.customerCode;
+                                    target.customerName = that.editData.customerName;
+                                    target.baseDocument(that.editData);
+                                    that.turnToSalesOrder(target);
+                                }
+                            }
+                        });
+                    } else {
+                        let target: bo.SalesOrder = new bo.SalesOrder();
+                        target.customerCode = this.editData.customerCode;
+                        target.customerName = this.editData.customerName;
+                        target.baseDocument(this.editData);
+                        this.turnToSalesOrder(target);
+                    }
 
-                let app: SalesOrderEditApp = new SalesOrderEditApp();
-                app.navigation = this.navigation;
-                app.viewShower = this.viewShower;
-                app.run(target);
-
-
+                }
             }
         }
         /** 视图-销售报价 */

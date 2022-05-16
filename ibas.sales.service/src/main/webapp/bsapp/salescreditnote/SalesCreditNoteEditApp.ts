@@ -656,7 +656,7 @@ namespace sales {
                     });
                 }
                 ibas.servicesManager.runApplicationService<materials.app.IMaterialBatchContract[]>({
-                    proxy: new materials.app.MaterialBatchIssueServiceProxy(contracts)
+                    proxy: new materials.app.MaterialBatchReceiptServiceProxy(contracts)
                 });
             }
             /** 选择销售贷项序列事件 */
@@ -674,7 +674,7 @@ namespace sales {
                     });
                 }
                 ibas.servicesManager.runApplicationService<materials.app.IMaterialSerialContract[]>({
-                    proxy: new materials.app.MaterialSerialIssueServiceProxy(contracts)
+                    proxy: new materials.app.MaterialSerialReceiptServiceProxy(contracts)
                 });
             }
             /** 选择销售贷项-销售退货事件 */

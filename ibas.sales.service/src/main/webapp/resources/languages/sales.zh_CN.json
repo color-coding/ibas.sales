@@ -73,5 +73,8 @@
   "sales_remove_base_items_continue": "此操作会移出基于的行项目，是否继续？",
   "sales_change_item_warehouse_continue": "是否更改单据行的仓库为[{0}]？",
   "sales_change_item_price_continue": "价格清单已更新，是否更改单据行的价格？",
+  "sales_change_lead_to_customer_continue": "是否自动切换为对应的客户？",
+  "sales_not_found_lead's_customer": "没有找到[{0} - {1}]对应的客户，请创建后重试",
+  "sales_salesquote_expired_date": "报价日期已失效",
   "sales_closing_delimiter": "----结束----"
 }

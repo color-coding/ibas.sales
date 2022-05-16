@@ -510,7 +510,7 @@ namespace sales {
                         if (ibas.numbers.isApproximated(discount, result, DECIMAL_PLACES_PERCENTAGE, 10)) {
                             return;
                         }
-                        context.outputValues.set(this.discount, ibas.numbers.round(result, DECIMAL_PLACES_PERCENTAGE));
+                        context.outputValues.set(this.discount, ibas.numbers.round(result, DECIMAL_PLACES_PERCENTAGE + 2));
                     }
                 } else {
                     if (discount === 1 || isNaN(discount)) {
@@ -608,7 +608,7 @@ namespace sales {
                     if (ibas.numbers.isApproximated(price, result, DECIMAL_PLACES_PRICE)) {
                         return;
                     }
-                    context.outputValues.set(this.price, ibas.numbers.round(result, DECIMAL_PLACES_PRICE));
+                    context.outputValues.set(this.price, ibas.numbers.round(result, DECIMAL_PLACES_PRICE + 2));
                 } else {
                     let result: number = price * quantity;
                     // 差异小于近似位，则忽略
@@ -662,7 +662,7 @@ namespace sales {
                     }
                     context.outputValues.set(this.afterDiscount, ibas.numbers.round(result, DECIMAL_PLACES_SUM));
                 } else {
-                    if (preDiscount === 0) {
+                    if (preDiscount <= 0 || isNaN(preDiscount)) {
                         context.outputValues.set(this.discount, 1);
                         context.outputValues.set(this.preDiscount, afterDiscount);
                     } else {
@@ -672,7 +672,7 @@ namespace sales {
                         if (ibas.numbers.isApproximated(discount, result, DECIMAL_PLACES_PERCENTAGE, 10)) {
                             return;
                         }
-                        context.outputValues.set(this.discount, ibas.numbers.round(result, DECIMAL_PLACES_PERCENTAGE));
+                        context.outputValues.set(this.discount, ibas.numbers.round(result, DECIMAL_PLACES_PERCENTAGE + 2));
                     }
                 }
             }
@@ -738,12 +738,13 @@ namespace sales {
                     let rTaxTotal: number = total - rPreTotal;
                     // 差异小于近似位，则忽略
                     if (!ibas.numbers.isApproximated(rPrice, price, DECIMAL_PLACES_PRICE)) {
-                        context.outputValues.set(this.price, ibas.numbers.round(rPrice, DECIMAL_PLACES_PRICE));
+                        context.outputValues.set(this.price, ibas.numbers.round(rPrice, DECIMAL_PLACES_PRICE + 2));
                     }
                     if (!ibas.numbers.isApproximated(rPreTotal, preTotal, DECIMAL_PLACES_SUM)) {
                         context.outputValues.set(this.preTotal, ibas.numbers.round(rPreTotal, DECIMAL_PLACES_SUM));
                     }
-                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM)) {
+                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM, Math.pow(10, DECIMAL_PLACES_SUM))) {
+                        // 税精度降低
                         context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, DECIMAL_PLACES_SUM));
                     }
                 } else if (ibas.strings.equalsIgnoreCase(this.taxTotal, context.trigger)) {
@@ -762,7 +763,8 @@ namespace sales {
                     if (!ibas.numbers.isApproximated(rPreTotal, preTotal, DECIMAL_PLACES_SUM)) {
                         context.outputValues.set(this.preTotal, ibas.numbers.round(rPreTotal, DECIMAL_PLACES_SUM));
                     }
-                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM)) {
+                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM, Math.pow(10, DECIMAL_PLACES_SUM))) {
+                        // 税精度降低
                         context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, DECIMAL_PLACES_SUM));
                     }
                 } else if (ibas.strings.equalsIgnoreCase(this.taxRate, context.trigger)
@@ -770,7 +772,8 @@ namespace sales {
                     let rTaxTotal: number = preTotal * taxRate;
                     let rTotal: number = preTotal + rTaxTotal;
                     // 差异小于近似位，则忽略
-                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM)) {
+                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM, Math.pow(10, DECIMAL_PLACES_SUM))) {
+                        // 税精度降低
                         context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, DECIMAL_PLACES_SUM));
                     }
                     if (!ibas.numbers.isApproximated(rTotal, total, DECIMAL_PLACES_SUM)) {
