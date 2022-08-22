@@ -343,6 +343,9 @@ namespace sales {
             /** 分配规则5 */
             distributionRule5: string;
 
+            /** 已订购数量 */
+            orderedQuantity: number;
+
             /** 销售订单-行-额外信息集合 */
             salesOrderItemExtras: ISalesOrderItemExtras;
 

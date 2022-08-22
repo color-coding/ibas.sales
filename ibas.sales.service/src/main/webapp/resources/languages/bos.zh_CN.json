@@ -284,6 +284,7 @@
         "bo_salesorderitem_distributionrule3": "分配规则3",
         "bo_salesorderitem_distributionrule4": "分配规则4",
         "bo_salesorderitem_distributionrule5": "分配规则5",
+        "bo_salesorderitem_orderedquantity": "已订购数量",
         "bo_salesorderitem_salesorderitemextras": "销售订单-行-额外信息集合",
         "bo_salesorderitemextra": "销售订单-行-额外信息",
         "bo_salesorderitemextra_docentry": "编码",

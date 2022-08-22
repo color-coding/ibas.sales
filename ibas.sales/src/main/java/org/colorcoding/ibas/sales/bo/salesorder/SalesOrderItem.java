@@ -2222,6 +2222,37 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 	}
 
 	/**
+	 * 属性名称-已订购数量
+	 */
+	private static final String PROPERTY_ORDEREDQUANTITY_NAME = "OrderedQuantity";
+
+	/**
+	 * 已订购数量 属性
+	 */
+	@DbField(name = "OrderedQty", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<BigDecimal> PROPERTY_ORDEREDQUANTITY = registerProperty(
+			PROPERTY_ORDEREDQUANTITY_NAME, BigDecimal.class, MY_CLASS);
+
+	/**
+	 * 获取-已订购数量
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_ORDEREDQUANTITY_NAME)
+	public final BigDecimal getOrderedQuantity() {
+		return this.getProperty(PROPERTY_ORDEREDQUANTITY);
+	}
+
+	/**
+	 * 设置-已订购数量
+	 * 
+	 * @param value 值
+	 */
+	public final void setOrderedQuantity(BigDecimal value) {
+		this.setProperty(PROPERTY_ORDEREDQUANTITY, value);
+	}
+
+	/**
 	 * 属性名称-销售订单-行-额外信息
 	 */
 	private static final String PROPERTY_SALESORDERITEMEXTRAS_NAME = "SalesOrderItemExtras";

@@ -1102,6 +1102,20 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	void setDistributionRule5(String value);
 
 	/**
+	 * 获取-已订购数量
+	 * 
+	 * @return 值
+	 */
+	BigDecimal getOrderedQuantity();
+
+	/**
+	 * 设置-已订购数量
+	 * 
+	 * @param value 值
+	 */
+	void setOrderedQuantity(BigDecimal value);
+
+	/**
 	 * 获取-销售订单-行-额外信息集合
 	 * 
 	 * @return 值

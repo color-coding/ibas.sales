@@ -1412,6 +1412,17 @@ namespace sales {
                 this.setProperty(SalesOrderItem.PROPERTY_DISTRIBUTIONRULE5_NAME, value);
             }
 
+            /** 映射的属性名称-已订购数量 */
+            static PROPERTY_ORDEREDQUANTITY_NAME: string = "OrderedQuantity";
+            /** 获取-已订购数量 */
+            get orderedQuantity(): number {
+                return this.getProperty<number>(SalesOrderItem.PROPERTY_ORDEREDQUANTITY_NAME);
+            }
+            /** 设置-已订购数量 */
+            set orderedQuantity(value: number) {
+                this.setProperty(SalesOrderItem.PROPERTY_ORDEREDQUANTITY_NAME, value);
+            }
+
             /** 映射的属性名称-销售订单-行-额外信息集合 */
             static PROPERTY_SALESORDERITEMEXTRAS_NAME: string = "SalesOrderItemExtras";
             /** 获取-销售订单-行-额外信息集合 */
