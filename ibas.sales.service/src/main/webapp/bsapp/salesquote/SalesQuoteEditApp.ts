@@ -324,14 +324,27 @@ namespace sales {
                         onCompleted: (opRslt) => {
                             for (let item of opRslt.resultObjects) {
                                 this.editData.salesQuoteItems.forEach((value) => {
-                                    if (item.itemCode === value.itemCode) {
-                                        // 设置价格，注意折前
+                                    if (item.taxed === ibas.emYesNo.YES) {
+                                        // 含税价格
                                         value.isLoading = true;
-                                        value.unitPrice = 0;
                                         value.discount = 1;
+                                        value.unitPrice = 0;
+                                        value.preTaxPrice = 0;
                                         value.price = 0;
                                         value.isLoading = false;
+                                        // 税后价格
                                         value.price = item.price;
+                                        value.currency = item.currency;
+                                    } else {
+                                        // 不含税价格
+                                        value.isLoading = true;
+                                        value.discount = 1;
+                                        value.unitPrice = 0;
+                                        value.preTaxPrice = 0;
+                                        value.price = 0;
+                                        value.isLoading = false;
+                                        // 税前价格
+                                        value.preTaxPrice = item.price;
                                         value.currency = item.currency;
                                     }
                                 });
@@ -676,6 +689,14 @@ namespace sales {
                 }
                 if (ibas.dates.compare(ibas.dates.today(), this.editData.deliveryDate) < 0) {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_salesquote_expired_date"));
+                    return;
+                }
+                if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
+                    || this.editData.deleted === ibas.emYesNo.YES
+                    || this.editData.canceled === ibas.emYesNo.YES
+                    || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
+                ) {
+                    this.messages(ibas.emMessageType.ERROR, ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
                     return;
                 }
                 if (salesOrder instanceof bo.SalesOrder) {
