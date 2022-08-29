@@ -14,4 +14,5 @@
 /// <reference path="./bo/SalesCreditNote.ts" />
 /// <reference path="./bo/SalesInvoice.ts" />
 /// <reference path="./bo/ShippingAddress.ts" />
+/// <reference path="./bo/BlanketAgreement.ts" />
 /// <reference path="./BORepository.ts" />

@@ -4,6 +4,8 @@ import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.repository.BORepositoryServiceApplication;
+import org.colorcoding.ibas.sales.bo.blanketagreement.BlanketAgreement;
+import org.colorcoding.ibas.sales.bo.blanketagreement.IBlanketAgreement;
 import org.colorcoding.ibas.sales.bo.productsuit.IProductSuit;
 import org.colorcoding.ibas.sales.bo.productsuit.ProductSuit;
 import org.colorcoding.ibas.sales.bo.salescreditnote.ISalesCreditNote;
@@ -325,6 +327,50 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 */
 	public IOperationResult<ISalesInvoice> saveSalesInvoice(ISalesInvoice bo) {
 		return new OperationResult<ISalesInvoice>(this.saveSalesInvoice((SalesInvoice) bo, this.getUserToken()));
+	}
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-一揽子协议
+	 * 
+	 * @param criteria 查询
+	 * @param token    口令
+	 * @return 操作结果
+	 */
+	public OperationResult<BlanketAgreement> fetchBlanketAgreement(ICriteria criteria, String token) {
+		return super.fetch(criteria, token, BlanketAgreement.class);
+	}
+
+	/**
+	 * 查询-一揽子协议（提前设置用户口令）
+	 * 
+	 * @param criteria 查询
+	 * @return 操作结果
+	 */
+	public IOperationResult<IBlanketAgreement> fetchBlanketAgreement(ICriteria criteria) {
+		return new OperationResult<IBlanketAgreement>(this.fetchBlanketAgreement(criteria, this.getUserToken()));
+	}
+
+	/**
+	 * 保存-一揽子协议
+	 * 
+	 * @param bo    对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	public OperationResult<BlanketAgreement> saveBlanketAgreement(BlanketAgreement bo, String token) {
+		return super.save(bo, token);
+	}
+
+	/**
+	 * 保存-一揽子协议（提前设置用户口令）
+	 * 
+	 * @param bo 对象实例
+	 * @return 操作结果
+	 */
+	public IOperationResult<IBlanketAgreement> saveBlanketAgreement(IBlanketAgreement bo) {
+		return new OperationResult<IBlanketAgreement>(
+				this.saveBlanketAgreement((BlanketAgreement) bo, this.getUserToken()));
 	}
 
 	// --------------------------------------------------------------------------------------------//

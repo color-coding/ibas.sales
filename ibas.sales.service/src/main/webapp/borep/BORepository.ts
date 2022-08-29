@@ -198,6 +198,20 @@ namespace sales {
             saveSalesInvoice(saver: ibas.ISaveCaller<bo.SalesInvoice>): void {
                 super.save(bo.SalesInvoice.name, saver);
             }
+            /**
+             * 查询 一揽子协议
+             * @param fetcher 查询者
+             */
+            fetchBlanketAgreement(fetcher: ibas.IFetchCaller<bo.BlanketAgreement>): void {
+                super.fetch(bo.BlanketAgreement.name, fetcher);
+            }
+            /**
+             * 保存 一揽子协议
+             * @param saver 保存者
+             */
+            saveBlanketAgreement(saver: ibas.ISaveCaller<bo.BlanketAgreement>): void {
+                super.save(bo.BlanketAgreement.name, saver);
+            }
         }
     }
 }

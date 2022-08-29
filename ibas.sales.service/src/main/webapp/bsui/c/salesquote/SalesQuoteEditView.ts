@@ -9,30 +9,32 @@ namespace sales {
     export namespace ui {
         export namespace c {
             /**
-             * 编辑视图-销售订单
+             * 编辑视图-销售报价
              */
             export class SalesQuoteEditView extends ibas.BOEditView implements app.ISalesQuoteEditView {
                 /** 删除数据事件 */
                 deleteDataEvent: Function;
                 /** 新建数据事件，参数1：是否克隆 */
                 createDataEvent: Function;
-                /** 添加销售订单-行事件 */
+                /** 添加销售报价-行事件 */
                 addSalesQuoteItemEvent: Function;
-                /** 删除销售订单-行事件 */
+                /** 删除销售报价-行事件 */
                 removeSalesQuoteItemEvent: Function;
-                /** 选择销售订单客户信息 */
+                /** 选择销售报价客户信息 */
                 chooseSalesQuoteCustomerEvent: Function;
                 /** 选择销售报价联系人信息 */
                 chooseSalesQuoteContactPersonEvent: Function;
-                /** 选择销售订单价格清单信息 */
+                /** 选择销售报价价格清单信息 */
                 chooseSalesQuotePriceListEvent: Function;
-                /** 选择销售订单-行物料主数据 */
+                /** 选择销售报价一揽子协议事件 */
+                chooseSalesQuoteBlanketAgreementEvent: Function;
+                /** 选择销售报价-行物料主数据 */
                 chooseSalesQuoteItemMaterialEvent: Function;
-                /** 选择销售订单-行 仓库 */
+                /** 选择销售报价-行 仓库 */
                 chooseSalesQuoteItemWarehouseEvent: Function;
                 /** 显示销售报价额外信息事件 */
                 showSalesQuoteItemExtraEvent: Function;
-                /** 转为销售订单事件 */
+                /** 转为销售报价事件 */
                 turnToSalesOrderEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
@@ -220,6 +222,12 @@ namespace sales {
                                                         text: ibas.i18n.prop("shell_data_clone_line"),
                                                         press: function (): void {
                                                             that.fireViewEvents(that.addSalesQuoteItemEvent, that.tableSalesQuoteItem.getSelecteds());
+                                                        }
+                                                    }),
+                                                    new sap.m.MenuItem("", {
+                                                        text: ibas.i18n.prop("bo_blanketagreement"),
+                                                        press: function (): void {
+                                                            that.fireViewEvents(that.chooseSalesQuoteBlanketAgreementEvent);
                                                         }
                                                     }),
                                                 ]

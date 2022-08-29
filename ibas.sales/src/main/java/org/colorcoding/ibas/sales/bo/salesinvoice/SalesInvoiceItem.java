@@ -35,6 +35,7 @@ import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.logic.IMaterialIssueContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
+import org.colorcoding.ibas.sales.logic.IBlanketAgreementQuantityContract;
 import org.colorcoding.ibas.sales.logic.ISalesDeliveryInvoiceContract;
 import org.colorcoding.ibas.sales.logic.ISalesOrderIssueContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
@@ -2493,6 +2494,39 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem>
 					}
 
 				},
+				// 一揽子协议
+				new IBlanketAgreementQuantityContract() {
+
+					@Override
+					public String getIdentifiers() {
+						return SalesInvoiceItem.this.getIdentifiers();
+					}
+
+					@Override
+					public BigDecimal getQuantity() {
+						return SalesInvoiceItem.this.getQuantity();
+					}
+
+					@Override
+					public BigDecimal getAmount() {
+						return SalesInvoiceItem.this.getLineTotal();
+					}
+
+					@Override
+					public String getBaseDocumentType() {
+						return SalesInvoiceItem.this.getBaseDocumentType();
+					}
+
+					@Override
+					public Integer getBaseDocumentEntry() {
+						return SalesInvoiceItem.this.getBaseDocumentEntry();
+					}
+
+					@Override
+					public Integer getBaseDocumentLineId() {
+						return SalesInvoiceItem.this.getBaseDocumentLineId();
+					}
+				}
 
 		};
 	}

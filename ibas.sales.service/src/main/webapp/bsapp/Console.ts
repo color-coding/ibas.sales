@@ -14,6 +14,7 @@
 /// <reference path="./salesinvoice/index.ts" />
 /// <reference path="./salescreditnote/index.ts" />
 /// <reference path="./shippingaddress/index.ts" />
+/// <reference path="./blanketagreement/index.ts" />
 /// <reference path="./others/index.ts" />
 namespace sales {
     export namespace app {
@@ -38,6 +39,7 @@ namespace sales {
             /** 初始化 */
             protected registers(): void {
                 // 注册功能
+                this.register(new BlanketAgreementFunc());
                 this.register(new SalesQuoteFunc());
                 this.register(new SalesOrderFunc());
                 this.register(new SalesDeliveryFunc());
@@ -66,6 +68,8 @@ namespace sales {
                 this.register(new SalesQuoteChooseServiceMapping());
                 this.register(new SalesQuoteLinkServiceMapping());
                 this.register(new SalesQuoteEditServiceMapping());
+                this.register(new BlanketAgreementChooseServiceMapping());
+                this.register(new BlanketAgreementLinkServiceMapping());
                 // 注册常驻应用
                 // 收付款服务
                 this.register(new SalesReturnPaymentServiceMapping());
@@ -112,31 +116,7 @@ namespace sales {
         export class ConsolePhone extends Console {
             /** 初始化 */
             protected registers(): void {
-                this.register(new SalesQuoteFunc());
-                this.register(new SalesOrderFunc());
-                this.register(new SalesDeliveryFunc());
-                this.register(new SalesReturnFunc());
-                this.register(new SalesInvoiceFunc());
-                this.register(new SalesCreditNoteFunc());
-
-                this.register(new SalesDeliveryChooseServiceMapping());
-                this.register(new SalesDeliveryLinkServiceMapping());
-                this.register(new SalesDeliveryEditServiceMapping());
-                this.register(new SalesOrderChooseServiceMapping());
-                this.register(new SalesOrderLinkServiceMapping());
-                this.register(new SalesOrderEditServiceMapping());
-                this.register(new SalesReturnChooseServiceMapping());
-                this.register(new SalesReturnLinkServiceMapping());
-                this.register(new SalesReturnEditServiceMapping());
-                this.register(new SalesInvoiceChooseServiceMapping());
-                this.register(new SalesInvoiceLinkServiceMapping());
-                this.register(new SalesInvoiceEditServiceMapping());
-                this.register(new SalesCreditNoteChooseServiceMapping());
-                this.register(new SalesCreditNoteLinkServiceMapping());
-                this.register(new SalesCreditNoteEditServiceMapping());
-                this.register(new SalesQuoteChooseServiceMapping());
-                this.register(new SalesQuoteLinkServiceMapping());
-                this.register(new SalesQuoteEditServiceMapping());
+                super.registers();
             }
         }
     }

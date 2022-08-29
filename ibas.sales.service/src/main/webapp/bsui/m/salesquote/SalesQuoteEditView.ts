@@ -24,6 +24,8 @@ namespace sales {
                 chooseSalesQuoteContactPersonEvent: Function;
                 /** 选择销售订单价格清单信息 */
                 chooseSalesQuotePriceListEvent: Function;
+                /** 选择一揽子协议事件 */
+                chooseSalesQuoteBlanketAgreementEvent: Function;
                 /** 选择销售订单-行物料主数据 */
                 chooseSalesQuoteItemMaterialEvent: Function;
                 /** 选择销售订单-行 仓库 */
@@ -58,6 +60,12 @@ namespace sales {
                                                 text: ibas.i18n.prop("shell_data_add_line"),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.addSalesQuoteItemEvent);
+                                                }
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("bo_blanketagreement"),
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.chooseSalesQuoteBlanketAgreementEvent);
                                                 }
                                             }),
                                         ]

@@ -36,6 +36,8 @@ namespace sales {
                 chooseSalesDeliveryItemMaterialBatchEvent: Function;
                 /** 选择销售交货项目-销售订单事件 */
                 chooseSalesDeliverySalesOrderEvent: Function;
+                /** 选择销售交货项目-一揽子协议事件 */
+                chooseSalesDeliveryBlanketAgreementEvent: Function;
                 /** 转为销售退货事件 */
                 turnToSalesReturnEvent: Function;
                 /** 转为销售发票事件 */
@@ -219,6 +221,12 @@ namespace sales {
                                                         text: ibas.i18n.prop("bo_salesorder"),
                                                         press: function (): void {
                                                             that.fireViewEvents(that.chooseSalesDeliverySalesOrderEvent);
+                                                        }
+                                                    }),
+                                                    new sap.m.MenuItem("", {
+                                                        text: ibas.i18n.prop("bo_blanketagreement"),
+                                                        press: function (): void {
+                                                            that.fireViewEvents(that.chooseSalesDeliveryBlanketAgreementEvent);
                                                         }
                                                     }),
                                                 ]

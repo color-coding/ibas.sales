@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.OperationResult;
+import org.colorcoding.ibas.sales.bo.blanketagreement.BlanketAgreement;
 import org.colorcoding.ibas.sales.bo.productsuit.ProductSuit;
 import org.colorcoding.ibas.sales.bo.salescreditnote.SalesCreditNote;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
@@ -239,6 +240,39 @@ public class DataService extends BORepositorySales {
 	@Path("saveSalesInvoice")
 	public OperationResult<SalesInvoice> saveSalesInvoice(SalesInvoice bo, @QueryParam("token") String token) {
 		return super.saveSalesInvoice(bo, token);
+	}
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-一揽子协议
+	 * 
+	 * @param criteria 查询
+	 * @param token    口令
+	 * @return 操作结果
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("fetchBlanketAgreement")
+	public OperationResult<BlanketAgreement> fetchBlanketAgreement(Criteria criteria,
+			@QueryParam("token") String token) {
+		return super.fetchBlanketAgreement(criteria, token);
+	}
+
+	/**
+	 * 保存-一揽子协议
+	 * 
+	 * @param bo    对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("saveBlanketAgreement")
+	public OperationResult<BlanketAgreement> saveBlanketAgreement(BlanketAgreement bo,
+			@QueryParam("token") String token) {
+		return super.saveBlanketAgreement(bo, token);
 	}
 
 	// --------------------------------------------------------------------------------------------//

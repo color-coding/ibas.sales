@@ -15,6 +15,7 @@
 /// <reference path="./salesinvoice/index.ts" />
 /// <reference path="./salescreditnote/index.ts" />
 /// <reference path="./shippingaddress/index.ts" />
+/// <reference path="./blanketagreement/index.ts" />
 namespace sales {
     export namespace ui {
         /**
@@ -108,6 +109,18 @@ namespace sales {
                         break;
                     case app.ShippingAddressesEditApp.APPLICATION_ID:
                         view = new m.ShippingAddressesEditView();
+                        break;
+                    case app.BlanketAgreementListApp.APPLICATION_ID:
+                        view = new m.BlanketAgreementListView();
+                        break;
+                    case app.BlanketAgreementChooseApp.APPLICATION_ID:
+                        view = new m.BlanketAgreementChooseView();
+                        break;
+                    case app.BlanketAgreementViewApp.APPLICATION_ID:
+                        view = new m.BlanketAgreementViewView();
+                        break;
+                    case app.BlanketAgreementEditApp.APPLICATION_ID:
+                        view = new m.BlanketAgreementEditView();
                         break;
                     default:
                         break;

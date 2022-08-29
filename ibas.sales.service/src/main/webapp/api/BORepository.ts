@@ -100,6 +100,16 @@ namespace sales {
              * @param saver 保存者
              */
             saveSalesInvoice(saver: ibas.ISaveCaller<bo.ISalesInvoice>): void;
+            /**
+             * 查询 一揽子协议
+             * @param fetcher 查询者
+             */
+            fetchBlanketAgreement(fetcher: ibas.IFetchCaller<bo.IBlanketAgreement>): void;
+            /**
+             * 保存 一揽子协议
+             * @param saver 保存者
+             */
+            saveBlanketAgreement(saver: ibas.ISaveCaller<bo.IBlanketAgreement>): void;
 
         }
     }

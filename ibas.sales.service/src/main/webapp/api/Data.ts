@@ -44,6 +44,8 @@ namespace sales {
         export const BO_CODE_SALESCREDITNOTE: string = "${Company}_SL_SALESCREDIT";
         /** 业务对象编码-销售发票 */
         export const BO_CODE_SALESINVOICE: string = "${Company}_SL_SALESINVOICE";
+        /** 业务对象编码-一揽子协议 */
+        export const BO_CODE_BLANKETAGREEMENT: string = "${Company}_SL_BLANKETAGT";
 
         /** 运输状态 */
         export enum emShippingStatus {
@@ -59,6 +61,19 @@ namespace sales {
              * 已送达
              */
             SHIPPED,
+        }
+        export enum emAgreementType {
+            GENERAL,
+            SPECIFIC
+        }
+
+        export enum emAgreementMethod {
+            ITEM,
+            MONETARY
+        }
+        export enum emPriceMode {
+            NET,
+            GROSS
         }
     }
 

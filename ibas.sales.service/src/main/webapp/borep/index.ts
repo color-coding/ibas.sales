@@ -14,6 +14,7 @@
 /// <reference path="./bo/SalesCreditNote.ts" />
 /// <reference path="./bo/SalesInvoice.ts" />
 /// <reference path="./bo/ShippingAddress.ts" />
+/// <reference path="./bo/BlanketAgreement.ts" />
 /// <reference path="./DataConverter.ts" />
 /// <reference path="./BORepository.ts" />
 
@@ -30,5 +31,6 @@ namespace sales {
         boFactory.register(SalesCreditNote.BUSINESS_OBJECT_CODE, SalesCreditNote);
         boFactory.register(SalesInvoice.BUSINESS_OBJECT_CODE, SalesInvoice);
         boFactory.register(ShippingAddress.BUSINESS_OBJECT_CODE, ShippingAddress);
+        boFactory.register(BlanketAgreement.BUSINESS_OBJECT_CODE, BlanketAgreement);
     }
 }
