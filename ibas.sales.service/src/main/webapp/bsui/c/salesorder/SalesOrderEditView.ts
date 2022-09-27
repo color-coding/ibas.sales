@@ -62,6 +62,13 @@ namespace sales {
                                 showValueHelp: true,
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseSalesOrderCustomerEvent);
+                                },
+                                showValueLink: true,
+                                valueLinkRequest: function (event: sap.ui.base.Event): void {
+                                    ibas.servicesManager.runLinkService({
+                                        boCode: businesspartner.bo.Customer.BUSINESS_OBJECT_CODE,
+                                        linkValue: event.getParameter("value")
+                                    });
                                 }
                             }).bindProperty("bindingValue", {
                                 path: "customerCode",
@@ -355,6 +362,13 @@ namespace sales {
                                                     // 获取当前对象
                                                     this.getBindingContext().getObject()
                                                 );
+                                            },
+                                            showValueLink: true,
+                                            valueLinkRequest: function (event: sap.ui.base.Event): void {
+                                                ibas.servicesManager.runLinkService({
+                                                    boCode: materials.bo.Material.BUSINESS_OBJECT_CODE,
+                                                    linkValue: event.getParameter("value")
+                                                });
                                             }
                                         }).bindProperty("bindingValue", {
                                             path: "itemCode",
@@ -403,7 +417,7 @@ namespace sales {
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesorderitem_quantity"),
                                         template: new sap.extension.m.Input("", {
-                                            type: sap.m.InputType.Number
+
                                         }).bindProperty("bindingValue", {
                                             path: "quantity",
                                             type: new sap.extension.data.Quantity()
@@ -427,7 +441,7 @@ namespace sales {
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesorderitem_price"),
                                         template: new sap.extension.m.Input("", {
-                                            type: sap.m.InputType.Number
+
                                         }).bindProperty("bindingValue", {
                                             path: "price",
                                             type: new sap.extension.data.Price()
@@ -441,7 +455,7 @@ namespace sales {
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesorderitem_linetotal"),
                                         template: new sap.extension.m.Input("", {
-                                            type: sap.m.InputType.Number
+
                                         }).bindProperty("bindingValue", {
                                             path: "lineTotal",
                                             type: new sap.extension.data.Sum()
@@ -491,6 +505,12 @@ namespace sales {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_dataowner") }),
                             new sap.extension.m.DataOwnerInput("", {
                                 showValueHelp: true,
+                                organization: {
+                                    path: "organization",
+                                    type: new sap.extension.data.Alphanumeric({
+                                        maxLength: 8
+                                    })
+                                }
                             }).bindProperty("bindingValue", {
                                 path: "dataOwner",
                                 type: new sap.extension.data.Numeric()
@@ -541,7 +561,7 @@ namespace sales {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documentlinetotal") }),
                             new sap.extension.m.Input("", {
                                 editable: false,
-                                type: sap.m.InputType.Number
+
                             }).bindProperty("bindingValue", {
                                 path: "itemsPreTaxTotal",
                                 type: new sap.extension.data.Sum()
@@ -555,7 +575,7 @@ namespace sales {
                             }),
                             new sap.extension.m.Input("", {
                                 editable: false,
-                                type: sap.m.InputType.Number
+
                             }).bindProperty("bindingValue", {
                                 parts: [
                                     {
@@ -577,7 +597,7 @@ namespace sales {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_shippingsexpensetotal") }),
                             new sap.extension.m.Input("", {
                                 editable: false,
-                                type: sap.m.InputType.Number
+
                             }).bindProperty("bindingValue", {
                                 path: "shippingsExpenseTotal",
                                 type: new sap.extension.data.Sum()
@@ -585,7 +605,7 @@ namespace sales {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documenttaxtotal") }),
                             new sap.extension.m.Input("", {
                                 editable: false,
-                                type: sap.m.InputType.Number
+
                             }).bindProperty("bindingValue", {
                                 parts: [
                                     {
@@ -606,7 +626,7 @@ namespace sales {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_documenttotal") }),
                             new sap.extension.m.Input("", {
                                 editable: true,
-                                type: sap.m.InputType.Number
+
                             }).bindProperty("bindingValue", {
                                 path: "documentTotal",
                                 type: new sap.extension.data.Sum()
@@ -622,7 +642,7 @@ namespace sales {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesorder_paidtotal") }),
                             new sap.extension.m.Input("", {
                                 editable: false,
-                                type: sap.m.InputType.Number
+
                             }).bindProperty("bindingValue", {
                                 path: "paidTotal",
                                 type: new sap.extension.data.Sum()
@@ -703,19 +723,37 @@ namespace sales {
                                                 text: ibas.i18n.prop("bo_salesdelivery"),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.turnToSalesDeliveryEvent);
-                                                }
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: sales.app.SalesDeliveryFunc.FUNCTION_ID,
+                                                    name: sales.app.SalesDeliveryFunc.FUNCTION_NAME,
+                                                    category: undefined,
+                                                    description: undefined
+                                                })
                                             }),
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("bo_salesinvoice"),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.turnToSalesInvoiceEvent);
-                                                }
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: sales.app.SalesInvoiceFunc.FUNCTION_ID,
+                                                    name: sales.app.SalesInvoiceFunc.FUNCTION_NAME,
+                                                    category: undefined,
+                                                    description: undefined
+                                                })
                                             }),
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("bo_salesreturn"),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.turnToSalesReturnEvent);
-                                                }
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: sales.app.SalesReturnFunc.FUNCTION_ID,
+                                                    name: sales.app.SalesReturnFunc.FUNCTION_NAME,
+                                                    category: undefined,
+                                                    description: undefined
+                                                })
                                             }),
                                         ],
                                     })

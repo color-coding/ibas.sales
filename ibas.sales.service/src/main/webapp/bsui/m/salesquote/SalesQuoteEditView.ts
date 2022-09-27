@@ -153,7 +153,13 @@ namespace sales {
                                                     text: ibas.i18n.prop("bo_salesorder"),
                                                     press(this: sap.m.Button): void {
                                                         that.fireViewEvents(that.turnToSalesOrderEvent);
-                                                    }
+                                                    },
+                                                    visible: shell.app.privileges.canRun({
+                                                        id: sales.app.SalesOrderFunc.FUNCTION_ID,
+                                                        name: sales.app.SalesOrderFunc.FUNCTION_NAME,
+                                                        category: undefined,
+                                                        description: undefined
+                                                    })
                                                 }),
                                             ]
                                         });
@@ -294,6 +300,23 @@ namespace sales {
                                                         showValueHelp: true,
                                                         valueHelpRequest: function (): void {
                                                             that.fireViewEvents(that.chooseSalesQuoteCustomerEvent);
+                                                        },
+                                                        showValueLink: true,
+                                                        valueLinkRequest: function (event: sap.ui.base.Event): void {
+                                                            let object: any = this.getBindingContext().getObject();
+                                                            if (object instanceof bo.SalesQuote) {
+                                                                if (object.customerType === businesspartner.bo.emBusinessPartnerType.CUSTOMER) {
+                                                                    ibas.servicesManager.runLinkService({
+                                                                        boCode: businesspartner.bo.Customer.BUSINESS_OBJECT_CODE,
+                                                                        linkValue: event.getParameter("value")
+                                                                    });
+                                                                } if (object.customerType === businesspartner.bo.emBusinessPartnerType.LEAD) {
+                                                                    ibas.servicesManager.runLinkService({
+                                                                        boCode: businesspartner.bo.Lead.BUSINESS_OBJECT_CODE,
+                                                                        linkValue: event.getParameter("value")
+                                                                    });
+                                                                }
+                                                            }
                                                         }
                                                     }).bindProperty("bindingValue", {
                                                         path: "customerCode",
@@ -570,7 +593,7 @@ namespace sales {
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_documentlinetotal") }),
                                                     new sap.extension.m.Input("", {
                                                         editable: false,
-                                                        type: sap.m.InputType.Number
+
                                                     }).bindProperty("bindingValue", {
                                                         path: "itemsPreTaxTotal",
                                                         type: new sap.extension.data.Sum()
@@ -584,7 +607,7 @@ namespace sales {
                                                     }),
                                                     new sap.extension.m.Input("", {
                                                         editable: false,
-                                                        type: sap.m.InputType.Number
+
                                                     }).bindProperty("bindingValue", {
                                                         parts: [
                                                             {
@@ -606,7 +629,7 @@ namespace sales {
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_documenttaxtotal") }),
                                                     new sap.extension.m.Input("", {
                                                         editable: false,
-                                                        type: sap.m.InputType.Number
+
                                                     }).bindProperty("bindingValue", {
                                                         parts: [
                                                             {
@@ -627,7 +650,7 @@ namespace sales {
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_documenttotal") }),
                                                     new sap.extension.m.Input("", {
                                                         editable: true,
-                                                        type: sap.m.InputType.Number
+
                                                     }).bindProperty("bindingValue", {
                                                         path: "documentTotal",
                                                         type: new sap.extension.data.Sum()
@@ -658,6 +681,12 @@ namespace sales {
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_dataowner") }),
                                                     new sap.extension.m.DataOwnerInput("", {
                                                         showValueHelp: true,
+                                                        organization: {
+                                                            path: "organization",
+                                                            type: new sap.extension.data.Alphanumeric({
+                                                                maxLength: 8
+                                                            })
+                                                        }
                                                     }).bindProperty("bindingValue", {
                                                         path: "dataOwner",
                                                         type: new sap.extension.data.Numeric()
@@ -745,7 +774,7 @@ namespace sales {
                                         new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquoteitem_lineid") }),
                                         new sap.extension.m.Input("", {
                                             editable: false,
-                                            type: sap.m.InputType.Number
+
                                         }).bindProperty("bindingValue", {
                                             path: "lineId",
                                             type: new sap.extension.data.Numeric(),
@@ -768,6 +797,13 @@ namespace sales {
                                                         that.fireViewEvents(that.chooseSalesQuoteItemMaterialEvent, data);
                                                     }
                                                 }
+                                            },
+                                            showValueLink: true,
+                                            valueLinkRequest: function (event: sap.ui.base.Event): void {
+                                                ibas.servicesManager.runLinkService({
+                                                    boCode: materials.bo.Material.BUSINESS_OBJECT_CODE,
+                                                    linkValue: event.getParameter("value")
+                                                });
                                             }
                                         }).bindProperty("bindingValue", {
                                             path: "itemCode",
@@ -784,7 +820,7 @@ namespace sales {
                                         }),
                                         new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquoteitem_quantity") }),
                                         new sap.extension.m.Input("", {
-                                            type: sap.m.InputType.Number
+
                                         }).bindProperty("bindingValue", {
                                             path: "quantity",
                                             type: new sap.extension.data.Quantity(),
@@ -796,7 +832,7 @@ namespace sales {
                                         }),
                                         new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquoteitem_price") }),
                                         new sap.extension.m.Input("", {
-                                            type: sap.m.InputType.Number
+
                                         }).bindProperty("bindingValue", {
                                             path: "price",
                                             type: new sap.extension.data.Price(),
@@ -809,7 +845,7 @@ namespace sales {
                                         new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquoteitem_linetotal") }),
                                         new sap.extension.m.Input("", {
                                             editable: true,
-                                            type: sap.m.InputType.Number
+
                                         }).bindProperty("bindingValue", {
                                             path: "lineTotal",
                                             type: new sap.extension.data.Sum(),

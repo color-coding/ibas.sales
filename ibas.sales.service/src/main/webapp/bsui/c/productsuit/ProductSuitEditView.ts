@@ -37,6 +37,13 @@ namespace sales {
                                 showValueHelp: true,
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseProductSuitMaterialEvent);
+                                },
+                                showValueLink: true,
+                                valueLinkRequest: function (event: sap.ui.base.Event): void {
+                                    ibas.servicesManager.runLinkService({
+                                        boCode: materials.bo.Material.BUSINESS_OBJECT_CODE,
+                                        linkValue: event.getParameter("value")
+                                    });
                                 }
                             }).bindProperty("bindingValue", {
                                 path: "product",
@@ -54,7 +61,7 @@ namespace sales {
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_unitquantity") }),
                             new sap.extension.m.Input("", {
-                                type: sap.m.InputType.Number
+
                             }).bindProperty("bindingValue", {
                                 path: "unitQuantity",
                                 type: new sap.extension.data.Quantity()
@@ -66,7 +73,7 @@ namespace sales {
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_total") }),
                             new sap.extension.m.Input("", {
-                                type: sap.m.InputType.Number
+
                             }).bindProperty("bindingValue", {
                                 path: "total",
                                 type: new sap.extension.data.Sum()
@@ -156,6 +163,13 @@ namespace sales {
                                                     // 获取当前对象
                                                     this.getBindingContext().getObject()
                                                 );
+                                            },
+                                            showValueLink: true,
+                                            valueLinkRequest: function (event: sap.ui.base.Event): void {
+                                                ibas.servicesManager.runLinkService({
+                                                    boCode: materials.bo.Material.BUSINESS_OBJECT_CODE,
+                                                    linkValue: event.getParameter("value")
+                                                });
                                             }
                                         }).bindProperty("bindingValue", {
                                             path: "itemCode",
@@ -177,7 +191,7 @@ namespace sales {
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_productsuititem_quantity"),
                                         template: new sap.extension.m.Input("", {
-                                            type: sap.m.InputType.Number
+
                                         }).bindProperty("bindingValue", {
                                             path: "quantity",
                                             type: new sap.extension.data.Quantity()
@@ -196,7 +210,7 @@ namespace sales {
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_productsuititem_price"),
                                         template: new sap.extension.m.Input("", {
-                                            type: sap.m.InputType.Number
+
                                         }).bindProperty("bindingValue", {
                                             path: "price",
                                             type: new sap.extension.data.Price()
@@ -212,6 +226,20 @@ namespace sales {
                                     }),
                                 ]
                             })
+                        ]
+                    });
+                    let formBottom: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
+                        editable: true,
+                        content: [
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_others") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salescreditnote_remarks") }),
+                            new sap.extension.m.TextArea("", {
+                                rows: 3,
+                            }).bindProperty("bindingValue", {
+                                path: "remarks",
+                                type: new sap.extension.data.Alphanumeric()
+                            }),
+                            new sap.ui.core.Title("", {}),
                         ]
                     });
                     return this.page = new sap.extension.m.DataPage("", {
@@ -269,6 +297,7 @@ namespace sales {
                         content: [
                             formTop,
                             formProductSuitItem,
+                            formBottom,
                         ]
                     });
                 }

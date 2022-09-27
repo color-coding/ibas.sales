@@ -110,7 +110,7 @@ namespace sales {
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_shippingaddress_expense") }),
                             new sap.extension.m.Input("", {
-                                type: sap.m.InputType.Number,
+
                                 fieldWidth: "70%",
                             }).bindProperty("bindingValue", {
                                 path: "/expense",
