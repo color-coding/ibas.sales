@@ -480,11 +480,13 @@ namespace sales {
                                                                 accounting.taxrate.assign(sItem.tax, (rate) => {
                                                                     if (rate >= 0) {
                                                                         sItem.taxRate = rate;
-                                                                        // 重新激活计算
+                                                                        sItem.unitPrice = 0;
                                                                         if (ibas.strings.isEmpty(sItem.parentLineSign)) {
                                                                             // 父项赋值价格，子项价格使用组件定义
                                                                             if (selected.taxed === ibas.emYesNo.NO) {
                                                                                 sItem.preTaxPrice = selected.price;
+                                                                            } else {
+                                                                                sItem.price = selected.price;
                                                                             }
                                                                         }
                                                                     }
