@@ -226,6 +226,7 @@ namespace sales {
             target.consumer = source.consumer;
             target.priceList = source.priceList;
             target.documentCurrency = source.documentCurrency;
+            target.paymentCode = source.paymentCode;
             // 复制自定义字段
             for (let item of source.userFields.forEach()) {
                 let myItem: ibas.IUserField = target.userFields.get(item.name);

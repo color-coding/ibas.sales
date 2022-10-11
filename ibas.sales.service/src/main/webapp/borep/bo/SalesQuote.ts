@@ -467,13 +467,13 @@ namespace sales {
                 this.setProperty(SalesQuote.PROPERTY_PRICELIST_NAME, value);
             }
 
-            /** 映射的属性名称-付款条款代码 */
+            /** 映射的属性名称-付款条款 */
             static PROPERTY_PAYMENTCODE_NAME: string = "PaymentCode";
-            /** 获取-付款条款代码 */
+            /** 获取-付款条款 */
             get paymentCode(): string {
                 return this.getProperty<string>(SalesQuote.PROPERTY_PAYMENTCODE_NAME);
             }
-            /** 设置-付款条款代码 */
+            /** 设置-付款条款 */
             set paymentCode(value: string) {
                 this.setProperty(SalesQuote.PROPERTY_PAYMENTCODE_NAME, value);
             }

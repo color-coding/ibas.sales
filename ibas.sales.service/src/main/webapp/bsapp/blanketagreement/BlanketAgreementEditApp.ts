@@ -219,6 +219,7 @@ namespace sales {
                         that.editData.customerCode = selected.code;
                         that.editData.customerName = selected.name;
                         that.editData.contactPerson = selected.contactPerson;
+                        that.editData.paymentCode = selected.paymentCode;
                     }
                 });
             }
