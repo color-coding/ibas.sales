@@ -1927,6 +1927,7 @@ public class SalesOrder extends BusinessObject<SalesOrder>
 		this.setPaidTotal(Decimal.ZERO);
 		this.setDocumentStatus(emDocumentStatus.RELEASED);
 		this.getSalesOrderItems().forEach(c -> c.setLineStatus(emDocumentStatus.RELEASED));
+		this.getSalesOrderItems().forEach(c -> c.setOrderedQuantity(Decimal.ZERO));
 	}
 
 	private Integer floorList;

@@ -2399,6 +2399,7 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 		super.reset();
 		this.setClosedAmount(Decimal.ZERO);
 		this.setClosedQuantity(Decimal.ZERO);
+		this.setOrderedQuantity(Decimal.ZERO);
 	}
 
 	/**

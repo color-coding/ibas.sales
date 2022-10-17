@@ -711,6 +711,7 @@ namespace sales {
                 this.paidTotal = 0;
                 this.documentStatus = ibas.emDocumentStatus.RELEASED;
                 this.salesOrderItems.forEach(c => c.lineStatus = ibas.emDocumentStatus.RELEASED);
+                this.salesOrderItems.forEach(c => c.orderedQuantity = 0);
             }
             /** 转换之前 */
             beforeConvert(): void { }
@@ -1498,6 +1499,7 @@ namespace sales {
                 super.reset();
                 this.closedAmount = 0;
                 this.closedQuantity = 0;
+                this.orderedQuantity = 0;
             }
         }
         /** 销售订单-行-额外信息 集合 */
