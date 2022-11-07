@@ -1,9 +1,11 @@
 package org.colorcoding.ibas.sales.logic;
 
+import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.common.ConditionOperation;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.ICriteria;
+import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.mapping.LogicContract;
 import org.colorcoding.ibas.materials.bo.materialpricelist.IMaterialPriceList;
 import org.colorcoding.ibas.materials.bo.materialpricelist.MaterialPriceList;
@@ -17,6 +19,18 @@ import org.colorcoding.ibas.materials.repository.BORepositoryMaterials;
  */
 @LogicContract(ICustomerAndFloorListCheckContract.class)
 public class CustomerAndFloorListCheckService extends org.colorcoding.ibas.businesspartner.logic.CustomerCheckService {
+
+	@Override
+	protected boolean checkDataStatus(Object data) {
+		// 审批中也执行
+		if (data instanceof IApprovalData) {
+			if (((IApprovalData) data).getApprovalStatus() == emApprovalStatus.PROCESSING) {
+				return true;
+			}
+		}
+		return super.checkDataStatus(data);
+	}
+
 	@Override
 	protected void impact(org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract contract) {
 		super.impact(contract);
