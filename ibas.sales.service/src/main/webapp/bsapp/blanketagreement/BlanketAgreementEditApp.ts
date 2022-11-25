@@ -34,6 +34,7 @@ namespace sales {
                 this.view.chooseBlanketAgreementContactPersonEvent = this.chooseBlanketAgreementContactPerson;
                 this.view.chooseBlanketAgreementCustomerEvent = this.chooseBlanketAgreementCustomer;
                 this.view.chooseBlanketAgreementItemMaterialEvent = this.chooseBlanketAgreementItemMaterial;
+                this.view.chooseBlanketAgreementItemUnitEvent = this.chooseBlanketAgreementItemUnit;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -282,12 +283,30 @@ namespace sales {
                             item.itemCode = selected.code;
                             item.itemDescription = selected.name;
                             item.itemSign = selected.sign;
-                            item.uom = selected.inventoryUOM;
+                            item.uom = selected.salesUOM;
+                            if (ibas.strings.isEmpty(item.uom)) {
+                                item.uom = selected.inventoryUOM;
+                            }
                             item = null;
                         }
                         if (created) {
                             // 创建了新的行项目
                             that.view.showBlanketAgreementItems(that.editData.blanketAgreementItems.filterDeleted());
+                        }
+                    }
+                });
+            }
+            private chooseBlanketAgreementItemUnit(caller: bo.BlanketAgreementItem): void {
+                let that: this = this;
+                ibas.servicesManager.runChooseService<materials.bo.IUnit>({
+                    boCode: materials.bo.BO_CODE_UNIT,
+                    chooseType: ibas.emChooseType.SINGLE,
+                    criteria: [
+                        new ibas.Condition(materials.bo.Unit.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                    ],
+                    onCompleted(selecteds: ibas.IList<materials.bo.IUnit>): void {
+                        for (let selected of selecteds) {
+                            caller.uom = selected.name;
                         }
                     }
                 });
@@ -313,6 +332,8 @@ namespace sales {
             chooseBlanketAgreementContactPersonEvent: Function;
             /** 选择一揽子协议行物料事件 */
             chooseBlanketAgreementItemMaterialEvent: Function;
+            /** 选择一揽子协议行单位事件 */
+            chooseBlanketAgreementItemUnitEvent: Function;
         }
     }
 }

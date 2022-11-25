@@ -30,6 +30,8 @@ namespace sales {
                 chooseSalesQuoteItemMaterialEvent: Function;
                 /** 选择销售订单-行 仓库 */
                 chooseSalesQuoteItemWarehouseEvent: Function;
+                /** 选择销售报价单位事件 */
+                chooseSalesQuoteItemUnitEvent: Function;
                 /** 显示销售报价额外信息事件 */
                 showSalesQuoteItemExtraEvent: Function;
                 /** 转为销售订单事件 */

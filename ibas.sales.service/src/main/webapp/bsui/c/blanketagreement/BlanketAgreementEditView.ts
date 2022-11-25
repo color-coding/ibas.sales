@@ -24,6 +24,8 @@ namespace sales {
                 chooseBlanketAgreementContactPersonEvent: Function;
                 /** 选择一揽子协议行物料事件 */
                 chooseBlanketAgreementItemMaterialEvent: Function;
+                /** 选择一揽子协议行单位事件 */
+                chooseBlanketAgreementItemUnitEvent: Function;
 
                 /** 绘制视图 */
                 draw(): any {
@@ -251,6 +253,7 @@ namespace sales {
                                         label: ibas.i18n.prop("bo_blanketagreementitem_itemdescription"),
                                         width: "16rem",
                                         template: new sap.extension.m.Text("", {
+                                            width: "8rem",
                                         }).bindProperty("bindingValue", {
                                             path: "itemDescription",
                                             type: new sap.extension.data.Alphanumeric()
@@ -267,13 +270,21 @@ namespace sales {
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_blanketagreementitem_uom"),
-                                        template: new sap.extension.m.Text("", {
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseBlanketAgreementItemUnitEvent,
+                                                    // 获取当前对象
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            }
                                         }).bindProperty("bindingValue", {
                                             path: "uom",
                                             type: new sap.extension.data.Alphanumeric({
                                                 maxLength: 8
                                             })
                                         }),
+                                        width: "8rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_blanketagreementitem_price"),

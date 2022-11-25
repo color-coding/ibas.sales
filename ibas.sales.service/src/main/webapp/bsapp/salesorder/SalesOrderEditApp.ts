@@ -40,6 +40,7 @@ namespace sales {
                 this.view.chooseSalesOrderItemMaterialSerialEvent = this.chooseSalesOrderItemMaterialSerial;
                 this.view.chooseSalesOrderSalesQuoteEvent = this.chooseSalesOrderSalesQuote;
                 this.view.chooseSalesOrderBlanketAgreementEvent = this.chooseSalesOrderBlanketAgreement;
+                this.view.chooseSalesOrderItemUnitEvent = this.chooseSalesOrderItemUnit;
                 this.view.receiptSalesOrderEvent = this.receiptSalesOrder;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
                 this.view.showSalesOrderItemExtraEvent = this.showSaleOrderItemExtra;
@@ -411,6 +412,7 @@ namespace sales {
                         let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];
                         // 选择返回数量多余触发数量时,自动创建新的项目
                         let created: boolean = false;
+                        let beChangeds: ibas.IList<materials.app.IBeChangedUOMSource> = new ibas.ArrayList<materials.app.IBeChangedUOMSource>();
                         ibas.queues.execute(selecteds, (selected, sNext) => {
                             if (selected.phantomItem === ibas.emYesNo.YES
                                 && selected.itemType === materials.bo.emItemType.ITEM) {
@@ -481,6 +483,16 @@ namespace sales {
                                                                 } else {
                                                                     sItem.price = selected.price;
                                                                 }
+                                                                // 仅父项处理单位换算
+                                                                beChangeds.add({
+                                                                    caller: sItem,
+                                                                    sourceUnit: sItem.uom,
+                                                                    targetUnit: sItem.inventoryUOM,
+                                                                    material: sItem.itemCode,
+                                                                    setUnitRate(this: bo.SalesOrderItem, value: number): void {
+                                                                        this.uomRate = value;
+                                                                    }
+                                                                });
                                                             }
                                                             if (!ibas.strings.isEmpty(sItem.tax)) {
                                                                 accounting.taxrate.assign(sItem.tax, (rate) => {
@@ -554,12 +566,32 @@ namespace sales {
                                         });
                                     }
                                 }
+                                beChangeds.add({
+                                    caller: item,
+                                    sourceUnit: item.uom,
+                                    targetUnit: item.inventoryUOM,
+                                    material: item.itemCode,
+                                    setUnitRate(this: bo.SalesOrderItem, value: number): void {
+                                        this.uomRate = value;
+                                    }
+                                });
                                 item = null;
                                 sNext();
                             }
                         }, (error) => {
                             if (error instanceof Error) {
                                 that.messages(error);
+                            }
+                            if (beChangeds.length > 0) {
+                                // 设置单位换算率
+                                materials.app.changeMaterialsUnitRate({
+                                    data: beChangeds,
+                                    onCompleted: (error) => {
+                                        if (error instanceof Error) {
+                                            that.messages(error);
+                                        }
+                                    }
+                                });
                             }
                             if (created) {
                                 // 创建了新的行项目
@@ -686,8 +718,8 @@ namespace sales {
                         itemCode: item.itemCode,
                         itemDescription: item.itemDescription,
                         warehouse: item.warehouse,
-                        quantity: item.quantity,
-                        uom: item.uom,
+                        quantity: item.inventoryQuantity,
+                        uom: item.inventoryUOM,
                         materialBatches: item.materialBatches,
                     });
                 }
@@ -704,8 +736,8 @@ namespace sales {
                         itemCode: item.itemCode,
                         itemDescription: item.itemDescription,
                         warehouse: item.warehouse,
-                        quantity: item.quantity,
-                        uom: item.uom,
+                        quantity: item.inventoryQuantity,
+                        uom: item.inventoryUOM,
                         materialSerials: item.materialSerials
                     });
                 }
@@ -1043,6 +1075,7 @@ namespace sales {
                             boRepository.fetchProduct({
                                 criteria: criteria,
                                 onCompleted: (opRsltPRD) => {
+                                    let beChangeds: ibas.IList<materials.app.IBeChangedUOMSource> = new ibas.ArrayList<materials.app.IBeChangedUOMSource>();
                                     for (let selected of selecteds) {
                                         if (!ibas.strings.equals(that.editData.customerCode, selected.customerCode)) {
                                             continue;
@@ -1067,9 +1100,11 @@ namespace sales {
                                             item.baseDocumentType = baItem.objectCode;
                                             item.baseDocumentEntry = baItem.docEntry;
                                             item.baseDocumentLineId = baItem.lineId;
-                                            item.uom = baItem.uom;
                                             for (let mmItem of opRsltPRD.resultObjects.where(c => ibas.strings.equalsIgnoreCase(c.code, item.itemCode))) {
                                                 item.baseProduct(mmItem);
+                                            }
+                                            if (!ibas.strings.isEmpty(baItem.uom)) {
+                                                item.uom = baItem.uom;
                                             }
                                             item.quantity = baItem.quantity - baItem.closedQuantity;
                                             if (selected.priceMode === bo.emPriceMode.NET) {
@@ -1079,12 +1114,69 @@ namespace sales {
                                             }
                                             item.reference1 = baItem.reference1;
                                             item.reference2 = baItem.reference2;
+                                            beChangeds.add({
+                                                caller: item,
+                                                sourceUnit: item.uom,
+                                                targetUnit: item.inventoryUOM,
+                                                material: item.itemCode,
+                                                setUnitRate(this: bo.SalesOrderItem, value: number): void {
+                                                    this.uomRate = value;
+                                                }
+                                            });
                                         }
+                                    }
+                                    if (beChangeds.length > 0) {
+                                        // 设置单位换算率
+                                        materials.app.changeMaterialsUnitRate({
+                                            data: beChangeds,
+                                            onCompleted: (error) => {
+                                                if (error instanceof Error) {
+                                                    that.messages(error);
+                                                }
+                                            }
+                                        });
                                     }
                                     that.view.showSalesOrderItems(that.editData.salesOrderItems.filterDeleted());
                                 }
                             });
                         }
+                    }
+                });
+            }
+            /** 选择销售订单-行 单位 */
+            private chooseSalesOrderItemUnit(caller: bo.SalesOrderItem): void {
+                let that: this = this;
+                ibas.servicesManager.runChooseService<materials.bo.IUnit>({
+                    boCode: materials.bo.BO_CODE_UNIT,
+                    chooseType: ibas.emChooseType.SINGLE,
+                    criteria: [
+                        new ibas.Condition(materials.bo.Unit.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                    ],
+                    onCompleted(selecteds: ibas.IList<materials.bo.IUnit>): void {
+                        for (let selected of selecteds) {
+                            caller.uom = selected.name;
+                        }
+                        materials.app.changeMaterialsUnitRate({
+                            data: {
+                                get sourceUnit(): string {
+                                    return caller.uom;
+                                },
+                                get targetUnit(): string {
+                                    return caller.inventoryUOM;
+                                },
+                                get material(): string {
+                                    return caller.itemCode;
+                                },
+                                setUnitRate(rate: number): void {
+                                    caller.uomRate = rate;
+                                }
+                            },
+                            onCompleted: (error) => {
+                                if (error instanceof Error) {
+                                    that.messages(error);
+                                }
+                            }
+                        });
                     }
                 });
             }
@@ -1113,6 +1205,8 @@ namespace sales {
             chooseSalesOrderItemMaterialEvent: Function;
             /** 选择销售订单仓库事件 */
             chooseSalesOrderItemWarehouseEvent: Function;
+            /** 选择销售订单-行 单位 */
+            chooseSalesOrderItemUnitEvent: Function;
             /** 选择销售订单行物料序列事件 */
             chooseSalesOrderItemMaterialSerialEvent: Function;
             /** 选择销售订单行物料批次事件 */

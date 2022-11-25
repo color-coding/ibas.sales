@@ -84,6 +84,9 @@
     <Property Name="BatchManagement" Description="批号管理" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emYesNo" Mapped="BatchMgment"/>
     <Property Name="Quantity" Description="数量" DataType="Decimal" DataSubType="Quantity" EditSize="8" Mapped="Quantity"/>
     <Property Name="UOM" Description="单位" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="UOM"/>
+    <Property Name="InventoryUOM" Description="库存单位" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="InvUOM"/>
+    <Property Name="UOMRate" Description="单位换算率" DataType="Decimal" DataSubType="Rate" EditSize="8" Mapped="UOMRate"/>
+    <Property Name="InventoryQuantity" Description="库存数量" DataType="Decimal" DataSubType="Quantity" EditSize="8" Mapped="InvQty"/>
     <Property Name="Warehouse" Description="仓库" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="WhsCode"/>
     <Property Name="Price" Description="价格" DataType="Decimal" DataSubType="Price" EditSize="8" Mapped="Price"/>
     <Property Name="Currency" Description="货币" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Currency"/>
@@ -108,7 +111,7 @@
     <Property Name="DistributionRule3" Description="分配规则3" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OcrCode3"/>
     <Property Name="DistributionRule4" Description="分配规则4" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OcrCode4"/>
     <Property Name="DistributionRule5" Description="分配规则5" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OcrCode5"/>
-    <Property Name="OrderedQuantity" Description="已订购数量" DataType="Decimal" DataSubType="Quantity" EditSize="8" Mapped="OrderedQty"/>
+    <Property Name="OrderedQuantity" Description="已订购数量（库存单位）" DataType="Decimal" DataSubType="Quantity" EditSize="8" Mapped="OrderedQty"/>
   </Model>
   <Model Name="SalesOrderItemExtra" Description="销售订单-行-额外信息" ModelType="DocumentLine" Mapped="${Company}_SL_RDR11">
     <Property Name="DocEntry" Description="编码" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="DocEntry" PrimaryKey="Yes"/>

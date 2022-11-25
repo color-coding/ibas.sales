@@ -28,6 +28,8 @@ namespace sales {
                 chooseSalesCreditNoteItemMaterialEvent: Function;
                 /** 选择销售退货-行 仓库 */
                 chooseSalesCreditNoteItemWarehouseEvent: Function;
+                /** 选择销售退货-行 单位 */
+                chooseSalesCreditNoteItemUnitEvent: Function;
                 /** 选择销售退货-行 物料序列事件 */
                 chooseSalesCreditNoteItemMaterialSerialEvent: Function;
                 /** 选择销售退货-行 物料批次事件 */

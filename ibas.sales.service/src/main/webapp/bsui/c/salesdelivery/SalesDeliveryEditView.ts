@@ -30,6 +30,8 @@ namespace sales {
                 chooseSalesDeliveryItemMaterialEvent: Function;
                 /** 选择销售交货-行 仓库 */
                 chooseSalesDeliveryItemWarehouseEvent: Function;
+                /** 选择销售交货单位事件 */
+                chooseSalesDeliveryItemUnitEvent: Function;
                 /** 选择销售交货-行 物料序列事件 */
                 chooseSalesDeliveryItemMaterialSerialEvent: Function;
                 /** 选择销售交货-行 物料批次事件 */
@@ -417,13 +419,21 @@ namespace sales {
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesdeliveryitem_uom"),
-                                        template: new sap.extension.m.Text("", {
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseSalesDeliveryItemUnitEvent,
+                                                    // 获取当前对象
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            }
                                         }).bindProperty("bindingValue", {
                                             path: "uom",
                                             type: new sap.extension.data.Alphanumeric({
                                                 maxLength: 8
                                             })
                                         }),
+                                        width: "8rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesdeliveryitem_price"),

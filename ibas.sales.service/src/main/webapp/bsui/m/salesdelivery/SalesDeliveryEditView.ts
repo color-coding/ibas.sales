@@ -28,6 +28,8 @@ namespace sales {
                 chooseSalesDeliveryItemMaterialEvent: Function;
                 /** 选择销售交货-行 仓库 */
                 chooseSalesDeliveryItemWarehouseEvent: Function;
+                /** 选择销售交货单位事件 */
+                chooseSalesDeliveryItemUnitEvent: Function;
                 /** 选择销售交货-行 物料序列事件 */
                 chooseSalesDeliveryItemMaterialSerialEvent: Function;
                 /** 选择销售交货-行 物料批次事件 */

@@ -38,6 +38,7 @@ namespace sales {
                 this.view.chooseSalesCreditNoteItemMaterialBatchEvent = this.chooseSalesCreditNoteLineMaterialBatch;
                 this.view.chooseSalesCreditNoteItemMaterialSerialEvent = this.chooseSalesCreditNoteLineMaterialSerial;
                 this.view.chooseSalesCreditNoteItemWarehouseEvent = this.chooseSalesCreditNoteItemWarehouse;
+                this.view.chooseSalesCreditNoteItemUnitEvent = this.chooseSalesCreditNoteItemUnit;
                 this.view.chooseSalesCreditNoteSalesReturnEvent = this.chooseSalesCreditNoteSalesReturn;
                 this.view.chooseSalesCreditNoteSalesInvoiceEvent = this.chooseSalesCreditNoteSalesInvoice;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
@@ -395,6 +396,7 @@ namespace sales {
                         let item: bo.SalesCreditNoteItem = that.editData.salesCreditNoteItems[index];
                         // 选择返回数量多余触发数量时,自动创建新的项目
                         let created: boolean = false;
+                        let beChangeds: ibas.IList<materials.app.IBeChangedUOMSource> = new ibas.ArrayList<materials.app.IBeChangedUOMSource>();
                         ibas.queues.execute(selecteds, (selected, sNext) => {
                             if (selected.phantomItem === ibas.emYesNo.YES
                                 && selected.itemType === materials.bo.emItemType.ITEM) {
@@ -462,6 +464,16 @@ namespace sales {
                                                                 } else {
                                                                     sItem.price = selected.price;
                                                                 }
+                                                                // 仅父项处理单位换算
+                                                                beChangeds.add({
+                                                                    caller: sItem,
+                                                                    sourceUnit: sItem.uom,
+                                                                    targetUnit: sItem.inventoryUOM,
+                                                                    material: sItem.itemCode,
+                                                                    setUnitRate(this: bo.SalesCreditNoteItem, value: number): void {
+                                                                        this.uomRate = value;
+                                                                    }
+                                                                });
                                                             }
                                                             if (!ibas.strings.isEmpty(sItem.tax)) {
                                                                 accounting.taxrate.assign(sItem.tax, (rate) => {
@@ -519,12 +531,32 @@ namespace sales {
                                 if (!ibas.strings.isEmpty(that.view.defaultWarehouse)) {
                                     item.warehouse = that.view.defaultWarehouse;
                                 }
+                                beChangeds.add({
+                                    caller: item,
+                                    sourceUnit: item.uom,
+                                    targetUnit: item.inventoryUOM,
+                                    material: item.itemCode,
+                                    setUnitRate(this: bo.SalesCreditNoteItem, value: number): void {
+                                        this.uomRate = value;
+                                    }
+                                });
                                 item = null;
                                 sNext();
                             }
                         }, (error) => {
                             if (error instanceof Error) {
                                 that.messages(error);
+                            }
+                            if (beChangeds.length > 0) {
+                                // 设置单位换算率
+                                materials.app.changeMaterialsUnitRate({
+                                    data: beChangeds,
+                                    onCompleted: (error) => {
+                                        if (error instanceof Error) {
+                                            that.messages(error);
+                                        }
+                                    }
+                                });
                             }
                             if (created) {
                                 // 创建了新的行项目
@@ -652,8 +684,8 @@ namespace sales {
                         itemCode: item.itemCode,
                         itemDescription: item.itemDescription,
                         warehouse: item.warehouse,
-                        quantity: item.quantity,
-                        uom: item.uom,
+                        quantity: item.inventoryQuantity,
+                        uom: item.inventoryUOM,
                         materialBatches: item.materialBatches,
                     });
                 }
@@ -670,8 +702,8 @@ namespace sales {
                         itemCode: item.itemCode,
                         itemDescription: item.itemDescription,
                         warehouse: item.warehouse,
-                        quantity: item.quantity,
-                        uom: item.uom,
+                        quantity: item.inventoryQuantity,
+                        uom: item.inventoryUOM,
                         materialSerials: item.materialSerials
                     });
                 }
@@ -831,6 +863,42 @@ namespace sales {
                 app.viewShower = this.viewShower;
                 app.run(this.editData.shippingAddresss);
             }
+            private chooseSalesCreditNoteItemUnit(caller: bo.SalesCreditNoteItem): void {
+                let that: this = this;
+                ibas.servicesManager.runChooseService<materials.bo.IUnit>({
+                    boCode: materials.bo.BO_CODE_UNIT,
+                    chooseType: ibas.emChooseType.SINGLE,
+                    criteria: [
+                        new ibas.Condition(materials.bo.Unit.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                    ],
+                    onCompleted(selecteds: ibas.IList<materials.bo.IUnit>): void {
+                        for (let selected of selecteds) {
+                            caller.uom = selected.name;
+                        }
+                        materials.app.changeMaterialsUnitRate({
+                            data: {
+                                get sourceUnit(): string {
+                                    return caller.uom;
+                                },
+                                get targetUnit(): string {
+                                    return caller.inventoryUOM;
+                                },
+                                get material(): string {
+                                    return caller.itemCode;
+                                },
+                                setUnitRate(rate: number): void {
+                                    caller.uomRate = rate;
+                                }
+                            },
+                            onCompleted: (error) => {
+                                if (error instanceof Error) {
+                                    that.messages(error);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
         }
         /** 视图-销售贷项 */
         export interface ISalesCreditNoteEditView extends ibas.IBOEditView {
@@ -856,6 +924,8 @@ namespace sales {
             chooseSalesCreditNoteItemMaterialEvent: Function;
             /** 选择销售贷项仓库事件 */
             chooseSalesCreditNoteItemWarehouseEvent: Function;
+            /** 选择销售贷项-行 单位 */
+            chooseSalesCreditNoteItemUnitEvent: Function;
             /** 选择销售贷项单行物料批次事件 */
             chooseSalesCreditNoteItemMaterialBatchEvent: Function;
             /** 选择销售贷项行物料序列事件 */

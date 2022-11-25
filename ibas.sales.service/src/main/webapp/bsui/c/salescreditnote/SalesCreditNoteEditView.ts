@@ -9,34 +9,36 @@ namespace sales {
     export namespace ui {
         export namespace c {
             /**
-             * 编辑视图-销售退货
+             * 编辑视图-销售贷项
              */
             export class SalesCreditNoteEditView extends ibas.BOEditView implements app.ISalesCreditNoteEditView {
                 /** 删除数据事件 */
                 deleteDataEvent: Function;
                 /** 新建数据事件，参数1：是否克隆 */
                 createDataEvent: Function;
-                /** 添加销售退货-行事件 */
+                /** 添加销售贷项-行事件 */
                 addSalesCreditNoteItemEvent: Function;
-                /** 删除销售退货-行事件 */
+                /** 删除销售贷项-行事件 */
                 removeSalesCreditNoteItemEvent: Function;
-                /** 选择销售退货客户信息 */
+                /** 选择销售贷项客户信息 */
                 chooseSalesCreditNoteCustomerEvent: Function;
-                /** 选择销售退货联系人信息 */
+                /** 选择销售贷项联系人信息 */
                 chooseSalesCreditNoteContactPersonEvent: Function;
-                /** 选择销售退货价格清单信息 */
+                /** 选择销售贷项价格清单信息 */
                 chooseSalesCreditNotePriceListEvent: Function;
-                /** 选择销售退货-行物料主数据 */
+                /** 选择销售贷项-行物料主数据 */
                 chooseSalesCreditNoteItemMaterialEvent: Function;
-                /** 选择销售退货-行 仓库 */
+                /** 选择销售贷项-行 仓库 */
                 chooseSalesCreditNoteItemWarehouseEvent: Function;
-                /** 选择销售退货-行 物料序列事件 */
+                /** 选择销售贷项-行 单位 */
+                chooseSalesCreditNoteItemUnitEvent: Function;
+                /** 选择销售贷项-行 物料序列事件 */
                 chooseSalesCreditNoteItemMaterialSerialEvent: Function;
-                /** 选择销售退货-行 物料批次事件 */
+                /** 选择销售贷项-行 物料批次事件 */
                 chooseSalesCreditNoteItemMaterialBatchEvent: Function;
-                /** 选择销售退货项目-销售发票事件 */
+                /** 选择销售贷项项目-销售发票事件 */
                 chooseSalesCreditNoteSalesInvoiceEvent: Function;
-                /** 选择销售退货项目-销售退货事件 */
+                /** 选择销售贷项项目-销售贷项事件 */
                 chooseSalesCreditNoteSalesReturnEvent: Function;
                 /** 编辑地址事件 */
                 editShippingAddressesEvent: Function;
@@ -412,13 +414,21 @@ namespace sales {
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salescreditnoteitem_uom"),
-                                        template: new sap.extension.m.Text("", {
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseSalesCreditNoteItemUnitEvent,
+                                                    // 获取当前对象
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            }
                                         }).bindProperty("bindingValue", {
                                             path: "uom",
                                             type: new sap.extension.data.Alphanumeric({
                                                 maxLength: 8
                                             })
                                         }),
+                                        width: "8rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salescreditnoteitem_price"),

@@ -1071,6 +1071,39 @@ namespace sales {
                 this.setProperty(SalesQuoteItem.PROPERTY_UOM_NAME, value);
             }
 
+            /** 映射的属性名称-库存单位 */
+            static PROPERTY_INVENTORYUOM_NAME: string = "InventoryUOM";
+            /** 获取-库存单位 */
+            get inventoryUOM(): string {
+                return this.getProperty<string>(SalesQuoteItem.PROPERTY_INVENTORYUOM_NAME);
+            }
+            /** 设置-库存单位 */
+            set inventoryUOM(value: string) {
+                this.setProperty(SalesQuoteItem.PROPERTY_INVENTORYUOM_NAME, value);
+            }
+
+            /** 映射的属性名称-单位换算率 */
+            static PROPERTY_UOMRATE_NAME: string = "UOMRate";
+            /** 获取-单位换算率 */
+            get uomRate(): number {
+                return this.getProperty<number>(SalesQuoteItem.PROPERTY_UOMRATE_NAME);
+            }
+            /** 设置-单位换算率 */
+            set uomRate(value: number) {
+                this.setProperty(SalesQuoteItem.PROPERTY_UOMRATE_NAME, value);
+            }
+
+            /** 映射的属性名称-库存数量 */
+            static PROPERTY_INVENTORYQUANTITY_NAME: string = "InventoryQuantity";
+            /** 获取-库存数量 */
+            get inventoryQuantity(): number {
+                return this.getProperty<number>(SalesQuoteItem.PROPERTY_INVENTORYQUANTITY_NAME);
+            }
+            /** 设置-库存数量 */
+            set inventoryQuantity(value: number) {
+                this.setProperty(SalesQuoteItem.PROPERTY_INVENTORYQUANTITY_NAME, value);
+            }
+
             /** 映射的属性名称-仓库 */
             static PROPERTY_WAREHOUSE_NAME: string = "Warehouse";
             /** 获取-仓库 */
@@ -1365,21 +1398,25 @@ namespace sales {
 
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
+                    // 计算库存数量 = 数量 * 换算率
+                    new ibas.BusinessRuleMultiplication(
+                        SalesQuoteItem.PROPERTY_INVENTORYQUANTITY_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME, SalesQuoteItem.PROPERTY_UOMRATE_NAME
+                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_QUANTITY)),
                     // 计算折扣前总计 = 数量 * 折扣前价格
                     new BusinessRuleDeductionPriceQtyTotal(
-                        SalesOrderItem.PROPERTY_UNITLINETOTAL_NAME, SalesOrderItem.PROPERTY_UNITPRICE_NAME, SalesOrderItem.PROPERTY_QUANTITY_NAME
+                        SalesQuoteItem.PROPERTY_UNITLINETOTAL_NAME, SalesQuoteItem.PROPERTY_UNITPRICE_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME
                     ),
                     // 计算 行总计 = 税前总计（折扣后） + 税总计；行总计 = 价格（税后） * 数量；税总计 = 税前总计（折扣后） * 税率
-                    new BusinessRuleDeductionPriceTaxTotal(SalesOrderItem.PROPERTY_LINETOTAL_NAME, SalesOrderItem.PROPERTY_PRICE_NAME, SalesOrderItem.PROPERTY_QUANTITY_NAME
-                        , SalesOrderItem.PROPERTY_TAXRATE_NAME, SalesOrderItem.PROPERTY_TAXTOTAL_NAME, SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME
+                    new BusinessRuleDeductionPriceTaxTotal(SalesQuoteItem.PROPERTY_LINETOTAL_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME
+                        , SalesQuoteItem.PROPERTY_TAXRATE_NAME, SalesQuoteItem.PROPERTY_TAXTOTAL_NAME, SalesQuoteItem.PROPERTY_PRETAXLINETOTAL_NAME
                     ),
                     // 计算折扣后总计（税前） = 数量 * 折扣后价格（税前）
                     new BusinessRuleDeductionPriceQtyTotal(
-                        SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesOrderItem.PROPERTY_PRETAXPRICE_NAME, SalesOrderItem.PROPERTY_QUANTITY_NAME
+                        SalesQuoteItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesQuoteItem.PROPERTY_PRETAXPRICE_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME
                     ),
                     // 计算折扣后总计 = 折扣前总计 * 折扣
                     new BusinessRuleDeductionDiscount(
-                        SalesOrderItem.PROPERTY_DISCOUNT_NAME, SalesOrderItem.PROPERTY_UNITLINETOTAL_NAME, SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME
+                        SalesQuoteItem.PROPERTY_DISCOUNT_NAME, SalesQuoteItem.PROPERTY_UNITLINETOTAL_NAME, SalesQuoteItem.PROPERTY_PRETAXLINETOTAL_NAME
                     ),
                 ];
             }

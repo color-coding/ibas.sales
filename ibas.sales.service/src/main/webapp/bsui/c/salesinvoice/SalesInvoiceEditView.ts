@@ -30,6 +30,8 @@ namespace sales {
                 chooseSalesInvoiceItemMaterialEvent: Function;
                 /** 选择销售交货-行 仓库 */
                 chooseSalesInvoiceItemWarehouseEvent: Function;
+                /** 选择销售发票单位事件 */
+                chooseSalesInvoiceItemUnitEvent: Function;
                 /** 选择销售交货-行 物料序列事件 */
                 chooseSalesInvoiceItemMaterialSerialEvent: Function;
                 /** 选择销售交货-行 物料批次事件 */
@@ -423,13 +425,21 @@ namespace sales {
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesinvoiceitem_uom"),
-                                        template: new sap.extension.m.Text("", {
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseSalesInvoiceItemUnitEvent,
+                                                    // 获取当前对象
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            }
                                         }).bindProperty("bindingValue", {
                                             path: "uom",
                                             type: new sap.extension.data.Alphanumeric({
                                                 maxLength: 8
                                             })
                                         }),
+                                        width: "8rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesinvoiceitem_price"),
