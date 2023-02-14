@@ -1545,9 +1545,8 @@ namespace sales {
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
                     // 计算库存数量 = 数量 * 换算率
-                    new ibas.BusinessRuleMultiplication(
-                        SalesReturnItem.PROPERTY_INVENTORYQUANTITY_NAME, SalesReturnItem.PROPERTY_QUANTITY_NAME, SalesReturnItem.PROPERTY_UOMRATE_NAME
-                        , ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_QUANTITY)),
+                    new materials.bo.BusinessRuleCalculateInventoryQuantity(
+                        SalesReturnItem.PROPERTY_INVENTORYQUANTITY_NAME, SalesReturnItem.PROPERTY_QUANTITY_NAME, SalesReturnItem.PROPERTY_UOMRATE_NAME),
                     // 计算折扣前总计 = 数量 * 折扣前价格
                     new BusinessRuleDeductionPriceQtyTotal(
                         SalesReturnItem.PROPERTY_UNITLINETOTAL_NAME, SalesReturnItem.PROPERTY_UNITPRICE_NAME, SalesReturnItem.PROPERTY_INVENTORYQUANTITY_NAME
