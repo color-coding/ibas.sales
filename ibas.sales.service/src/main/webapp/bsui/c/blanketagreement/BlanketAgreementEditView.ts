@@ -364,7 +364,8 @@ namespace sales {
                                             }),
                                         }),
                                     }),
-                                ]
+                                ],
+                                sortProperty: "visOrder",
                             }),
                         ]
                     });

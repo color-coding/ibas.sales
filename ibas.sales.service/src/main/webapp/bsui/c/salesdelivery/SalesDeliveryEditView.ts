@@ -491,7 +491,8 @@ namespace sales {
                                             })
                                         }),
                                     }),
-                                ]
+                                ],
+                                sortProperty: "visOrder",
                             })
                         ]
                     });

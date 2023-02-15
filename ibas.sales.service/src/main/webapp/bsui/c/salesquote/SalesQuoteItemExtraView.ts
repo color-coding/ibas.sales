@@ -145,7 +145,8 @@ namespace sales {
                                     type: new sap.extension.data.Quantity(),
                                 })
                             }),
-                        ]
+                        ],
+                        sortProperty: "visOrder",
                     });
                     return new sap.m.Dialog("", {
                         title: this.title,
