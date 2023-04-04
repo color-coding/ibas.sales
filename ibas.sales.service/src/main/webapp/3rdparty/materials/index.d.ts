@@ -195,6 +195,8 @@ declare namespace materials {
             warrantyEndDate: Date;
             /** 位置 */
             location: string;
+            /** 版本 */
+            version: string;
             /** 备注 */
             notes: string;
         }
@@ -221,6 +223,8 @@ declare namespace materials {
             specification: number;
             /** 位置 */
             location: string;
+            /** 版本 */
+            version: string;
             /** 备注 */
             notes: string;
         }
@@ -235,6 +239,8 @@ declare namespace materials {
             itemCode: string;
             /** 物料描述 */
             itemDescription: string;
+            /** 物料版本 */
+            itemVersion?: string;
             /** 仓库编码 */
             warehouse: string;
             /** 数量 */
@@ -254,6 +260,8 @@ declare namespace materials {
             itemCode: string;
             /** 物料描述 */
             itemDescription: string;
+            /** 物料版本 */
+            itemVersion?: string;
             /** 仓库编码 */
             warehouse: string;
             /** 数量 */
@@ -10491,48 +10499,6 @@ declare namespace materials {
  * Use of this source code is governed by an Apache License, Version 2.0
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
  */
-declare namespace materials {
-    namespace app {
-        /** 选择应用-物料版本 */
-        class MaterialVersionChooseApp extends ibas.BOChooseService<IMaterialVersionChooseView, bo.MaterialVersion> {
-            /** 应用标识 */
-            static APPLICATION_ID: string;
-            /** 应用名称 */
-            static APPLICATION_NAME: string;
-            /** 业务对象编码 */
-            static BUSINESS_OBJECT_CODE: string;
-            /** 构造函数 */
-            constructor();
-            /** 注册视图 */
-            protected registerView(): void;
-            /** 视图显示后 */
-            protected viewShowed(): void;
-            /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria): void;
-            /** 新建数据 */
-            protected newData(): void;
-        }
-        /** 视图-物料版本 */
-        interface IMaterialVersionChooseView extends ibas.IBOChooseView {
-            /** 显示数据 */
-            showData(datas: bo.MaterialVersion[]): void;
-        }
-        /** 物料版本选择服务映射 */
-        class MaterialVersionChooseServiceMapping extends ibas.BOChooseServiceMapping {
-            /** 构造函数 */
-            constructor();
-            /** 创建服务实例 */
-            create(): ibas.IBOChooseService<bo.MaterialVersion>;
-        }
-    }
-}
-/**
- * @license
- * Copyright Color-Coding Studio. All Rights Reserved.
- *
- * Use of this source code is governed by an Apache License, Version 2.0
- * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
- */
 /**
  * @license
  * Copyright Color-Coding Studio. All Rights Reserved.
@@ -10700,6 +10666,10 @@ declare namespace materials {
             get itemCode(): string;
             /** 物料描述 */
             get itemDescription(): string;
+            set itemDescription(value: string);
+            /** 物料版本 */
+            get itemVersion(): string;
+            set itemVersion(value: string);
             /** 仓库编码 */
             get warehouse(): string;
             /** 数量 */
@@ -10748,6 +10718,9 @@ declare namespace materials {
             /** 准入日期 */
             get admissionDate(): Date;
             set admissionDate(value: Date);
+            /** 版本 */
+            get version(): string;
+            set version(value: string);
             /** 位置 */
             get location(): string;
             set location(value: string);
@@ -10776,6 +10749,8 @@ declare namespace materials {
             admissionDate: Date;
             /** 位置 */
             location: string;
+            /** 版本 */
+            version: string;
             /** 备注 */
             notes: string;
         }
@@ -10821,6 +10796,8 @@ declare namespace materials {
             private onCompleted;
             /** 触发完成事件 */
             protected fireCompleted(): void;
+            /** 选择物料版本 */
+            private chooseVersion;
         }
         /** 物料批次列表服务 */
         export class MaterialBatchListService extends MaterialBatchService<IMaterialBatchListsView> {
@@ -10856,6 +10833,8 @@ declare namespace materials {
         export interface IMaterialBatchReceiptView extends IMaterialBatchServiceView {
             /** 创建批次记录 */
             createMaterialBatchItemEvent: Function;
+            /** 选择物料版本 */
+            chooseVersionEvent: Function;
         }
         /** 视图-物料批次列表 */
         export interface IMaterialBatchListsView extends IMaterialBatchServiceView {
@@ -11442,6 +11421,10 @@ declare namespace materials {
             get itemCode(): string;
             /** 物料描述 */
             get itemDescription(): string;
+            set itemDescription(value: string);
+            /** 物料版本 */
+            get itemVersion(): string;
+            set itemVersion(value: string);
             /** 仓库编码 */
             get warehouse(): string;
             /** 数量 */
@@ -11494,6 +11477,9 @@ declare namespace materials {
             /** 保修结束日期 */
             get warrantyEndDate(): Date;
             set warrantyEndDate(value: Date);
+            /** 版本 */
+            get version(): string;
+            set version(value: string);
             /** 位置 */
             get location(): string;
             set location(value: string);
@@ -11528,6 +11514,8 @@ declare namespace materials {
             warrantyEndDate: Date;
             /** 位置 */
             location: string;
+            /** 版本 */
+            version: string;
             /** 备注 */
             notes: string;
         }
@@ -11573,6 +11561,8 @@ declare namespace materials {
             private onCompleted;
             /** 触发完成事件 */
             protected fireCompleted(): void;
+            /** 选择物料版本 */
+            private chooseVersion;
         }
         /** 物料序列列表服务 */
         export class MaterialSerialListService extends MaterialSerialService<IMaterialSerialListsView> {
@@ -11608,6 +11598,8 @@ declare namespace materials {
         export interface IMaterialSerialReceiptView extends IMaterialSerialServiceView {
             /** 创建序列编码记录 */
             createMaterialSerialItemEvent: Function;
+            /** 选择物料版本 */
+            chooseVersionEvent: Function;
         }
         /** 视图-物料序列列表 */
         export interface IMaterialSerialListsView extends IMaterialSerialServiceView {
@@ -12602,6 +12594,210 @@ declare namespace materials {
  */
 declare namespace materials {
     namespace app {
+        class UnitFunc extends ibas.ModuleFunction {
+            /** 功能标识 */
+            static FUNCTION_ID: string;
+            /** 功能名称 */
+            static FUNCTION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 默认功能 */
+            default(): ibas.IApplication<ibas.IView>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 列表应用-计量单位 */
+        class UnitListApp extends ibas.BOListApplication<IUnitListView, bo.Unit> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria): void;
+            /** 新建数据 */
+            protected newData(): void;
+            /** 查看数据，参数：目标数据 */
+            protected viewData(data: bo.Unit): void;
+            /** 编辑数据，参数：目标数据 */
+            protected editData(data: bo.Unit): void;
+            /** 删除数据，参数：目标数据集合 */
+            protected deleteData(data: bo.Unit | bo.Unit[]): void;
+        }
+        /** 视图-计量单位 */
+        interface IUnitListView extends ibas.IBOListView {
+            /** 编辑数据事件，参数：编辑对象 */
+            editDataEvent: Function;
+            /** 删除数据事件，参数：删除对象集合 */
+            deleteDataEvent: Function;
+            /** 显示数据 */
+            showData(datas: bo.Unit[]): void;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 选择应用-计量单位 */
+        class UnitChooseApp extends ibas.BOChooseService<IUnitChooseView, bo.Unit> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria): void;
+            /** 新建数据 */
+            protected newData(): void;
+        }
+        /** 视图-计量单位 */
+        interface IUnitChooseView extends ibas.IBOChooseView {
+            /** 显示数据 */
+            showData(datas: bo.Unit[]): void;
+        }
+        /** 计量单位选择服务映射 */
+        class UnitChooseServiceMapping extends ibas.BOChooseServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IBOChooseService<bo.Unit>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 编辑应用-计量单位 */
+        class UnitEditApp extends ibas.BOEditApplication<IUnitEditView, bo.Unit> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            run(): void;
+            run(data: bo.Unit): void;
+            /** 保存数据 */
+            protected saveData(): void;
+            /** 删除数据 */
+            protected deleteData(): void;
+            /** 新建数据，参数1：是否克隆 */
+            protected createData(clone: boolean): void;
+        }
+        /** 视图-计量单位 */
+        interface IUnitEditView extends ibas.IBOEditView {
+            /** 显示数据 */
+            showUnit(data: bo.Unit): void;
+            /** 删除数据事件 */
+            deleteDataEvent: Function;
+            /** 新建数据事件，参数1：是否克隆 */
+            createDataEvent: Function;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 列表应用-计量单位换算率 */
+        class UnitRateEditListApp extends ibas.Application<IUnitRateEditListView> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria): void;
+            run(material?: bo.Material): void;
+            private material;
+            private editDatas;
+            protected saveData(): void;
+            protected addData(): void;
+            protected removeData(data: bo.UnitRate): void;
+            protected chooseDataUnit(data: bo.UnitRate, type: string): void;
+        }
+        /** 视图-计量单位换算率 */
+        interface IUnitRateEditListView extends ibas.IView {
+            /** 保存数据事件 */
+            saveDataEvent: Function;
+            /** 显示数据 */
+            showData(datas: bo.UnitRate[]): void;
+            /** 添加数据事件 */
+            addDataEvent: Function;
+            /** 删除数据事件 */
+            removeDataEvent: Function;
+            /** 选择单位事件 */
+            chooseDataUnitEvent: Function;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
         class MaterialScrapFunc extends ibas.ModuleFunction {
             /** 功能标识 */
             static FUNCTION_ID: string;
@@ -12820,7 +13016,7 @@ declare namespace materials {
  */
 declare namespace materials {
     namespace app {
-        class UnitFunc extends ibas.ModuleFunction {
+        class MaterialVersionFunc extends ibas.ModuleFunction {
             /** 功能标识 */
             static FUNCTION_ID: string;
             /** 功能名称 */
@@ -12841,8 +13037,8 @@ declare namespace materials {
  */
 declare namespace materials {
     namespace app {
-        /** 列表应用-计量单位 */
-        class UnitListApp extends ibas.BOListApplication<IUnitListView, bo.Unit> {
+        /** 列表应用-物料版本 */
+        class MaterialVersionListApp extends ibas.BOListApplication<IMaterialVersionListView, bo.MaterialVersion> {
             /** 应用标识 */
             static APPLICATION_ID: string;
             /** 应用名称 */
@@ -12860,20 +13056,20 @@ declare namespace materials {
             /** 新建数据 */
             protected newData(): void;
             /** 查看数据，参数：目标数据 */
-            protected viewData(data: bo.Unit): void;
+            protected viewData(data: bo.MaterialVersion): void;
             /** 编辑数据，参数：目标数据 */
-            protected editData(data: bo.Unit): void;
+            protected editData(data: bo.MaterialVersion): void;
             /** 删除数据，参数：目标数据集合 */
-            protected deleteData(data: bo.Unit | bo.Unit[]): void;
+            protected deleteData(data: bo.MaterialVersion | bo.MaterialVersion[]): void;
         }
-        /** 视图-计量单位 */
-        interface IUnitListView extends ibas.IBOListView {
+        /** 视图-物料版本 */
+        interface IMaterialVersionListView extends ibas.IBOListView {
             /** 编辑数据事件，参数：编辑对象 */
             editDataEvent: Function;
             /** 删除数据事件，参数：删除对象集合 */
             deleteDataEvent: Function;
             /** 显示数据 */
-            showData(datas: bo.Unit[]): void;
+            showData(datas: bo.MaterialVersion[]): void;
         }
     }
 }
@@ -12886,8 +13082,8 @@ declare namespace materials {
  */
 declare namespace materials {
     namespace app {
-        /** 选择应用-计量单位 */
-        class UnitChooseApp extends ibas.BOChooseService<IUnitChooseView, bo.Unit> {
+        /** 选择应用-物料版本 */
+        class MaterialVersionChooseApp extends ibas.BOChooseService<IMaterialVersionChooseView, bo.MaterialVersion> {
             /** 应用标识 */
             static APPLICATION_ID: string;
             /** 应用名称 */
@@ -12904,18 +13100,22 @@ declare namespace materials {
             protected fetchData(criteria: ibas.ICriteria): void;
             /** 新建数据 */
             protected newData(): void;
+            /** 编辑数据，参数：目标数据 */
+            protected editData(data: bo.MaterialVersion): void;
         }
-        /** 视图-计量单位 */
-        interface IUnitChooseView extends ibas.IBOChooseView {
+        /** 视图-物料版本 */
+        interface IMaterialVersionChooseView extends ibas.IBOChooseView {
+            /** 编辑数据事件，参数：编辑对象 */
+            editDataEvent: Function;
             /** 显示数据 */
-            showData(datas: bo.Unit[]): void;
+            showData(datas: bo.MaterialVersion[]): void;
         }
-        /** 计量单位选择服务映射 */
-        class UnitChooseServiceMapping extends ibas.BOChooseServiceMapping {
+        /** 物料版本选择服务映射 */
+        class MaterialVersionChooseServiceMapping extends ibas.BOChooseServiceMapping {
             /** 构造函数 */
             constructor();
             /** 创建服务实例 */
-            create(): ibas.IBOChooseService<bo.Unit>;
+            create(): ibas.IBOChooseService<bo.MaterialVersion>;
         }
     }
 }
@@ -12928,8 +13128,52 @@ declare namespace materials {
  */
 declare namespace materials {
     namespace app {
-        /** 编辑应用-计量单位 */
-        class UnitEditApp extends ibas.BOEditApplication<IUnitEditView, bo.Unit> {
+        /** 查看应用-物料版本 */
+        class MaterialVersionViewApp extends ibas.BOViewService<IMaterialVersionViewView, bo.MaterialVersion> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 编辑数据，参数：目标数据 */
+            protected editData(): void;
+            run(): void;
+            run(data: bo.MaterialVersion): void;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria | string): void;
+        }
+        /** 视图-物料版本 */
+        interface IMaterialVersionViewView extends ibas.IBOViewView {
+            /** 显示数据 */
+            showMaterialVersion(data: bo.MaterialVersion): void;
+        }
+        /** 物料版本连接服务映射 */
+        class MaterialVersionLinkServiceMapping extends ibas.BOLinkServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IBOLinkService;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        /** 编辑应用-物料版本 */
+        class MaterialVersionEditApp extends ibas.BOEditApplication<IMaterialVersionEditView, bo.MaterialVersion> {
             /** 应用标识 */
             static APPLICATION_ID: string;
             /** 应用名称 */
@@ -12943,68 +13187,26 @@ declare namespace materials {
             /** 视图显示后 */
             protected viewShowed(): void;
             run(): void;
-            run(data: bo.Unit): void;
+            run(data: bo.MaterialVersion): void;
             /** 保存数据 */
             protected saveData(): void;
             /** 删除数据 */
             protected deleteData(): void;
             /** 新建数据，参数1：是否克隆 */
             protected createData(clone: boolean): void;
+            /** 选择物料事件 */
+            private chooseMaterial;
         }
-        /** 视图-计量单位 */
-        interface IUnitEditView extends ibas.IBOEditView {
+        /** 视图-物料版本 */
+        interface IMaterialVersionEditView extends ibas.IBOEditView {
             /** 显示数据 */
-            showUnit(data: bo.Unit): void;
+            showMaterialVersion(data: bo.MaterialVersion): void;
             /** 删除数据事件 */
             deleteDataEvent: Function;
             /** 新建数据事件，参数1：是否克隆 */
             createDataEvent: Function;
-        }
-    }
-}
-/**
- * @license
- * Copyright Color-Coding Studio. All Rights Reserved.
- *
- * Use of this source code is governed by an Apache License, Version 2.0
- * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
- */
-declare namespace materials {
-    namespace app {
-        /** 列表应用-计量单位换算率 */
-        class UnitRateEditListApp extends ibas.Application<IUnitRateEditListView> {
-            /** 应用标识 */
-            static APPLICATION_ID: string;
-            /** 应用名称 */
-            static APPLICATION_NAME: string;
-            /** 构造函数 */
-            constructor();
-            /** 注册视图 */
-            protected registerView(): void;
-            /** 视图显示后 */
-            protected viewShowed(): void;
-            /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria): void;
-            run(material?: bo.Material): void;
-            private material;
-            private editDatas;
-            protected saveData(): void;
-            protected addData(): void;
-            protected removeData(data: bo.UnitRate): void;
-            protected chooseDataUnit(data: bo.UnitRate, type: string): void;
-        }
-        /** 视图-计量单位换算率 */
-        interface IUnitRateEditListView extends ibas.IView {
-            /** 保存数据事件 */
-            saveDataEvent: Function;
-            /** 显示数据 */
-            showData(datas: bo.UnitRate[]): void;
-            /** 添加数据事件 */
-            addDataEvent: Function;
-            /** 删除数据事件 */
-            removeDataEvent: Function;
-            /** 选择单位事件 */
-            chooseDataUnitEvent: Function;
+            /** 选择物料事件 */
+            chooseMaterialEvent: Function;
         }
     }
 }

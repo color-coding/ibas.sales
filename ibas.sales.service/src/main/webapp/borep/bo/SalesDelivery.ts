@@ -1120,6 +1120,16 @@ namespace sales {
                 this.setProperty(SalesDeliveryItem.PROPERTY_ITEMSIGN_NAME, value);
             }
 
+            /** 映射的属性名称-产品版本 */
+            static PROPERTY_ITEMVERSION_NAME: string = "ItemVersion";
+            /** 获取-产品版本 */
+            get itemVersion(): string {
+                return this.getProperty<string>(SalesDeliveryItem.PROPERTY_ITEMVERSION_NAME);
+            }
+            /** 设置-产品版本 */
+            set itemVersion(value: string) {
+                this.setProperty(SalesDeliveryItem.PROPERTY_ITEMVERSION_NAME, value);
+            }
 
             /** 映射的属性名称-序号管理 */
             static PROPERTY_SERIALMANAGEMENT_NAME: string = "SerialManagement";

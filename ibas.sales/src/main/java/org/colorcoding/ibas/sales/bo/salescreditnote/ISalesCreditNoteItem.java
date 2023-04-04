@@ -438,6 +438,20 @@ public interface ISalesCreditNoteItem
 	void setItemSign(String value);
 
 	/**
+	 * 获取-产品版本
+	 * 
+	 * @return 值
+	 */
+	String getItemVersion();
+
+	/**
+	 * 设置-产品版本
+	 * 
+	 * @param value 值
+	 */
+	void setItemVersion(String value);
+
+	/**
 	 * 获取-序号管理
 	 * 
 	 * @return 值

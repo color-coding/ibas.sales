@@ -430,6 +430,20 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	String getItemSign();
 
 	/**
+	 * 获取-产品版本
+	 * 
+	 * @return 值
+	 */
+	String getItemVersion();
+
+	/**
+	 * 设置-产品版本
+	 * 
+	 * @param value 值
+	 */
+	void setItemVersion(String value);
+
+	/**
 	 * 设置-产品标识
 	 * 
 	 * @param value 值

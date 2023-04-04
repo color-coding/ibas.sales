@@ -98,6 +98,25 @@ namespace sales {
                             }
                         }
                     });
+                } else if (type === materials.bo.MaterialVersion.BUSINESS_OBJECT_CODE) {
+                    let that: this = this;
+                    ibas.servicesManager.runChooseService<materials.bo.MaterialVersion>({
+                        boCode: materials.bo.MaterialVersion.BUSINESS_OBJECT_CODE,
+                        criteria: [
+                            new ibas.Condition(materials.bo.MaterialVersion.PROPERTY_ITEMCODE_NAME, ibas.emConditionOperation.EQUAL, this.editData.itemCode),
+                            new ibas.Condition(materials.bo.MaterialVersion.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES),
+                        ],
+                        onCompleted(selecteds: ibas.IList<materials.bo.MaterialVersion>): void {
+                            for (let selected of selecteds) {
+                                let item: bo.SalesOrderItemExtra = that.editData.salesOrderItemExtras.create();
+                                item.extraType = selected.objectCode;
+                                item.extraKey = selected.objectKey;
+                                item.note = selected.name;
+                                item.quantity = that.editData.quantity;
+                            }
+                            that.view.showExtraDatas(that.editData.salesOrderItemExtras.filterDeleted());
+                        }
+                    });
                 } else if (type instanceof FormData) {
                     let that: this = this;
                     let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
@@ -225,10 +244,21 @@ namespace sales {
                     return;
                 }
                 if (data.extraType === ibas.config.applyVariables(materials.bo.MaterialSpecification.BUSINESS_OBJECT_CODE)) {
-                    ibas.servicesManager.runLinkService({
+                    let done: boolean = ibas.servicesManager.runLinkService({
                         boCode: data.extraType,
                         linkValue: ibas.strings.valueOf(data.extraKey)
                     });
+                    if (done) {
+                        this.close();
+                    }
+                } else if (data.extraType === ibas.config.applyVariables(materials.bo.MaterialVersion.BUSINESS_OBJECT_CODE)) {
+                    let done: boolean = ibas.servicesManager.runLinkService({
+                        boCode: data.extraType,
+                        linkValue: ibas.strings.valueOf(data.extraKey)
+                    });
+                    if (done) {
+                        this.close();
+                    }
                 } else if (data.extraType === EXTRA_ATTACHMENT) {
                     let criteria: ibas.ICriteria = new ibas.Criteria();
                     let condition: ibas.ICondition = criteria.conditions.create();
@@ -255,7 +285,7 @@ namespace sales {
                         }
                     });
                 } else {
-                    throw new Error(ibas.i18n.prop("sales_unrecognized_extra_information"));
+                    throw new Error(ibas.i18n.prop("sales_unrecognized_extra_information", data));
                 }
             }
         }

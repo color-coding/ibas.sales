@@ -181,6 +181,8 @@ namespace sales {
             itemDescription: string;
             /** 产品标识 */
             itemSign: string;
+            /** 产品版本 */
+            itemVersion: string;
             /** 序号管理 */
             serialManagement: ibas.emYesNo;
             /** 批号管理 */

@@ -37,6 +37,7 @@ namespace sales {
                 this.view.chooseSalesInvoiceItemMaterialEvent = this.chooseSalesInvoiceItemMaterial;
                 this.view.chooseSalesInvoiceItemMaterialBatchEvent = this.chooseSalesInvoiceLineMaterialBatch;
                 this.view.chooseSalesInvoiceItemMaterialSerialEvent = this.chooseSalesInvoiceLineMaterialSerial;
+                this.view.chooseSalesInvoiceItemMaterialVersionEvent = this.chooseSalesInvoiceItemMaterialVersion;
                 this.view.chooseSalesInvoiceItemWarehouseEvent = this.chooseSalesInvoiceItemWarehouse;
                 this.view.chooseSalesInvoiceItemUnitEvent = this.chooseSalesInvoiceItemUnit;
                 this.view.chooseSalesInvoiceSalesOrderEvent = this.chooseSalesInvoiceSalesOrder;
@@ -711,6 +712,7 @@ namespace sales {
                         batchManagement: item.batchManagement,
                         itemCode: item.itemCode,
                         itemDescription: item.itemDescription,
+                        itemVersion: item.itemVersion,
                         warehouse: item.warehouse,
                         quantity: item.inventoryQuantity,
                         uom: item.inventoryUOM,
@@ -729,6 +731,7 @@ namespace sales {
                         serialManagement: item.serialManagement,
                         itemCode: item.itemCode,
                         itemDescription: item.itemDescription,
+                        itemVersion: item.itemVersion,
                         warehouse: item.warehouse,
                         quantity: item.inventoryQuantity,
                         uom: item.inventoryUOM,
@@ -1150,6 +1153,28 @@ namespace sales {
                     }
                 });
             }
+            private chooseSalesInvoiceItemMaterialVersion(caller: bo.SalesInvoiceItem): void {
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = materials.bo.MaterialVersion.PROPERTY_ITEMCODE_NAME;
+                condition.value = caller.itemCode;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.MaterialVersion.PROPERTY_ACTIVATED_NAME;
+                condition.value = ibas.emYesNo.YES.toString();
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                // 调用选择服务
+                ibas.servicesManager.runChooseService<materials.bo.MaterialVersion>({
+                    criteria: criteria,
+                    chooseType: ibas.emChooseType.SINGLE,
+                    boCode: materials.bo.MaterialVersion.BUSINESS_OBJECT_CODE,
+                    onCompleted: (selecteds) => {
+                        for (let selected of selecteds) {
+                            caller.itemVersion = selected.name;
+                        }
+                    }
+                });
+            }
         }
         /** 视图-销售发票 */
         export interface ISalesInvoiceEditView extends ibas.IBOEditView {
@@ -1181,6 +1206,8 @@ namespace sales {
             chooseSalesInvoiceItemMaterialBatchEvent: Function;
             /** 选择销售发票行物料序列事件 */
             chooseSalesInvoiceItemMaterialSerialEvent: Function;
+            /** 选择销售发票-行 物料版本 */
+            chooseSalesInvoiceItemMaterialVersionEvent: Function;
             /** 选择销售发票-销售订单事件 */
             chooseSalesInvoiceSalesOrderEvent: Function;
             /** 选择销售发票-销售交货事件 */

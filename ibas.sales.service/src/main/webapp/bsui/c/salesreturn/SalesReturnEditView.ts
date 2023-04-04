@@ -36,6 +36,8 @@ namespace sales {
                 chooseSalesReturnItemMaterialSerialEvent: Function;
                 /** 选择销售退货-行 物料批次事件 */
                 chooseSalesReturnItemMaterialBatchEvent: Function;
+                /** 选择销售退货-行 物料版本 */
+                chooseSalesReturnItemMaterialVersionEvent: Function;
                 /** 选择销售退货项目-销售订单事件 */
                 chooseSalesReturnSalesOrderEvent: Function;
                 /** 选择销售退货项目-销售交货事件 */
@@ -378,6 +380,23 @@ namespace sales {
                                             path: "itemDescription",
                                             type: new sap.extension.data.Alphanumeric()
                                         }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salesreturnitem_itemversion"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseSalesReturnItemMaterialVersionEvent,
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            },
+                                        }).bindProperty("bindingValue", {
+                                            path: "itemVersion",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 10
+                                            }),
+                                        }),
+                                        width: "8rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesreturnitem_warehouse"),

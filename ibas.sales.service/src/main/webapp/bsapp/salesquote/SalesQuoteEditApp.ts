@@ -37,6 +37,7 @@ namespace sales {
                 this.view.chooseSalesQuotePriceListEvent = this.chooseSalesQuotePriceList;
                 this.view.chooseSalesQuoteItemWarehouseEvent = this.chooseSalesQuoteItemWarehouse;
                 this.view.chooseSalesQuoteItemUnitEvent = this.chooseSalesQuoteItemUnit;
+                this.view.chooseSalesQuoteItemMaterialVersionEvent = this.chooseSalesQuoteItemMaterialVersion;
                 this.view.chooseSalesQuoteBlanketAgreementEvent = this.chooseSalesQuoteBlanketAgreement;
                 this.view.showSalesQuoteItemExtraEvent = this.showSalesQuoteItemExtra;
                 this.view.turnToSalesOrderEvent = this.turnToSalesOrder;
@@ -948,6 +949,28 @@ namespace sales {
                     }
                 });
             }
+            private chooseSalesQuoteItemMaterialVersion(caller: bo.SalesQuoteItem): void {
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = materials.bo.MaterialVersion.PROPERTY_ITEMCODE_NAME;
+                condition.value = caller.itemCode;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.MaterialVersion.PROPERTY_ACTIVATED_NAME;
+                condition.value = ibas.emYesNo.YES.toString();
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                // 调用选择服务
+                ibas.servicesManager.runChooseService<materials.bo.MaterialVersion>({
+                    criteria: criteria,
+                    chooseType: ibas.emChooseType.SINGLE,
+                    boCode: materials.bo.MaterialVersion.BUSINESS_OBJECT_CODE,
+                    onCompleted: (selecteds) => {
+                        for (let selected of selecteds) {
+                            caller.itemVersion = selected.name;
+                        }
+                    }
+                });
+            }
         }
         /** 视图-销售报价 */
         export interface ISalesQuoteEditView extends ibas.IBOEditView {
@@ -971,6 +994,8 @@ namespace sales {
             chooseSalesQuotePriceListEvent: Function;
             /** 选择销售报价行物料事件 */
             chooseSalesQuoteItemMaterialEvent: Function;
+            /** 选择销售报价-行 物料版本 */
+            chooseSalesQuoteItemMaterialVersionEvent: Function;
             /** 选择销售报价一揽子协议事件 */
             chooseSalesQuoteBlanketAgreementEvent: Function;
             /** 选择销售报价仓库事件 */

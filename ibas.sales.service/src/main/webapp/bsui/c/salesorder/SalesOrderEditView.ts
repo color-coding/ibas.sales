@@ -36,6 +36,8 @@ namespace sales {
                 chooseSalesOrderItemMaterialSerialEvent: Function;
                 /** 选择销售订单-行 物料批次事件 */
                 chooseSalesOrderItemMaterialBatchEvent: Function;
+                /** 选择销售订单-行 物料版本 */
+                chooseSalesOrderItemMaterialVersionEvent: Function;
                 /** 选择销售订单-销售报价事件 */
                 chooseSalesOrderSalesQuoteEvent: Function;
                 /** 选择销售订单-一揽子协议事件 */
@@ -392,6 +394,23 @@ namespace sales {
                                             path: "itemDescription",
                                             type: new sap.extension.data.Alphanumeric()
                                         }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salesorderitem_itemversion"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseSalesOrderItemMaterialVersionEvent,
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            },
+                                        }).bindProperty("bindingValue", {
+                                            path: "itemVersion",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 10
+                                            }),
+                                        }),
+                                        width: "8rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesorderitem_warehouse"),

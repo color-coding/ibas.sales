@@ -37,6 +37,7 @@ namespace sales {
                 this.view.chooseSalesDeliveryItemMaterialEvent = this.chooseSalesDeliveryItemMaterial;
                 this.view.chooseSalesDeliveryItemMaterialBatchEvent = this.chooseSalesDeliveryLineMaterialBatch;
                 this.view.chooseSalesDeliveryItemMaterialSerialEvent = this.chooseSalesDeliveryLineMaterialSerial;
+                this.view.chooseSalesDeliveryItemMaterialVersionEvent = this.chooseSalesDeliveryItemMaterialVersion;
                 this.view.chooseSalesDeliveryItemWarehouseEvent = this.chooseSalesDeliveryItemWarehouse;
                 this.view.chooseSalesDeliveryItemUnitEvent = this.chooseSalesDeliveryItemUnit;
                 this.view.chooseSalesDeliverySalesOrderEvent = this.chooseSalesDeliverySalesOrder;
@@ -711,6 +712,7 @@ namespace sales {
                         batchManagement: item.batchManagement,
                         itemCode: item.itemCode,
                         itemDescription: item.itemDescription,
+                        itemVersion: item.itemVersion,
                         warehouse: item.warehouse,
                         quantity: item.inventoryQuantity,
                         uom: item.inventoryUOM,
@@ -729,6 +731,7 @@ namespace sales {
                         serialManagement: item.serialManagement,
                         itemCode: item.itemCode,
                         itemDescription: item.itemDescription,
+                        itemVersion: item.itemVersion,
                         warehouse: item.warehouse,
                         quantity: item.inventoryQuantity,
                         uom: item.inventoryUOM,
@@ -1118,6 +1121,28 @@ namespace sales {
                     }
                 });
             }
+            private chooseSalesDeliveryItemMaterialVersion(caller: bo.SalesDeliveryItem): void {
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = materials.bo.MaterialVersion.PROPERTY_ITEMCODE_NAME;
+                condition.value = caller.itemCode;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.MaterialVersion.PROPERTY_ACTIVATED_NAME;
+                condition.value = ibas.emYesNo.YES.toString();
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                // 调用选择服务
+                ibas.servicesManager.runChooseService<materials.bo.MaterialVersion>({
+                    criteria: criteria,
+                    chooseType: ibas.emChooseType.SINGLE,
+                    boCode: materials.bo.MaterialVersion.BUSINESS_OBJECT_CODE,
+                    onCompleted: (selecteds) => {
+                        for (let selected of selecteds) {
+                            caller.itemVersion = selected.name;
+                        }
+                    }
+                });
+            }
         }
         /** 视图-销售交货 */
         export interface ISalesDeliveryEditView extends ibas.IBOEditView {
@@ -1149,6 +1174,8 @@ namespace sales {
             chooseSalesDeliveryItemMaterialBatchEvent: Function;
             /** 选择销售交货行物料序列事件 */
             chooseSalesDeliveryItemMaterialSerialEvent: Function;
+            /** 选择销售交货-行 物料版本 */
+            chooseSalesDeliveryItemMaterialVersionEvent: Function;
             /** 选择销售交货-销售订单事件 */
             chooseSalesDeliverySalesOrderEvent: Function;
             /** 选择销售交货-一揽子协议事件 */

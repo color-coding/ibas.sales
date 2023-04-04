@@ -40,6 +40,14 @@ namespace sales {
                                                     that.fireViewEvents(that.addSalesOrderItemExtraEvent, materials.bo.MaterialSpecification.BUSINESS_OBJECT_CODE);
                                                 }
                                             }),
+                                            /*
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("bo_materialversion"),
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.addSalesOrderItemExtraEvent, materials.bo.MaterialVersion.BUSINESS_OBJECT_CODE);
+                                                }
+                                            }),
+                                            */
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("sales_extra_attachment"),
                                                 press: function (): void {
@@ -113,7 +121,8 @@ namespace sales {
                                         }
                                         return ibas.businessobjects.describe(data);
                                     }
-                                })
+                                }),
+                                width: "8rem",
                             }),
                             new sap.extension.table.Column("", {
                                 label: ibas.i18n.prop("bo_salesorderitemextra_extrakey"),
@@ -124,11 +133,11 @@ namespace sales {
                                         if (ibas.objects.isNull(this.getBindingContext())) {
                                             return data;
                                         }
-                                        let bindingdata: bo.SalesOrderItemExtra = this.getBindingContext().getObject();
+                                        let bindingdata: bo.SalesQuoteItemExtra = this.getBindingContext().getObject();
                                         if (ibas.objects.isNull(bindingdata)) {
                                             return data;
                                         }
-                                        if (bindingdata.extraType === app.EXTRA_ATTACHMENT) {
+                                        if (!ibas.strings.isEmpty(bindingdata.note)) {
                                             return bindingdata.note;
                                         }
                                         return data;
@@ -143,7 +152,26 @@ namespace sales {
                                 }).bindProperty("bindingValue", {
                                     path: "quantity",
                                     type: new sap.extension.data.Quantity(),
-                                })
+                                }),
+                                width: "8rem",
+                            }),
+                            new sap.extension.table.Column("", {
+                                label: ibas.i18n.prop("bo_salesorderitemextra_reference1"),
+                                template: new sap.extension.m.Input("", {
+                                }).bindProperty("bindingValue", {
+                                    path: "reference1",
+                                    type: new sap.extension.data.Alphanumeric(),
+                                }),
+                                width: "10rem",
+                            }),
+                            new sap.extension.table.Column("", {
+                                label: ibas.i18n.prop("bo_salesorderitemextra_reference2"),
+                                template: new sap.extension.m.Input("", {
+                                }).bindProperty("bindingValue", {
+                                    path: "reference2",
+                                    type: new sap.extension.data.Alphanumeric(),
+                                }),
+                                width: "12rem",
                             }),
                         ],
                         sortProperty: "visOrder",

@@ -37,6 +37,7 @@ namespace sales {
                 this.view.chooseSalesCreditNoteItemMaterialEvent = this.chooseSalesCreditNoteItemMaterial;
                 this.view.chooseSalesCreditNoteItemMaterialBatchEvent = this.chooseSalesCreditNoteLineMaterialBatch;
                 this.view.chooseSalesCreditNoteItemMaterialSerialEvent = this.chooseSalesCreditNoteLineMaterialSerial;
+                this.view.chooseSalesCreditNoteItemMaterialVersionEvent = this.chooseSalesCreditNoteItemMaterialVersion;
                 this.view.chooseSalesCreditNoteItemWarehouseEvent = this.chooseSalesCreditNoteItemWarehouse;
                 this.view.chooseSalesCreditNoteItemUnitEvent = this.chooseSalesCreditNoteItemUnit;
                 this.view.chooseSalesCreditNoteSalesReturnEvent = this.chooseSalesCreditNoteSalesReturn;
@@ -683,6 +684,7 @@ namespace sales {
                         batchManagement: item.batchManagement,
                         itemCode: item.itemCode,
                         itemDescription: item.itemDescription,
+                        itemVersion: item.itemVersion,
                         warehouse: item.warehouse,
                         quantity: item.inventoryQuantity,
                         uom: item.inventoryUOM,
@@ -701,6 +703,7 @@ namespace sales {
                         serialManagement: item.serialManagement,
                         itemCode: item.itemCode,
                         itemDescription: item.itemDescription,
+                        itemVersion: item.itemVersion,
                         warehouse: item.warehouse,
                         quantity: item.inventoryQuantity,
                         uom: item.inventoryUOM,
@@ -899,6 +902,28 @@ namespace sales {
                     }
                 });
             }
+            private chooseSalesCreditNoteItemMaterialVersion(caller: bo.SalesCreditNoteItem): void {
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = materials.bo.MaterialVersion.PROPERTY_ITEMCODE_NAME;
+                condition.value = caller.itemCode;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.MaterialVersion.PROPERTY_ACTIVATED_NAME;
+                condition.value = ibas.emYesNo.YES.toString();
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                // 调用选择服务
+                ibas.servicesManager.runChooseService<materials.bo.MaterialVersion>({
+                    criteria: criteria,
+                    chooseType: ibas.emChooseType.SINGLE,
+                    boCode: materials.bo.MaterialVersion.BUSINESS_OBJECT_CODE,
+                    onCompleted: (selecteds) => {
+                        for (let selected of selecteds) {
+                            caller.itemVersion = selected.name;
+                        }
+                    }
+                });
+            }
         }
         /** 视图-销售贷项 */
         export interface ISalesCreditNoteEditView extends ibas.IBOEditView {
@@ -930,6 +955,8 @@ namespace sales {
             chooseSalesCreditNoteItemMaterialBatchEvent: Function;
             /** 选择销售贷项行物料序列事件 */
             chooseSalesCreditNoteItemMaterialSerialEvent: Function;
+            /** 选择销售贷项-行 物料版本 */
+            chooseSalesCreditNoteItemMaterialVersionEvent: Function;
             /** 选择销售贷项-销售退货事件 */
             chooseSalesCreditNoteSalesReturnEvent: Function;
             /** 选择销售贷项-销售发票事件 */

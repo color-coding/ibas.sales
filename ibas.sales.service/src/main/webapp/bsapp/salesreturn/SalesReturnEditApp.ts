@@ -39,6 +39,7 @@ namespace sales {
                 this.view.chooseSalesReturnItemUnitEvent = this.chooseSalesReturnItemUnit;
                 this.view.chooseSalesReturnItemMaterialBatchEvent = this.createSalesReturnLineMaterialBatch;
                 this.view.chooseSalesReturnItemMaterialSerialEvent = this.createSalesReturnLineMaterialSerial;
+                this.view.chooseSalesReturnItemMaterialVersionEvent = this.chooseSalesReturnItemMaterialVersion;
                 this.view.chooseSalesReturnSalesOrderEvent = this.chooseSalesReturnSalesOrder;
                 this.view.chooseSalesReturnSalesDeliveryEvent = this.chooseSalesReturnSalesDelivery;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
@@ -533,6 +534,7 @@ namespace sales {
                         batchManagement: item.batchManagement,
                         itemCode: item.itemCode,
                         itemDescription: item.itemDescription,
+                        itemVersion: item.itemVersion,
                         warehouse: item.warehouse,
                         quantity: item.inventoryQuantity,
                         uom: item.inventoryUOM,
@@ -555,6 +557,7 @@ namespace sales {
                         serialManagement: item.serialManagement,
                         itemCode: item.itemCode,
                         itemDescription: item.itemDescription,
+                        itemVersion: item.itemVersion,
                         warehouse: item.warehouse,
                         quantity: item.inventoryQuantity,
                         uom: item.inventoryUOM,
@@ -790,6 +793,28 @@ namespace sales {
                     }
                 });
             }
+            private chooseSalesReturnItemMaterialVersion(caller: bo.SalesReturnItem): void {
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = materials.bo.MaterialVersion.PROPERTY_ITEMCODE_NAME;
+                condition.value = caller.itemCode;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.MaterialVersion.PROPERTY_ACTIVATED_NAME;
+                condition.value = ibas.emYesNo.YES.toString();
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                // 调用选择服务
+                ibas.servicesManager.runChooseService<materials.bo.MaterialVersion>({
+                    criteria: criteria,
+                    chooseType: ibas.emChooseType.SINGLE,
+                    boCode: materials.bo.MaterialVersion.BUSINESS_OBJECT_CODE,
+                    onCompleted: (selecteds) => {
+                        for (let selected of selecteds) {
+                            caller.itemVersion = selected.name;
+                        }
+                    }
+                });
+            }
         }
         /** 视图-销售退货 */
         export interface ISalesReturnEditView extends ibas.IBOEditView {
@@ -821,6 +846,8 @@ namespace sales {
             chooseSalesReturnItemMaterialBatchEvent: Function;
             /** 选择销售退货行物料序列事件 */
             chooseSalesReturnItemMaterialSerialEvent: Function;
+            /** 选择销售退货-行 物料版本 */
+            chooseSalesReturnItemMaterialVersionEvent: Function;
             /** 选择销售退货项目-销售订单事件 */
             chooseSalesReturnSalesOrderEvent: Function;
             /** 选择销售退货项目-销售交货事件 */

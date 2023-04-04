@@ -1027,6 +1027,17 @@ namespace sales {
                 this.setProperty(SalesQuoteItem.PROPERTY_ITEMSIGN_NAME, value);
             }
 
+            /** 映射的属性名称-产品版本 */
+            static PROPERTY_ITEMVERSION_NAME: string = "ItemVersion";
+            /** 获取-产品版本 */
+            get itemVersion(): string {
+                return this.getProperty<string>(SalesQuoteItem.PROPERTY_ITEMVERSION_NAME);
+            }
+            /** 设置-产品版本 */
+            set itemVersion(value: string) {
+                this.setProperty(SalesQuoteItem.PROPERTY_ITEMVERSION_NAME, value);
+            }
+
             /** 映射的属性名称-序号管理 */
             static PROPERTY_SERIALMANAGEMENT_NAME: string = "SerialManagement";
             /** 获取-序号管理 */

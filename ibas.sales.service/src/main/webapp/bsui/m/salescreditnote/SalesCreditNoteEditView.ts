@@ -34,6 +34,8 @@ namespace sales {
                 chooseSalesCreditNoteItemMaterialSerialEvent: Function;
                 /** 选择销售退货-行 物料批次事件 */
                 chooseSalesCreditNoteItemMaterialBatchEvent: Function;
+                /** 选择销售贷项-行 物料版本 */
+                chooseSalesCreditNoteItemMaterialVersionEvent: Function;
                 /** 选择销售退货项目-销售发票事件 */
                 chooseSalesCreditNoteSalesInvoiceEvent: Function;
                 /** 选择销售退货项目-销售退货事件 */
@@ -835,6 +837,20 @@ namespace sales {
                                         }).bindProperty("bindingValue", {
                                             path: "itemDescription",
                                             type: new sap.extension.data.Alphanumeric()
+                                        }),
+                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_salescreditnoteitem_itemversion") }),
+                                        new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseSalesCreditNoteItemMaterialVersionEvent,
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            },
+                                        }).bindProperty("bindingValue", {
+                                            path: "itemVersion",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 10
+                                            }),
                                         }),
                                         new sap.m.Label("", { text: ibas.i18n.prop("bo_salescreditnoteitem_warehouse") }),
                                         new sap.extension.m.RepositoryInput("", {

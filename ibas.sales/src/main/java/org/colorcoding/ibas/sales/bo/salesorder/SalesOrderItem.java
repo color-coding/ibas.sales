@@ -1005,6 +1005,37 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 	}
 
 	/**
+	 * 属性名称-产品版本
+	 */
+	private static final String PROPERTY_ITEMVERSION_NAME = "ItemVersion";
+
+	/**
+	 * 产品版本 属性
+	 */
+	@DbField(name = "ItemVer", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<String> PROPERTY_ITEMVERSION = registerProperty(PROPERTY_ITEMVERSION_NAME,
+			String.class, MY_CLASS);
+
+	/**
+	 * 获取-产品版本
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_ITEMVERSION_NAME)
+	public final String getItemVersion() {
+		return this.getProperty(PROPERTY_ITEMVERSION);
+	}
+
+	/**
+	 * 设置-产品版本
+	 * 
+	 * @param value 值
+	 */
+	public final void setItemVersion(String value) {
+		this.setProperty(PROPERTY_ITEMVERSION, value);
+	}
+
+	/**
 	 * 属性名称-序号管理
 	 */
 	private static final String PROPERTY_SERIALMANAGEMENT_NAME = "SerialManagement";

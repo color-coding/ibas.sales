@@ -34,6 +34,8 @@ namespace sales {
                 chooseSalesQuoteItemWarehouseEvent: Function;
                 /** 选择销售报价单位事件 */
                 chooseSalesQuoteItemUnitEvent: Function;
+                /** 选择销售报价-行 物料版本 */
+                chooseSalesQuoteItemMaterialVersionEvent: Function;
                 /** 显示销售报价额外信息事件 */
                 showSalesQuoteItemExtraEvent: Function;
                 /** 转为销售报价事件 */
@@ -332,6 +334,23 @@ namespace sales {
                                             path: "itemDescription",
                                             type: new sap.extension.data.Alphanumeric()
                                         }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salesquoteitem_itemversion"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseSalesQuoteItemMaterialVersionEvent,
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            },
+                                        }).bindProperty("bindingValue", {
+                                            path: "itemVersion",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 10
+                                            }),
+                                        }),
+                                        width: "8rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesquoteitem_quantity"),

@@ -36,6 +36,8 @@ namespace sales {
                 chooseSalesCreditNoteItemMaterialSerialEvent: Function;
                 /** 选择销售贷项-行 物料批次事件 */
                 chooseSalesCreditNoteItemMaterialBatchEvent: Function;
+                /** 选择销售贷项-行 物料版本 */
+                chooseSalesCreditNoteItemMaterialVersionEvent: Function;
                 /** 选择销售贷项项目-销售发票事件 */
                 chooseSalesCreditNoteSalesInvoiceEvent: Function;
                 /** 选择销售贷项项目-销售贷项事件 */
@@ -374,6 +376,23 @@ namespace sales {
                                             path: "itemDescription",
                                             type: new sap.extension.data.Alphanumeric()
                                         }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salescreditnoteitem_itemversion"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseSalesCreditNoteItemMaterialVersionEvent,
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            },
+                                        }).bindProperty("bindingValue", {
+                                            path: "version",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 10
+                                            }),
+                                        }),
+                                        width: "8rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salescreditnoteitem_warehouse"),

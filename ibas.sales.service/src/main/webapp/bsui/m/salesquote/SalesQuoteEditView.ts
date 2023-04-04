@@ -32,6 +32,8 @@ namespace sales {
                 chooseSalesQuoteItemWarehouseEvent: Function;
                 /** 选择销售报价单位事件 */
                 chooseSalesQuoteItemUnitEvent: Function;
+                /** 选择销售报价-行 物料版本 */
+                chooseSalesQuoteItemMaterialVersionEvent: Function;
                 /** 显示销售报价额外信息事件 */
                 showSalesQuoteItemExtraEvent: Function;
                 /** 转为销售订单事件 */
@@ -819,6 +821,20 @@ namespace sales {
                                         }).bindProperty("bindingValue", {
                                             path: "itemDescription",
                                             type: new sap.extension.data.Alphanumeric()
+                                        }),
+                                        new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquoteitem_itemversion") }),
+                                        new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseSalesQuoteItemMaterialVersionEvent,
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            },
+                                        }).bindProperty("bindingValue", {
+                                            path: "itemVersion",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 10
+                                            }),
                                         }),
                                         new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquoteitem_quantity") }),
                                         new sap.extension.m.Input("", {
