@@ -54,6 +54,8 @@ namespace sales {
                 turnToSalesReturnEvent: Function;
                 /** 转为销售发票事件 */
                 turnToSalesInvoiceEvent: Function;
+                /** 预留物料库存 */
+                reserveMaterialsInventoryEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
@@ -807,13 +809,28 @@ namespace sales {
                                     })
                                 }),
                                 new sap.m.ToolbarSeparator(""),
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("sales_receipt"),
+                                new sap.m.MenuButton("", {
+                                    text: ibas.i18n.prop("sales_quick_to"),
+                                    icon: "sap-icon://generate-shortcut",
                                     type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://lead",
-                                    press: function (): void {
-                                        that.fireViewEvents(that.receiptSalesOrderEvent);
-                                    }
+                                    menu: new sap.m.Menu("", {
+                                        items: [
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("sales_receipt"),
+                                                icon: "sap-icon://lead",
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.receiptSalesOrderEvent);
+                                                }
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("sales_inventory_reservation"),
+                                                icon: "sap-icon://blank-tag",
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.reserveMaterialsInventoryEvent);
+                                                }
+                                            }),
+                                        ],
+                                    })
                                 }),
                                 new sap.m.ToolbarSpacer(""),
                                 new sap.m.Button("", {

@@ -2611,6 +2611,20 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem>
 						return SalesCreditNoteItem.this.getSerialManagement();
 					}
 
+					@Override
+					public String getBaseDocumentType() {
+						return SalesCreditNoteItem.this.getBaseDocumentType();
+					}
+
+					@Override
+					public Integer getBaseDocumentEntry() {
+						return SalesCreditNoteItem.this.getBaseDocumentEntry();
+					}
+
+					@Override
+					public Integer getBaseDocumentLineId() {
+						return SalesCreditNoteItem.this.getBaseDocumentLineId();
+					}
 				},
 				// 基础单据为销售订单
 				new ISalesOrderReturnContract() {

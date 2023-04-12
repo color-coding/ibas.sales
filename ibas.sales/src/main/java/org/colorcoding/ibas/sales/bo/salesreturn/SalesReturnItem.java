@@ -2569,6 +2569,21 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem>
 						return SalesReturnItem.this.getSerialManagement();
 					}
 
+					@Override
+					public String getBaseDocumentType() {
+						return SalesReturnItem.this.getBaseDocumentType();
+					}
+
+					@Override
+					public Integer getBaseDocumentEntry() {
+						return SalesReturnItem.this.getBaseDocumentEntry();
+					}
+
+					@Override
+					public Integer getBaseDocumentLineId() {
+						return SalesReturnItem.this.getBaseDocumentLineId();
+					}
+
 				},
 				// 基础单据为销售订单
 				new ISalesOrderReturnContract() {

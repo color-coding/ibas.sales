@@ -2610,6 +2610,21 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem>
 					public emYesNo getSerialManagement() {
 						return SalesInvoiceItem.this.getSerialManagement();
 					}
+
+					@Override
+					public String getBaseDocumentType() {
+						return SalesInvoiceItem.this.getBaseDocumentType();
+					}
+
+					@Override
+					public Integer getBaseDocumentEntry() {
+						return SalesInvoiceItem.this.getBaseDocumentEntry();
+					}
+
+					@Override
+					public Integer getBaseDocumentLineId() {
+						return SalesInvoiceItem.this.getBaseDocumentLineId();
+					}
 				},
 
 				// 销售订单发货

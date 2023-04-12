@@ -52,6 +52,8 @@ namespace sales {
                 turnToSalesReturnEvent: Function;
                 /** 转为销售发票事件 */
                 turnToSalesInvoiceEvent: Function;
+                /** 预留物料库存 */
+                reserveMaterialsInventoryEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */

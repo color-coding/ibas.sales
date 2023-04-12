@@ -48,6 +48,7 @@ namespace sales {
                 this.view.turnToSalesDeliveryEvent = this.turnToSalesDelivery;
                 this.view.turnToSalesInvoiceEvent = this.turnToSalesInvoice;
                 this.view.turnToSalesReturnEvent = this.turnToSalesReturn;
+                this.view.reserveMaterialsInventoryEvent = this.reserveMaterialsInventory;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -942,12 +943,60 @@ namespace sales {
                 target.customerCode = this.editData.customerCode;
                 target.customerName = this.editData.customerName;
                 target.baseDocument(this.editData);
-
-                let app: SalesDeliveryEditApp = new SalesDeliveryEditApp();
-                app.navigation = this.navigation;
-                app.viewShower = this.viewShower;
-                app.run(target);
-
+                // 使用预留库存
+                materials.app.useReservedMaterialsInventory({
+                    targetType: this.editData.objectCode,
+                    targetEntries: this.editData.docEntry,
+                    onCompleted: (results) => {
+                        if (results instanceof Error) {
+                            // 错误
+                            this.messages(results);
+                        } else if (results.length > 0) {
+                            // 出库数预置为0
+                            target.salesDeliveryItems.where(c =>
+                                this.editData.objectCode === c.baseDocumentType
+                                && this.editData.docEntry === c.baseDocumentEntry
+                            ).forEach(c => c.quantity = 0);
+                            // 使用预留库存
+                            for (let result of results) {
+                                let wItems: bo.SalesDeliveryItem[] = target.salesDeliveryItems.where(c =>
+                                    result.targetDocumentType === c.baseDocumentType
+                                    && result.targetDocumentEntry === c.baseDocumentEntry
+                                    && result.targetDocumentLineId === c.baseDocumentLineId
+                                    && result.itemCode === c.itemCode
+                                );
+                                if (wItems.length === 0) {
+                                    continue;
+                                }
+                                let wItem: bo.SalesDeliveryItem = wItems.find(c => c.warehouse === result.warehouse);
+                                if (ibas.objects.isNull(wItem)) {
+                                    // 没有同仓库的，则新建行
+                                    wItem = wItems[0].clone();
+                                    wItem.warehouse = result.warehouse;
+                                    target.salesDeliveryItems.add(wItem);
+                                }
+                                // 应用库存
+                                wItem.quantity += result.quantity;
+                                // 处理明细项
+                                if (!ibas.strings.isEmpty(result.batchCode)) {
+                                    // 批次管理
+                                    let bItem: materials.bo.IMaterialBatchItem = wItem.materialBatches.create();
+                                    bItem.batchCode = result.batchCode;
+                                    bItem.quantity = result.quantity;
+                                } else if (!ibas.strings.isEmpty(result.serialCode)) {
+                                    // 序列管理
+                                    let sItem: materials.bo.IMaterialSerialItem = wItem.materialSerials.create();
+                                    sItem.serialCode = result.serialCode;
+                                }
+                            }
+                            this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_used_reserved_materials_inventory"));
+                        }
+                        let app: SalesDeliveryEditApp = new SalesDeliveryEditApp();
+                        app.navigation = this.navigation;
+                        app.viewShower = this.viewShower;
+                        app.run(target);
+                    }
+                });
             }
             /** 转为销售退货 */
             protected turnToSalesReturn(): void {
@@ -993,10 +1042,60 @@ namespace sales {
                 target.customerName = this.editData.customerName;
                 target.baseDocument(this.editData);
 
-                let app: SalesInvoiceEditApp = new SalesInvoiceEditApp();
-                app.navigation = this.navigation;
-                app.viewShower = this.viewShower;
-                app.run(target);
+                // 使用预留库存
+                materials.app.useReservedMaterialsInventory({
+                    targetType: this.editData.objectCode,
+                    targetEntries: this.editData.docEntry,
+                    onCompleted: (results) => {
+                        if (results instanceof Error) {
+                            // 错误
+                            this.messages(results);
+                        } else if (results.length > 0) {
+                            // 出库数预置为0
+                            target.salesInvoiceItems.where(c =>
+                                this.editData.objectCode === c.baseDocumentType
+                                && this.editData.docEntry === c.baseDocumentEntry
+                            ).forEach(c => c.quantity = 0);
+                            // 使用预留库存
+                            for (let result of results) {
+                                let wItems: bo.SalesInvoiceItem[] = target.salesInvoiceItems.where(c =>
+                                    result.targetDocumentType === c.baseDocumentType
+                                    && result.targetDocumentEntry === c.baseDocumentEntry
+                                    && result.targetDocumentLineId === c.baseDocumentLineId
+                                    && result.itemCode === c.itemCode
+                                );
+                                if (wItems.length === 0) {
+                                    continue;
+                                }
+                                let wItem: bo.SalesInvoiceItem = wItems.find(c => c.warehouse === result.warehouse);
+                                if (ibas.objects.isNull(wItem)) {
+                                    // 没有同仓库的，则新建行
+                                    wItem = wItems[0].clone();
+                                    wItem.warehouse = result.warehouse;
+                                    target.salesInvoiceItems.add(wItem);
+                                }
+                                // 应用库存
+                                wItem.quantity += result.quantity;
+                                // 处理明细项
+                                if (!ibas.strings.isEmpty(result.batchCode)) {
+                                    // 批次管理
+                                    let bItem: materials.bo.IMaterialBatchItem = wItem.materialBatches.create();
+                                    bItem.batchCode = result.batchCode;
+                                    bItem.quantity = result.quantity;
+                                } else if (!ibas.strings.isEmpty(result.serialCode)) {
+                                    // 序列管理
+                                    let sItem: materials.bo.IMaterialSerialItem = wItem.materialSerials.create();
+                                    sItem.serialCode = result.serialCode;
+                                }
+                            }
+                            this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_used_reserved_materials_inventory"));
+                        }
+                        let app: SalesInvoiceEditApp = new SalesInvoiceEditApp();
+                        app.navigation = this.navigation;
+                        app.viewShower = this.viewShower;
+                        app.run(target);
+                    }
+                });
 
             }
             /** 选择一揽子协议事件 */
@@ -1205,6 +1304,32 @@ namespace sales {
                     }
                 });
             }
+            /** 预留物料库存 */
+            private reserveMaterialsInventory(): void {
+                if (ibas.objects.isNull(this.editData) || this.editData.isDirty) {
+                    throw new Error(ibas.i18n.prop("shell_data_saved_first"));
+                }
+                let contract: materials.app.IMaterialInventoryReservationTarget = {
+                    targetType: this.editData.objectCode,
+                    targetEntry: this.editData.docEntry,
+                    businessPartner: ibas.strings.format("{1} ({0})", this.editData.customerCode, this.editData.customerName),
+                    items: []
+                };
+                for (let item of this.editData.salesOrderItems) {
+                    contract.items.push({
+                        targetLineId: item.lineId,
+                        itemCode: item.itemCode,
+                        itemDescription: item.itemDescription,
+                        itemVersion: item.itemVersion,
+                        warehouse: item.warehouse,
+                        quantity: item.quantity,
+                        uom: item.uom
+                    });
+                }
+                ibas.servicesManager.runApplicationService<materials.app.IMaterialInventoryReservationTarget>({
+                    proxy: new materials.app.MaterialInventoryReservationServiceProxy(contract)
+                });
+            }
         }
         /** 视图-销售订单 */
         export interface ISalesOrderEditView extends ibas.IBOEditView {
@@ -1254,6 +1379,8 @@ namespace sales {
             turnToSalesReturnEvent: Function;
             /** 转为销售发票事件 */
             turnToSalesInvoiceEvent: Function;
+            /** 预留物料库存 */
+            reserveMaterialsInventoryEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */

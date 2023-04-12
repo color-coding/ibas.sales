@@ -2567,6 +2567,21 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 					public emYesNo getSerialManagement() {
 						return SalesDeliveryItem.this.getSerialManagement();
 					}
+
+					@Override
+					public String getBaseDocumentType() {
+						return SalesDeliveryItem.this.getBaseDocumentType();
+					}
+
+					@Override
+					public Integer getBaseDocumentEntry() {
+						return SalesDeliveryItem.this.getBaseDocumentEntry();
+					}
+
+					@Override
+					public Integer getBaseDocumentLineId() {
+						return SalesDeliveryItem.this.getBaseDocumentLineId();
+					}
 				},
 				// 销售订单发货
 				new ISalesOrderIssueContract() {
