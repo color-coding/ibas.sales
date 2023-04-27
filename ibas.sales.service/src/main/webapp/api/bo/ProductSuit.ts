@@ -118,6 +118,9 @@ namespace sales {
             /** 对象行号 */
             lineId: number;
 
+            /** 显示顺序 */
+            visOrder: number;
+
             /** 对象类型 */
             objectCode: string;
 
@@ -171,6 +174,12 @@ namespace sales {
 
             /** 总计 */
             lineTotal: number;
+
+            /** 参考1 */
+            reference1: string;
+
+            /** 参考2 */
+            reference2: string;
 
         }
         export interface IProductSuitEx extends IProductSuit {

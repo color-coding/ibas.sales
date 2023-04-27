@@ -655,13 +655,14 @@ namespace sales {
                                 }),
                                 new sap.m.ToolbarSeparator(""),
                                 new sap.m.MenuButton("", {
-                                    text: ibas.i18n.prop("sales_copy_to"),
-                                    icon: "sap-icon://duplicate",
                                     type: sap.m.ButtonType.Transparent,
+                                    text: ibas.i18n.prop("shell_quick_to"),
+                                    icon: "sap-icon://generate-shortcut",
                                     menu: new sap.m.Menu("", {
                                         items: [
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("bo_salesorder"),
+                                                icon: "sap-icon://doc-attachment",
                                                 press: function (): void {
                                                     that.fireViewEvents(that.turnToSalesOrderEvent);
                                                 },

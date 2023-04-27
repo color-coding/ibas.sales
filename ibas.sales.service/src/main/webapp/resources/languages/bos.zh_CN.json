@@ -26,10 +26,14 @@
         "bo_productsuit_createactionid": "创建动作标识",
         "bo_productsuit_updateactionid": "更新动作标识",
         "bo_productsuit_approvalstatus": "审批状态",
+        "bo_productsuit_dataowner": "数据所有者",
+        "bo_productsuit_teammembers": "团队成员",
+        "bo_productsuit_organization": "数据所属组织",
         "bo_productsuit_productsuititems": "产品套装-项目集合",
         "bo_productsuititem": "产品套装-项目",
         "bo_productsuititem_objectkey": "对象编号",
         "bo_productsuititem_lineid": "对象行号",
+        "bo_productsuititem_visorder": "显示顺序",
         "bo_productsuititem_objectcode": "对象类型",
         "bo_productsuititem_loginst": "实例号",
         "bo_productsuititem_datasource": "数据源",
@@ -48,6 +52,8 @@
         "bo_productsuititem_price": "价格",
         "bo_productsuititem_currency": "货币",
         "bo_productsuititem_linetotal": "总计",
+        "bo_productsuititem_reference1": "参考1",
+        "bo_productsuititem_reference2": "参考2",
         "bo_productsuit_closing_delimiter": "----结束----"
     },
     {

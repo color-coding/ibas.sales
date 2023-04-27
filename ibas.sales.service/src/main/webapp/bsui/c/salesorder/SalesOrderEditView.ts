@@ -764,13 +764,14 @@ namespace sales {
                                 }),
                                 new sap.m.ToolbarSeparator(""),
                                 new sap.m.MenuButton("", {
-                                    text: ibas.i18n.prop("sales_copy_to"),
-                                    icon: "sap-icon://duplicate",
+                                    text: ibas.i18n.prop("shell_quick_to"),
+                                    icon: "sap-icon://generate-shortcut",
                                     type: sap.m.ButtonType.Transparent,
                                     menu: new sap.m.Menu("", {
                                         items: [
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("bo_salesdelivery"),
+                                                icon: "sap-icon://doc-attachment",
                                                 press: function (): void {
                                                     that.fireViewEvents(that.turnToSalesDeliveryEvent);
                                                 },
@@ -783,6 +784,7 @@ namespace sales {
                                             }),
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("bo_salesinvoice"),
+                                                icon: "sap-icon://doc-attachment",
                                                 press: function (): void {
                                                     that.fireViewEvents(that.turnToSalesInvoiceEvent);
                                                 },
@@ -795,6 +797,7 @@ namespace sales {
                                             }),
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("bo_salesreturn"),
+                                                icon: "sap-icon://doc-attachment",
                                                 press: function (): void {
                                                     that.fireViewEvents(that.turnToSalesReturnEvent);
                                                 },
@@ -805,16 +808,6 @@ namespace sales {
                                                     description: undefined
                                                 })
                                             }),
-                                        ],
-                                    })
-                                }),
-                                new sap.m.ToolbarSeparator(""),
-                                new sap.m.MenuButton("", {
-                                    text: ibas.i18n.prop("sales_quick_to"),
-                                    icon: "sap-icon://generate-shortcut",
-                                    type: sap.m.ButtonType.Transparent,
-                                    menu: new sap.m.Menu("", {
-                                        items: [
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("sales_receipt"),
                                                 icon: "sap-icon://lead",

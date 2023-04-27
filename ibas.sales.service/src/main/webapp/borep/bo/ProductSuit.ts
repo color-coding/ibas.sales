@@ -392,6 +392,17 @@ namespace sales {
                 this.setProperty(ProductSuitItem.PROPERTY_LINEID_NAME, value);
             }
 
+            /** 映射的属性名称-显示顺序 */
+            static PROPERTY_VISORDER_NAME: string = "VisOrder";
+            /** 获取-显示顺序 */
+            get visOrder(): number {
+                return this.getProperty<number>(ProductSuitItem.PROPERTY_VISORDER_NAME);
+            }
+            /** 设置-显示顺序 */
+            set visOrder(value: number) {
+                this.setProperty(ProductSuitItem.PROPERTY_VISORDER_NAME, value);
+            }
+
             /** 映射的属性名称-对象类型 */
             static PROPERTY_OBJECTCODE_NAME: string = "ObjectCode";
             /** 获取-对象类型 */
@@ -588,6 +599,28 @@ namespace sales {
             /** 设置-总计 */
             set lineTotal(value: number) {
                 this.setProperty(ProductSuitItem.PROPERTY_LINETOTAL_NAME, value);
+            }
+
+            /** 映射的属性名称-参考1 */
+            static PROPERTY_REFERENCE1_NAME: string = "Reference1";
+            /** 获取-参考1 */
+            get reference1(): string {
+                return this.getProperty<string>(ProductSuitItem.PROPERTY_REFERENCE1_NAME);
+            }
+            /** 设置-参考1 */
+            set reference1(value: string) {
+                this.setProperty(ProductSuitItem.PROPERTY_REFERENCE1_NAME, value);
+            }
+
+            /** 映射的属性名称-参考2 */
+            static PROPERTY_REFERENCE2_NAME: string = "Reference2";
+            /** 获取-参考2 */
+            get reference2(): string {
+                return this.getProperty<string>(ProductSuitItem.PROPERTY_REFERENCE2_NAME);
+            }
+            /** 设置-参考2 */
+            set reference2(value: string) {
+                this.setProperty(ProductSuitItem.PROPERTY_REFERENCE2_NAME, value);
             }
 
             /** 初始化数据 */

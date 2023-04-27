@@ -51,6 +51,14 @@ namespace sales {
                                     maxLength: 20
                                 })
                             }),
+                            new sap.extension.m.Input("", {
+                                tooltip: ibas.i18n.prop("bo_productsuit_version")
+                            }).bindProperty("bindingValue", {
+                                path: "version",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 4
+                                })
+                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_description") }),
                             new sap.extension.m.Input("", {
                             }).bindProperty("bindingValue", {
@@ -61,37 +69,29 @@ namespace sales {
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_unitquantity") }),
                             new sap.extension.m.Input("", {
-
                             }).bindProperty("bindingValue", {
                                 path: "unitQuantity",
                                 type: new sap.extension.data.Quantity()
-                            }).bindProperty("description", {
+                            }),
+                            new sap.extension.m.Input("", {
+                                showValueHelp: true,
+                                chooseType: ibas.emChooseType.SINGLE,
+                                repository: materials.bo.BORepositoryMaterials,
+                                dataInfo: {
+                                    type: materials.bo.Unit,
+                                    key: materials.bo.Unit.PROPERTY_NAME_NAME,
+                                    text: materials.bo.Unit.PROPERTY_NAME_NAME
+                                },
+                                criteria: [
+                                    new ibas.Condition(materials.bo.Unit.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                                ]
+                            }).bindProperty("bindingValue", {
                                 path: "uom",
                                 type: new sap.extension.data.Alphanumeric({
                                     maxLength: 8
                                 })
                             }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_total") }),
-                            new sap.extension.m.Input("", {
-
-                            }).bindProperty("bindingValue", {
-                                path: "total",
-                                type: new sap.extension.data.Sum()
-                            }).bindProperty("description", {
-                                path: "currency",
-                                type: new sap.extension.data.Alphanumeric({
-                                    maxLength: 8
-                                })
-                            }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_status") }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_version") }),
-                            new sap.extension.m.Input("", {
-                            }).bindProperty("bindingValue", {
-                                path: "version",
-                                type: new sap.extension.data.Alphanumeric({
-                                    maxLength: 4
-                                })
-                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_activated") }),
                             new sap.extension.m.EnumSelect("", {
                                 enumType: ibas.emYesNo
@@ -177,6 +177,7 @@ namespace sales {
                                                 maxLength: 20
                                             })
                                         }),
+                                        width: "12rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_productsuititem_itemdescription"),
@@ -187,6 +188,7 @@ namespace sales {
                                                 maxLength: 100
                                             })
                                         }),
+                                        width: "16rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_productsuititem_quantity"),
@@ -196,16 +198,29 @@ namespace sales {
                                             path: "quantity",
                                             type: new sap.extension.data.Quantity()
                                         }),
+                                        width: "8em",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_productsuititem_uom"),
-                                        template: new sap.extension.m.Text("", {
+                                        template: new sap.extension.m.SelectionInput("", {
+                                            showValueHelp: true,
+                                            chooseType: ibas.emChooseType.SINGLE,
+                                            repository: materials.bo.BORepositoryMaterials,
+                                            dataInfo: {
+                                                type: materials.bo.Unit,
+                                                key: materials.bo.Unit.PROPERTY_NAME_NAME,
+                                                text: materials.bo.Unit.PROPERTY_NAME_NAME
+                                            },
+                                            criteria: [
+                                                new ibas.Condition(materials.bo.Unit.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                                            ]
                                         }).bindProperty("bindingValue", {
                                             path: "uom",
                                             type: new sap.extension.data.Alphanumeric({
                                                 maxLength: 8
                                             })
                                         }),
+                                        width: "8rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_productsuititem_price"),
@@ -224,7 +239,26 @@ namespace sales {
                                             type: new sap.extension.data.Sum()
                                         }),
                                     }),
-                                ]
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productsuititem_reference1"),
+                                        template: new sap.extension.m.Input("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "reference1",
+                                            type: new sap.extension.data.Alphanumeric()
+                                        }),
+                                        width: "14rem",
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_productsuititem_reference1"),
+                                        template: new sap.extension.m.Input("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "reference1",
+                                            type: new sap.extension.data.Alphanumeric()
+                                        }),
+                                        width: "16rem",
+                                    }),
+                                ],
+                                sortProperty: "visOrder",
                             })
                         ]
                     });
@@ -232,14 +266,61 @@ namespace sales {
                         editable: true,
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_others") }),
-                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salescreditnote_remarks") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_dataowner") }),
+                            new sap.extension.m.DataOwnerInput("", {
+                                showValueHelp: true,
+                                organization: {
+                                    path: "organization",
+                                    type: new sap.extension.data.Alphanumeric({
+                                        maxLength: 8
+                                    })
+                                }
+                            }).bindProperty("bindingValue", {
+                                path: "dataOwner",
+                                type: new sap.extension.data.Numeric()
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_organization") }),
+                            new sap.extension.m.DataOrganizationInput("", {
+                                showValueHelp: true,
+                            }).bindProperty("bindingValue", {
+                                path: "organization",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 8
+                                })
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_remarks") }),
                             new sap.extension.m.TextArea("", {
                                 rows: 3,
                             }).bindProperty("bindingValue", {
                                 path: "remarks",
                                 type: new sap.extension.data.Alphanumeric()
                             }),
-                            new sap.ui.core.Title("", {}),
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_total") }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_productsuit_total") }),
+                            new sap.extension.m.Input("", {
+
+                            }).bindProperty("bindingValue", {
+                                path: "total",
+                                type: new sap.extension.data.Sum()
+                            }),
+                            new sap.extension.m.SelectionInput("", {
+                                showValueHelp: true,
+                                chooseType: ibas.emChooseType.SINGLE,
+                                repository: accounting.bo.BORepositoryAccounting,
+                                dataInfo: {
+                                    type: accounting.bo.Currency,
+                                    key: accounting.bo.Currency.PROPERTY_CODE_NAME,
+                                    text: accounting.bo.Currency.PROPERTY_CODE_NAME
+                                },
+                                criteria: [
+                                    new ibas.Condition(accounting.bo.Currency.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                                ]
+                            }).bindProperty("bindingValue", {
+                                path: "currency",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 8
+                                })
+                            }),
                         ]
                     });
                     return this.page = new sap.extension.m.DataPage("", {
