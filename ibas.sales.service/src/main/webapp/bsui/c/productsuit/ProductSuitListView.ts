@@ -40,7 +40,8 @@ namespace sales {
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_productsuit_product"),
-                                template: new sap.extension.m.Text("", {
+                                template: new sap.extension.m.DataLink("", {
+                                    objectCode: materials.bo.Material.BUSINESS_OBJECT_CODE,
                                 }).bindProperty("bindingValue", {
                                     path: "product",
                                     type: new sap.extension.data.Alphanumeric()

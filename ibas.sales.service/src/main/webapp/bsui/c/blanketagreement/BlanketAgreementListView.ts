@@ -30,7 +30,11 @@ namespace sales {
                         columns: [
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_blanketagreement_docentry"),
-                                template: new sap.extension.m.Text("", {
+                                template: new sap.extension.m.DataLink("", {
+                                    objectCode: {
+                                        path: "objectCode",
+                                        type: new sap.extension.data.Alphanumeric(),
+                                    }
                                 }).bindProperty("bindingValue", {
                                     path: "docEntry",
                                     type: new sap.extension.data.Numeric()
@@ -62,7 +66,8 @@ namespace sales {
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_blanketagreement_customercode"),
-                                template: new sap.extension.m.Text("", {
+                                template: new sap.extension.m.DataLink("", {
+                                    objectCode: businesspartner.bo.Customer.BUSINESS_OBJECT_CODE,
                                 }).bindProperty("bindingValue", {
                                     path: "customerCode",
                                     type: new sap.extension.data.Alphanumeric()
