@@ -813,11 +813,14 @@ namespace sales {
                     criteria: criteria,
                     onCompleted(selecteds: ibas.IList<bo.SalesQuote>): void {
                         for (let selected of selecteds) {
-                            if (!ibas.strings.equals(that.editData.customerCode, selected.customerCode)
-                                && (!ibas.objects.isNull(that.customer) && (!ibas.strings.equals(that.customer.lead, selected.customerCode)))) {
-                                continue;
+                            if (ibas.strings.equals(that.editData.customerCode, selected.customerCode)) {
+                                that.editData.baseDocument(selected);
+                            } else if (!ibas.objects.isNull(that.customer) && ibas.strings.equals(that.customer.lead, selected.customerCode)) {
+                                // 潜在客户的报价，调整下客户编码
+                                selected.customerCode = that.editData.customerCode;
+                                selected.customerName = that.editData.customerName;
+                                that.editData.baseDocument(selected);
                             }
-                            that.editData.baseDocument(selected);
                         }
                         that.view.showSalesOrderItems(that.editData.salesOrderItems.filterDeleted());
                     }
