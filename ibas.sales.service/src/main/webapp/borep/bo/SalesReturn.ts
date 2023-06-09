@@ -270,14 +270,14 @@ namespace sales {
             }
 
             /** 映射的属性名称-到期日 */
-            static PROPERTY_RETURNDATE_NAME: string = "ReturnDate";
+            static PROPERTY_DELIVERYDATE_NAME: string = "DeliveryDate";
             /** 获取-到期日 */
             get deliveryDate(): Date {
-                return this.getProperty<Date>(SalesReturn.PROPERTY_RETURNDATE_NAME);
+                return this.getProperty<Date>(SalesReturn.PROPERTY_DELIVERYDATE_NAME);
             }
             /** 设置-到期日 */
             set deliveryDate(value: Date) {
-                this.setProperty(SalesReturn.PROPERTY_RETURNDATE_NAME, value);
+                this.setProperty(SalesReturn.PROPERTY_DELIVERYDATE_NAME, value);
             }
 
             /** 映射的属性名称-凭证日期 */
@@ -701,6 +701,9 @@ namespace sales {
                             c => c.baseDocumentType === item.objectCode
                                 && c.baseDocumentEntry === item.docEntry
                                 && c.baseDocumentLineId === item.lineId) !== null) {
+                            continue;
+                        }
+                        if (!(item.closedQuantity > 0)) {
                             continue;
                         }
                         let myItem: SalesReturnItem = this.salesReturnItems.create();
@@ -1300,14 +1303,14 @@ namespace sales {
             }
 
             /** 映射的属性名称-行交货日期 */
-            static PROPERTY_RETURNDATE_NAME: string = "ReturnDate";
+            static PROPERTY_DELIVERYDATE_NAME: string = "DeliveryDate";
             /** 获取-行交货日期 */
             get deliveryDate(): Date {
-                return this.getProperty<Date>(SalesReturnItem.PROPERTY_RETURNDATE_NAME);
+                return this.getProperty<Date>(SalesReturnItem.PROPERTY_DELIVERYDATE_NAME);
             }
             /** 设置-行交货日期 */
             set deliveryDate(value: Date) {
-                this.setProperty(SalesReturnItem.PROPERTY_RETURNDATE_NAME, value);
+                this.setProperty(SalesReturnItem.PROPERTY_DELIVERYDATE_NAME, value);
             }
 
             /** 映射的属性名称-已清数量 */
