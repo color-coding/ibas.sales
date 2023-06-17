@@ -2599,6 +2599,20 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 					return SalesOrderItem.this.getLineId();
 				}
 
+				@Override
+				public String getBaseDocumentType() {
+					return SalesOrderItem.this.getBaseDocumentType();
+				}
+
+				@Override
+				public Integer getBaseDocumentEntry() {
+					return SalesOrderItem.this.getBaseDocumentEntry();
+				}
+
+				@Override
+				public Integer getBaseDocumentLineId() {
+					return SalesOrderItem.this.getBaseDocumentLineId();
+				}
 			});
 		}
 		contracts.add(
