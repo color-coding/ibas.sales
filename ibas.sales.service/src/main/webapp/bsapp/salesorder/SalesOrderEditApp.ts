@@ -1404,5 +1404,92 @@ namespace sales {
                 return new SalesOrderEditApp();
             }
         }
+
+        export class MaterialOrderedReservationTargetSalesOrderService extends ibas.ServiceApplication<ibas.IView, materials.app.IMaterialOrderedReservationTarget> {
+            /** 应用标识 */
+            static APPLICATION_ID: string = "39bc5f50-7c11-4dd7-9f00-50464d276899";
+            /** 应用名称 */
+            static APPLICATION_NAME: string = "sales_app_materialorderedreservation_salesorder";
+            /** 构造函数 */
+            constructor() {
+                super();
+                this.id = MaterialOrderedReservationTargetSalesOrderService.APPLICATION_ID;
+                this.name = MaterialOrderedReservationTargetSalesOrderService.APPLICATION_NAME;
+                this.description = ibas.i18n.prop(this.name);
+            }
+            /** 注册视图 */
+            protected registerView(): void {
+                super.registerView();
+            }
+            protected runService(contract: materials.app.IMaterialOrderedReservationTarget): void {
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                // 未取消的
+                condition.alias = bo.SalesOrder.PROPERTY_CANCELED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 未删除的
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesOrder.PROPERTY_DELETED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 仅下达的
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesOrder.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emDocumentStatus.RELEASED.toString();
+                // 审批通过的或未进审批
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesOrder.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.APPROVED.toString();
+                condition.bracketOpen = 1;
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesOrder.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.UNAFFECTED.toString();
+                condition.relationship = ibas.emConditionRelationship.OR;
+                condition.bracketClose = 1;
+                // 物料
+                let cCrteria: ibas.IChildCriteria = criteria.childCriterias.create();
+                cCrteria.propertyPath = bo.SalesOrder.PROPERTY_SALESORDERITEMS_NAME;
+                cCrteria.onlyHasChilds = true;
+                condition = cCrteria.conditions.create();
+                condition.alias = bo.SalesOrderItem.PROPERTY_ITEMCODE_NAME;
+                condition.value = contract.itemCode;
+                // 调用选择服务
+                let that: this = this;
+                ibas.servicesManager.runChooseService<bo.SalesOrder>({
+                    boCode: bo.SalesOrder.BUSINESS_OBJECT_CODE,
+                    chooseType: ibas.emChooseType.MULTIPLE,
+                    criteria: criteria,
+                    onCompleted(selecteds: ibas.IList<bo.SalesOrder>): void {
+                        for (let selected of selecteds) {
+                            for (let item of selected.salesOrderItems) {
+                                contract.onReserved(selected.objectCode, selected.docEntry, item.lineId, item.quantity);
+                            }
+                        }
+                        that.destroy();
+                    }
+                });
+            }
+            protected viewShowed(): void {
+            }
+
+        }
+        export class MaterialOrderedReservationTargetSalesOrderServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor() {
+                super();
+                this.id = MaterialOrderedReservationTargetSalesOrderService.APPLICATION_ID;
+                this.name = MaterialOrderedReservationTargetSalesOrderService.APPLICATION_NAME;
+                this.description = ibas.i18n.prop(this.name);
+                this.proxy = materials.app.MaterialOrderedReservationTargetServiceProxy;
+            }
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract> {
+                return new MaterialOrderedReservationTargetSalesOrderService();
+            }
+        }
     }
 }
