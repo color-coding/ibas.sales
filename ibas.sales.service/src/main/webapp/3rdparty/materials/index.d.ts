@@ -2835,6 +2835,8 @@ declare namespace materials {
             symbol: string;
             /** 是否激活 */
             activated: ibas.emYesNo;
+            /** 小数位数 */
+            decimalPlaces: number;
             /** 备注 */
             remarks: string;
         }
@@ -8907,6 +8909,12 @@ declare namespace materials {
             get activated(): ibas.emYesNo;
             /** 设置-是否激活 */
             set activated(value: ibas.emYesNo);
+            /** 映射的属性名称-小数位数 */
+            static PROPERTY_DECIMALPLACES_NAME: string;
+            /** 获取-小数位数 */
+            get decimalPlaces(): number;
+            /** 设置-小数位数 */
+            set decimalPlaces(value: number);
             /** 映射的属性名称-备注 */
             static PROPERTY_REMARKS_NAME: string;
             /** 获取-备注 */
@@ -11774,6 +11782,8 @@ declare namespace materials {
             private saveReservation;
             private addTargetDocument;
             private removeTargetDocument;
+            /** 关闭视图 */
+            close(): void;
         }
         /** 视图- 物料订购预留 */
         interface IMaterialOrderedReservationView extends ibas.IView {
@@ -13077,6 +13087,8 @@ declare namespace materials {
             /** 新建数据事件，参数1：是否克隆 */
             createDataEvent: Function;
         }
+        /** 权限元素-单据仓库 */
+        const ELEMENT_DOCUMENT_WAREHOUSE: ibas.IElement;
     }
 }
 /**

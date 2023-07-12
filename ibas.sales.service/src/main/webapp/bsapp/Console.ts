@@ -76,7 +76,10 @@ namespace sales {
                 this.register(new SalesReturnPaymentServiceMapping());
                 this.register(new SalesDeliveryReceiptServiceMapping());
                 this.register(new SalesOrderReceiptServiceMapping());
-
+                // 权限元素
+                this.register(ELEMENT_SALES_ORDER_EXTRA);
+                this.register(ELEMENT_SALES_QUOTE_EXTRA);
+                this.register(ELEMENT_SHIPPING_ADDRESSES);
             }
             /** 运行 */
             run(): void {

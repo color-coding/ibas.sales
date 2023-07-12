@@ -834,7 +834,7 @@ namespace sales {
                 if (amount < 0 || (amount === 0 && this.editData.documentTotal !== 0)) {
                     throw new Error(ibas.i18n.prop("sales_receipted"));
                 }
-                ibas.servicesManager.runApplicationService<businesspartner.app.IReceiptContract>({
+                ibas.servicesManager.runApplicationService<businesspartner.app.IReceiptContract, receiptpayment.bo.Receipt>({
                     proxy: new businesspartner.app.ReceiptServiceProxy({
                         businessPartnerType: businesspartner.bo.emBusinessPartnerType.CUSTOMER,
                         businessPartnerCode: this.editData.customerCode,
@@ -843,7 +843,10 @@ namespace sales {
                         documentCurrency: this.editData.documentCurrency,
                         documentTotal: amount,
                         allowPartial: true
-                    })
+                    }),
+                    onCompleted: (receipt) => {
+                        this.proceeding(ibas.emMessageType.SUCCESS, ibas.i18n.prop("sales_document_receipted", receipt.docEntry, receipt.documentTotal, receipt.documentCurrency));
+                    }
                 });
             }
             /** 选择联系人 */

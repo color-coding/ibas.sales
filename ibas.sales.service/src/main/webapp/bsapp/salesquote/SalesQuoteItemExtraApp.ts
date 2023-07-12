@@ -305,5 +305,10 @@ namespace sales {
             /** 查看销售报价-行额外 事件 */
             viewSalesQuoteItemExtraEvent: Function;
         }
+        /** 权限元素-销售报价扩展 */
+        export const ELEMENT_SALES_QUOTE_EXTRA: ibas.IElement = {
+            id: SalesQuoteItemExtraApp.APPLICATION_ID,
+            name: SalesQuoteItemExtraApp.APPLICATION_NAME,
+        };
     }
 }

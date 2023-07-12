@@ -86,5 +86,6 @@
   "sales_not_found_lead's_customer": "没有找到[{0} - {1}]对应的客户，请创建后重试",
   "sales_salesquote_expired_date": "报价日期已失效",
   "sales_invaild_status_not_support_turn_to_operation": "单据的状态无效，不支持此操作",
+  "sales_document_receipted": "单据已收款，单号：{0}，金额：{1} {2}",
   "sales_closing_delimiter": "----结束----"
 }

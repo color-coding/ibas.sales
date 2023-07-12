@@ -304,5 +304,10 @@ namespace sales {
             /** 查看销售订单-行额外 事件 */
             viewSalesOrderItemExtraEvent: Function;
         }
+        /** 权限元素-销售订单扩展 */
+        export const ELEMENT_SALES_ORDER_EXTRA: ibas.IElement = {
+            id: SalesOrderItemExtraApp.APPLICATION_ID,
+            name: SalesOrderItemExtraApp.APPLICATION_NAME,
+        };
     }
 }

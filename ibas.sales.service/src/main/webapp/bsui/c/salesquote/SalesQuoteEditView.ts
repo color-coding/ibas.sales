@@ -249,7 +249,11 @@ namespace sales {
                                                         text: ibas.i18n.prop("bo_blanketagreement"),
                                                         press: function (): void {
                                                             that.fireViewEvents(that.chooseSalesQuoteBlanketAgreementEvent);
-                                                        }
+                                                        },
+                                                        visible: shell.app.privileges.canRun({
+                                                            id: app.BlanketAgreementChooseApp.APPLICATION_ID,
+                                                            name: app.BlanketAgreementChooseApp.APPLICATION_NAME,
+                                                        })
                                                     }),
                                                 ]
                                             })
@@ -269,7 +273,11 @@ namespace sales {
                                             icon: "sap-icon://sap-box",
                                             press: function (): void {
                                                 that.fireViewEvents(that.showSalesQuoteItemExtraEvent, that.tableSalesQuoteItem.getSelecteds().firstOrDefault());
-                                            }
+                                            },
+                                            visible: shell.app.privileges.canRun({
+                                                id: app.ELEMENT_SALES_QUOTE_EXTRA.id,
+                                                name: app.ELEMENT_SALES_QUOTE_EXTRA.name,
+                                            })
                                         }),
                                     ]
                                 }),
@@ -654,7 +662,8 @@ namespace sales {
                                     })
                                 }),
                                 new sap.m.ToolbarSeparator(""),
-                                new sap.m.MenuButton("", {
+                                new sap.extension.m.MenuButton("", {
+                                    autoHide: true,
                                     type: sap.m.ButtonType.Transparent,
                                     text: ibas.i18n.prop("shell_quick_to"),
                                     icon: "sap-icon://generate-shortcut",
@@ -669,8 +678,6 @@ namespace sales {
                                                 visible: shell.app.privileges.canRun({
                                                     id: sales.app.SalesOrderFunc.FUNCTION_ID,
                                                     name: sales.app.SalesOrderFunc.FUNCTION_NAME,
-                                                    category: undefined,
-                                                    description: undefined
                                                 })
                                             }),
                                         ],

@@ -55,7 +55,8 @@ namespace sales {
                             && sap.ui.getCore().getConfiguration().getVersion().getMinor() >= 73 ? false : true,
                         footer: new sap.m.Toolbar("", {
                             content: [
-                                new sap.m.MenuButton("", {
+                                new sap.extension.m.MenuButton("", {
+                                    autoHide: true,
                                     icon: "sap-icon://tags",
                                     menu: new sap.m.Menu("", {
                                         items: [
@@ -63,13 +64,21 @@ namespace sales {
                                                 text: ibas.i18n.prop("sales_material_batch"),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.chooseSalesCreditNoteItemMaterialBatchEvent);
-                                                }
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: materials.app.MaterialBatchReceiptService.APPLICATION_ID,
+                                                    name: materials.app.MaterialBatchReceiptService.APPLICATION_NAME,
+                                                })
                                             }),
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("sales_material_serial"),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.chooseSalesCreditNoteItemMaterialSerialEvent);
-                                                }
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: materials.app.MaterialSerialReceiptService.APPLICATION_ID,
+                                                    name: materials.app.MaterialSerialReceiptService.APPLICATION_NAME,
+                                                })
                                             }),
                                         ]
                                     })
@@ -92,13 +101,21 @@ namespace sales {
                                                 text: ibas.i18n.prop("bo_salesinvoice"),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.chooseSalesCreditNoteSalesInvoiceEvent);
-                                                }
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: app.SalesInvoiceChooseApp.APPLICATION_ID,
+                                                    name: app.SalesInvoiceChooseApp.APPLICATION_NAME,
+                                                })
                                             }),
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("bo_salesreturn"),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.chooseSalesCreditNoteSalesReturnEvent);
-                                                }
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: app.SalesReturnChooseApp.APPLICATION_ID,
+                                                    name: app.SalesReturnChooseApp.APPLICATION_NAME,
+                                                })
                                             }),
                                         ]
                                     })
@@ -668,6 +685,10 @@ namespace sales {
                             }),
                             new sap.uxap.ObjectPageSection("", {
                                 title: ibas.i18n.prop("bo_shippingaddress"),
+                                visible: shell.app.privileges.canRun({
+                                    id: app.ELEMENT_SHIPPING_ADDRESSES.id,
+                                    name: app.ELEMENT_SHIPPING_ADDRESSES.name
+                                }),
                                 subSections: [
                                     new sap.uxap.ObjectPageSubSection("", {
                                         blocks: [

@@ -70,7 +70,11 @@ namespace sales {
                                                 text: ibas.i18n.prop("bo_blanketagreement"),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.chooseSalesQuoteBlanketAgreementEvent);
-                                                }
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: app.BlanketAgreementChooseApp.APPLICATION_ID,
+                                                    name: app.BlanketAgreementChooseApp.APPLICATION_NAME,
+                                                })
                                             }),
                                         ]
                                     })
@@ -162,8 +166,6 @@ namespace sales {
                                                     visible: shell.app.privileges.canRun({
                                                         id: sales.app.SalesOrderFunc.FUNCTION_ID,
                                                         name: sales.app.SalesOrderFunc.FUNCTION_NAME,
-                                                        category: undefined,
-                                                        description: undefined
                                                     })
                                                 }),
                                             ]
@@ -487,7 +489,11 @@ namespace sales {
                                                                     press(oEvent: any): void {
                                                                         that.fireViewEvents(that.showSalesQuoteItemExtraEvent,
                                                                             that.listSalesQuoteItem.getSelecteds().firstOrDefault());
-                                                                    }
+                                                                    },
+                                                                    visible: shell.app.privileges.canRun({
+                                                                        id: app.ELEMENT_SALES_QUOTE_EXTRA.id,
+                                                                        name: app.ELEMENT_SALES_QUOTE_EXTRA.name,
+                                                                    })
                                                                 }),
                                                                 new sap.m.SegmentedButtonItem("", {
                                                                     width: "3rem",
