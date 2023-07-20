@@ -1315,6 +1315,11 @@ namespace sales {
                 if (ibas.objects.isNull(this.editData) || this.editData.isDirty) {
                     throw new Error(ibas.i18n.prop("shell_data_saved_first"));
                 }
+                if (this.editData.documentStatus > ibas.emDocumentStatus.RELEASED
+                    || this.editData.canceled === ibas.emYesNo.YES
+                    || this.editData.approvalStatus === ibas.emApprovalStatus.REJECTED) {
+                    throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                }
                 let contract: materials.app.IMaterialInventoryReservationTarget = {
                     targetType: this.editData.objectCode,
                     targetEntry: this.editData.docEntry,
@@ -1332,7 +1337,7 @@ namespace sales {
                         uom: item.uom
                     });
                 }
-                ibas.servicesManager.runApplicationService<materials.app.IMaterialInventoryReservationTarget>({
+                ibas.servicesManager.runApplicationService<materials.app.IMaterialInventoryReservationTarget | materials.app.IMaterialInventoryReservationTarget[]>({
                     proxy: new materials.app.MaterialInventoryReservationServiceProxy(contract)
                 });
             }
@@ -1460,6 +1465,10 @@ namespace sales {
                 condition = cCrteria.conditions.create();
                 condition.alias = bo.SalesOrderItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
+                condition = cCrteria.conditions.create();
+                condition.alias = bo.SalesOrderItem.PROPERTY_ORDEREDQUANTITY_NAME;
+                condition.comparedAlias = bo.SalesOrderItem.PROPERTY_QUANTITY_NAME;
+                condition.operation = ibas.emConditionOperation.LESS_THAN;
                 // 调用选择服务
                 let that: this = this;
                 ibas.servicesManager.runChooseService<bo.SalesOrder>({

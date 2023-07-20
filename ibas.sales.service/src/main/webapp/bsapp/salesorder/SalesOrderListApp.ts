@@ -29,6 +29,7 @@ namespace sales {
                 // 其他事件
                 this.view.editDataEvent = this.editData;
                 this.view.deleteDataEvent = this.deleteData;
+                this.view.reserveMaterialsInventoryEvent = this.reserveMaterialsInventory;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -149,6 +150,67 @@ namespace sales {
                     }
                 });
             }
+            /** 预留物料库存 */
+            private reserveMaterialsInventory(datas: bo.SalesOrder[]): void {
+                let criteria: ibas.Criteria = new ibas.Criteria();
+                for (let data of datas) {
+                    if (data.documentStatus > ibas.emDocumentStatus.RELEASED
+                        || data.canceled === ibas.emYesNo.YES
+                        || data.approvalStatus === ibas.emApprovalStatus.REJECTED
+                    ) {
+                        continue;
+                    }
+                    let condition: ibas.ICondition = criteria.conditions.create();
+                    condition.alias = bo.SalesOrder.PROPERTY_DOCENTRY_NAME;
+                    condition.value = data.docEntry.toString();
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                }
+                if (criteria.conditions.length > 0) {
+                    let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
+                    boRepository.fetchSalesOrder({
+                        criteria: criteria,
+                        onCompleted: (opRslt) => {
+                            try {
+                                if (opRslt.resultCode !== 0) {
+                                    throw new Error(opRslt.message);
+                                }
+                                let contracts: ibas.IList<materials.app.IMaterialInventoryReservationTarget> = new ibas.ArrayList<materials.app.IMaterialInventoryReservationTarget>();
+                                for (let data of opRslt.resultObjects) {
+                                    let contract: materials.app.IMaterialInventoryReservationTarget = {
+                                        targetType: data.objectCode,
+                                        targetEntry: data.docEntry,
+                                        businessPartner: ibas.strings.format("{1} ({0})", data.customerCode, data.customerName),
+                                        items: []
+                                    };
+                                    for (let item of data.salesOrderItems) {
+                                        contract.items.push({
+                                            targetLineId: item.lineId,
+                                            itemCode: item.itemCode,
+                                            itemDescription: item.itemDescription,
+                                            itemVersion: item.itemVersion,
+                                            warehouse: item.warehouse,
+                                            quantity: item.quantity,
+                                            uom: item.uom
+                                        });
+                                    }
+                                    contracts.add(contract);
+                                }
+                                if (contracts.length > 0) {
+                                    ibas.servicesManager.runApplicationService<materials.app.IMaterialInventoryReservationTarget | materials.app.IMaterialInventoryReservationTarget[]>({
+                                        proxy: new materials.app.MaterialInventoryReservationServiceProxy(contracts)
+                                    });
+                                } else {
+                                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_fetched_none"));
+                                }
+                            } catch (error) {
+                                this.messages(error);
+                            }
+                        }
+                    });
+                } else {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_fetched_none"));
+                }
+            }
         }
         /** 视图-销售订单 */
         export interface ISalesOrderListView extends ibas.IBOListView {
@@ -158,6 +220,8 @@ namespace sales {
             deleteDataEvent: Function;
             /** 显示数据 */
             showData(datas: bo.SalesOrder[]): void;
+            /** 预留物料库存 */
+            reserveMaterialsInventoryEvent: Function;
         }
     }
 }
