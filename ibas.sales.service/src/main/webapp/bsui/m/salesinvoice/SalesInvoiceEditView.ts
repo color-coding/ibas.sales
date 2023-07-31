@@ -42,6 +42,8 @@ namespace sales {
                 chooseSalesInvoiceSalesDeliveryEvent: Function;
                 /** 择销售交货项目一揽子协议事件 */
                 chooseSalesInvoiceBlanketAgreementEvent: Function;
+                /** 选择客户合同 */
+                chooseCustomerAgreementsEvent: Function;
                 /** 收款销售交货 */
                 receiptSalesInvoiceEvent: Function;
                 /** 编辑地址事件 */
@@ -478,6 +480,19 @@ namespace sales {
                                                         type: new sap.extension.data.Alphanumeric({
                                                             maxLength: 8
                                                         })
+                                                    }),
+                                                    new sap.m.Label("", { text: ibas.i18n.prop("bo_salesinvoice_agreements") }),
+                                                    new sap.extension.m.Input("", {
+                                                        showValueHelp: true,
+                                                        valueHelpOnly: false,
+                                                        valueHelpRequest: function (): void {
+                                                            that.fireViewEvents(that.chooseCustomerAgreementsEvent);
+                                                        },
+                                                    }).bindProperty("bindingValue", {
+                                                        path: "agreements",
+                                                        type: new sap.extension.data.Alphanumeric({
+                                                            maxLength: 110
+                                                        }),
                                                     }),
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesinvoice_consumer") }),
                                                     new sap.extension.m.Input("", {

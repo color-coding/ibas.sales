@@ -42,6 +42,8 @@ namespace sales {
                 chooseSalesDeliverySalesOrderEvent: Function;
                 /** 选择销售交货项目-一揽子协议事件 */
                 chooseSalesDeliveryBlanketAgreementEvent: Function;
+                /** 选择客户合同 */
+                chooseCustomerAgreementsEvent: Function;
                 /** 转为销售退货事件 */
                 turnToSalesReturnEvent: Function;
                 /** 转为销售发票事件 */
@@ -186,6 +188,19 @@ namespace sales {
                             }).bindProperty("bindingValue", {
                                 path: "deliveryDate",
                                 type: new sap.extension.data.Date()
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_agreements") }),
+                            new sap.extension.m.Input("", {
+                                showValueHelp: true,
+                                valueHelpOnly: false,
+                                valueHelpRequest: function (): void {
+                                    that.fireViewEvents(that.chooseCustomerAgreementsEvent);
+                                },
+                            }).bindProperty("bindingValue", {
+                                path: "agreements",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 110
+                                }),
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesdelivery_consumer") }),
                             new sap.extension.m.Input("", {

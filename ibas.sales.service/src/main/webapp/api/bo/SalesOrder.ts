@@ -148,6 +148,9 @@ namespace sales {
             /** 单据类型 */
             orderType: string;
 
+            /** 合同 */
+            agreements: string;
+
             /** 销售订单-行集合 */
             salesOrderItems: ISalesOrderItems;
 
@@ -259,7 +262,7 @@ namespace sales {
 
             /** 产品标识 */
             itemSign: string;
-            
+
             /** 产品版本 */
             itemVersion: string;
 
@@ -351,6 +354,9 @@ namespace sales {
 
             /** 分配规则5 */
             distributionRule5: string;
+
+            /** 合同 */
+            agreements: string;
 
             /** 已订购数量 */
             orderedQuantity: number;

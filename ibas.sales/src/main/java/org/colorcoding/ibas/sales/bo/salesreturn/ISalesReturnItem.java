@@ -1157,4 +1157,17 @@ public interface ISalesReturnItem extends IBODocumentLine, IMaterialBatchReceipt
 	 */
 	void setDistributionRule5(String value);
 
+	/**
+	 * 获取-合同/协议
+	 * 
+	 * @return 值
+	 */
+	String getAgreements();
+
+	/**
+	 * 设置-合同/协议
+	 * 
+	 * @param value 值
+	 */
+	void setAgreements(String value);
 }

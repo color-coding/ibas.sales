@@ -267,6 +267,12 @@ namespace sales {
                                                         path: "orderType",
                                                         type: new sap.extension.data.Alphanumeric()
                                                     }),
+                                                    new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_agreements") }),
+                                                    new sap.extension.m.Text("", {
+                                                    }).bindProperty("bindingValue", {
+                                                        path: "agreements",
+                                                        type: new sap.extension.data.Alphanumeric(),
+                                                    }),
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_consumer") }),
                                                     new sap.extension.m.Text("", {
                                                     }).bindProperty("bindingValue", {

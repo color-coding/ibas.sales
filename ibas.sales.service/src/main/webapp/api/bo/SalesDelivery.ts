@@ -148,6 +148,9 @@ namespace sales {
             /** 单据类型 */
             orderType: string;
 
+            /** 合同 */
+            agreements: string;
+
             /** 销售交货-行集合 */
             salesDeliveryItems: ISalesDeliveryItems;
 
@@ -351,6 +354,9 @@ namespace sales {
 
             /** 分配规则5 */
             distributionRule5: string;
+
+            /** 合同 */
+            agreements: string;
 
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;

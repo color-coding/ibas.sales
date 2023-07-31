@@ -228,6 +228,7 @@ namespace sales {
             target.priceList = source.priceList;
             target.documentCurrency = source.documentCurrency;
             target.paymentCode = source.paymentCode;
+            target.agreements = source.agreements;
             // 复制自定义字段
             for (let item of source.userFields.forEach()) {
                 let myItem: ibas.IUserField = target.userFields.get(item.name);
@@ -263,6 +264,7 @@ namespace sales {
             target.distributionRule3 = source.distributionRule3;
             target.distributionRule4 = source.distributionRule4;
             target.distributionRule5 = source.distributionRule5;
+            target.agreements = source.agreements;
             target.itemCode = source.itemCode;
             target.itemDescription = source.itemDescription;
             target.itemSign = source.itemSign;

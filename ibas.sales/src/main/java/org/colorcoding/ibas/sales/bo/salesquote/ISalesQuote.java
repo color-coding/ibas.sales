@@ -801,6 +801,20 @@ public interface ISalesQuote extends IBODocument {
 	void setOrderType(String value);
 
 	/**
+	 * 获取-合同/协议
+	 * 
+	 * @return 值
+	 */
+	String getAgreements();
+
+	/**
+	 * 设置-合同/协议
+	 * 
+	 * @param value 值
+	 */
+	void setAgreements(String value);
+
+	/**
 	 * 获取-销售报价-行集合
 	 * 
 	 * @return 值

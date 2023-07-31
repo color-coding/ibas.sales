@@ -42,6 +42,7 @@ namespace sales {
                 this.view.chooseSalesDeliveryItemUnitEvent = this.chooseSalesDeliveryItemUnit;
                 this.view.chooseSalesDeliverySalesOrderEvent = this.chooseSalesDeliverySalesOrder;
                 this.view.chooseSalesDeliveryBlanketAgreementEvent = this.chooseSalesDeliveryBlanketAgreement;
+                this.view.chooseCustomerAgreementsEvent = this.chooseCustomerAgreements;
                 this.view.receiptSalesDeliveryEvent = this.receiptSalesDelivery;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
                 this.view.turnToSalesInvoiceEvent = this.turnToSalesInvoice;
@@ -1143,6 +1144,40 @@ namespace sales {
                     }
                 });
             }
+            private chooseCustomerAgreements(): void {
+                if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("bo_salesorder_customerCode")
+                    ));
+                    return;
+                }
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = businesspartner.bo.Agreement.PROPERTY_ACTIVATED_NAME;
+                condition.value = ibas.emYesNo.YES.toString();
+                condition = criteria.conditions.create();
+                condition.alias = businesspartner.bo.Agreement.PROPERTY_BUSINESSPARTNERTYPE_NAME;
+                condition.value = businesspartner.bo.emBusinessPartnerType.CUSTOMER.toString();
+                condition = criteria.conditions.create();
+                condition.alias = businesspartner.bo.Agreement.PROPERTY_BUSINESSPARTNERCODE_NAME;
+                condition.value = this.editData.customerCode;
+                ibas.servicesManager.runChooseService<businesspartner.bo.Agreement>({
+                    boCode: businesspartner.bo.Agreement.BUSINESS_OBJECT_CODE,
+                    chooseType: ibas.emChooseType.MULTIPLE,
+                    criteria: criteria,
+                    onCompleted: (selecteds) => {
+                        let builder: ibas.StringBuilder = new ibas.StringBuilder();
+                        for (let selected of selecteds) {
+                            if (builder.length > 0) {
+                                builder.append(ibas.DATA_SEPARATOR);
+                                builder.append(" ");
+                            }
+                            builder.append(selected.code);
+                        }
+                        this.editData.agreements = builder.toString();
+                    }
+                });
+            }
         }
         /** 视图-销售交货 */
         export interface ISalesDeliveryEditView extends ibas.IBOEditView {
@@ -1180,6 +1215,8 @@ namespace sales {
             chooseSalesDeliverySalesOrderEvent: Function;
             /** 选择销售交货-一揽子协议事件 */
             chooseSalesDeliveryBlanketAgreementEvent: Function;
+            /** 选择客户合同 */
+            chooseCustomerAgreementsEvent: Function;
             /** 销售交货收款事件 */
             receiptSalesDeliveryEvent: Function;
             /** 编辑地址事件 */

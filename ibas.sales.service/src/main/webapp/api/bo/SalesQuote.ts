@@ -151,6 +151,9 @@ namespace sales {
             /** 单据类型 */
             orderType: string;
 
+            /** 合同 */
+            agreements: string;
+
             /** 销售报价-行集合 */
             salesQuoteItems: ISalesQuoteItems;
 
@@ -347,6 +350,9 @@ namespace sales {
 
             /** 分配规则5 */
             distributionRule5: string;
+
+            /** 合同 */
+            agreements: string;
 
             /** 销售报价-行-额外信息集合 */
             salesQuoteItemExtras: ISalesQuoteItemExtras;

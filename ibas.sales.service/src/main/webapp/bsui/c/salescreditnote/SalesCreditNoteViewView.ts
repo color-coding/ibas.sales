@@ -301,6 +301,7 @@ namespace sales {
                             new sap.ui.layout.VerticalLayout("", {
                                 width: "30%",
                                 content: [
+                                    /*
                                     new sap.extension.m.ObjectAttribute("", {
                                         title: ibas.i18n.prop("bo_salescreditnote_postingdate"),
                                         bindingValue: {
@@ -308,6 +309,7 @@ namespace sales {
                                             type: new sap.extension.data.Date(),
                                         }
                                     }),
+                                    */
                                     new sap.extension.m.ObjectAttribute("", {
                                         title: ibas.i18n.prop("bo_salescreditnote_documentdate"),
                                         bindingValue: {
@@ -320,6 +322,13 @@ namespace sales {
                                         bindingValue: {
                                             path: "deliveryDate",
                                             type: new sap.extension.data.Date(),
+                                        }
+                                    }),
+                                    new sap.extension.m.ObjectAttribute("", {
+                                        title: ibas.i18n.prop("bo_salescreditnote_agreements"),
+                                        bindingValue: {
+                                            path: "agreements",
+                                            type: new sap.extension.data.Alphanumeric(),
                                         }
                                     }),
                                 ]

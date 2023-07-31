@@ -34,6 +34,8 @@ namespace sales {
                 chooseSalesQuoteItemUnitEvent: Function;
                 /** 选择销售报价-行 物料版本 */
                 chooseSalesQuoteItemMaterialVersionEvent: Function;
+                /** 选择客户合同 */
+                chooseCustomerAgreementsEvent: Function;
                 /** 显示销售报价额外信息事件 */
                 showSalesQuoteItemExtraEvent: Function;
                 /** 转为销售订单事件 */
@@ -448,6 +450,19 @@ namespace sales {
                                                         type: new sap.extension.data.Alphanumeric({
                                                             maxLength: 8
                                                         })
+                                                    }),
+                                                    new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_agreements") }),
+                                                    new sap.extension.m.Input("", {
+                                                        showValueHelp: true,
+                                                        valueHelpOnly: false,
+                                                        valueHelpRequest: function (): void {
+                                                            that.fireViewEvents(that.chooseCustomerAgreementsEvent);
+                                                        },
+                                                    }).bindProperty("bindingValue", {
+                                                        path: "agreements",
+                                                        type: new sap.extension.data.Alphanumeric({
+                                                            maxLength: 110
+                                                        }),
                                                     }),
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_consumer") }),
                                                     new sap.extension.m.Input("", {

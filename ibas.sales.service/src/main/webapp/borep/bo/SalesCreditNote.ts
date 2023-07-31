@@ -521,6 +521,17 @@ namespace sales {
                 this.setProperty(SalesCreditNote.PROPERTY_ORDERTYPE_NAME, value);
             }
 
+            /** 映射的属性名称-合同 */
+            static PROPERTY_AGREEMENTS_NAME: string = "Agreements";
+            /** 获取-合同 */
+            get agreements(): string {
+                return this.getProperty<string>(SalesCreditNote.PROPERTY_AGREEMENTS_NAME);
+            }
+            /** 设置-合同 */
+            set agreements(value: string) {
+                this.setProperty(SalesCreditNote.PROPERTY_AGREEMENTS_NAME, value);
+            }
+
             /** 映射的属性名称-销售贷项-行集合 */
             static PROPERTY_SALESCREDITNOTEITEMS_NAME: string = "SalesCreditNoteItems";
             /** 获取-销售贷项-行集合 */
@@ -812,6 +823,29 @@ namespace sales {
                             if (sItem.parentLineSign === item.lineSign) {
                                 sItem.quantity = ibas.numbers.round(sItem.basisQuantity * item.quantity);
                             }
+                        }
+                    }
+                }
+            }
+            protected afterAdd(item: SalesCreditNoteItem): void {
+                super.afterAdd(item);
+                if (!this.parent.isLoading) {
+                    if (item.isNew && !item.isLoading) {
+                        item.agreements = this.parent.agreements;
+                    }
+                }
+            }
+
+            protected onParentPropertyChanged(name: string): void {
+                super.onParentPropertyChanged(name);
+                if (!this.parent.isLoading) {
+                    if (ibas.strings.equalsIgnoreCase(name, SalesOrder.PROPERTY_AGREEMENTS_NAME)) {
+                        let argument: string = this.parent.agreements;
+                        for (let item of this) {
+                            if (item.isLoading) {
+                                continue;
+                            }
+                            item.agreements = argument;
                         }
                     }
                 }
@@ -1505,9 +1539,20 @@ namespace sales {
             get distributionRule5(): string {
                 return this.getProperty<string>(SalesCreditNoteItem.PROPERTY_DISTRIBUTIONRULE5_NAME);
             }
+
             /** 设置-分配规则5 */
             set distributionRule5(value: string) {
                 this.setProperty(SalesCreditNoteItem.PROPERTY_DISTRIBUTIONRULE5_NAME, value);
+            }
+            /** 映射的属性名称-合同 */
+            static PROPERTY_AGREEMENTS_NAME: string = "Agreements";
+            /** 获取-合同 */
+            get agreements(): string {
+                return this.getProperty<string>(SalesCreditNoteItem.PROPERTY_AGREEMENTS_NAME);
+            }
+            /** 设置-合同 */
+            set agreements(value: string) {
+                this.setProperty(SalesCreditNoteItem.PROPERTY_AGREEMENTS_NAME, value);
             }
 
             /** 映射的属性名称-物料批次集合 */

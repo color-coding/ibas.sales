@@ -40,6 +40,8 @@ namespace sales {
                 chooseSalesCreditNoteSalesInvoiceEvent: Function;
                 /** 选择销售退货项目-销售退货事件 */
                 chooseSalesCreditNoteSalesReturnEvent: Function;
+                /** 选择客户合同 */
+                chooseCustomerAgreementsEvent: Function;
                 /** 编辑地址事件 */
                 editShippingAddressesEvent: Function;
                 defaultWarehouse: string;
@@ -434,6 +436,19 @@ namespace sales {
                                                         type: new sap.extension.data.Alphanumeric({
                                                             maxLength: 8
                                                         })
+                                                    }),
+                                                    new sap.m.Label("", { text: ibas.i18n.prop("bo_salescreditnote_agreements") }),
+                                                    new sap.extension.m.Input("", {
+                                                        showValueHelp: true,
+                                                        valueHelpOnly: false,
+                                                        valueHelpRequest: function (): void {
+                                                            that.fireViewEvents(that.chooseCustomerAgreementsEvent);
+                                                        },
+                                                    }).bindProperty("bindingValue", {
+                                                        path: "agreements",
+                                                        type: new sap.extension.data.Alphanumeric({
+                                                            maxLength: 110
+                                                        }),
                                                     }),
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salescreditnote_consumer") }),
                                                     new sap.extension.m.Input("", {

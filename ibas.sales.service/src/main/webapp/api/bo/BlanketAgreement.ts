@@ -99,6 +99,8 @@ namespace sales {
             priceMode: emPriceMode;
             /** 结算概率 */
             settlementProbability: number;
+            /** 合同 */
+            agreements: string;
 
             /** 一揽子协议-项目集合 */
             blanketAgreementItems: IBlanketAgreementItems;

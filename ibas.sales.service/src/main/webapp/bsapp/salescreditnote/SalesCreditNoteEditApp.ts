@@ -42,6 +42,7 @@ namespace sales {
                 this.view.chooseSalesCreditNoteItemUnitEvent = this.chooseSalesCreditNoteItemUnit;
                 this.view.chooseSalesCreditNoteSalesReturnEvent = this.chooseSalesCreditNoteSalesReturn;
                 this.view.chooseSalesCreditNoteSalesInvoiceEvent = this.chooseSalesCreditNoteSalesInvoice;
+                this.view.chooseCustomerAgreementsEvent = this.chooseCustomerAgreements;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
             }
             /** 视图显示后 */
@@ -924,6 +925,40 @@ namespace sales {
                     }
                 });
             }
+            private chooseCustomerAgreements(): void {
+                if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("bo_salesorder_customerCode")
+                    ));
+                    return;
+                }
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = businesspartner.bo.Agreement.PROPERTY_ACTIVATED_NAME;
+                condition.value = ibas.emYesNo.YES.toString();
+                condition = criteria.conditions.create();
+                condition.alias = businesspartner.bo.Agreement.PROPERTY_BUSINESSPARTNERTYPE_NAME;
+                condition.value = businesspartner.bo.emBusinessPartnerType.CUSTOMER.toString();
+                condition = criteria.conditions.create();
+                condition.alias = businesspartner.bo.Agreement.PROPERTY_BUSINESSPARTNERCODE_NAME;
+                condition.value = this.editData.customerCode;
+                ibas.servicesManager.runChooseService<businesspartner.bo.Agreement>({
+                    boCode: businesspartner.bo.Agreement.BUSINESS_OBJECT_CODE,
+                    chooseType: ibas.emChooseType.MULTIPLE,
+                    criteria: criteria,
+                    onCompleted: (selecteds) => {
+                        let builder: ibas.StringBuilder = new ibas.StringBuilder();
+                        for (let selected of selecteds) {
+                            if (builder.length > 0) {
+                                builder.append(ibas.DATA_SEPARATOR);
+                                builder.append(" ");
+                            }
+                            builder.append(selected.code);
+                        }
+                        this.editData.agreements = builder.toString();
+                    }
+                });
+            }
         }
         /** 视图-销售贷项 */
         export interface ISalesCreditNoteEditView extends ibas.IBOEditView {
@@ -961,6 +996,8 @@ namespace sales {
             chooseSalesCreditNoteSalesReturnEvent: Function;
             /** 选择销售贷项-销售发票事件 */
             chooseSalesCreditNoteSalesInvoiceEvent: Function;
+            /** 选择客户合同 */
+            chooseCustomerAgreementsEvent: Function;
             /** 编辑地址事件 */
             editShippingAddressesEvent: Function;
             /** 默认仓库 */

@@ -42,6 +42,8 @@ namespace sales {
                 chooseSalesCreditNoteSalesInvoiceEvent: Function;
                 /** 选择销售贷项项目-销售贷项事件 */
                 chooseSalesCreditNoteSalesReturnEvent: Function;
+                /** 选择客户合同 */
+                chooseCustomerAgreementsEvent: Function;
                 /** 编辑地址事件 */
                 editShippingAddressesEvent: Function;
 
@@ -181,6 +183,19 @@ namespace sales {
                             }).bindProperty("bindingValue", {
                                 path: "deliveryDate",
                                 type: new sap.extension.data.Date()
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salescreditnote_agreements") }),
+                            new sap.extension.m.Input("", {
+                                showValueHelp: true,
+                                valueHelpOnly: false,
+                                valueHelpRequest: function (): void {
+                                    that.fireViewEvents(that.chooseCustomerAgreementsEvent);
+                                },
+                            }).bindProperty("bindingValue", {
+                                path: "agreements",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 110
+                                }),
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salescreditnote_consumer") }),
                             new sap.extension.m.Input("", {
