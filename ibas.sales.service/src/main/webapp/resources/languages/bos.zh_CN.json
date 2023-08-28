@@ -652,6 +652,7 @@
         "bo_salesinvoice_rounding": "舍入",
         "bo_salesinvoice_diffamount": "舍入差额",
         "bo_salesinvoice_project": "项目代码",
+        "bo_salesinvoice_agreements": "合同/协议",
         "bo_salesinvoice_consumer": "终端客户",
         "bo_salesinvoice_ordertype": "单据类型",
         "bo_salesinvoice_itemslinetotal": "行总计",
