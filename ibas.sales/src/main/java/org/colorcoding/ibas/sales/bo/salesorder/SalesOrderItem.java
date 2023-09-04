@@ -36,6 +36,8 @@ import org.colorcoding.ibas.materials.logic.IMaterialCommitedJournalContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.logic.IBlanketAgreementQuantityContract;
+import org.colorcoding.ibas.sales.logic.IMaterialInventoryReservationStatusContract;
+import org.colorcoding.ibas.sales.logic.IMaterialOrderedReservationStatusContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceQtyTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceTaxTotal;
@@ -2582,106 +2584,172 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 
 	@Override
 	public IBusinessLogicContract[] getContracts() {
-		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>(2);
-		if (this.getLineStatus() == emDocumentStatus.RELEASED) {
-			// 物料已承诺数量
-			contracts.add(new IMaterialCommitedJournalContract() {
+		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>(4);
+		// 物料已承诺数量
+		contracts.add(new IMaterialCommitedJournalContract() {
 
-				@Override
-				public String getIdentifiers() {
-					return SalesOrderItem.this.getIdentifiers();
+			@Override
+			public String getIdentifiers() {
+				return SalesOrderItem.this.getIdentifiers();
+			}
+
+			@Override
+			public String getItemCode() {
+				return SalesOrderItem.this.getItemCode();
+			}
+
+			@Override
+			public String getWarehouse() {
+				return SalesOrderItem.this.getWarehouse();
+			}
+
+			@Override
+			public BigDecimal getQuantity() {
+				return SalesOrderItem.this.getQuantity().multiply(SalesOrderItem.this.getUOMRate());
+			}
+
+			@Override
+			public BigDecimal getClosedQuantity() {
+				return SalesOrderItem.this.getClosedQuantity().multiply(SalesOrderItem.this.getUOMRate());
+			}
+
+			@Override
+			public emBOStatus getStatus() {
+				if (SalesOrderItem.this.getLineStatus() == emDocumentStatus.PLANNED
+						|| SalesOrderItem.this.getLineStatus() == emDocumentStatus.RELEASED) {
+					return emBOStatus.OPEN;
 				}
+				return emBOStatus.CLOSED;
+			}
 
-				@Override
-				public String getItemCode() {
-					return SalesOrderItem.this.getItemCode();
-				}
+			@Override
+			public String getUOM() {
+				return SalesOrderItem.this.getInventoryUOM();
+			}
 
-				@Override
-				public String getWarehouse() {
-					return SalesOrderItem.this.getWarehouse();
-				}
+			@Override
+			public String getDocumentType() {
+				return SalesOrderItem.this.getObjectCode();
+			}
 
-				@Override
-				public BigDecimal getQuantity() {
-					// 订购数量 = 订单数量 - 已交货数量
-					// 需要转为库存单位数量
-					return SalesOrderItem.this.getQuantity().subtract(SalesOrderItem.this.getClosedQuantity())
-							.multiply(SalesOrderItem.this.getUOMRate());
-				}
+			@Override
+			public Integer getDocumentEntry() {
+				return SalesOrderItem.this.getDocEntry();
+			}
 
-				@Override
-				public String getUOM() {
-					return SalesOrderItem.this.getInventoryUOM();
-				}
+			@Override
+			public Integer getDocumentLineId() {
+				return SalesOrderItem.this.getLineId();
+			}
 
-				@Override
-				public String getDocumentType() {
-					return SalesOrderItem.this.getObjectCode();
-				}
+			@Override
+			public String getBaseDocumentType() {
+				return SalesOrderItem.this.getBaseDocumentType();
+			}
 
-				@Override
-				public Integer getDocumentEntry() {
-					return SalesOrderItem.this.getDocEntry();
-				}
+			@Override
+			public Integer getBaseDocumentEntry() {
+				return SalesOrderItem.this.getBaseDocumentEntry();
+			}
 
-				@Override
-				public Integer getDocumentLineId() {
-					return SalesOrderItem.this.getLineId();
-				}
+			@Override
+			public Integer getBaseDocumentLineId() {
+				return SalesOrderItem.this.getBaseDocumentLineId();
+			}
+		});
+		// 一揽子协议
+		contracts.add(new IBlanketAgreementQuantityContract() {
 
-				@Override
-				public String getBaseDocumentType() {
-					return SalesOrderItem.this.getBaseDocumentType();
-				}
+			@Override
+			public String getIdentifiers() {
+				return SalesOrderItem.this.getIdentifiers();
+			}
 
-				@Override
-				public Integer getBaseDocumentEntry() {
-					return SalesOrderItem.this.getBaseDocumentEntry();
-				}
+			@Override
+			public BigDecimal getQuantity() {
+				return SalesOrderItem.this.getQuantity();
+			}
 
-				@Override
-				public Integer getBaseDocumentLineId() {
-					return SalesOrderItem.this.getBaseDocumentLineId();
-				}
-			});
-		}
-		contracts.add(
-				// 一揽子协议
-				new IBlanketAgreementQuantityContract() {
+			@Override
+			public BigDecimal getAmount() {
+				return SalesOrderItem.this.getLineTotal();
+			}
 
-					@Override
-					public String getIdentifiers() {
-						return SalesOrderItem.this.getIdentifiers();
-					}
+			@Override
+			public String getBaseDocumentType() {
+				return SalesOrderItem.this.getBaseDocumentType();
+			}
 
-					@Override
-					public BigDecimal getQuantity() {
-						return SalesOrderItem.this.getQuantity();
-					}
+			@Override
+			public Integer getBaseDocumentEntry() {
+				return SalesOrderItem.this.getBaseDocumentEntry();
+			}
 
-					@Override
-					public BigDecimal getAmount() {
-						return SalesOrderItem.this.getLineTotal();
-					}
+			@Override
+			public Integer getBaseDocumentLineId() {
+				return SalesOrderItem.this.getBaseDocumentLineId();
+			}
+		});
 
-					@Override
-					public String getBaseDocumentType() {
-						return SalesOrderItem.this.getBaseDocumentType();
-					}
+		// 订购预留关闭
+		contracts.add(new IMaterialOrderedReservationStatusContract() {
 
-					@Override
-					public Integer getBaseDocumentEntry() {
-						return SalesOrderItem.this.getBaseDocumentEntry();
-					}
+			@Override
+			public String getIdentifiers() {
+				return SalesOrderItem.this.getIdentifiers();
+			}
 
-					@Override
-					public Integer getBaseDocumentLineId() {
-						return SalesOrderItem.this.getBaseDocumentLineId();
-					}
-				}
+			@Override
+			public String getTargetDocumentType() {
+				return SalesOrderItem.this.getObjectCode();
+			}
 
-		);
+			@Override
+			public Integer getTargetDocumentEntry() {
+				return SalesOrderItem.this.getDocEntry();
+			}
+
+			@Override
+			public Integer getTargetDocumentLineId() {
+				return SalesOrderItem.this.getLineId();
+			}
+
+			@Override
+			public emDocumentStatus getTargetDocumentStatus() {
+				return SalesOrderItem.this.getLineStatus();
+			}
+
+		});
+		// 库存预留关闭
+		contracts.add(new IMaterialInventoryReservationStatusContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesOrderItem.this.getIdentifiers();
+			}
+
+			@Override
+			public String getTargetDocumentType() {
+				return SalesOrderItem.this.getObjectCode();
+			}
+
+			@Override
+			public Integer getTargetDocumentEntry() {
+				return SalesOrderItem.this.getDocEntry();
+			}
+
+			@Override
+			public Integer getTargetDocumentLineId() {
+				return SalesOrderItem.this.getLineId();
+			}
+
+			@Override
+			public emDocumentStatus getTargetDocumentStatus() {
+				return SalesOrderItem.this.getLineStatus();
+			}
+
+		});
+
 		return contracts.toArray(new IBusinessLogicContract[] {});
 	}
 

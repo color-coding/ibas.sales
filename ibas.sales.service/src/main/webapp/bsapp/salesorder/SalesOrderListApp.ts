@@ -154,12 +154,6 @@ namespace sales {
             private reserveMaterialsInventory(datas: bo.SalesOrder[]): void {
                 let criteria: ibas.Criteria = new ibas.Criteria();
                 for (let data of datas) {
-                    if (data.documentStatus > ibas.emDocumentStatus.RELEASED
-                        || data.canceled === ibas.emYesNo.YES
-                        || data.approvalStatus === ibas.emApprovalStatus.REJECTED
-                    ) {
-                        continue;
-                    }
                     let condition: ibas.ICondition = criteria.conditions.create();
                     condition.alias = bo.SalesOrder.PROPERTY_DOCENTRY_NAME;
                     condition.value = data.docEntry.toString();
