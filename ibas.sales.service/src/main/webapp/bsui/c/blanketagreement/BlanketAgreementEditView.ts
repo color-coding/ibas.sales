@@ -65,7 +65,8 @@ namespace sales {
                                 })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_blanketagreement_description") }),
-                            new sap.extension.m.Input("", {
+                            new sap.extension.m.TextArea("", {
+                                rows: 3
                             }).bindProperty("bindingValue", {
                                 path: "description",
                                 type: new sap.extension.data.Alphanumeric({
@@ -144,6 +145,30 @@ namespace sales {
                                     if (data === ibas.emApprovalStatus.PROCESSING) {
                                         return false;
                                     } return true;
+                                }
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_blanketagreement_docnum") }),
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "docNum",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 20
+                                })
+                            }).bindProperty("editable", {
+                                path: "series",
+                                formatter(data: any): any {
+                                    return data > 0 ? false : true;
+                                }
+                            }),
+                            new sap.extension.m.SeriesSelect("", {
+                                objectCode: bo.BO_CODE_BLANKETAGREEMENT,
+                            }).bindProperty("bindingValue", {
+                                path: "series",
+                                type: new sap.extension.data.Numeric()
+                            }).bindProperty("editable", {
+                                path: "isNew",
+                                formatter(data: any): any {
+                                    return data === false ? false : true;
                                 }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_blanketagreement_signdate") }),

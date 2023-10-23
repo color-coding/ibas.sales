@@ -59,7 +59,7 @@
     {
         "bo_salesdelivery": "销售交货",
         "bo_salesdelivery_docentry": "凭证编号",
-        "bo_salesdelivery_docnum": "期间编号",
+        "bo_salesdelivery_docnum": "单据编码",
         "bo_salesdelivery_period": "期间",
         "bo_salesdelivery_canceled": "取消",
         "bo_salesdelivery_status": "状态",
@@ -183,7 +183,7 @@
     {
         "bo_salesorder": "销售订单",
         "bo_salesorder_docentry": "凭证编号",
-        "bo_salesorder_docnum": "期间编号",
+        "bo_salesorder_docnum": "单据编码",
         "bo_salesorder_period": "期间",
         "bo_salesorder_canceled": "取消",
         "bo_salesorder_status": "状态",
@@ -334,7 +334,7 @@
     {
         "bo_salesreturn": "销售退货",
         "bo_salesreturn_docentry": "凭证编号",
-        "bo_salesreturn_docnum": "期间编号",
+        "bo_salesreturn_docnum": "单据编码",
         "bo_salesreturn_period": "期间",
         "bo_salesreturn_canceled": "取消",
         "bo_salesreturn_status": "状态",
@@ -458,7 +458,7 @@
     {
         "bo_salesquote": "销售报价",
         "bo_salesquote_docentry": "凭证编号",
-        "bo_salesquote_docnum": "期间编号",
+        "bo_salesquote_docnum": "单据编码",
         "bo_salesquote_period": "期间",
         "bo_salesquote_canceled": "取消",
         "bo_salesquote_status": "状态",
@@ -609,7 +609,7 @@
     {
         "bo_salesinvoice": "销售发票",
         "bo_salesinvoice_docentry": "凭证编号",
-        "bo_salesinvoice_docnum": "期间编号",
+        "bo_salesinvoice_docnum": "单据编码",
         "bo_salesinvoice_period": "期间",
         "bo_salesinvoice_canceled": "取消",
         "bo_salesinvoice_status": "状态",
@@ -759,7 +759,7 @@
     {
         "bo_salescreditnote": "销售贷项",
         "bo_salescreditnote_docentry": "凭证编号",
-        "bo_salescreditnote_docnum": "期间编号",
+        "bo_salescreditnote_docnum": "单据编码",
         "bo_salescreditnote_period": "期间",
         "bo_salescreditnote_canceled": "取消",
         "bo_salescreditnote_status": "状态",
@@ -950,7 +950,7 @@
     {
         "bo_blanketagreement": "一揽子协议",
         "bo_blanketagreement_docentry": "凭证编号",
-        "bo_blanketagreement_docnum": "期间编号",
+        "bo_blanketagreement_docnum": "单据编码",
         "bo_blanketagreement_period": "期间",
         "bo_blanketagreement_canceled": "取消",
         "bo_blanketagreement_status": "状态",
@@ -981,6 +981,7 @@
         "bo_blanketagreement_deleted": "已删除",
         "bo_blanketagreement_customercode": "客户代码",
         "bo_blanketagreement_customername": "客户名称",
+        "bo_blanketagreement_customer": "客户",
         "bo_blanketagreement_contactperson": "联系人",
         "bo_blanketagreement_paymentcode": "付款条款",
         "bo_blanketagreement_project": "项目代码",
