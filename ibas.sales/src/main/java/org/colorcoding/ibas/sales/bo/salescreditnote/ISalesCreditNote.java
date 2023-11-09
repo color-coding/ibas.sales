@@ -801,6 +801,20 @@ public interface ISalesCreditNote extends IBODocument, IShippingAddressParent {
 	void setAgreements(String value);
 
 	/**
+	 * 获取-分支
+	 * 
+	 * @return 值
+	 */
+	String getBranch();
+
+	/**
+	 * 设置-分支
+	 * 
+	 * @param value 值
+	 */
+	void setBranch(String value);
+
+	/**
 	 * 获取-销售贷项-行集合
 	 * 
 	 * @return 值

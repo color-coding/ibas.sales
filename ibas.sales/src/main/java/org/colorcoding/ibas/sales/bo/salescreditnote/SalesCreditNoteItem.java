@@ -2656,6 +2656,21 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem>
 					public Integer getBaseDocumentLineId() {
 						return SalesCreditNoteItem.this.getBaseDocumentLineId();
 					}
+
+					@Override
+					public BigDecimal getPrice() {
+						return SalesCreditNoteItem.this.getPrice();
+					}
+
+					@Override
+					public String getCurrency() {
+						return SalesCreditNoteItem.this.getCurrency();
+					}
+
+					@Override
+					public BigDecimal getRate() {
+						return SalesCreditNoteItem.this.getRate();
+					}
 				},
 				// 基础单据为销售订单
 				new ISalesOrderReturnContract() {

@@ -2656,6 +2656,21 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem>
 					public Integer getBaseDocumentLineId() {
 						return SalesInvoiceItem.this.getBaseDocumentLineId();
 					}
+
+					@Override
+					public BigDecimal getPrice() {
+						return SalesInvoiceItem.this.getPrice();
+					}
+
+					@Override
+					public String getCurrency() {
+						return SalesInvoiceItem.this.getCurrency();
+					}
+
+					@Override
+					public BigDecimal getRate() {
+						return SalesInvoiceItem.this.getRate();
+					}
 				},
 
 				// 销售订单发货

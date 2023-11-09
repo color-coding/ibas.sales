@@ -815,6 +815,20 @@ public interface ISalesQuote extends IBODocument {
 	void setAgreements(String value);
 
 	/**
+	 * 获取-分支
+	 * 
+	 * @return 值
+	 */
+	String getBranch();
+
+	/**
+	 * 设置-分支
+	 * 
+	 * @param value 值
+	 */
+	void setBranch(String value);
+
+	/**
 	 * 获取-销售报价-行集合
 	 * 
 	 * @return 值

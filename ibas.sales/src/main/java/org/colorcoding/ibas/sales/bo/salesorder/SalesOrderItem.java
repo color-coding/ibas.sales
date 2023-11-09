@@ -2656,6 +2656,21 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 			public Integer getBaseDocumentLineId() {
 				return SalesOrderItem.this.getBaseDocumentLineId();
 			}
+
+			@Override
+			public DateTime getDeliveryDate() {
+				return SalesOrderItem.this.parent.getDeliveryDate();
+			}
+
+			@Override
+			public DateTime getDocumentDate() {
+				return SalesOrderItem.this.parent.getDocumentDate();
+			}
+
+			@Override
+			public DateTime getPostingDate() {
+				return SalesOrderItem.this.parent.getPostingDate();
+			}
 		});
 		// 一揽子协议
 		contracts.add(new IBlanketAgreementQuantityContract() {

@@ -2615,6 +2615,20 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem>
 						return SalesReturnItem.this.getBaseDocumentLineId();
 					}
 
+					@Override
+					public BigDecimal getPrice() {
+						return SalesReturnItem.this.getPrice();
+					}
+
+					@Override
+					public String getCurrency() {
+						return SalesReturnItem.this.getCurrency();
+					}
+
+					@Override
+					public BigDecimal getRate() {
+						return SalesReturnItem.this.getRate();
+					}
 				},
 				// 基础单据为销售订单
 				new ISalesOrderReturnContract() {

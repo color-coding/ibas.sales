@@ -2613,6 +2613,21 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem>
 					public Integer getBaseDocumentLineId() {
 						return SalesDeliveryItem.this.getBaseDocumentLineId();
 					}
+
+					@Override
+					public BigDecimal getPrice() {
+						return SalesDeliveryItem.this.getPrice();
+					}
+
+					@Override
+					public String getCurrency() {
+						return SalesDeliveryItem.this.getCurrency();
+					}
+
+					@Override
+					public BigDecimal getRate() {
+						return SalesDeliveryItem.this.getRate();
+					}
 				},
 				// 销售订单发货
 				new ISalesOrderIssueContract() {
