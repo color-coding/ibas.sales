@@ -45,6 +45,7 @@
   "sales_app_blanketagreement_view": "一揽子协议查看",
   "sales_app_blanketagreement_edit": "一揽子协议编辑",
   "sales_app_materialorderedreservation_salesorder": "销售订单",
+  "sales_app_salesorderpacking": "销售订单,销售交货",
   "sales_title_general": "常规信息",
   "sales_title_status": "状态信息",
   "sales_title_total": "总计信息",
@@ -84,8 +85,11 @@
   "sales_change_item_price_continue": "价格清单已更新，是否更改单据行的价格？",
   "sales_change_lead_to_customer_continue": "是否自动切换为对应的客户？",
   "sales_not_found_lead's_customer": "没有找到[{0} - {1}]对应的客户，请创建后重试",
+  "sales_not_found_salesorder": "没有找到销售订单[{0}]",
   "sales_salesquote_expired_date": "报价日期已失效",
   "sales_invaild_status_not_support_turn_to_operation": "单据的状态无效，不支持此操作",
   "sales_document_receipted": "单据已收款，单号：{0}，金额：{1} {2}",
+  "sales_material_packing_create_multiple_delivery": "物料拣配生成[{0}]个交货单据",
+  "sales_material_packing_cannot_multiple_customer": "多个客户的订单不能一起拣配",
   "sales_closing_delimiter": "----结束----"
 }

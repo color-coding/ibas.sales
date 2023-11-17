@@ -72,6 +72,7 @@ namespace sales {
                 this.register(new BlanketAgreementLinkServiceMapping());
                 this.register(new BlanketAgreementEditServiceMapping());
                 this.register(new MaterialOrderedReservationTargetSalesOrderServiceMapping());
+                this.register(new SalesOrderPackingServiceMapping());
                 // 注册常驻应用
                 // 收付款服务
                 this.register(new SalesReturnPaymentServiceMapping());
