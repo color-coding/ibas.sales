@@ -526,11 +526,22 @@ namespace sales {
             static PROPERTY_AGREEMENTS_NAME: string = "Agreements";
             /** 获取-合同 */
             get agreements(): string {
-                return this.getProperty<string>(SalesDelivery.PROPERTY_AGREEMENTS_NAME);
+                return this.getProperty<string>(SalesInvoice.PROPERTY_AGREEMENTS_NAME);
             }
             /** 设置-合同 */
             set agreements(value: string) {
-                this.setProperty(SalesDelivery.PROPERTY_AGREEMENTS_NAME, value);
+                this.setProperty(SalesInvoice.PROPERTY_AGREEMENTS_NAME, value);
+            }
+
+            /** 映射的属性名称-分支 */
+            static PROPERTY_BRANCH_NAME: string = "Branch";
+            /** 获取-分支 */
+            get branch(): string {
+                return this.getProperty<string>(SalesInvoice.PROPERTY_BRANCH_NAME);
+            }
+            /** 设置-分支 */
+            set branch(value: string) {
+                this.setProperty(SalesInvoice.PROPERTY_BRANCH_NAME, value);
             }
 
 

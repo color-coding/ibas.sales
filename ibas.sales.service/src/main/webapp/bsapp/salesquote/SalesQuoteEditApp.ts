@@ -643,7 +643,7 @@ namespace sales {
                 ibas.servicesManager.runChooseService<materials.bo.IWarehouse>({
                     boCode: materials.bo.BO_CODE_WAREHOUSE,
                     chooseType: ibas.emChooseType.SINGLE,
-                    criteria: materials.app.conditions.warehouse.create(),
+                    criteria: materials.app.conditions.warehouse.create(this.editData.branch),
                     onCompleted(selecteds: ibas.IList<materials.bo.IWarehouse>): void {
                         let index: number = that.editData.salesQuoteItems.indexOf(caller);
                         let item: bo.SalesQuoteItem = that.editData.salesQuoteItems[index];

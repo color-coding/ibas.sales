@@ -154,6 +154,9 @@ namespace sales {
             /** 合同 */
             agreements: string;
 
+            /** 分支 */
+            branch: string;
+
             /** 销售报价-行集合 */
             salesQuoteItems: ISalesQuoteItems;
 

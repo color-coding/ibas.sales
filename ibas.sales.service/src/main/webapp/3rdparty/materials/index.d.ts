@@ -178,7 +178,7 @@ declare namespace materials {
              * 移动平均
              */
             MOVING_AVERAGE = 0
-		}
+        }
         /**
          * 拣配状态
          */
@@ -423,21 +423,6 @@ declare namespace materials {
         /** 物料订购预留源单据服务代理 */
         class MaterialOrderedReservationSourceServiceProxy extends ibas.ServiceProxy<IMaterialOrderedReservationTarget> {
         }
-        interface IMaterialPackingTarget extends ibas.IServiceContract {
-            /** 是否查询全部 */
-            isFetchAll?: boolean;
-            /** 查询条件 */
-            criteria?: ibas.ICriteria | ibas.ICondition[];
-            /** 选中拣配内容后 */
-            onPicked?(targets: IPickListsTarget[]): void;
-            /** 交货内容 */
-            toDelivery?: bo.IPickListsLine[];
-            /** 交货后 */
-            onDelivered?(targets: bo.IPickListsLine[] | Error): void;
-        }
-        /** 物料拣配目标单据服务代理 */
-        class MaterialPackingTargetServiceProxy extends ibas.ServiceProxy<IMaterialPackingTarget> {
-        }
         /** 拣配目标 */
         interface IPickListsTarget {
             /** 基于类型 */
@@ -481,23 +466,31 @@ declare namespace materials {
             /** 备注 */
             remarks?: string;
         }
-        /** 单据物料拣配者 */
-        abstract class DocumentMaterialPicker extends ibas.Element {
-            /** 来源描述 */
-            sourceDescription: string;
-            /** 交货描述 */
-            deliveryDescription: string;
-            /** 手工选择 */
-            abstract manualChoose(): Promise<Array<IPickListsTarget>>;
-            /** 查询 */
-            abstract fetch(criteria?: ibas.ICriteria): Promise<Array<IPickListsTarget>>;
-            /** 检查交货 */
-            abstract checkDelivery(items: Array<bo.IPickListsLine>): Promise<boolean>;
-            /** 转到交货 */
-            abstract turnToDelivery(items: Array<bo.IPickListsLine>): Promise<Array<bo.IPickListsLine>>;
+        interface IMaterialPackingTarget extends ibas.IServiceContract {
+            /** 是否查询全部 */
+            isFetchAll?: boolean;
+            /** 查询条件 */
+            criteria?: ibas.ICriteria | ibas.ICondition[];
+            /** 选中拣配内容后 */
+            onPicked?(targets: IPickListsTarget[]): void;
+            /** 交货内容 */
+            toDelivery?: bo.IPickListsLine[];
+            /** 交货后 */
+            onDelivered?(targets: bo.IPickListsLine[] | Error): void;
         }
-        /** 单据物料拣配者 */
-        function documentMaterialPickers(): ibas.IList<DocumentMaterialPicker>;
+        /** 物料拣配目标单据服务代理 */
+        class MaterialPackingTargetServiceProxy extends ibas.ServiceProxy<IMaterialPackingTarget> {
+        }
+        interface IInventoryTransferTarget extends ibas.IServiceContract {
+            /** 从仓库 */
+            fromWarehouse?: string;
+            /** 到仓库 */
+            toWarehouse?: string;
+            onAdded?(targets: bo.IInventoryTransferLine[]): void;
+        }
+        /** 物料库存转储添加服务代理 */
+        class MaterialInventoryTransAddServiceProxy extends ibas.ServiceProxy<IInventoryTransferTarget> {
+        }
         /** 查询条件 */
         namespace conditions {
             namespace material {
@@ -534,7 +527,7 @@ declare namespace materials {
             }
             namespace warehouse {
                 /** 默认查询条件 */
-                function create(): ibas.IList<ibas.ICondition>;
+                function create(branch?: string): ibas.IList<ibas.ICondition>;
             }
             namespace materialpricelist {
                 /** 默认查询条件 */
@@ -12034,6 +12027,8 @@ declare namespace materials {
             private addInventoryTransferLine;
             /** 删除库存转储-行事件 */
             private removeInventoryTransferLine;
+            /** 调用库存转储添加服务 */
+            private callInventoryTransferAddService;
             /** 选择库存转储订单行物料事件 */
             private chooseInventoryTransferWarehouse;
             /** 选择库存转储订单行物料事件 */
@@ -12071,6 +12066,10 @@ declare namespace materials {
             chooseInventoryTransferLineMaterialBatchEvent: Function;
             /** 选择库存转储单行物料序列事件 */
             chooseInventoryTransferLineMaterialSerialEvent: Function;
+            /** 调用库存转储添加服务 */
+            callInventoryTransferAddServiceEvent: Function;
+            /** 显示库存转储添加服务 */
+            showServiceAgent(datas: ibas.IServiceAgent[]): void;
             /** 默认仓库 */
             defaultWarehouse: string;
         }
@@ -13352,7 +13351,7 @@ declare namespace materials {
             /** 创建服务实例 */
             create(): ibas.IService<ibas.IServiceContract>;
         }
-        export { };
+        export {};
     }
 }
 /**
@@ -14120,7 +14119,7 @@ declare namespace materials {
             /** 创建服务实例 */
             create(): ibas.IService<ibas.IServiceContract>;
         }
-        export { };
+        export {};
     }
 }
 /**
@@ -16010,7 +16009,8 @@ declare namespace materials {
             protected init(): void;
         }
         class PickListsWorkingItem extends ibas.BusinessObject<PickListsWorkingItem> {
-            constructor(picker: DocumentMaterialPicker, parent: PickListsWorking);
+            constructor(serviceAgent: ibas.IServiceAgent, parent: PickListsWorking);
+            get id(): string;
             get name(): string;
             /** 映射的属性名称-是否启用 */
             static PROPERTY_ENABLE_NAME: string;
@@ -16018,11 +16018,12 @@ declare namespace materials {
             get enable(): ibas.emYesNo;
             /** 设置-是否启用 */
             set enable(value: ibas.emYesNo);
-            get picker(): DocumentMaterialPicker;
+            get serviceAgent(): ibas.IServiceAgent;
             get parent(): PickListsWorking;
             criteria(): ibas.ICriteria;
             toString(): string;
             protected init(): void;
+            fetch(criteria?: ibas.ICriteria): Promise<IPickListsTarget[]>;
         }
         /** 应用-拣配清单 */
         class PickListsApp extends ibas.Application<IPickListsView> {
@@ -16046,12 +16047,12 @@ declare namespace materials {
             /** 下达拣配清单事件 */
             protected releasePickLists(pickLists: bo.PickLists, targets: IPickListsTarget[], callback: (error?: any) => void): Promise<void>;
             /** 转为交货事件 */
-            protected processingTurnToDelivery(picker: app.DocumentMaterialPicker, datas: ibas.IList<app.IPickListsTarget>, callback: (closedTargets: Array<IPickListsTarget>) => void): Promise<void>;
+            protected processingTurnToDelivery(serviceAgent: ibas.IServiceAgent, datas: ibas.IList<app.IPickListsTarget>, callback: (closedTargets: Array<IPickListsTarget>) => void): Promise<void>;
             /** 转为交货事件 */
-            protected releasedTurnToDelivery(picker: app.DocumentMaterialPicker, selecteds: ibas.IList<bo.PickListsLine | bo.PickLists>): Promise<void>;
+            protected releasedTurnToDelivery(serviceAgent: ibas.IServiceAgent, selecteds: ibas.IList<bo.PickListsLine | bo.PickLists>): Promise<void>;
             /** 转为交货事件 */
-            protected pickedTurnToDelivery(picker: app.DocumentMaterialPicker, selecteds: ibas.IList<bo.PickListsLine | bo.PickLists>): Promise<void>;
-            protected turnToDelivery(picker: app.DocumentMaterialPicker, datas: ibas.IList<bo.PickListsLine>): Promise<void>;
+            protected pickedTurnToDelivery(serviceAgent: ibas.IServiceAgent, selecteds: ibas.IList<bo.PickListsLine | bo.PickLists>): Promise<void>;
+            protected turnToDelivery(serviceAgent: ibas.IServiceAgent, datas: ibas.IList<bo.PickListsLine>, autoSave?: boolean): Promise<Array<bo.IPickListsLine>>;
             protected saveDatas(): Promise<void>;
             /** 保存数据 */
             protected saveData(pickLists: bo.PickLists): Promise<bo.PickLists>;
@@ -16069,7 +16070,7 @@ declare namespace materials {
             /** 显示数据 */
             showWorkingData(data: PickListsWorking): void;
             /** 显示拣配者 */
-            showPickers(datas: ibas.IList<DocumentMaterialPicker>): void;
+            showPickers(datas: ibas.IServiceAgent[]): void;
             /** 查询处理中数据事件 */
             fetchProcessingDataEvent: Function;
             /** 显示处理中数据 */

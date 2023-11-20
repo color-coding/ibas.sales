@@ -101,6 +101,8 @@ namespace sales {
             settlementProbability: number;
             /** 合同 */
             agreements: string;
+            /** 分支 */
+            branch: string;
 
             /** 一揽子协议-项目集合 */
             blanketAgreementItems: IBlanketAgreementItems;

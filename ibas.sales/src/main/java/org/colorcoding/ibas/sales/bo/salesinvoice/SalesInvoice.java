@@ -11,6 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.accounting.data.IProjectData;
+import org.colorcoding.ibas.accounting.logic.IJournalEntryCreationContract;
+import org.colorcoding.ibas.accounting.logic.JournalEntryContent;
+import org.colorcoding.ibas.accounting.logic.JournalEntryContent.Category;
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBOSeriesKey;
@@ -18,8 +21,10 @@ import org.colorcoding.ibas.bobas.bo.IBOTagCanceled;
 import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
 import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
+import org.colorcoding.ibas.bobas.data.ArrayList;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.data.List;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
@@ -39,10 +44,13 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
+import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
+import org.colorcoding.ibas.sales.logic.journalentry.SalesInvoiceDeliveryMaterialsCost;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 
@@ -1998,7 +2006,7 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 	@Override
 	public IBusinessLogicContract[] getContracts() {
 		return new IBusinessLogicContract[] {
-
+				// 检查客户
 				new ICustomerCheckContract() {
 					@Override
 					public String getIdentifiers() {
@@ -2008,6 +2016,122 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 					@Override
 					public String getCustomerCode() {
 						return SalesInvoice.this.getCustomerCode();
+					}
+				},
+				// 创建分录
+				new IJournalEntryCreationContract() {
+
+					@Override
+					public String getIdentifiers() {
+						return SalesInvoice.this.toString();
+					}
+
+					@Override
+					public String getBranch() {
+						return SalesInvoice.this.getBranch();
+					}
+
+					@Override
+					public String getBaseDocumentType() {
+						return SalesInvoice.this.getObjectCode();
+					}
+
+					@Override
+					public Integer getBaseDocumentEntry() {
+						return SalesInvoice.this.getDocEntry();
+					}
+
+					@Override
+					public DateTime getDocumentDate() {
+						return SalesInvoice.this.getDocumentDate();
+					}
+
+					@Override
+					public String getReference1() {
+						return SalesInvoice.this.getReference1();
+					}
+
+					@Override
+					public String getReference2() {
+						return SalesInvoice.this.getReference2();
+					}
+
+					@Override
+					public JournalEntryContent[] getContents() {
+						JournalEntryContent jeContent;
+						List<JournalEntryContent> jeContents = new ArrayList<>();
+						String SalesDeliveryCode = MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE);
+						for (ISalesInvoiceItem line : SalesInvoice.this.getSalesInvoiceItems()) {
+							if (SalesDeliveryCode.equals(line.getBaseDocumentType())) {
+								/** 基于退货 **/
+								// 销售成本科目
+								jeContent = new SalesInvoiceDeliveryMaterialsCost(line);
+								jeContent.setCategory(Category.Debit);
+								jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
+								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setCurrency(line.getCurrency());
+								jeContents.add(jeContent);
+								// 已装载货物科目
+								jeContent = new SalesInvoiceDeliveryMaterialsCost(line);
+								jeContent.setCategory(Category.Credit);
+								jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
+								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setCurrency(line.getCurrency());
+								jeContents.add(jeContent);
+								// 收入科目
+								jeContent = new JournalEntryContent(line);
+								jeContent.setCategory(Category.Credit);
+								jeContent.setLedger(Ledgers.LEDGER_SALES_REVENUE_ACCOUNT);
+								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
+								jeContent.setCurrency(line.getCurrency());
+								jeContents.add(jeContent);
+								// 销项税
+								jeContent = new JournalEntryContent(line);
+								jeContent.setCategory(Category.Credit);
+								jeContent.setLedger(Ledgers.LEDGER_COMMON_TAX_ACCOUNT);
+								jeContent.setAmount(line.getTaxTotal());// 税前总计
+								jeContent.setCurrency(line.getCurrency());
+								jeContents.add(jeContent);
+							} else {
+								/** 不基于单据 **/
+								// 销售成本科目
+								jeContent = new SalesInvoiceDeliveryMaterialsCost(line);
+								jeContent.setCategory(Category.Debit);
+								jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
+								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setCurrency(line.getCurrency());
+								jeContents.add(jeContent);
+								// 已装载货物科目
+								jeContent = new SalesInvoiceDeliveryMaterialsCost(line);
+								jeContent.setCategory(Category.Credit);
+								jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
+								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setCurrency(line.getCurrency());
+								jeContents.add(jeContent);
+								// 收入科目
+								jeContent = new JournalEntryContent(line);
+								jeContent.setCategory(Category.Credit);
+								jeContent.setLedger(Ledgers.LEDGER_SALES_REVENUE_ACCOUNT);
+								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
+								jeContent.setCurrency(line.getCurrency());
+								jeContents.add(jeContent);
+								// 销项税
+								jeContent = new JournalEntryContent(line);
+								jeContent.setCategory(Category.Credit);
+								jeContent.setLedger(Ledgers.LEDGER_COMMON_TAX_ACCOUNT);
+								jeContent.setAmount(line.getTaxTotal());// 税前总计
+								jeContent.setCurrency(line.getCurrency());
+								jeContents.add(jeContent);
+							}
+						}
+						// 应收科目
+						jeContent = new JournalEntryContent(SalesInvoice.this);
+						jeContent.setCategory(Category.Debit);
+						jeContent.setLedger(Ledgers.LEDGER_SALES_DOMESTIC_ACCOUNTS_RECEIVABLE);
+						jeContent.setAmount(SalesInvoice.this.getDocumentTotal());
+						jeContent.setCurrency(SalesInvoice.this.getDocumentCurrency());
+						jeContents.add(jeContent);
+						return jeContents.toArray(new JournalEntryContent[] {});
 					}
 				}
 

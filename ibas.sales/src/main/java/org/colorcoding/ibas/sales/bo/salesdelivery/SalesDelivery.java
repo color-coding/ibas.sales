@@ -11,6 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.accounting.data.IProjectData;
+import org.colorcoding.ibas.accounting.logic.IJournalEntryCreationContract;
+import org.colorcoding.ibas.accounting.logic.JournalEntryContent;
+import org.colorcoding.ibas.accounting.logic.JournalEntryContent.Category;
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBOSeriesKey;
@@ -18,8 +21,10 @@ import org.colorcoding.ibas.bobas.bo.IBOTagCanceled;
 import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
 import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
+import org.colorcoding.ibas.bobas.data.ArrayList;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.data.List;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
@@ -39,10 +44,12 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
+import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
+import org.colorcoding.ibas.sales.logic.journalentry.SalesDeliveryMaterialsCost;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 
@@ -1999,7 +2006,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 	@Override
 	public IBusinessLogicContract[] getContracts() {
 		return new IBusinessLogicContract[] {
-
+				// 检查客户
 				new ICustomerCheckContract() {
 					@Override
 					public String getIdentifiers() {
@@ -2009,6 +2016,67 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 					@Override
 					public String getCustomerCode() {
 						return SalesDelivery.this.getCustomerCode();
+					}
+				},
+				// 创建分录
+				new IJournalEntryCreationContract() {
+
+					@Override
+					public String getIdentifiers() {
+						return SalesDelivery.this.toString();
+					}
+
+					@Override
+					public String getBranch() {
+						return SalesDelivery.this.getBranch();
+					}
+
+					@Override
+					public String getBaseDocumentType() {
+						return SalesDelivery.this.getObjectCode();
+					}
+
+					@Override
+					public Integer getBaseDocumentEntry() {
+						return SalesDelivery.this.getDocEntry();
+					}
+
+					@Override
+					public DateTime getDocumentDate() {
+						return SalesDelivery.this.getDocumentDate();
+					}
+
+					@Override
+					public String getReference1() {
+						return SalesDelivery.this.getReference1();
+					}
+
+					@Override
+					public String getReference2() {
+						return SalesDelivery.this.getReference2();
+					}
+
+					@Override
+					public JournalEntryContent[] getContents() {
+						JournalEntryContent jeContent;
+						List<JournalEntryContent> jeContents = new ArrayList<>();
+						for (ISalesDeliveryItem line : SalesDelivery.this.getSalesDeliveryItems()) {
+							// 已装载货物科目
+							jeContent = new SalesDeliveryMaterialsCost(line);
+							jeContent.setCategory(Category.Debit);
+							jeContent.setLedger(Ledgers.LEDGER_INVENTORY_INVENTORY_ACCOUNT);
+							jeContent.setAmount(Decimal.ZERO);// 待计算
+							jeContent.setCurrency(line.getCurrency());
+							jeContents.add(jeContent);
+							// 库存科目
+							jeContent = new SalesDeliveryMaterialsCost(line);
+							jeContent.setCategory(Category.Credit);
+							jeContent.setLedger(Ledgers.LEDGER_INVENTORY_INVENTORY_ACCOUNT);
+							jeContent.setAmount(Decimal.ZERO);// 待计算
+							jeContent.setCurrency(line.getCurrency());
+							jeContents.add(jeContent);
+						}
+						return jeContents.toArray(new JournalEntryContent[] {});
 					}
 				}
 

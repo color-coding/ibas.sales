@@ -496,8 +496,6 @@ declare namespace accounting {
             category: emTaxGroupCategory;
             /** 税率 */
             rate: number;
-            /** 科目 */
-            account: string;
             /** 参考1 */
             reference1: string;
             /** 参考2 */
@@ -1198,8 +1196,6 @@ declare namespace accounting {
             account: string;
             /** 设置 */
             settings: string;
-            /** 条件 */
-            conditions: string;
             /** 对象编号 */
             objectKey: number;
             /** 对象类型 */
@@ -2242,12 +2238,6 @@ declare namespace accounting {
             get rate(): number;
             /** 设置-税率 */
             set rate(value: number);
-            /** 映射的属性名称-科目 */
-            static PROPERTY_ACCOUNT_NAME: string;
-            /** 获取-科目 */
-            get account(): string;
-            /** 设置-科目 */
-            set account(value: string);
             /** 映射的属性名称-参考1 */
             static PROPERTY_REFERENCE1_NAME: string;
             /** 获取-参考1 */
@@ -4219,12 +4209,6 @@ declare namespace accounting {
             get settings(): string;
             /** 设置-设置 */
             set settings(value: string);
-            /** 映射的属性名称-条件 */
-            static PROPERTY_CONDITIONS_NAME: string;
-            /** 获取-条件 */
-            get conditions(): string;
-            /** 设置-条件 */
-            set conditions(value: string);
             /** 映射的属性名称-对象编号 */
             static PROPERTY_OBJECTKEY_NAME: string;
             /** 获取-对象编号 */
@@ -6843,6 +6827,7 @@ declare namespace accounting {
             protected chooseJournalEntryLineAccount(caller: bo.JournalEntryLine): void;
             /** 选择日记账分录-行业务伙伴/科目 */
             protected chooseJournalEntryLineShortName(caller: bo.JournalEntryLine): void;
+            private chooseJournalEntryLineDistributionRule;
         }
         /** 视图-日记账分录 */
         interface IJournalEntryEditView extends ibas.IBOEditView {
@@ -6862,6 +6847,8 @@ declare namespace accounting {
             chooseJournalEntryLineAccountEvent: Function;
             /** 选择日记账分录-行业务伙伴/科目事件 */
             chooseJournalEntryLineShortNameEvent: Function;
+            /** 选择日记账分录-行分配中心事件 */
+            chooseJournalEntryLineDistributionRuleEvent: Function;
         }
     }
 }

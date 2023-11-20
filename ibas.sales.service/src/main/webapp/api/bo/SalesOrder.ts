@@ -151,6 +151,9 @@ namespace sales {
             /** 合同 */
             agreements: string;
 
+            /** 分支 */
+            branch: string;
+
             /** 销售订单-行集合 */
             salesOrderItems: ISalesOrderItems;
 

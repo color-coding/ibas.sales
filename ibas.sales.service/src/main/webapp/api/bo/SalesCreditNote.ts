@@ -103,6 +103,8 @@ namespace sales {
             orderType: string;
             /** 合同 */
             agreements: string;
+            /** 分支 */
+            branch: string;
             /** 销售贷项-行集合 */
             salesCreditNoteItems: ISalesCreditNoteItems;
             /** 送货地址集合 */

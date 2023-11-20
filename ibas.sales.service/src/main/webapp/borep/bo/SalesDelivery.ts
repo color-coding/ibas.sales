@@ -533,6 +533,17 @@ namespace sales {
                 this.setProperty(SalesDelivery.PROPERTY_AGREEMENTS_NAME, value);
             }
 
+            /** 映射的属性名称-分支 */
+            static PROPERTY_BRANCH_NAME: string = "Branch";
+            /** 获取-分支 */
+            get branch(): string {
+                return this.getProperty<string>(SalesDelivery.PROPERTY_BRANCH_NAME);
+            }
+            /** 设置-分支 */
+            set branch(value: string) {
+                this.setProperty(SalesDelivery.PROPERTY_BRANCH_NAME, value);
+            }
+
             /** 映射的属性名称-销售交货-行集合 */
             static PROPERTY_SALESDELIVERYITEMS_NAME: string = "SalesDeliveryItems";
             /** 获取-销售交货-行集合 */
