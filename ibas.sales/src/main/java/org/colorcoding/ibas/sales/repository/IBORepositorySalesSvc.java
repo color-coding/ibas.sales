@@ -4,6 +4,7 @@ import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.repository.IBORepositorySmartService;
 import org.colorcoding.ibas.sales.bo.blanketagreement.BlanketAgreement;
+import org.colorcoding.ibas.sales.bo.downpaymentrequest.DownPaymentRequest;
 import org.colorcoding.ibas.sales.bo.productsuit.ProductSuit;
 import org.colorcoding.ibas.sales.bo.salescreditnote.SalesCreditNote;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
@@ -168,6 +169,25 @@ public interface IBORepositorySalesSvc extends IBORepositorySmartService {
 	 * @return 操作结果
 	 */
 	OperationResult<BlanketAgreement> saveBlanketAgreement(BlanketAgreement bo, String token);
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-预收款申请
+	 * 
+	 * @param criteria 查询
+	 * @param token    口令
+	 * @return 操作结果
+	 */
+	OperationResult<DownPaymentRequest> fetchDownPaymentRequest(ICriteria criteria, String token);
+
+	/**
+	 * 保存-预收款申请
+	 * 
+	 * @param bo    对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	OperationResult<DownPaymentRequest> saveDownPaymentRequest(DownPaymentRequest bo, String token);
 
 	// --------------------------------------------------------------------------------------------//
 

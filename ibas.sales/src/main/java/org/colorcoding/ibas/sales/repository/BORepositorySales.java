@@ -6,6 +6,8 @@ import org.colorcoding.ibas.bobas.common.OperationResult;
 import org.colorcoding.ibas.bobas.repository.BORepositoryServiceApplication;
 import org.colorcoding.ibas.sales.bo.blanketagreement.BlanketAgreement;
 import org.colorcoding.ibas.sales.bo.blanketagreement.IBlanketAgreement;
+import org.colorcoding.ibas.sales.bo.downpaymentrequest.DownPaymentRequest;
+import org.colorcoding.ibas.sales.bo.downpaymentrequest.IDownPaymentRequest;
 import org.colorcoding.ibas.sales.bo.productsuit.IProductSuit;
 import org.colorcoding.ibas.sales.bo.productsuit.ProductSuit;
 import org.colorcoding.ibas.sales.bo.salescreditnote.ISalesCreditNote;
@@ -371,6 +373,50 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	public IOperationResult<IBlanketAgreement> saveBlanketAgreement(IBlanketAgreement bo) {
 		return new OperationResult<IBlanketAgreement>(
 				this.saveBlanketAgreement((BlanketAgreement) bo, this.getUserToken()));
+	}
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-预收款申请
+	 * 
+	 * @param criteria 查询
+	 * @param token    口令
+	 * @return 操作结果
+	 */
+	public OperationResult<DownPaymentRequest> fetchDownPaymentRequest(ICriteria criteria, String token) {
+		return super.fetch(criteria, token, DownPaymentRequest.class);
+	}
+
+	/**
+	 * 查询-预收款申请（提前设置用户口令）
+	 * 
+	 * @param criteria 查询
+	 * @return 操作结果
+	 */
+	public IOperationResult<IDownPaymentRequest> fetchDownPaymentRequest(ICriteria criteria) {
+		return new OperationResult<IDownPaymentRequest>(this.fetchDownPaymentRequest(criteria, this.getUserToken()));
+	}
+
+	/**
+	 * 保存-预收款申请
+	 * 
+	 * @param bo    对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	public OperationResult<DownPaymentRequest> saveDownPaymentRequest(DownPaymentRequest bo, String token) {
+		return super.save(bo, token);
+	}
+
+	/**
+	 * 保存-预收款申请（提前设置用户口令）
+	 * 
+	 * @param bo 对象实例
+	 * @return 操作结果
+	 */
+	public IOperationResult<IDownPaymentRequest> saveDownPaymentRequest(IDownPaymentRequest bo) {
+		return new OperationResult<IDownPaymentRequest>(
+				this.saveDownPaymentRequest((DownPaymentRequest) bo, this.getUserToken()));
 	}
 
 	// --------------------------------------------------------------------------------------------//

@@ -15,6 +15,7 @@
 /// <reference path="./salescreditnote/index.ts" />
 /// <reference path="./shippingaddress/index.ts" />
 /// <reference path="./blanketagreement/index.ts" />
+/// <reference path="./downpaymentrequest/index.ts" />
 /// <reference path="./others/index.ts" />
 namespace sales {
     export namespace app {
@@ -46,6 +47,7 @@ namespace sales {
                 this.register(new SalesReturnFunc());
                 this.register(new SalesInvoiceFunc());
                 this.register(new SalesCreditNoteFunc());
+                this.register(new DownPaymentRequestFunc());
                 this.register(new ProductSuitFunc());
                 // 注册服务应用
                 this.register(new ProductSuitChooseServiceMapping());
@@ -73,11 +75,16 @@ namespace sales {
                 this.register(new BlanketAgreementEditServiceMapping());
                 this.register(new MaterialOrderedReservationTargetSalesOrderServiceMapping());
                 this.register(new SalesOrderPackingServiceMapping());
+                this.register(new DownPaymentRequestChooseServiceMapping());
+                this.register(new DownPaymentRequestLinkServiceMapping());
                 // 注册常驻应用
                 // 收付款服务
-                this.register(new SalesReturnPaymentServiceMapping());
-                this.register(new SalesDeliveryReceiptServiceMapping());
+                // this.register(new SalesReturnPaymentServiceMapping()); 没这种情况
+                this.register(new SalesCreditNotePaymentServiceMapping());
+                // this.register(new SalesDeliveryReceiptServiceMapping()); 没这种情况
                 this.register(new SalesOrderReceiptServiceMapping());
+                this.register(new SalesInvoiceReceiptServiceMapping());
+                this.register(new DownPaymentRequestReceiptServiceMapping());
                 // 权限元素
                 this.register(ELEMENT_SALES_ORDER_EXTRA);
                 this.register(ELEMENT_SALES_QUOTE_EXTRA);

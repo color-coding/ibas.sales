@@ -625,7 +625,7 @@ namespace sales {
                     condition.operation = ibas.emConditionOperation.EQUAL;
                     condition.value = this.editData.branch;
                 }
-                // 当前供应商的
+                // 当前客户的
                 condition = criteria.conditions.create();
                 condition.alias = bo.SalesOrder.PROPERTY_CUSTOMERCODE_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
@@ -709,7 +709,7 @@ namespace sales {
                     condition.operation = ibas.emConditionOperation.EQUAL;
                     condition.value = this.editData.branch;
                 }
-                // 当前供应商的
+                // 当前客户的
                 condition = criteria.conditions.create();
                 condition.alias = bo.SalesDelivery.PROPERTY_CUSTOMERCODE_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;

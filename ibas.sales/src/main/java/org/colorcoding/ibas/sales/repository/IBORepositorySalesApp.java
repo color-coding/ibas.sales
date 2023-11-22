@@ -4,6 +4,7 @@ import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.repository.IBORepositoryApplication;
 import org.colorcoding.ibas.sales.bo.blanketagreement.IBlanketAgreement;
+import org.colorcoding.ibas.sales.bo.downpaymentrequest.IDownPaymentRequest;
 import org.colorcoding.ibas.sales.bo.productsuit.IProductSuit;
 import org.colorcoding.ibas.sales.bo.salescreditnote.ISalesCreditNote;
 import org.colorcoding.ibas.sales.bo.salesdelivery.ISalesDelivery;
@@ -152,6 +153,23 @@ public interface IBORepositorySalesApp extends IBORepositoryApplication {
 	 * @return 操作结果
 	 */
 	IOperationResult<IBlanketAgreement> saveBlanketAgreement(IBlanketAgreement bo);
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-预收款申请
+	 * 
+	 * @param criteria 查询
+	 * @return 操作结果
+	 */
+	IOperationResult<IDownPaymentRequest> fetchDownPaymentRequest(ICriteria criteria);
+
+	/**
+	 * 保存-预收款申请
+	 * 
+	 * @param bo 对象实例
+	 * @return 操作结果
+	 */
+	IOperationResult<IDownPaymentRequest> saveDownPaymentRequest(IDownPaymentRequest bo);
 
 	// --------------------------------------------------------------------------------------------//
 

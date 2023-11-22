@@ -115,6 +115,10 @@ namespace sales {
                     } else if (property === bo.BlanketAgreement.PROPERTY_PRICEMODE_NAME) {
                         return ibas.enums.toString(emPriceMode, value);
                     }
+                } else if (boName === bo.DownPaymentRequest.name) {
+                    if (property === bo.DownPaymentRequest.PROPERTY_ROUNDING_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    }
                 }
                 return super.convertData(boName, property, value);
             }
@@ -201,6 +205,10 @@ namespace sales {
                     } else if (property === bo.BlanketAgreement.PROPERTY_PRICEMODE_NAME) {
                         return ibas.enums.valueOf(emPriceMode, value);
                     }
+                } else if (boName === bo.DownPaymentRequest.name) {
+                    if (property === bo.DownPaymentRequest.PROPERTY_ROUNDING_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    }
                 }
                 return super.parsingData(boName, property, value);
             }
@@ -212,7 +220,7 @@ namespace sales {
          * @param source 源
          */
         export function baseDocument(
-            target: ISalesOrder | ISalesDelivery | ISalesReturn | ISalesCreditNote | ISalesInvoice,
+            target: SalesOrder | SalesDelivery | SalesReturn | SalesCreditNote | SalesInvoice | DownPaymentRequest,
             source: ISalesQuote | ISalesOrder | ISalesDelivery | ISalesReturn | ISalesInvoice
         ): void {
             // 复制头信息
@@ -225,10 +233,12 @@ namespace sales {
             target.remarks = source.remarks;
             target.project = source.project;
             target.consumer = source.consumer;
-            target.priceList = source.priceList;
             target.documentCurrency = source.documentCurrency;
-            target.paymentCode = source.paymentCode;
             target.agreements = source.agreements;
+            if (!(target instanceof DownPaymentRequest)) {
+                target.priceList = source.priceList;
+                target.paymentCode = source.paymentCode;
+            }
             // 复制自定义字段
             for (let item of source.userFields.forEach()) {
                 let myItem: ibas.IUserField = target.userFields.get(item.name);
@@ -250,7 +260,7 @@ namespace sales {
          * @param source 源
          */
         export function baseDocumentItem(
-            target: ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem | ISalesCreditNoteItem | ISalesInvoiceItem,
+            target: ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem | ISalesCreditNoteItem | ISalesInvoiceItem | IDownPaymentRequestItem,
             source: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem
         ): void {
             target.baseDocumentType = source.objectCode;
@@ -306,7 +316,7 @@ namespace sales {
             }
         }
         export function baseProduct(
-            target: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem | ISalesInvoiceItem | ISalesCreditNoteItem,
+            target: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem | ISalesInvoiceItem | ISalesCreditNoteItem | IDownPaymentRequestItem,
             source: materials.bo.IProduct
         ): void {
             target.itemCode = source.code;
