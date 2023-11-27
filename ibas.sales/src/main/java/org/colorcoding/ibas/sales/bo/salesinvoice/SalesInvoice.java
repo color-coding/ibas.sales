@@ -45,12 +45,14 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
+import org.colorcoding.ibas.materials.logic.journalentry.JournalEntrySmartContent;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
 import org.colorcoding.ibas.sales.logic.journalentry.SalesInvoiceDeliveryMaterialsCost;
+import org.colorcoding.ibas.sales.logic.journalentry.SalesInvoiceMaterialsCost;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 
@@ -2079,14 +2081,14 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 								jeContent.setCurrency(line.getCurrency());
 								jeContents.add(jeContent);
 								// 收入科目
-								jeContent = new JournalEntryContent(line);
+								jeContent = new JournalEntrySmartContent(line);
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_REVENUE_ACCOUNT);
 								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContents.add(jeContent);
 								// 销项税
-								jeContent = new JournalEntryContent(line);
+								jeContent = new JournalEntrySmartContent(line);
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_COMMON_TAX_ACCOUNT);
 								jeContent.setAmount(line.getTaxTotal());// 税前总计
@@ -2095,28 +2097,28 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 							} else {
 								/** 不基于单据 **/
 								// 销售成本科目
-								jeContent = new SalesInvoiceDeliveryMaterialsCost(line);
+								jeContent = new SalesInvoiceMaterialsCost(line);
 								jeContent.setCategory(Category.Debit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
 								jeContent.setAmount(Decimal.ZERO);// 待计算
 								jeContent.setCurrency(line.getCurrency());
 								jeContents.add(jeContent);
 								// 已装载货物科目
-								jeContent = new SalesInvoiceDeliveryMaterialsCost(line);
+								jeContent = new SalesInvoiceMaterialsCost(line);
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
 								jeContent.setAmount(Decimal.ZERO);// 待计算
 								jeContent.setCurrency(line.getCurrency());
 								jeContents.add(jeContent);
 								// 收入科目
-								jeContent = new JournalEntryContent(line);
+								jeContent = new JournalEntrySmartContent(line);
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_REVENUE_ACCOUNT);
 								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContents.add(jeContent);
 								// 销项税
-								jeContent = new JournalEntryContent(line);
+								jeContent = new JournalEntrySmartContent(line);
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_COMMON_TAX_ACCOUNT);
 								jeContent.setAmount(line.getTaxTotal());// 税前总计
@@ -2125,7 +2127,7 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 							}
 						}
 						// 应收科目
-						jeContent = new JournalEntryContent(SalesInvoice.this);
+						jeContent = new JournalEntrySmartContent(SalesInvoice.this);
 						jeContent.setCategory(Category.Debit);
 						jeContent.setLedger(Ledgers.LEDGER_SALES_DOMESTIC_ACCOUNTS_RECEIVABLE);
 						jeContent.setAmount(SalesInvoice.this.getDocumentTotal());
