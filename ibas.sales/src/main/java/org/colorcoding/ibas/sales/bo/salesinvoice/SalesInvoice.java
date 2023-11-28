@@ -2090,7 +2090,7 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 								// 销项税
 								jeContent = new JournalEntrySmartContent(line);
 								jeContent.setCategory(Category.Credit);
-								jeContent.setLedger(Ledgers.LEDGER_COMMON_TAX_ACCOUNT);
+								jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
 								jeContent.setAmount(line.getTaxTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContents.add(jeContent);
@@ -2120,7 +2120,7 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 								// 销项税
 								jeContent = new JournalEntrySmartContent(line);
 								jeContent.setCategory(Category.Credit);
-								jeContent.setLedger(Ledgers.LEDGER_COMMON_TAX_ACCOUNT);
+								jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
 								jeContent.setAmount(line.getTaxTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContents.add(jeContent);

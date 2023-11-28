@@ -8,7 +8,7 @@ import org.colorcoding.ibas.bobas.mapping.BusinessObjectUnit;
 import org.colorcoding.ibas.sales.bo.downpaymentrequest.DownPaymentRequest;
 
 @BusinessObjectUnit(code = DownPaymentRequest.BUSINESS_OBJECT_CODE)
-public class DownPaymentRequestFetcher extends SalesFetcher<DownPaymentRequest> {
+public class SalesDownPaymentRequestFetcher extends SalesFetcher<DownPaymentRequest> {
 
 	@Override
 	public DownPaymentRequest fetch(Integer docEntry) throws Exception {

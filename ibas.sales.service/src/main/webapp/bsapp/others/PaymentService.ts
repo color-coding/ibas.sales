@@ -181,7 +181,7 @@ namespace sales {
                 // 调用选择服务
                 let that: this = this;
                 ibas.servicesManager.runChooseService<sales.bo.ISalesCreditNote>({
-                    boCode: sales.bo.BO_CODE_SALESRETURN,
+                    boCode: sales.bo.BO_CODE_SALESCREDITNOTE,
                     chooseType: ibas.emChooseType.MULTIPLE,
                     criteria: criteria,
                     onCompleted(selecteds: ibas.IList<sales.bo.ISalesCreditNote>): void {

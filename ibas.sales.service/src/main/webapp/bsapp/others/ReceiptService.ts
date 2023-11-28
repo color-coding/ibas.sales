@@ -288,7 +288,7 @@ namespace sales {
                 // 调用选择服务
                 let that: this = this;
                 ibas.servicesManager.runChooseService<sales.bo.ISalesInvoice>({
-                    boCode: sales.bo.BO_CODE_SALESDELIVERY,
+                    boCode: sales.bo.BO_CODE_SALESINVOICE,
                     chooseType: ibas.emChooseType.MULTIPLE,
                     criteria: criteria,
                     onCompleted(selecteds: ibas.IList<sales.bo.ISalesInvoice>): void {
@@ -395,7 +395,7 @@ namespace sales {
                 // 调用选择服务
                 let that: this = this;
                 ibas.servicesManager.runChooseService<sales.bo.IDownPaymentRequest>({
-                    boCode: sales.bo.BO_CODE_SALESDELIVERY,
+                    boCode: sales.bo.BO_CODE_DOWNPAYMNETREQUEST,
                     chooseType: ibas.emChooseType.MULTIPLE,
                     criteria: criteria,
                     onCompleted(selecteds: ibas.IList<sales.bo.IDownPaymentRequest>): void {
