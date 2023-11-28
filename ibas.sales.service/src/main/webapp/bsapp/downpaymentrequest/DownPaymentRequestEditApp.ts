@@ -38,6 +38,7 @@ namespace sales {
                 this.view.chooseDownPaymentRequestItemUnitEvent = this.chooseDownPaymentRequestItemUnit;
                 this.view.chooseDownPaymentRequestSalesOrderEvent = this.chooseDownPaymentRequestSalesOrder;
                 this.view.chooseDownPaymentRequestItemMaterialVersionEvent = this.chooseDownPaymentRequestItemMaterialVersion;
+                this.view.chooseDownPaymentRequestItemDistributionRuleEvent = this.chooseDownPaymentRequestItemDistributionRule;
                 this.view.chooseDownPaymentRequestBlanketAgreementEvent = this.chooseDownPaymentRequestBlanketAgreement;
                 this.view.chooseCustomerAgreementsEvent = this.chooseCustomerAgreements;
             }
@@ -793,6 +794,30 @@ namespace sales {
                     }
                 });
             }
+            private chooseDownPaymentRequestItemDistributionRule(type: accounting.app.emDimensionType, caller: bo.DownPaymentRequestItem): void {
+                if (ibas.objects.isNull(type)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("accounting_dimension_invaild", ""));
+                    return;
+                }
+                ibas.servicesManager.runApplicationService<accounting.app.IDimensionDataServiceContract, String>({
+                    proxy: new accounting.app.DimensionDataServiceProxy({
+                        type: type,
+                    }),
+                    onCompleted(result: string): void {
+                        if (type === accounting.app.emDimensionType.DIMENSION_1) {
+                            caller.distributionRule1 = result;
+                        } else if (type === accounting.app.emDimensionType.DIMENSION_2) {
+                            caller.distributionRule2 = result;
+                        } else if (type === accounting.app.emDimensionType.DIMENSION_3) {
+                            caller.distributionRule3 = result;
+                        } else if (type === accounting.app.emDimensionType.DIMENSION_4) {
+                            caller.distributionRule4 = result;
+                        } else if (type === accounting.app.emDimensionType.DIMENSION_5) {
+                            caller.distributionRule5 = result;
+                        }
+                    }
+                });
+            }
         }
         /** 视图-预收款申请 */
         export interface IDownPaymentRequestEditView extends ibas.IBOEditView {
@@ -818,6 +843,8 @@ namespace sales {
             chooseDownPaymentRequestItemWarehouseEvent: Function;
             /** 选择预收款申请-行 单位 */
             chooseDownPaymentRequestItemUnitEvent: Function;
+            /** 选择预收款申请-行 分配中心事件 */
+            chooseDownPaymentRequestItemDistributionRuleEvent: Function;
             /** 显示数据 */
             showDownPaymentRequestItems(datas: bo.DownPaymentRequestItem[]): void;
             /** 选择预收款申请-销售订单事件 */

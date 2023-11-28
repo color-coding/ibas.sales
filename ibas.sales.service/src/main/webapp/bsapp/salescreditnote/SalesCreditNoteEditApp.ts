@@ -38,6 +38,7 @@ namespace sales {
                 this.view.chooseSalesCreditNoteItemMaterialBatchEvent = this.chooseSalesCreditNoteLineMaterialBatch;
                 this.view.chooseSalesCreditNoteItemMaterialSerialEvent = this.chooseSalesCreditNoteLineMaterialSerial;
                 this.view.chooseSalesCreditNoteItemMaterialVersionEvent = this.chooseSalesCreditNoteItemMaterialVersion;
+                this.view.chooseSalesCreditNoteItemDistributionRuleEvent = this.chooseSalesCreditNoteItemDistributionRule;
                 this.view.chooseSalesCreditNoteItemWarehouseEvent = this.chooseSalesCreditNoteItemWarehouse;
                 this.view.chooseSalesCreditNoteItemUnitEvent = this.chooseSalesCreditNoteItemUnit;
                 this.view.chooseSalesCreditNoteSalesReturnEvent = this.chooseSalesCreditNoteSalesReturn;
@@ -1004,6 +1005,30 @@ namespace sales {
                     }
                 });
             }
+            private chooseSalesCreditNoteItemDistributionRule(type: accounting.app.emDimensionType, caller: bo.SalesCreditNoteItem): void {
+                if (ibas.objects.isNull(type)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("accounting_dimension_invaild", ""));
+                    return;
+                }
+                ibas.servicesManager.runApplicationService<accounting.app.IDimensionDataServiceContract, String>({
+                    proxy: new accounting.app.DimensionDataServiceProxy({
+                        type: type,
+                    }),
+                    onCompleted(result: string): void {
+                        if (type === accounting.app.emDimensionType.DIMENSION_1) {
+                            caller.distributionRule1 = result;
+                        } else if (type === accounting.app.emDimensionType.DIMENSION_2) {
+                            caller.distributionRule2 = result;
+                        } else if (type === accounting.app.emDimensionType.DIMENSION_3) {
+                            caller.distributionRule3 = result;
+                        } else if (type === accounting.app.emDimensionType.DIMENSION_4) {
+                            caller.distributionRule4 = result;
+                        } else if (type === accounting.app.emDimensionType.DIMENSION_5) {
+                            caller.distributionRule5 = result;
+                        }
+                    }
+                });
+            }
         }
         /** 视图-销售贷项 */
         export interface ISalesCreditNoteEditView extends ibas.IBOEditView {
@@ -1041,6 +1066,8 @@ namespace sales {
             chooseSalesCreditNoteSalesReturnEvent: Function;
             /** 选择销售贷项-销售发票事件 */
             chooseSalesCreditNoteSalesInvoiceEvent: Function;
+            /** 选择销售贷项-行 分配中心事件 */
+            chooseSalesCreditNoteItemDistributionRuleEvent: Function;
             /** 选择客户合同 */
             chooseCustomerAgreementsEvent: Function;
             /** 编辑地址事件 */

@@ -18,27 +18,29 @@ namespace sales {
                 addSalesInvoiceItemEvent: Function;
                 /** 删除销售交货-行事件 */
                 removeSalesInvoiceItemEvent: Function;
-                /** 选择销售交货客户信息 */
+                /** 选择销售发票客户信息 */
                 chooseSalesInvoiceCustomerEvent: Function;
-                /** 选择销售交货联系人信息 */
+                /** 选择销售发票联系人信息 */
                 chooseSalesInvoiceContactPersonEvent: Function;
-                /** 选择销售交货价格清单信息 */
+                /** 选择销售发票价格清单信息 */
                 chooseSalesInvoicePriceListEvent: Function;
-                /** 选择销售交货-行物料主数据 */
+                /** 选择销售发票-行物料主数据 */
                 chooseSalesInvoiceItemMaterialEvent: Function;
-                /** 选择销售交货-行 仓库 */
+                /** 选择销售发票-行 仓库 */
                 chooseSalesInvoiceItemWarehouseEvent: Function;
                 /** 选择销售发票单位事件 */
                 chooseSalesInvoiceItemUnitEvent: Function;
-                /** 选择销售交货-行 物料序列事件 */
+                /** 选择销售发票-行 物料序列事件 */
                 chooseSalesInvoiceItemMaterialSerialEvent: Function;
-                /** 选择销售交货-行 物料批次事件 */
+                /** 选择销售发票-行 物料批次事件 */
                 chooseSalesInvoiceItemMaterialBatchEvent: Function;
                 /** 选择销售发票-行 物料版本 */
                 chooseSalesInvoiceItemMaterialVersionEvent: Function;
-                /** 选择销售交货项目-销售订单事件 */
+                /** 选择销售发票-行分配中心事件 */
+                chooseSalesInvoiceItemDistributionRuleEvent: Function;
+                /** 选择销售发票项目-销售订单事件 */
                 chooseSalesInvoiceSalesOrderEvent: Function;
-                /** 选择销售交货项目-销售交货事件 */
+                /** 选择销售发票项目-销售交货事件 */
                 chooseSalesInvoiceSalesDeliveryEvent: Function;
                 /** 择销售交货项目一揽子协议事件 */
                 chooseSalesInvoiceBlanketAgreementEvent: Function;

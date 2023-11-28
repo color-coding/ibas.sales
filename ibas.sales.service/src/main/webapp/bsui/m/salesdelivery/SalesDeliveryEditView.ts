@@ -36,6 +36,8 @@ namespace sales {
                 chooseSalesDeliveryItemMaterialBatchEvent: Function;
                 /** 选择销售交货-行 物料版本 */
                 chooseSalesDeliveryItemMaterialVersionEvent: Function;
+                /** 选择销售交货-行 分配中心事件 */
+                chooseSalesDeliveryItemDistributionRuleEvent: Function;
                 /** 选择销售交货项目-销售订单事件 */
                 chooseSalesDeliverySalesOrderEvent: Function;
                 /** 选择销售交货项目-一揽子协议事件 */

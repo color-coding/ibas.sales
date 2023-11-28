@@ -36,6 +36,8 @@ namespace sales {
                 chooseSalesCreditNoteItemMaterialSerialEvent: Function;
                 /** 选择销售贷项-行 物料批次事件 */
                 chooseSalesCreditNoteItemMaterialBatchEvent: Function;
+                /** 选择销售贷项-行 分配中心事件 */
+                chooseSalesCreditNoteItemDistributionRuleEvent: Function;
                 /** 选择销售贷项-行 物料版本 */
                 chooseSalesCreditNoteItemMaterialVersionEvent: Function;
                 /** 选择销售贷项项目-销售发票事件 */
@@ -531,6 +533,86 @@ namespace sales {
                                                 maxLength: 200
                                             })
                                         }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salescreditnoteitem_distributionrule1"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest(): void {
+                                                that.fireViewEvents(that.chooseSalesCreditNoteItemDistributionRuleEvent,
+                                                    accounting.app.emDimensionType.DIMENSION_1, this.getBindingContext().getObject());
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "distributionRule1",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            }),
+                                        }),
+                                        visible: accounting.config.isEnableDimension(accounting.app.emDimensionType.DIMENSION_1)
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salescreditnoteitem_distributionrule2"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest(): void {
+                                                that.fireViewEvents(that.chooseSalesCreditNoteItemDistributionRuleEvent,
+                                                    accounting.app.emDimensionType.DIMENSION_2, this.getBindingContext().getObject());
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "distributionRule2",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            }),
+                                        }),
+                                        visible: accounting.config.isEnableDimension(accounting.app.emDimensionType.DIMENSION_2)
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salescreditnoteitem_distributionrule3"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest(): void {
+                                                that.fireViewEvents(that.chooseSalesCreditNoteItemDistributionRuleEvent,
+                                                    accounting.app.emDimensionType.DIMENSION_3, this.getBindingContext().getObject());
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "distributionRule3",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            }),
+                                        }),
+                                        visible: accounting.config.isEnableDimension(accounting.app.emDimensionType.DIMENSION_3)
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salescreditnoteitem_distributionrule4"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest(): void {
+                                                that.fireViewEvents(that.chooseSalesCreditNoteItemDistributionRuleEvent,
+                                                    accounting.app.emDimensionType.DIMENSION_4, this.getBindingContext().getObject());
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "distributionRule4",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            }),
+                                        }),
+                                        visible: accounting.config.isEnableDimension(accounting.app.emDimensionType.DIMENSION_4)
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salescreditnoteitem_distributionrule5"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest(): void {
+                                                that.fireViewEvents(that.chooseSalesCreditNoteItemDistributionRuleEvent,
+                                                    accounting.app.emDimensionType.DIMENSION_5, this.getBindingContext().getObject());
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "distributionRule5",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            }),
+                                        }),
+                                        visible: accounting.config.isEnableDimension(accounting.app.emDimensionType.DIMENSION_5)
                                     }),
                                 ],
                                 sortProperty: "visOrder",

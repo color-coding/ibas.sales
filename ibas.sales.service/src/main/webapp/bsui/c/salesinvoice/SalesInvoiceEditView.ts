@@ -20,29 +20,31 @@ namespace sales {
                 addSalesInvoiceItemEvent: Function;
                 /** 删除销售交货-行事件 */
                 removeSalesInvoiceItemEvent: Function;
-                /** 选择销售交货客户信息 */
+                /** 选择销售发票客户信息 */
                 chooseSalesInvoiceCustomerEvent: Function;
-                /** 选择销售交货联系人信息 */
+                /** 选择销售发票联系人信息 */
                 chooseSalesInvoiceContactPersonEvent: Function;
-                /** 选择销售交货价格清单信息 */
+                /** 选择销售发票价格清单信息 */
                 chooseSalesInvoicePriceListEvent: Function;
-                /** 选择销售交货-行物料主数据 */
+                /** 选择销售发票-行物料主数据 */
                 chooseSalesInvoiceItemMaterialEvent: Function;
-                /** 选择销售交货-行 仓库 */
+                /** 选择销售发票-行 仓库 */
                 chooseSalesInvoiceItemWarehouseEvent: Function;
                 /** 选择销售发票单位事件 */
                 chooseSalesInvoiceItemUnitEvent: Function;
-                /** 选择销售交货-行 物料序列事件 */
+                /** 选择销售发票-行 物料序列事件 */
                 chooseSalesInvoiceItemMaterialSerialEvent: Function;
-                /** 选择销售交货-行 物料批次事件 */
+                /** 选择销售发票-行 物料批次事件 */
                 chooseSalesInvoiceItemMaterialBatchEvent: Function;
                 /** 选择销售发票-行 物料版本 */
                 chooseSalesInvoiceItemMaterialVersionEvent: Function;
-                /** 选择销售交货项目-销售订单事件 */
+                /** 选择销售发票-行分配中心事件 */
+                chooseSalesInvoiceItemDistributionRuleEvent: Function;
+                /** 选择销售发票项目-销售订单事件 */
                 chooseSalesInvoiceSalesOrderEvent: Function;
-                /** 选择销售交货项目-销售交货事件 */
+                /** 选择销售发票项目-销售交货事件 */
                 chooseSalesInvoiceSalesDeliveryEvent: Function;
-                /** 选择销售交货-揽子协议事件 */
+                /** 选择销售发票-揽子协议事件 */
                 chooseSalesInvoiceBlanketAgreementEvent: Function;
                 /** 选择客户合同 */
                 chooseCustomerAgreementsEvent: Function;
@@ -559,6 +561,86 @@ namespace sales {
                                                 maxLength: 200
                                             })
                                         }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salesinvoiceitem_distributionrule1"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest(): void {
+                                                that.fireViewEvents(that.chooseSalesInvoiceItemDistributionRuleEvent,
+                                                    accounting.app.emDimensionType.DIMENSION_1, this.getBindingContext().getObject());
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "distributionRule1",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            }),
+                                        }),
+                                        visible: accounting.config.isEnableDimension(accounting.app.emDimensionType.DIMENSION_1)
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salesinvoiceitem_distributionrule2"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest(): void {
+                                                that.fireViewEvents(that.chooseSalesInvoiceItemDistributionRuleEvent,
+                                                    accounting.app.emDimensionType.DIMENSION_2, this.getBindingContext().getObject());
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "distributionRule2",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            }),
+                                        }),
+                                        visible: accounting.config.isEnableDimension(accounting.app.emDimensionType.DIMENSION_2)
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salesinvoiceitem_distributionrule3"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest(): void {
+                                                that.fireViewEvents(that.chooseSalesInvoiceItemDistributionRuleEvent,
+                                                    accounting.app.emDimensionType.DIMENSION_3, this.getBindingContext().getObject());
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "distributionRule3",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            }),
+                                        }),
+                                        visible: accounting.config.isEnableDimension(accounting.app.emDimensionType.DIMENSION_3)
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salesinvoiceitem_distributionrule4"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest(): void {
+                                                that.fireViewEvents(that.chooseSalesInvoiceItemDistributionRuleEvent,
+                                                    accounting.app.emDimensionType.DIMENSION_4, this.getBindingContext().getObject());
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "distributionRule4",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            }),
+                                        }),
+                                        visible: accounting.config.isEnableDimension(accounting.app.emDimensionType.DIMENSION_4)
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salesinvoiceitem_distributionrule5"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest(): void {
+                                                that.fireViewEvents(that.chooseSalesInvoiceItemDistributionRuleEvent,
+                                                    accounting.app.emDimensionType.DIMENSION_5, this.getBindingContext().getObject());
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "distributionRule5",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            }),
+                                        }),
+                                        visible: accounting.config.isEnableDimension(accounting.app.emDimensionType.DIMENSION_5)
                                     }),
                                 ],
                                 sortProperty: "visOrder",

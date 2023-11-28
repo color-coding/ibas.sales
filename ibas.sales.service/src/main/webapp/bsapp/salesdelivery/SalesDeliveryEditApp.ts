@@ -38,6 +38,7 @@ namespace sales {
                 this.view.chooseSalesDeliveryItemMaterialBatchEvent = this.chooseSalesDeliveryLineMaterialBatch;
                 this.view.chooseSalesDeliveryItemMaterialSerialEvent = this.chooseSalesDeliveryLineMaterialSerial;
                 this.view.chooseSalesDeliveryItemMaterialVersionEvent = this.chooseSalesDeliveryItemMaterialVersion;
+                this.view.chooseSalesDeliveryItemDistributionRuleEvent = this.chooseSalesDeliveryItemDistributionRule;
                 this.view.chooseSalesDeliveryItemWarehouseEvent = this.chooseSalesDeliveryItemWarehouse;
                 this.view.chooseSalesDeliveryItemUnitEvent = this.chooseSalesDeliveryItemUnit;
                 this.view.chooseSalesDeliverySalesOrderEvent = this.chooseSalesDeliverySalesOrder;
@@ -1206,6 +1207,30 @@ namespace sales {
                     }
                 });
             }
+            private chooseSalesDeliveryItemDistributionRule(type: accounting.app.emDimensionType, caller: bo.SalesDeliveryItem): void {
+                if (ibas.objects.isNull(type)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("accounting_dimension_invaild", ""));
+                    return;
+                }
+                ibas.servicesManager.runApplicationService<accounting.app.IDimensionDataServiceContract, String>({
+                    proxy: new accounting.app.DimensionDataServiceProxy({
+                        type: type,
+                    }),
+                    onCompleted(result: string): void {
+                        if (type === accounting.app.emDimensionType.DIMENSION_1) {
+                            caller.distributionRule1 = result;
+                        } else if (type === accounting.app.emDimensionType.DIMENSION_2) {
+                            caller.distributionRule2 = result;
+                        } else if (type === accounting.app.emDimensionType.DIMENSION_3) {
+                            caller.distributionRule3 = result;
+                        } else if (type === accounting.app.emDimensionType.DIMENSION_4) {
+                            caller.distributionRule4 = result;
+                        } else if (type === accounting.app.emDimensionType.DIMENSION_5) {
+                            caller.distributionRule5 = result;
+                        }
+                    }
+                });
+            }
         }
         /** 视图-销售交货 */
         export interface ISalesDeliveryEditView extends ibas.IBOEditView {
@@ -1243,6 +1268,8 @@ namespace sales {
             chooseSalesDeliverySalesOrderEvent: Function;
             /** 选择销售交货-一揽子协议事件 */
             chooseSalesDeliveryBlanketAgreementEvent: Function;
+            /** 选择销售交货-行 分配中心事件 */
+            chooseSalesDeliveryItemDistributionRuleEvent: Function;
             /** 选择客户合同 */
             chooseCustomerAgreementsEvent: Function;
             /** 销售交货收款事件 */

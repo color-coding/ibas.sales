@@ -36,6 +36,8 @@ namespace sales {
                 chooseSalesReturnItemMaterialBatchEvent: Function;
                 /** 选择销售退货-行 物料版本 */
                 chooseSalesReturnItemMaterialVersionEvent: Function;
+                /** 选择销售退货-行 分配中心事件 */
+                chooseSalesReturnItemDistributionRuleEvent: Function;
                 /** 选择销售退货项目-销售订单事件 */
                 chooseSalesReturnSalesOrderEvent: Function;
                 /** 选择销售退货项目-销售交货事件 */
