@@ -1191,6 +1191,24 @@ namespace sales {
                 condition.operation = ibas.emConditionOperation.IS_NULL;
                 condition.relationship = ibas.emConditionRelationship.OR;
                 condition.bracketClose = 1;
+                // 是否指定分支
+                if (!ibas.strings.isEmpty(this.editData.branch)) {
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesDelivery.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = this.editData.branch;
+                } else {
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesDelivery.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = "";
+                    condition.bracketOpen = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesDelivery.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.IS_NULL;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition.bracketClose = 1;
+                }
                 ibas.servicesManager.runChooseService<businesspartner.bo.Agreement>({
                     boCode: businesspartner.bo.Agreement.BUSINESS_OBJECT_CODE,
                     chooseType: ibas.emChooseType.MULTIPLE,
@@ -1269,7 +1287,7 @@ namespace sales {
             chooseSalesDeliverySalesOrderEvent: Function;
             /** 选择销售交货-一揽子协议事件 */
             chooseSalesDeliveryBlanketAgreementEvent: Function;
-            /** 选择销售交货-行 分配中心事件 */
+            /** 选择销售交货-行 成本中心事件 */
             chooseSalesDeliveryItemDistributionRuleEvent: Function;
             /** 选择客户合同 */
             chooseCustomerAgreementsEvent: Function;

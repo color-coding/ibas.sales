@@ -36,7 +36,7 @@ namespace sales {
                 chooseSalesCreditNoteItemMaterialSerialEvent: Function;
                 /** 选择销售贷项-行 物料批次事件 */
                 chooseSalesCreditNoteItemMaterialBatchEvent: Function;
-                /** 选择销售贷项-行 分配中心事件 */
+                /** 选择销售贷项-行 成本中心事件 */
                 chooseSalesCreditNoteItemDistributionRuleEvent: Function;
                 /** 选择销售贷项-行 物料版本 */
                 chooseSalesCreditNoteItemMaterialVersionEvent: Function;

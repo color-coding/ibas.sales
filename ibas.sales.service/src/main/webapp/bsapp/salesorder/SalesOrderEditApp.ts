@@ -1385,6 +1385,24 @@ namespace sales {
                 condition.operation = ibas.emConditionOperation.IS_NULL;
                 condition.relationship = ibas.emConditionRelationship.OR;
                 condition.bracketClose = 1;
+                // 是否指定分支
+                if (!ibas.strings.isEmpty(this.editData.branch)) {
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesOrder.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = this.editData.branch;
+                } else {
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesOrder.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = "";
+                    condition.bracketOpen = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesOrder.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.IS_NULL;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition.bracketClose = 1;
+                }
                 ibas.servicesManager.runChooseService<businesspartner.bo.Agreement>({
                     boCode: businesspartner.bo.Agreement.BUSINESS_OBJECT_CODE,
                     chooseType: ibas.emChooseType.MULTIPLE,
@@ -1459,7 +1477,7 @@ namespace sales {
             chooseSalesOrderItemMaterialBatchEvent: Function;
             /** 选择销售订单-行 物料版本 */
             chooseSalesOrderItemMaterialVersionEvent: Function;
-            /** 选择销售订单-行 分配中心事件 */
+            /** 选择销售订单-行 成本中心事件 */
             chooseSalesOrderItemDistributionRuleEvent: Function;
             /** 显示销售订单行额外信息事件 */
             showSalesOrderItemExtraEvent: Function;

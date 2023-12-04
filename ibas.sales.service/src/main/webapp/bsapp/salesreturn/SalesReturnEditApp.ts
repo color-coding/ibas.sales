@@ -881,6 +881,24 @@ namespace sales {
                 condition.operation = ibas.emConditionOperation.IS_NULL;
                 condition.relationship = ibas.emConditionRelationship.OR;
                 condition.bracketClose = 1;
+                // 是否指定分支
+                if (!ibas.strings.isEmpty(this.editData.branch)) {
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesReturn.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = this.editData.branch;
+                } else {
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesReturn.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = "";
+                    condition.bracketOpen = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesReturn.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.IS_NULL;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition.bracketClose = 1;
+                }
                 ibas.servicesManager.runChooseService<businesspartner.bo.Agreement>({
                     boCode: businesspartner.bo.Agreement.BUSINESS_OBJECT_CODE,
                     chooseType: ibas.emChooseType.MULTIPLE,
@@ -955,7 +973,7 @@ namespace sales {
             chooseSalesReturnItemMaterialSerialEvent: Function;
             /** 选择销售退货-行 物料版本 */
             chooseSalesReturnItemMaterialVersionEvent: Function;
-            /** 选择销售退货-行 分配中心事件 */
+            /** 选择销售退货-行 成本中心事件 */
             chooseSalesReturnItemDistributionRuleEvent: Function;
             /** 选择销售退货项目-销售订单事件 */
             chooseSalesReturnSalesOrderEvent: Function;

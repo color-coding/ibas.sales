@@ -82,7 +82,7 @@ namespace sales {
                 // 收付款服务
                 // this.register(new SalesReturnPaymentServiceMapping()); 没这种情况
                 this.register(new SalesCreditNotePaymentServiceMapping());
-                // this.register(new SalesDeliveryReceiptServiceMapping()); 没这种情况
+                this.register(new SalesDeliveryReceiptServiceMapping());
                 this.register(new SalesOrderReceiptServiceMapping());
                 this.register(new SalesInvoiceReceiptServiceMapping());
                 this.register(new DownPaymentRequestReceiptServiceMapping());

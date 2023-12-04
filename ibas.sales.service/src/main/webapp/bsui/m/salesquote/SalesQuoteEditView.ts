@@ -34,7 +34,7 @@ namespace sales {
                 chooseSalesQuoteItemUnitEvent: Function;
                 /** 选择销售报价-行 物料版本 */
                 chooseSalesQuoteItemMaterialVersionEvent: Function;
-                /** 选择销售报价-行  分配中心事件 */
+                /** 选择销售报价-行  成本中心事件 */
                 chooseSalesOrderItemDistributionRuleEvent: Function;
                 /** 选择客户合同 */
                 chooseCustomerAgreementsEvent: Function;
