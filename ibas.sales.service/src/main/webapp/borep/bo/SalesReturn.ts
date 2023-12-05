@@ -544,13 +544,6 @@ namespace sales {
                 this.setProperty(SalesCreditNote.PROPERTY_BRANCH_NAME, value);
             }
 
-            /** 映射的属性名称-销售订单-行集合 */
-            static PROPERTY_SALESQUOTEITEMS_NAME: string = "SalesQuoteItems";
-            /** 获取-销售订单-行集合 */
-            get salesQuoteItems(): SalesQuoteItems {
-                return this.getProperty<SalesQuoteItems>(SalesQuote.PROPERTY_SALESQUOTEITEMS_NAME);
-            }
-
             /** 映射的属性名称-销售退货-行集合 */
             static PROPERTY_SALESRETURNITEMS_NAME: string = "SalesReturnItems";
             /** 获取-销售退货-行集合 */

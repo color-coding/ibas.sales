@@ -957,70 +957,89 @@ namespace sales {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
                     return;
                 }
-                if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
-                    || this.editData.deleted === ibas.emYesNo.YES
-                    || this.editData.canceled === ibas.emYesNo.YES
-                    || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
-                ) {
-                    this.messages(ibas.emMessageType.ERROR, ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
-                    return;
-                }
-                let target: bo.SalesDelivery = new bo.SalesDelivery();
-                target.customerCode = this.editData.customerCode;
-                target.customerName = this.editData.customerName;
-                target.baseDocument(this.editData);
-                // 使用预留库存
-                materials.app.useReservedMaterialsInventory({
-                    targetType: this.editData.objectCode,
-                    targetEntries: this.editData.docEntry,
-                    onCompleted: (results) => {
-                        if (results instanceof Error) {
-                            // 错误
-                            this.messages(results);
-                        } else if (results.length > 0) {
-                            // 出库数预置为0
-                            target.salesDeliveryItems.where(c =>
-                                this.editData.objectCode === c.baseDocumentType
-                                && this.editData.docEntry === c.baseDocumentEntry
-                            ).forEach(c => c.quantity = 0);
-                            // 使用预留库存
-                            for (let result of results) {
-                                let wItems: bo.SalesDeliveryItem[] = target.salesDeliveryItems.where(c =>
-                                    result.targetDocumentType === c.baseDocumentType
-                                    && result.targetDocumentEntry === c.baseDocumentEntry
-                                    && result.targetDocumentLineId === c.baseDocumentLineId
-                                    && result.itemCode === c.itemCode
-                                );
-                                if (wItems.length === 0) {
-                                    continue;
-                                }
-                                let wItem: bo.SalesDeliveryItem = wItems.find(c => c.warehouse === result.warehouse);
-                                if (ibas.objects.isNull(wItem)) {
-                                    // 没有同仓库的，则新建行
-                                    wItem = wItems[0].clone();
-                                    wItem.warehouse = result.warehouse;
-                                    target.salesDeliveryItems.add(wItem);
-                                }
-                                // 应用库存
-                                wItem.quantity += result.quantity;
-                                // 处理明细项
-                                if (!ibas.strings.isEmpty(result.batchCode)) {
-                                    // 批次管理
-                                    let bItem: materials.bo.IMaterialBatchItem = wItem.materialBatches.create();
-                                    bItem.batchCode = result.batchCode;
-                                    bItem.quantity = result.quantity;
-                                } else if (!ibas.strings.isEmpty(result.serialCode)) {
-                                    // 序列管理
-                                    let sItem: materials.bo.IMaterialSerialItem = wItem.materialSerials.create();
-                                    sItem.serialCode = result.serialCode;
-                                }
+                let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
+                boRepository.fetchSalesOrder({
+                    criteria: this.editData.criteria(),
+                    onCompleted: (opRslt) => {
+                        try {
+                            if (opRslt.resultCode !== 0) {
+                                throw new Error(opRslt.message);
                             }
-                            this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_used_reserved_materials_inventory"));
+                            if (opRslt.resultObjects.length === 0) {
+                                throw new Error(ibas.i18n.prop("shell_data_deleted"));
+                            }
+                            this.editData = opRslt.resultObjects.firstOrDefault();
+                            this.view.showSalesOrder(this.editData);
+                            this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
+                            if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
+                                || this.editData.deleted === ibas.emYesNo.YES
+                                || this.editData.canceled === ibas.emYesNo.YES
+                                || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
+                            ) {
+                                throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                            }
+                            let target: bo.SalesDelivery = new bo.SalesDelivery();
+                            target.customerCode = this.editData.customerCode;
+                            target.customerName = this.editData.customerName;
+                            target.baseDocument(this.editData);
+                            // 使用预留库存
+                            materials.app.useReservedMaterialsInventory({
+                                targetType: this.editData.objectCode,
+                                targetEntries: this.editData.docEntry,
+                                onCompleted: (results) => {
+                                    if (results instanceof Error) {
+                                        // 错误
+                                        this.messages(results);
+                                    } else if (results.length > 0) {
+                                        // 出库数预置为0
+                                        target.salesDeliveryItems.where(c =>
+                                            this.editData.objectCode === c.baseDocumentType
+                                            && this.editData.docEntry === c.baseDocumentEntry
+                                        ).forEach(c => c.quantity = 0);
+                                        // 使用预留库存
+                                        for (let result of results) {
+                                            let wItems: bo.SalesDeliveryItem[] = target.salesDeliveryItems.where(c =>
+                                                result.targetDocumentType === c.baseDocumentType
+                                                && result.targetDocumentEntry === c.baseDocumentEntry
+                                                && result.targetDocumentLineId === c.baseDocumentLineId
+                                                && result.itemCode === c.itemCode
+                                            );
+                                            if (wItems.length === 0) {
+                                                continue;
+                                            }
+                                            let wItem: bo.SalesDeliveryItem = wItems.find(c => c.warehouse === result.warehouse);
+                                            if (ibas.objects.isNull(wItem)) {
+                                                // 没有同仓库的，则新建行
+                                                wItem = wItems[0].clone();
+                                                wItem.warehouse = result.warehouse;
+                                                target.salesDeliveryItems.add(wItem);
+                                            }
+                                            // 应用库存
+                                            wItem.quantity += result.quantity;
+                                            // 处理明细项
+                                            if (!ibas.strings.isEmpty(result.batchCode)) {
+                                                // 批次管理
+                                                let bItem: materials.bo.IMaterialBatchItem = wItem.materialBatches.create();
+                                                bItem.batchCode = result.batchCode;
+                                                bItem.quantity = result.quantity;
+                                            } else if (!ibas.strings.isEmpty(result.serialCode)) {
+                                                // 序列管理
+                                                let sItem: materials.bo.IMaterialSerialItem = wItem.materialSerials.create();
+                                                sItem.serialCode = result.serialCode;
+                                            }
+                                        }
+                                        this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_used_reserved_materials_inventory"));
+                                    }
+                                    let app: SalesDeliveryEditApp = new SalesDeliveryEditApp();
+                                    app.navigation = this.navigation;
+                                    app.viewShower = this.viewShower;
+                                    app.run(target);
+                                }
+                            });
+
+                        } catch (error) {
+                            this.messages(error);
                         }
-                        let app: SalesDeliveryEditApp = new SalesDeliveryEditApp();
-                        app.navigation = this.navigation;
-                        app.viewShower = this.viewShower;
-                        app.run(target);
                     }
                 });
             }
@@ -1030,24 +1049,42 @@ namespace sales {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
                     return;
                 }
-                if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
-                    || this.editData.deleted === ibas.emYesNo.YES
-                    || this.editData.canceled === ibas.emYesNo.YES
-                    || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
-                ) {
-                    this.messages(ibas.emMessageType.ERROR, ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
-                    return;
-                }
-                let target: bo.SalesReturn = new bo.SalesReturn();
-                target.customerCode = this.editData.customerCode;
-                target.customerName = this.editData.customerName;
-                target.baseDocument(this.editData);
+                let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
+                boRepository.fetchSalesOrder({
+                    criteria: this.editData.criteria(),
+                    onCompleted: (opRslt) => {
+                        try {
+                            if (opRslt.resultCode !== 0) {
+                                throw new Error(opRslt.message);
+                            }
+                            if (opRslt.resultObjects.length === 0) {
+                                throw new Error(ibas.i18n.prop("shell_data_deleted"));
+                            }
+                            this.editData = opRslt.resultObjects.firstOrDefault();
+                            this.view.showSalesOrder(this.editData);
+                            this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
+                            if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
+                                || this.editData.deleted === ibas.emYesNo.YES
+                                || this.editData.canceled === ibas.emYesNo.YES
+                                || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
+                            ) {
+                                throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                            }
+                            let target: bo.SalesReturn = new bo.SalesReturn();
+                            target.customerCode = this.editData.customerCode;
+                            target.customerName = this.editData.customerName;
+                            target.baseDocument(this.editData);
 
-                let app: SalesReturnEditApp = new SalesReturnEditApp();
-                app.navigation = this.navigation;
-                app.viewShower = this.viewShower;
-                app.run(target);
+                            let app: SalesReturnEditApp = new SalesReturnEditApp();
+                            app.navigation = this.navigation;
+                            app.viewShower = this.viewShower;
+                            app.run(target);
 
+                        } catch (error) {
+                            this.messages(error);
+                        }
+                    }
+                });
             }
             /** 转为销售发票 */
             protected turnToSalesInvoice(): void {
@@ -1055,71 +1092,90 @@ namespace sales {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
                     return;
                 }
-                if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
-                    || this.editData.deleted === ibas.emYesNo.YES
-                    || this.editData.canceled === ibas.emYesNo.YES
-                    || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
-                ) {
-                    this.messages(ibas.emMessageType.ERROR, ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
-                    return;
-                }
-                let target: bo.SalesInvoice = new bo.SalesInvoice();
-                target.customerCode = this.editData.customerCode;
-                target.customerName = this.editData.customerName;
-                target.baseDocument(this.editData);
-
-                // 使用预留库存
-                materials.app.useReservedMaterialsInventory({
-                    targetType: this.editData.objectCode,
-                    targetEntries: this.editData.docEntry,
-                    onCompleted: (results) => {
-                        if (results instanceof Error) {
-                            // 错误
-                            this.messages(results);
-                        } else if (results.length > 0) {
-                            // 出库数预置为0
-                            target.salesInvoiceItems.where(c =>
-                                this.editData.objectCode === c.baseDocumentType
-                                && this.editData.docEntry === c.baseDocumentEntry
-                            ).forEach(c => c.quantity = 0);
-                            // 使用预留库存
-                            for (let result of results) {
-                                let wItems: bo.SalesInvoiceItem[] = target.salesInvoiceItems.where(c =>
-                                    result.targetDocumentType === c.baseDocumentType
-                                    && result.targetDocumentEntry === c.baseDocumentEntry
-                                    && result.targetDocumentLineId === c.baseDocumentLineId
-                                    && result.itemCode === c.itemCode
-                                );
-                                if (wItems.length === 0) {
-                                    continue;
-                                }
-                                let wItem: bo.SalesInvoiceItem = wItems.find(c => c.warehouse === result.warehouse);
-                                if (ibas.objects.isNull(wItem)) {
-                                    // 没有同仓库的，则新建行
-                                    wItem = wItems[0].clone();
-                                    wItem.warehouse = result.warehouse;
-                                    target.salesInvoiceItems.add(wItem);
-                                }
-                                // 应用库存
-                                wItem.quantity += result.quantity;
-                                // 处理明细项
-                                if (!ibas.strings.isEmpty(result.batchCode)) {
-                                    // 批次管理
-                                    let bItem: materials.bo.IMaterialBatchItem = wItem.materialBatches.create();
-                                    bItem.batchCode = result.batchCode;
-                                    bItem.quantity = result.quantity;
-                                } else if (!ibas.strings.isEmpty(result.serialCode)) {
-                                    // 序列管理
-                                    let sItem: materials.bo.IMaterialSerialItem = wItem.materialSerials.create();
-                                    sItem.serialCode = result.serialCode;
-                                }
+                let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
+                boRepository.fetchSalesOrder({
+                    criteria: this.editData.criteria(),
+                    onCompleted: (opRslt) => {
+                        try {
+                            if (opRslt.resultCode !== 0) {
+                                throw new Error(opRslt.message);
                             }
-                            this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_used_reserved_materials_inventory"));
+                            if (opRslt.resultObjects.length === 0) {
+                                throw new Error(ibas.i18n.prop("shell_data_deleted"));
+                            }
+                            this.editData = opRslt.resultObjects.firstOrDefault();
+                            this.view.showSalesOrder(this.editData);
+                            this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
+                            if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
+                                || this.editData.deleted === ibas.emYesNo.YES
+                                || this.editData.canceled === ibas.emYesNo.YES
+                                || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
+                            ) {
+                                throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                            }
+                            let target: bo.SalesInvoice = new bo.SalesInvoice();
+                            target.customerCode = this.editData.customerCode;
+                            target.customerName = this.editData.customerName;
+                            target.baseDocument(this.editData);
+
+                            // 使用预留库存
+                            materials.app.useReservedMaterialsInventory({
+                                targetType: this.editData.objectCode,
+                                targetEntries: this.editData.docEntry,
+                                onCompleted: (results) => {
+                                    if (results instanceof Error) {
+                                        // 错误
+                                        this.messages(results);
+                                    } else if (results.length > 0) {
+                                        // 出库数预置为0
+                                        target.salesInvoiceItems.where(c =>
+                                            this.editData.objectCode === c.baseDocumentType
+                                            && this.editData.docEntry === c.baseDocumentEntry
+                                        ).forEach(c => c.quantity = 0);
+                                        // 使用预留库存
+                                        for (let result of results) {
+                                            let wItems: bo.SalesInvoiceItem[] = target.salesInvoiceItems.where(c =>
+                                                result.targetDocumentType === c.baseDocumentType
+                                                && result.targetDocumentEntry === c.baseDocumentEntry
+                                                && result.targetDocumentLineId === c.baseDocumentLineId
+                                                && result.itemCode === c.itemCode
+                                            );
+                                            if (wItems.length === 0) {
+                                                continue;
+                                            }
+                                            let wItem: bo.SalesInvoiceItem = wItems.find(c => c.warehouse === result.warehouse);
+                                            if (ibas.objects.isNull(wItem)) {
+                                                // 没有同仓库的，则新建行
+                                                wItem = wItems[0].clone();
+                                                wItem.warehouse = result.warehouse;
+                                                target.salesInvoiceItems.add(wItem);
+                                            }
+                                            // 应用库存
+                                            wItem.quantity += result.quantity;
+                                            // 处理明细项
+                                            if (!ibas.strings.isEmpty(result.batchCode)) {
+                                                // 批次管理
+                                                let bItem: materials.bo.IMaterialBatchItem = wItem.materialBatches.create();
+                                                bItem.batchCode = result.batchCode;
+                                                bItem.quantity = result.quantity;
+                                            } else if (!ibas.strings.isEmpty(result.serialCode)) {
+                                                // 序列管理
+                                                let sItem: materials.bo.IMaterialSerialItem = wItem.materialSerials.create();
+                                                sItem.serialCode = result.serialCode;
+                                            }
+                                        }
+                                        this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_used_reserved_materials_inventory"));
+                                    }
+                                    let app: SalesInvoiceEditApp = new SalesInvoiceEditApp();
+                                    app.navigation = this.navigation;
+                                    app.viewShower = this.viewShower;
+                                    app.run(target);
+                                }
+                            });
+
+                        } catch (error) {
+                            this.messages(error);
                         }
-                        let app: SalesInvoiceEditApp = new SalesInvoiceEditApp();
-                        app.navigation = this.navigation;
-                        app.viewShower = this.viewShower;
-                        app.run(target);
                     }
                 });
 

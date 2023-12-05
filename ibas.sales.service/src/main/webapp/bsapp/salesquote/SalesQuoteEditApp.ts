@@ -715,79 +715,96 @@ namespace sales {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
                     return;
                 }
-                if (ibas.dates.compare(ibas.dates.today(), this.editData.deliveryDate) < 0) {
-                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_salesquote_expired_date"));
-                    return;
-                }
-                if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
-                    || this.editData.deleted === ibas.emYesNo.YES
-                    || this.editData.canceled === ibas.emYesNo.YES
-                    || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
-                ) {
-                    this.messages(ibas.emMessageType.ERROR, ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
-                    return;
-                }
-                if (salesOrder instanceof bo.SalesOrder) {
-                    let app: SalesOrderEditApp = new SalesOrderEditApp();
-                    app.navigation = this.navigation;
-                    app.viewShower = this.viewShower;
-                    app.run(salesOrder);
-                } else {
-                    if (this.editData.customerType === businesspartner.bo.emBusinessPartnerType.LEAD) {
-                        let that: this = this;
-                        this.messages({
-                            type: ibas.emMessageType.QUESTION,
-                            title: ibas.i18n.prop(this.name),
-                            message: ibas.i18n.prop("sales_change_lead_to_customer_continue"),
-                            actions: [ibas.emMessageAction.YES, ibas.emMessageAction.NO],
-                            onCompleted(action: ibas.emMessageAction): void {
-                                if (action === ibas.emMessageAction.YES) {
-                                    let criteria: ibas.ICriteria = new ibas.Criteria();
-                                    let condition: ibas.ICondition = criteria.conditions.create();
-                                    condition.alias = businesspartner.bo.Customer.PROPERTY_LEAD_NAME;
-                                    condition.value = that.editData.customerCode;
-                                    let boRepository: businesspartner.bo.BORepositoryBusinessPartner = new businesspartner.bo.BORepositoryBusinessPartner();
-                                    boRepository.fetchCustomer({
-                                        criteria: criteria,
-                                        onCompleted: (opRslt) => {
-                                            try {
-                                                if (opRslt.resultCode !== 0) {
-                                                    throw new Error(opRslt.message);
-                                                }
-                                                if (opRslt.resultObjects.length === 0) {
-                                                    throw new Error(ibas.i18n.prop("sales_not_found_lead's_customer", that.editData.customerCode, that.editData.customerName));
-                                                }
-                                                let customer: businesspartner.bo.ICustomer = opRslt.resultObjects.firstOrDefault();
+                let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
+                boRepository.fetchSalesQuote({
+                    criteria: this.editData.criteria(),
+                    onCompleted: (opRslt) => {
+                        try {
+                            if (opRslt.resultCode !== 0) {
+                                throw new Error(opRslt.message);
+                            }
+                            if (opRslt.resultObjects.length === 0) {
+                                throw new Error(ibas.i18n.prop("shell_data_deleted"));
+                            }
+                            this.editData = opRslt.resultObjects.firstOrDefault();
+                            this.view.showSalesQuote(this.editData);
+                            this.view.showSalesQuoteItems(this.editData.salesQuoteItems.filterDeleted());
+                            if (ibas.dates.compare(ibas.dates.today(), this.editData.deliveryDate) < 0) {
+                                this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_salesquote_expired_date"));
+                                return;
+                            }
+                            if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
+                                || this.editData.deleted === ibas.emYesNo.YES
+                                || this.editData.canceled === ibas.emYesNo.YES
+                                || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
+                            ) {
+                                throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                            }
+                            if (salesOrder instanceof bo.SalesOrder) {
+                                let app: SalesOrderEditApp = new SalesOrderEditApp();
+                                app.navigation = this.navigation;
+                                app.viewShower = this.viewShower;
+                                app.run(salesOrder);
+                            } else {
+                                if (this.editData.customerType === businesspartner.bo.emBusinessPartnerType.LEAD) {
+                                    let that: this = this;
+                                    this.messages({
+                                        type: ibas.emMessageType.QUESTION,
+                                        title: ibas.i18n.prop(this.name),
+                                        message: ibas.i18n.prop("sales_change_lead_to_customer_continue"),
+                                        actions: [ibas.emMessageAction.YES, ibas.emMessageAction.NO],
+                                        onCompleted(action: ibas.emMessageAction): void {
+                                            if (action === ibas.emMessageAction.YES) {
+                                                let criteria: ibas.ICriteria = new ibas.Criteria();
+                                                let condition: ibas.ICondition = criteria.conditions.create();
+                                                condition.alias = businesspartner.bo.Customer.PROPERTY_LEAD_NAME;
+                                                condition.value = that.editData.customerCode;
+                                                let boRepository: businesspartner.bo.BORepositoryBusinessPartner = new businesspartner.bo.BORepositoryBusinessPartner();
+                                                boRepository.fetchCustomer({
+                                                    criteria: criteria,
+                                                    onCompleted: (opRslt) => {
+                                                        try {
+                                                            if (opRslt.resultCode !== 0) {
+                                                                throw new Error(opRslt.message);
+                                                            }
+                                                            if (opRslt.resultObjects.length === 0) {
+                                                                throw new Error(ibas.i18n.prop("sales_not_found_lead's_customer", that.editData.customerCode, that.editData.customerName));
+                                                            }
+                                                            let customer: businesspartner.bo.ICustomer = opRslt.resultObjects.firstOrDefault();
+                                                            let target: bo.SalesOrder = new bo.SalesOrder();
+                                                            target.customerCode = that.editData.customerCode;
+                                                            target.customerName = that.editData.customerName;
+                                                            target.baseDocument(that.editData);
+                                                            target.customerCode = customer.code;
+                                                            target.customerName = customer.name;
+                                                            that.turnToSalesOrder(target);
+                                                        } catch (error) {
+                                                            that.messages(error);
+                                                        }
+                                                    }
+                                                });
+                                            } else {
                                                 let target: bo.SalesOrder = new bo.SalesOrder();
                                                 target.customerCode = that.editData.customerCode;
                                                 target.customerName = that.editData.customerName;
                                                 target.baseDocument(that.editData);
-                                                target.customerCode = customer.code;
-                                                target.customerName = customer.name;
                                                 that.turnToSalesOrder(target);
-                                            } catch (error) {
-                                                that.messages(error);
                                             }
                                         }
                                     });
                                 } else {
                                     let target: bo.SalesOrder = new bo.SalesOrder();
-                                    target.customerCode = that.editData.customerCode;
-                                    target.customerName = that.editData.customerName;
-                                    target.baseDocument(that.editData);
-                                    that.turnToSalesOrder(target);
+                                    target.customerCode = this.editData.customerCode;
+                                    target.customerName = this.editData.customerName;
+                                    target.baseDocument(this.editData);
+                                    this.turnToSalesOrder(target);
                                 }
                             }
-                        });
-                    } else {
-                        let target: bo.SalesOrder = new bo.SalesOrder();
-                        target.customerCode = this.editData.customerCode;
-                        target.customerName = this.editData.customerName;
-                        target.baseDocument(this.editData);
-                        this.turnToSalesOrder(target);
+                        } catch (error) {
+                            this.messages(error);
+                        }
                     }
-
-                }
+                });
             }
             /** 选择一揽子协议事件 */
             private chooseSalesQuoteBlanketAgreement(): void {

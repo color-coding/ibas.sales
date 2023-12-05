@@ -776,23 +776,42 @@ namespace sales {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
                     return;
                 }
-                if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
-                    || this.editData.deleted === ibas.emYesNo.YES
-                    || this.editData.canceled === ibas.emYesNo.YES
-                    || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
-                ) {
-                    this.messages(ibas.emMessageType.ERROR, ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
-                    return;
-                }
-                let target: bo.SalesCreditNote = new bo.SalesCreditNote();
-                target.customerCode = this.editData.customerCode;
-                target.customerName = this.editData.customerName;
-                target.baseDocument(this.editData);
+                let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
+                boRepository.fetchSalesReturn({
+                    criteria: this.editData.criteria(),
+                    onCompleted: (opRslt) => {
+                        try {
+                            if (opRslt.resultCode !== 0) {
+                                throw new Error(opRslt.message);
+                            }
+                            if (opRslt.resultObjects.length === 0) {
+                                throw new Error(ibas.i18n.prop("shell_data_deleted"));
+                            }
+                            this.editData = opRslt.resultObjects.firstOrDefault();
+                            this.view.showSalesReturn(this.editData);
+                            this.view.showSalesReturnItems(this.editData.salesReturnItems.filterDeleted());
+                            if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
+                                || this.editData.deleted === ibas.emYesNo.YES
+                                || this.editData.canceled === ibas.emYesNo.YES
+                                || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
+                            ) {
+                                throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                            }
+                            let target: bo.SalesCreditNote = new bo.SalesCreditNote();
+                            target.customerCode = this.editData.customerCode;
+                            target.customerName = this.editData.customerName;
+                            target.baseDocument(this.editData);
 
-                let app: SalesCreditNoteEditApp = new SalesCreditNoteEditApp();
-                app.navigation = this.navigation;
-                app.viewShower = this.viewShower;
-                app.run(target);
+                            let app: SalesCreditNoteEditApp = new SalesCreditNoteEditApp();
+                            app.navigation = this.navigation;
+                            app.viewShower = this.viewShower;
+                            app.run(target);
+
+                        } catch (error) {
+                            this.messages(error);
+                        }
+                    }
+                });
 
             }
             private chooseSalesReturnItemUnit(caller: bo.SalesReturnItem): void {

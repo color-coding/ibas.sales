@@ -515,6 +515,19 @@ namespace sales {
                                         }),
                                     }),
                                     new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salescreditnoteitem_tax"),
+                                        template: new component.TaxGroupSelect("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "tax",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 8
+                                            })
+                                        }).bindProperty("rate", {
+                                            path: "taxRate",
+                                            type: new sap.extension.data.Rate()
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salescreditnoteitem_reference1"),
                                         template: new sap.extension.m.Input("", {
                                         }).bindProperty("bindingValue", {

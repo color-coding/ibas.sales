@@ -426,7 +426,7 @@ namespace sales {
                 super();
                 this.id = DownPaymentRequestReceiptService.APPLICATION_ID;
                 this.name = DownPaymentRequestReceiptService.APPLICATION_NAME;
-                this.description = ibas.i18n.prop("bo_downpaymentrequest_ap");
+                this.description = ibas.i18n.prop("bo_downpaymentrequest_ar");
                 this.proxy = receiptpayment.app.DocumentReceiptServiceProxy;
             }
             /** 创建服务实例 */
