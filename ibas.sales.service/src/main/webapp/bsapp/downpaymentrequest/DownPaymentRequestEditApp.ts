@@ -249,7 +249,7 @@ namespace sales {
                 }
                 let that: this = this;
                 ibas.servicesManager.runChooseService<businesspartner.bo.ICustomer>({
-                    boCode: businesspartner.bo.BO_CODE_SUPPLIER,
+                    boCode: businesspartner.bo.BO_CODE_CUSTOMER,
                     chooseType: ibas.emChooseType.SINGLE,
                     criteria: businesspartner.app.conditions.customer.create(),
                     onCompleted(selecteds: ibas.IList<businesspartner.bo.ICustomer>): void {

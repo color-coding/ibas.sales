@@ -2731,6 +2731,12 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 
 			@Override
 			public emDocumentStatus getTargetDocumentStatus() {
+				if (SalesOrderItem.this.getCanceled() == emYesNo.YES) {
+					return emDocumentStatus.CLOSED;
+				}
+				if (SalesOrderItem.this.getDeleted() == emYesNo.YES) {
+					return emDocumentStatus.CLOSED;
+				}
 				return SalesOrderItem.this.getLineStatus();
 			}
 
@@ -2760,6 +2766,12 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 
 			@Override
 			public emDocumentStatus getTargetDocumentStatus() {
+				if (SalesOrderItem.this.getCanceled() == emYesNo.YES) {
+					return emDocumentStatus.CLOSED;
+				}
+				if (SalesOrderItem.this.getDeleted() == emYesNo.YES) {
+					return emDocumentStatus.CLOSED;
+				}
 				return SalesOrderItem.this.getLineStatus();
 			}
 

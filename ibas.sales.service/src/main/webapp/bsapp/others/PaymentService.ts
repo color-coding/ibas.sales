@@ -61,6 +61,24 @@ namespace sales {
                 condition.value = ibas.emApprovalStatus.UNAFFECTED.toString();
                 condition.relationship = ibas.emConditionRelationship.OR;
                 condition.bracketClose = 1;
+                // 是否指定分支
+                if (!ibas.strings.isEmpty(contract.payment.branch)) {
+                    condition = criteria.conditions.create();
+                    condition.alias = sales.bo.SalesReturn.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = contract.payment.branch;
+                } else {
+                    condition = criteria.conditions.create();
+                    condition.alias = sales.bo.SalesReturn.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = "";
+                    condition.bracketOpen = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = sales.bo.SalesReturn.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.IS_NULL;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition.bracketClose = 1;
+                }
                 // 当前客户的
                 condition = criteria.conditions.create();
                 condition.alias = sales.bo.SalesReturn.PROPERTY_CUSTOMERCODE_NAME;
@@ -168,6 +186,24 @@ namespace sales {
                 condition.value = ibas.emApprovalStatus.UNAFFECTED.toString();
                 condition.relationship = ibas.emConditionRelationship.OR;
                 condition.bracketClose = 1;
+                // 是否指定分支
+                if (!ibas.strings.isEmpty(contract.payment.branch)) {
+                    condition = criteria.conditions.create();
+                    condition.alias = sales.bo.SalesCreditNote.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = contract.payment.branch;
+                } else {
+                    condition = criteria.conditions.create();
+                    condition.alias = sales.bo.SalesCreditNote.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = "";
+                    condition.bracketOpen = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = sales.bo.SalesCreditNote.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.IS_NULL;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition.bracketClose = 1;
+                }
                 // 当前客户的
                 condition = criteria.conditions.create();
                 condition.alias = sales.bo.SalesCreditNote.PROPERTY_CUSTOMERCODE_NAME;

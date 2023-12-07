@@ -2064,7 +2064,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 							// 已装载货物科目
 							jeContent = new SalesDeliveryMaterialsCost(line);
 							jeContent.setCategory(Category.Debit);
-							jeContent.setLedger(Ledgers.LEDGER_INVENTORY_INVENTORY_ACCOUNT);
+							jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
 							jeContent.setAmount(Decimal.ZERO);// 待计算
 							jeContent.setCurrency(line.getCurrency());
 							jeContents.add(jeContent);
