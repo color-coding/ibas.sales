@@ -436,15 +436,6 @@ namespace sales {
                                                             describe: true,
                                                         }),
                                                     }),
-                                                    new sap.m.Label("", { text: ibas.i18n.prop("bo_blanketagreement_pricemode") }),
-                                                    new sap.extension.m.Text("", {
-                                                    }).bindProperty("bindingValue", {
-                                                        path: "priceMode",
-                                                        type: new sap.extension.data.Enum({
-                                                            enumType: bo.emPriceMode,
-                                                            describe: true,
-                                                        }),
-                                                    }),
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_blanketagreement_paymentcode") }),
                                                     new sap.extension.m.RepositoryText("", {
                                                         repository: businesspartner.bo.BORepositoryBusinessPartner,

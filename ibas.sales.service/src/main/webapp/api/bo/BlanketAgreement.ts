@@ -95,8 +95,6 @@ namespace sales {
             agreementMethod: emAgreementMethod;
             /** 协议类型 */
             agreementType: emAgreementType;
-            /** 价格方式 */
-            priceMode: emPriceMode;
             /** 结算概率 */
             settlementProbability: number;
             /** 合同 */
@@ -173,6 +171,14 @@ namespace sales {
             rate: number;
             /** 行总计 */
             lineTotal: number;
+            /** 税定义 */
+            tax: string;
+            /** 税率 */
+            taxRate: number;
+            /** 税总额 */
+            taxTotal: number;
+            /** 税前价格 */
+            preTaxPrice: number;
             /** 已清数量 */
             closedQuantity: number;
             /** 已清金额 */
