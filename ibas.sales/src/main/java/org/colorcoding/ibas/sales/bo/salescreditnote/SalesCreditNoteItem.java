@@ -2666,7 +2666,7 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 
 					@Override
 					public BigDecimal getPrice() {
-						return SalesCreditNoteItem.this.getPrice();
+						return SalesCreditNoteItem.this.getPreTaxPrice();
 					}
 
 					@Override

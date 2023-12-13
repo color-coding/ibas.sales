@@ -2619,7 +2619,7 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 
 					@Override
 					public BigDecimal getPrice() {
-						return SalesReturnItem.this.getPrice();
+						return SalesReturnItem.this.getPreTaxPrice();
 					}
 
 					@Override
