@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.accounting.data.IProjectData;
+import org.colorcoding.ibas.accounting.logic.IBranchCheckContract;
 import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBOSeriesKey;
@@ -2025,6 +2026,19 @@ public class SalesOrder extends BusinessObject<SalesOrder>
 						SalesOrder.this.floorList = value;
 					}
 
+				},
+				// 分支检查
+				new IBranchCheckContract() {
+
+					@Override
+					public String getIdentifiers() {
+						return SalesOrder.this.toString();
+					}
+
+					@Override
+					public String getBranch() {
+						return SalesOrder.this.getBranch();
+					}
 				},
 				// 价格检查
 				new IMaterialPriceCheckContract() {

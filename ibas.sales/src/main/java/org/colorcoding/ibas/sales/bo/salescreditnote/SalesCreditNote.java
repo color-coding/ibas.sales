@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.accounting.data.IProjectData;
+import org.colorcoding.ibas.accounting.logic.IBranchCheckContract;
 import org.colorcoding.ibas.accounting.logic.IJournalEntryCreationContract;
 import org.colorcoding.ibas.accounting.logic.JournalEntryContent;
 import org.colorcoding.ibas.accounting.logic.JournalEntryContent.Category;
@@ -2021,6 +2022,19 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 					@Override
 					public String getCustomerCode() {
 						return SalesCreditNote.this.getCustomerCode();
+					}
+				},
+				// 分支检查
+				new IBranchCheckContract() {
+
+					@Override
+					public String getIdentifiers() {
+						return SalesCreditNote.this.toString();
+					}
+
+					@Override
+					public String getBranch() {
+						return SalesCreditNote.this.getBranch();
 					}
 				},
 				// 创建分录

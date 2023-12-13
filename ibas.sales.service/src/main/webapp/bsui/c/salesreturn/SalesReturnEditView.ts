@@ -640,6 +640,18 @@ namespace sales {
                         editable: true,
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_others") }),
+                            new sap.m.Label("", {
+                                text: ibas.i18n.prop("bo_salesreturn_branch"),
+                                visible: accounting.config.isEnableBranch(),
+                                required: true,
+                            }),
+                            new sap.extension.m.DataBranchInput("", {
+                                showValueHelp: true,
+                                visible: accounting.config.isEnableBranch(),
+                            }).bindProperty("bindingValue", {
+                                path: "branch",
+                                type: new sap.extension.data.Alphanumeric()
+                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_dataowner") }),
                             new sap.extension.m.DataOwnerInput("", {
                                 showValueHelp: true,
@@ -672,41 +684,14 @@ namespace sales {
                                 })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreturn_organization") }),
-                            new sap.m.FlexBox("", {
+                            new sap.extension.m.DataOrganizationInput("", {
                                 width: "100%",
-                                justifyContent: sap.m.FlexJustifyContent.Start,
-                                renderType: sap.m.FlexRendertype.Bare,
-                                items: [
-                                    new sap.extension.m.DataOrganizationInput("", {
-                                        width: "100%",
-                                        showValueHelp: true,
-                                    }).bindProperty("bindingValue", {
-                                        path: "organization",
-                                        type: new sap.extension.data.Alphanumeric({
-                                            maxLength: 8
-                                        })
-                                    }),
-                                    new sap.extension.m.SelectionInput("", {
-                                        width: "100%",
-                                        placeholder: ibas.i18n.prop("bo_branch"),
-                                        showValueHelp: true,
-                                        repository: accounting.bo.BORepositoryAccounting,
-                                        dataInfo: {
-                                            type: accounting.bo.Branch,
-                                            key: accounting.bo.Branch.PROPERTY_CODE_NAME,
-                                            text: accounting.bo.Branch.PROPERTY_NAME_NAME
-                                        },
-                                        criteria: [
-                                            new ibas.Condition(accounting.bo.Branch.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES.toString())
-                                        ],
-                                        visible: accounting.config.isEnableBranch(),
-                                    }).bindProperty("bindingValue", {
-                                        path: "branch",
-                                        type: new sap.extension.data.Alphanumeric({
-                                            maxLength: 8
-                                        })
-                                    }).addStyleClass("sapUiTinyMarginBegin"),
-                                ]
+                                showValueHelp: true,
+                            }).bindProperty("bindingValue", {
+                                path: "organization",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 8
+                                })
                             }),
                             new sap.m.Label("", {
                                 text: ibas.i18n.prop("bo_shippingaddress"),
