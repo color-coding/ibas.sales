@@ -793,7 +793,8 @@ namespace sales {
                     if (!ibas.numbers.isApproximated(rTotal, total, DECIMAL_PLACES_SUM)) {
                         context.outputValues.set(this.total, ibas.numbers.round(rTotal, DECIMAL_PLACES_SUM));
                     }
-                } else if (ibas.strings.equalsIgnoreCase(this.price, context.trigger) || ibas.strings.equalsIgnoreCase(this.quantity, context.trigger)) {
+                } else if (ibas.strings.equalsIgnoreCase(this.price, context.trigger) || ibas.strings.equalsIgnoreCase(this.quantity, context.trigger)
+                    || ibas.strings.equalsIgnoreCase(this.taxRate, context.trigger)) {
                     let rTotal: number = price * quantity;
                     let rPreTotal: number = rTotal / (1 + taxRate);
                     let rTaxTotal: number = rTotal - rPreTotal;
@@ -807,8 +808,7 @@ namespace sales {
                         // 税精度降低
                         context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, DECIMAL_PLACES_SUM));
                     }
-                } else if (ibas.strings.equalsIgnoreCase(this.taxRate, context.trigger)
-                    || ibas.strings.equalsIgnoreCase(this.preTotal, context.trigger)) {
+                } else if (ibas.strings.equalsIgnoreCase(this.preTotal, context.trigger)) {
                     let rTaxTotal: number = preTotal * taxRate;
                     let rTotal: number = preTotal + rTaxTotal;
                     // 差异小于近似位，则忽略

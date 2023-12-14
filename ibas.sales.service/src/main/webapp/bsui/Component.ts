@@ -36,10 +36,15 @@ namespace sales {
             /**
              * 仓库选择-选择框
              */
-            sap.extension.m.RepositorySelect.extend("sales.ui.component.WarehouseSelect", {
+            sap.extension.m.Select.extend("sales.ui.component.WarehouseSelect", {
                 metadata: {
                     properties: {
                         branchData: { type: "any" },
+                        forceSelection: {
+                            type: "boolean",
+                            group: "Behavior",
+                            defaultValue: false
+                        },
                     },
                     events: {
                     },

@@ -2605,12 +2605,12 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 
 			@Override
 			public BigDecimal getQuantity() {
-				return SalesOrderItem.this.getQuantity().multiply(SalesOrderItem.this.getUOMRate());
+				return Decimal.multiply(SalesOrderItem.this.getQuantity(), SalesOrderItem.this.getUOMRate());
 			}
 
 			@Override
 			public BigDecimal getClosedQuantity() {
-				return SalesOrderItem.this.getClosedQuantity().multiply(SalesOrderItem.this.getUOMRate());
+				return Decimal.multiply(SalesOrderItem.this.getClosedQuantity(), SalesOrderItem.this.getUOMRate());
 			}
 
 			@Override

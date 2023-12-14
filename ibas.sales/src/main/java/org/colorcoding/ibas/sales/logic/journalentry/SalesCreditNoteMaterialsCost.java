@@ -3,6 +3,7 @@ package org.colorcoding.ibas.sales.logic.journalentry;
 import java.math.BigDecimal;
 
 import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.materials.logic.journalentry.MaterialsCost;
 import org.colorcoding.ibas.sales.bo.salescreditnote.ISalesCreditNoteItem;
 
@@ -13,7 +14,7 @@ public class SalesCreditNoteMaterialsCost extends MaterialsCost {
 	}
 
 	@Override
-	public void caculate() {
+	public void caculate() throws Exception {
 		if (this.getSourceData() instanceof ISalesCreditNoteItem) {
 			ISalesCreditNoteItem item = (ISalesCreditNoteItem) this.getSourceData();
 			BigDecimal avaPrice = null;
@@ -33,7 +34,7 @@ public class SalesCreditNoteMaterialsCost extends MaterialsCost {
 				return;
 			}
 		}
-		throw new RuntimeException("no result.");
+		throw new Exception(I18N.prop("msg_bobas_not_support_the_compute"));
 	}
 
 }

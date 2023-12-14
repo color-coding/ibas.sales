@@ -159,7 +159,8 @@ public class BusinessRuleDeductionPriceTaxTotal extends BusinessRuleCommon {
 			BigDecimal rTotal = preTotal.add(taxTotal);
 			context.getOutputValues().put(this.getTotal(), Decimal.round(rTotal, Decimal.DECIMAL_PLACES_RUNNING));
 		} else if (this.getPrice().getName().equalsIgnoreCase(context.getTrigger())
-				|| this.getQuantity().getName().equalsIgnoreCase(context.getTrigger())) {
+				|| this.getQuantity().getName().equalsIgnoreCase(context.getTrigger())
+				|| this.getTaxRate().getName().equalsIgnoreCase(context.getTrigger())) {
 			BigDecimal rTotal = price.multiply(quantity);
 			BigDecimal rPreTotal = Decimal.divide(rTotal, Decimal.ONE.add(taxRate));
 			BigDecimal rTaxTotal = rTotal.subtract(rPreTotal);
@@ -177,8 +178,7 @@ public class BusinessRuleDeductionPriceTaxTotal extends BusinessRuleCommon {
 				context.getOutputValues().put(this.getTaxTotal(),
 						Decimal.round(rTaxTotal, Decimal.DECIMAL_PLACES_RUNNING));
 			}
-		} else if (this.getTaxRate().getName().equalsIgnoreCase(context.getTrigger())
-				|| this.getPreTotal().getName().equalsIgnoreCase(context.getTrigger())) {
+		} else if (this.getPreTotal().getName().equalsIgnoreCase(context.getTrigger())) {
 			BigDecimal rTaxTotal = preTotal.multiply(taxRate);
 			BigDecimal rTotal = preTotal.add(rTaxTotal);
 			if (Decimal.ONE.compareTo(rTaxTotal.subtract(taxTotal).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {

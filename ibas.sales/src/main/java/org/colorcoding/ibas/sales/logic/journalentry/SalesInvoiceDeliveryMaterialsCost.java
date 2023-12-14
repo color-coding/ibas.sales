@@ -7,6 +7,7 @@ import org.colorcoding.ibas.bobas.common.IChildCriteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.logic.BusinessLogicException;
 import org.colorcoding.ibas.materials.logic.journalentry.MaterialsCost;
 import org.colorcoding.ibas.sales.bo.salesdelivery.ISalesDelivery;
@@ -24,7 +25,7 @@ public class SalesInvoiceDeliveryMaterialsCost extends MaterialsCost {
 	}
 
 	@Override
-	public void caculate() {
+	public void caculate() throws Exception {
 		if (this.getSourceData() instanceof ISalesInvoiceItem) {
 			ISalesInvoiceItem item = (ISalesInvoiceItem) this.getSourceData();
 			if (!DataConvert.isNullOrEmpty(item.getBaseDocumentType()) && item.getBaseDocumentEntry() > 0
@@ -78,7 +79,7 @@ public class SalesInvoiceDeliveryMaterialsCost extends MaterialsCost {
 				}
 			}
 		}
-		throw new RuntimeException("no result.");
+		throw new Exception(I18N.prop("msg_bobas_not_support_the_compute"));
 	}
 
 }

@@ -524,7 +524,7 @@ namespace sales {
                 let criteria: ibas.ICriteria = new ibas.Criteria();
                 let condition: ibas.ICondition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_OWNERTYPE_NAME;
-                condition.value = businesspartner.bo.emBusinessPartnerType.SUPPLIER.toString();
+                condition.value = businesspartner.bo.emBusinessPartnerType.CUSTOMER.toString();
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_BUSINESSPARTNER_NAME;
                 condition.value = this.editData.customerCode;
@@ -779,7 +779,7 @@ namespace sales {
                 condition.value = ibas.emYesNo.YES.toString();
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.Agreement.PROPERTY_BUSINESSPARTNERTYPE_NAME;
-                condition.value = businesspartner.bo.emBusinessPartnerType.SUPPLIER.toString();
+                condition.value = businesspartner.bo.emBusinessPartnerType.CUSTOMER.toString();
                 condition.bracketOpen = 2;
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.Agreement.PROPERTY_BUSINESSPARTNERCODE_NAME;

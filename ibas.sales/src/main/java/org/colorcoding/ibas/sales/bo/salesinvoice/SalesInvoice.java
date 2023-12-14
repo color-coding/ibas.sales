@@ -2079,7 +2079,7 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 						String SalesDeliveryCode = MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE);
 						for (ISalesInvoiceItem line : SalesInvoice.this.getSalesInvoiceItems()) {
 							if (SalesDeliveryCode.equals(line.getBaseDocumentType())) {
-								/** 基于退货 **/
+								/** 基于交货 **/
 								// 销售成本科目
 								jeContent = new SalesInvoiceDeliveryMaterialsCost(line);
 								jeContent.setCategory(Category.Debit);

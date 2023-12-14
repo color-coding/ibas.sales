@@ -13,7 +13,7 @@ public class SalesInvoiceMaterialsCost extends MaterialsCost {
 	}
 
 	@Override
-	public void caculate() {
+	public void caculate() throws Exception {
 		if (this.getSourceData() instanceof ISalesInvoiceItem) {
 			ISalesInvoiceItem item = (ISalesInvoiceItem) this.getSourceData();
 			BigDecimal avaPrice = null;
@@ -33,7 +33,7 @@ public class SalesInvoiceMaterialsCost extends MaterialsCost {
 				return;
 			}
 		}
-		throw new RuntimeException("no result.");
+		this.setAmount(Decimal.ZERO);
 	}
 
 }
