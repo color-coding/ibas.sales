@@ -48,7 +48,7 @@ namespace sales {
                             }).bindProperty("bindingValue", {
                                 path: "product",
                                 type: new sap.extension.data.Alphanumeric({
-                                    maxLength: 20
+                                    maxLength: 50
                                 })
                             }),
                             new sap.extension.m.Input("", {
@@ -174,7 +174,7 @@ namespace sales {
                                         }).bindProperty("bindingValue", {
                                             path: "itemCode",
                                             type: new sap.extension.data.Alphanumeric({
-                                                maxLength: 20
+                                                maxLength: 50
                                             })
                                         }),
                                         width: "12rem",

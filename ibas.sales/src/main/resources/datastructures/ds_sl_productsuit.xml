@@ -2,7 +2,7 @@
 <!DOCTYPE Domain>
 <Domain Name="Sales" ShortName="SL">
   <Model Name="ProductSuit" Description="产品套装" ModelType="Simple" Mapped="${Company}_SL_OPDS">
-    <Property Name="Product" Description="产品编码" DataType="Alphanumeric" DataSubType="Default" EditSize="20" Mapped="Product" UniqueKey="Yes"/>
+    <Property Name="Product" Description="产品编码" DataType="Alphanumeric" DataSubType="Default" EditSize="50" Mapped="Product" UniqueKey="Yes"/>
     <Property Name="Description" Description="产品描述" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="Description"/>
     <Property Name="Version" Description="版本" DataType="Alphanumeric" DataSubType="Default" EditSize="4" Mapped="Version" UniqueKey="Yes"/>
     <Property Name="Activated" Description="是否激活" DataType="Alphanumeric" DataSubType="Default" EditSize="1" DeclaredType="emYesNo" Mapped="Activated"/>
@@ -46,7 +46,7 @@
     <Property Name="UpdateUserSign" Description="更新用户" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Updator"/>
     <Property Name="CreateActionId" Description="创建动作标识" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="CreateActId"/>
     <Property Name="UpdateActionId" Description="更新动作标识" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="UpdateActId"/>
-    <Property Name="ItemCode" Description="组件编码" DataType="Alphanumeric" DataSubType="Default" EditSize="20" Mapped="ItemCode"/>
+    <Property Name="ItemCode" Description="组件编码" DataType="Alphanumeric" DataSubType="Default" EditSize="50" Mapped="ItemCode"/>
     <Property Name="ItemDescription" Description="组件名称" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="ItemName"/>
     <Property Name="Quantity" Description="数量" DataType="Decimal" DataSubType="Quantity" EditSize="8" Mapped="Quantity"/>
     <Property Name="UOM" Description="单位" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="UOM"/>
