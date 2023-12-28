@@ -40,6 +40,7 @@ namespace sales {
                 this.view.chooseDownPaymentRequestItemMaterialVersionEvent = this.chooseDownPaymentRequestItemMaterialVersion;
                 this.view.chooseDownPaymentRequestItemDistributionRuleEvent = this.chooseDownPaymentRequestItemDistributionRule;
                 this.view.chooseDownPaymentRequestBlanketAgreementEvent = this.chooseDownPaymentRequestBlanketAgreement;
+                this.view.chooseDownPaymentRequestSalesDeliveryEvent = this.chooseDownPaymentRequestSalesDelivery;
                 this.view.chooseCustomerAgreementsEvent = this.chooseCustomerAgreements;
             }
             /** 视图显示后 */
@@ -708,6 +709,83 @@ namespace sales {
                     }
                 });
             }
+
+            /** 选择预收款申请-销售交货事件 */
+            private chooseDownPaymentRequestSalesDelivery(): void {
+                if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("bo_downpaymentrequest_customercode")
+                    ));
+                    return;
+                }
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                // 未取消的
+                condition.alias = bo.SalesDelivery.PROPERTY_CANCELED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 未删除的
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesDelivery.PROPERTY_DELETED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 仅下达的
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesDelivery.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emDocumentStatus.RELEASED.toString();
+                // 审批通过的或未进审批
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesDelivery.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.APPROVED.toString();
+                condition.bracketOpen = 1;
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesDelivery.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.UNAFFECTED.toString();
+                condition.relationship = ibas.emConditionRelationship.OR;
+                condition.bracketClose = 1;
+                // 是否指定分支
+                if (!ibas.strings.isEmpty(this.editData.branch)) {
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesDelivery.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = this.editData.branch;
+                } else {
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesDelivery.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = "";
+                    condition.bracketOpen = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesDelivery.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.IS_NULL;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition.bracketClose = 1;
+                }
+                // 当前客户的
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesDelivery.PROPERTY_CUSTOMERCODE_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = this.editData.customerCode;
+                // 调用选择服务
+                let that: this = this;
+                ibas.servicesManager.runChooseService<bo.SalesDelivery>({
+                    boCode: bo.SalesDelivery.BUSINESS_OBJECT_CODE,
+                    chooseType: ibas.emChooseType.MULTIPLE,
+                    criteria: criteria,
+                    onCompleted(selecteds: ibas.IList<bo.SalesDelivery>): void {
+                        for (let selected of selecteds) {
+                            if (!ibas.strings.equals(that.editData.customerCode, selected.customerCode)) {
+                                continue;
+                            }
+                            that.editData.baseDocument(selected);
+                        }
+                        that.view.showDownPaymentRequestItems(that.editData.downPaymentRequestItems.filterDeleted());
+                    }
+                });
+            }
             private chooseDownPaymentRequestItemUnit(caller: bo.DownPaymentRequestItem): void {
                 let that: this = this;
                 ibas.servicesManager.runChooseService<materials.bo.IUnit>({
@@ -886,6 +964,8 @@ namespace sales {
             chooseDownPaymentRequestSalesOrderEvent: Function;
             /** 选择预收款申请-一揽子协议事件 */
             chooseDownPaymentRequestBlanketAgreementEvent: Function;
+            /** 选择预收款申请-销售交货事件 */
+            chooseDownPaymentRequestSalesDeliveryEvent: Function;
             /** 选择客户合同 */
             chooseCustomerAgreementsEvent: Function;
             /** 默认仓库 */

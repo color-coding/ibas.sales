@@ -615,8 +615,13 @@ namespace sales {
                 }
             }
             /** 基于销售订单 */
-            baseDocument(document: ISalesOrder): void {
-                if (ibas.objects.instanceOf(document, SalesOrder)) {
+            baseDocument(document: ISalesOrder): void;
+            /** 基于销售交货 */
+            baseDocument(document: ISalesDelivery): void;
+            /** 基于销售订单 */
+            baseDocument(): void {
+                if (ibas.objects.instanceOf(arguments[0], SalesOrder)) {
+                    let document: SalesOrder = arguments[0];
                     if (!ibas.strings.equals(this.customerCode, document.customerCode)) {
                         return;
                     }
@@ -624,6 +629,40 @@ namespace sales {
                     bo.baseDocument(this, document);
                     // 复制行项目
                     for (let item of document.salesOrderItems) {
+                        if (item.canceled === ibas.emYesNo.YES) {
+                            continue;
+                        }
+                        if (item.lineStatus === ibas.emDocumentStatus.PLANNED) {
+                            continue;
+                        }
+                        if (item.lineStatus === ibas.emDocumentStatus.CLOSED) {
+                            continue;
+                        }
+                        if (this.downPaymentRequestItems.firstOrDefault(
+                            c => c.baseDocumentType === item.objectCode
+                                && c.baseDocumentEntry === item.docEntry
+                                && c.baseDocumentLineId === item.lineId) !== null) {
+                            continue;
+                        }
+                        // 计算未交货数量
+                        let openQty: number = item.quantity - item.closedQuantity;
+                        if (openQty <= 0) {
+                            continue;
+                        }
+                        let myItem: DownPaymentRequestItem = this.downPaymentRequestItems.create();
+                        bo.baseDocumentItem(myItem, item);
+                        myItem.quantity = openQty;
+                    }
+                }
+                if (ibas.objects.instanceOf(arguments[0], SalesDelivery)) {
+                    let document: SalesDelivery = arguments[0];
+                    if (!ibas.strings.equals(this.customerCode, document.customerCode)) {
+                        return;
+                    }
+                    // 复制头信息
+                    bo.baseDocument(this, document);
+                    // 复制行项目
+                    for (let item of document.salesDeliveryItems) {
                         if (item.canceled === ibas.emYesNo.YES) {
                             continue;
                         }

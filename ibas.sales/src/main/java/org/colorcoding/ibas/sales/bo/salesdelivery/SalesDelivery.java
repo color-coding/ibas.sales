@@ -47,6 +47,7 @@ import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.bo.salesreserveinvoice.SalesReserveInvoice;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
@@ -2074,21 +2075,41 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 					public JournalEntryContent[] getContents() {
 						JournalEntryContent jeContent;
 						List<JournalEntryContent> jeContents = new ArrayList<>();
+						String SalesReserveInvoiceCode = MyConfiguration
+								.applyVariables(SalesReserveInvoice.BUSINESS_OBJECT_CODE);
 						for (ISalesDeliveryItem line : SalesDelivery.this.getSalesDeliveryItems()) {
-							// 已装载货物科目
-							jeContent = new SalesDeliveryMaterialsCost(line);
-							jeContent.setCategory(Category.Debit);
-							jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
-							jeContent.setAmount(Decimal.ZERO);// 待计算
-							jeContent.setCurrency(line.getCurrency());
-							jeContents.add(jeContent);
-							// 库存科目
-							jeContent = new SalesDeliveryMaterialsCost(line);
-							jeContent.setCategory(Category.Credit);
-							jeContent.setLedger(Ledgers.LEDGER_INVENTORY_INVENTORY_ACCOUNT);
-							jeContent.setAmount(Decimal.ZERO);// 待计算
-							jeContent.setCurrency(line.getCurrency());
-							jeContents.add(jeContent);
+							if (SalesReserveInvoiceCode.equalsIgnoreCase(line.getBaseDocumentType())) {
+								/** 基于预留发票 **/
+								// 销售成本科目
+								jeContent = new SalesDeliveryMaterialsCost(line);
+								jeContent.setCategory(Category.Debit);
+								jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
+								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setCurrency(line.getCurrency());
+								jeContents.add(jeContent);
+								// 库存科目
+								jeContent = new SalesDeliveryMaterialsCost(line);
+								jeContent.setCategory(Category.Credit);
+								jeContent.setLedger(Ledgers.LEDGER_INVENTORY_INVENTORY_ACCOUNT);
+								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setCurrency(line.getCurrency());
+								jeContents.add(jeContent);
+							} else {
+								// 已装载货物科目
+								jeContent = new SalesDeliveryMaterialsCost(line);
+								jeContent.setCategory(Category.Debit);
+								jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
+								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setCurrency(line.getCurrency());
+								jeContents.add(jeContent);
+								// 库存科目
+								jeContent = new SalesDeliveryMaterialsCost(line);
+								jeContent.setCategory(Category.Credit);
+								jeContent.setLedger(Ledgers.LEDGER_INVENTORY_INVENTORY_ACCOUNT);
+								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setCurrency(line.getCurrency());
+								jeContents.add(jeContent);
+							}
 						}
 						return jeContents.toArray(new JournalEntryContent[] {});
 					}

@@ -698,6 +698,7 @@ namespace sales {
             }
             baseDocument(document: ISalesInvoice): void;
             baseDocument(document: ISalesReturn): void;
+            baseDocument(document: ISalesReserveInvoice): void;
             baseDocument(): void {
                 // 基于销售发票
                 if (ibas.objects.instanceOf(arguments[0], SalesInvoice)) {
@@ -775,6 +776,52 @@ namespace sales {
                         let myItem: SalesCreditNoteItem = this.salesCreditNoteItems.create();
                         bo.baseDocumentItem(myItem, item);
                         myItem.quantity = openQty;
+                    }
+                    // 复制地址
+                    for (let address of document.shippingAddresss) {
+                        // 不复制重名的
+                        if (this.shippingAddresss.firstOrDefault(c => c.name === address.name) !== null) {
+                            continue;
+                        }
+                        let myAddress: IShippingAddress = address.clone();
+                        this.shippingAddresss.add(<ShippingAddress>myAddress);
+                    }
+                }
+                // 基于销售发票
+                if (ibas.objects.instanceOf(arguments[0], SalesReserveInvoice)) {
+                    let document: SalesReserveInvoice = arguments[0];
+                    if (!ibas.strings.equals(this.customerCode, document.customerCode)) {
+                        return;
+                    }
+                    // 复制头信息
+                    bo.baseDocument(this, document);
+                    // 复制行项目
+                    for (let item of document.salesReserveInvoiceItems) {
+                        if (item.canceled === ibas.emYesNo.YES) {
+                            continue;
+                        }
+                        if (item.lineStatus === ibas.emDocumentStatus.PLANNED) {
+                            continue;
+                        }
+                        if (this.salesCreditNoteItems.firstOrDefault(
+                            c => c.baseDocumentType === item.objectCode
+                                && c.baseDocumentEntry === item.docEntry
+                                && c.baseDocumentLineId === item.lineId) !== null) {
+                            continue;
+                        }
+                        let myItem: SalesCreditNoteItem = this.salesCreditNoteItems.create();
+                        bo.baseDocumentItem(myItem, item);
+                        // 复制批次
+                        for (let batch of item.materialBatches) {
+                            let myBatch: materials.bo.IMaterialBatchItem = myItem.materialBatches.create();
+                            myBatch.batchCode = batch.batchCode;
+                            myBatch.quantity = batch.quantity;
+                        }
+                        // 复制序列
+                        for (let serial of item.materialSerials) {
+                            let mySerial: materials.bo.IMaterialSerialItem = myItem.materialSerials.create();
+                            mySerial.serialCode = serial.serialCode;
+                        }
                     }
                     // 复制地址
                     for (let address of document.shippingAddresss) {

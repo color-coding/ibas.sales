@@ -9,7 +9,7 @@ namespace sales {
     export namespace ui {
         export namespace c {
             /**
-             * 列表视图-销售交货
+             * 列表视图-销售发票
              */
             export class SalesInvoiceListView extends ibas.BOListView implements app.ISalesInvoiceListView {
                 /** 返回查询的对象 */

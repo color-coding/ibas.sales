@@ -17,6 +17,7 @@ import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
 import org.colorcoding.ibas.sales.bo.salesinvoice.SalesInvoice;
 import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.bo.salesquote.SalesQuote;
+import org.colorcoding.ibas.sales.bo.salesreserveinvoice.SalesReserveInvoice;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 
@@ -35,7 +36,7 @@ public class Resolver implements ContextResolver<JAXBContext> {
 				jaxbContext = JAXBContext.newInstance(Criteria.class, OperationResult.class, UserFieldProxy.class,
 						ProductSuit.class, SalesDelivery.class, SalesOrder.class, SalesReturn.class, SalesQuote.class,
 						SalesInvoice.class, SalesCreditNote.class, ShippingAddress.class, BlanketAgreement.class,
-						DownPaymentRequest.class);
+						DownPaymentRequest.class, SalesReserveInvoice.class);
 			}
 		} catch (JAXBException e) {
 			e.printStackTrace();

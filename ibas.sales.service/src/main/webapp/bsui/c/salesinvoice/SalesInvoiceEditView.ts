@@ -9,7 +9,7 @@ namespace sales {
     export namespace ui {
         export namespace c {
             /**
-             * 编辑视图-销售交货
+             * 编辑视图-销售发票
              */
             export class SalesInvoiceEditView extends ibas.BOEditView implements app.ISalesInvoiceEditView {
                 /** 删除数据事件 */

@@ -468,7 +468,7 @@ namespace sales {
 
         /** 送货地址 集合 */
         export class ShippingAddresss
-            extends ibas.BusinessObjects<ShippingAddress, ISalesQuote | ISalesOrder | ISalesDelivery | ISalesReturn | ISalesInvoice | ISalesCreditNote>
+            extends ibas.BusinessObjects<ShippingAddress, ISalesQuote | ISalesOrder | ISalesDelivery | ISalesReturn | ISalesInvoice | ISalesCreditNote | ISalesReserveInvoice>
             implements IShippingAddresss {
 
             /** 创建并添加子项 */

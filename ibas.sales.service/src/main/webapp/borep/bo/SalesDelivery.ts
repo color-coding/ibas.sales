@@ -698,8 +698,13 @@ namespace sales {
                 }
             }
             /** 基于销售订单 */
-            baseDocument(document: ISalesOrder): void {
-                if (ibas.objects.instanceOf(document, SalesOrder)) {
+            baseDocument(document: ISalesOrder): void;
+            /** 基于销售预留发票 */
+            baseDocument(document: ISalesReserveInvoice): void;
+
+            baseDocument(): void {
+                if (ibas.objects.instanceOf(arguments[0], SalesOrder)) {
+                    let document: ISalesOrder = arguments[0];
                     if (!ibas.strings.equals(this.customerCode, document.customerCode)) {
                         return;
                     }
@@ -707,6 +712,57 @@ namespace sales {
                     bo.baseDocument(this, document);
                     // 复制行项目
                     for (let item of document.salesOrderItems) {
+                        if (item.canceled === ibas.emYesNo.YES) {
+                            continue;
+                        }
+                        if (item.lineStatus !== ibas.emDocumentStatus.RELEASED) {
+                            continue;
+                        }
+                        if (this.salesDeliveryItems.firstOrDefault(
+                            c => c.baseDocumentType === item.objectCode
+                                && c.baseDocumentEntry === item.docEntry
+                                && c.baseDocumentLineId === item.lineId) !== null) {
+                            continue;
+                        }
+                        // 计算未交货数量
+                        let openQty: number = item.quantity - item.closedQuantity;
+                        if (openQty <= 0) {
+                            continue;
+                        }
+                        let myItem: SalesDeliveryItem = this.salesDeliveryItems.create();
+                        bo.baseDocumentItem(myItem, item);
+                        myItem.quantity = openQty;
+                        // 复制批次
+                        for (let batch of item.materialBatches) {
+                            let myBatch: materials.bo.IMaterialBatchItem = myItem.materialBatches.create();
+                            myBatch.batchCode = batch.batchCode;
+                            myBatch.quantity = batch.quantity;
+                        }
+                        // 复制序列
+                        for (let serial of item.materialSerials) {
+                            let mySerial: materials.bo.IMaterialSerialItem = myItem.materialSerials.create();
+                            mySerial.serialCode = serial.serialCode;
+                        }
+                    }
+                    // 复制地址
+                    for (let address of document.shippingAddresss) {
+                        // 不复制重名的
+                        if (this.shippingAddresss.firstOrDefault(c => c.name === address.name) !== null) {
+                            continue;
+                        }
+                        let myAddress: IShippingAddress = address.clone();
+                        this.shippingAddresss.add(<ShippingAddress>myAddress);
+                    }
+                }
+                if (ibas.objects.instanceOf(arguments[0], SalesReserveInvoice)) {
+                    let document: ISalesReserveInvoice = arguments[0];
+                    if (!ibas.strings.equals(this.customerCode, document.customerCode)) {
+                        return;
+                    }
+                    // 复制头信息
+                    bo.baseDocument(this, document);
+                    // 复制行项目
+                    for (let item of document.salesReserveInvoiceItems) {
                         if (item.canceled === ibas.emYesNo.YES) {
                             continue;
                         }

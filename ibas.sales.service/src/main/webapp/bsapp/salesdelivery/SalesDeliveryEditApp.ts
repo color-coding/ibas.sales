@@ -43,6 +43,7 @@ namespace sales {
                 this.view.chooseSalesDeliveryItemUnitEvent = this.chooseSalesDeliveryItemUnit;
                 this.view.chooseSalesDeliverySalesOrderEvent = this.chooseSalesDeliverySalesOrder;
                 this.view.chooseSalesDeliveryBlanketAgreementEvent = this.chooseSalesDeliveryBlanketAgreement;
+                this.view.chooseSalesDeliverySalesReserveInvoiceEvent = this.chooseSalesDeliverySalesReserveInvoice;
                 this.view.chooseCustomerAgreementsEvent = this.chooseCustomerAgreements;
                 this.view.receiptSalesDeliveryEvent = this.receiptSalesDelivery;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
@@ -1304,6 +1305,82 @@ namespace sales {
                     }
                 });
             }
+            /** 选择销售交货-销售预留发票事件 */
+            private chooseSalesDeliverySalesReserveInvoice(): void {
+                if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("bo_salesdelivery_customercode")
+                    ));
+                    return;
+                }
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                // 未取消的
+                condition.alias = bo.SalesReserveInvoice.PROPERTY_CANCELED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 未删除的
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesReserveInvoice.PROPERTY_DELETED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 仅下达的
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesReserveInvoice.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emDocumentStatus.RELEASED.toString();
+                // 审批通过的或未进审批
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesReserveInvoice.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.APPROVED.toString();
+                condition.bracketOpen = 1;
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesReserveInvoice.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.UNAFFECTED.toString();
+                condition.relationship = ibas.emConditionRelationship.OR;
+                condition.bracketClose = 1;
+                // 是否指定分支
+                if (!ibas.strings.isEmpty(this.editData.branch)) {
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesReserveInvoice.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = this.editData.branch;
+                } else {
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesReserveInvoice.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = "";
+                    condition.bracketOpen = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesReserveInvoice.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.IS_NULL;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition.bracketClose = 1;
+                }
+                // 当前客户的
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesReserveInvoice.PROPERTY_CUSTOMERCODE_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = this.editData.customerCode;
+                // 调用选择服务
+                let that: this = this;
+                ibas.servicesManager.runChooseService<bo.SalesReserveInvoice>({
+                    boCode: bo.SalesReserveInvoice.BUSINESS_OBJECT_CODE,
+                    chooseType: ibas.emChooseType.MULTIPLE,
+                    criteria: criteria,
+                    onCompleted(selecteds: ibas.IList<bo.SalesReserveInvoice>): void {
+                        for (let selected of selecteds) {
+                            if (!ibas.strings.equals(that.editData.customerCode, selected.customerCode)) {
+                                continue;
+                            }
+                            that.editData.baseDocument(selected);
+                        }
+                        that.view.showSalesDeliveryItems(that.editData.salesDeliveryItems.filterDeleted());
+                    }
+                });
+            }
         }
         /** 视图-销售交货 */
         export interface ISalesDeliveryEditView extends ibas.IBOEditView {
@@ -1339,6 +1416,8 @@ namespace sales {
             chooseSalesDeliveryItemMaterialVersionEvent: Function;
             /** 选择销售交货-销售订单事件 */
             chooseSalesDeliverySalesOrderEvent: Function;
+            /** 选择销售交货-销售预留发票事件 */
+            chooseSalesDeliverySalesReserveInvoiceEvent: Function;
             /** 选择销售交货-一揽子协议事件 */
             chooseSalesDeliveryBlanketAgreementEvent: Function;
             /** 选择销售交货-行 成本中心事件 */

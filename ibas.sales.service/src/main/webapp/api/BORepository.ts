@@ -120,6 +120,16 @@ namespace sales {
              * @param saver 保存者
              */
             saveDownPaymentRequest(saver: ibas.ISaveCaller<bo.IDownPaymentRequest>): void;
+            /**
+             * 查询 销售预留发票
+             * @param fetcher 查询者
+             */
+            fetchSalesReserveInvoice(fetcher: ibas.IFetchCaller<bo.ISalesReserveInvoice>): void;
+            /**
+             * 保存 销售预留发票
+             * @param saver 保存者
+             */
+            saveSalesReserveInvoice(saver: ibas.ISaveCaller<bo.ISalesReserveInvoice>): void;
 
         }
     }

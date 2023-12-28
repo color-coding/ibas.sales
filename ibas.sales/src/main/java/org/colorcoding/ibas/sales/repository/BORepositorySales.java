@@ -20,6 +20,8 @@ import org.colorcoding.ibas.sales.bo.salesorder.ISalesOrder;
 import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.bo.salesquote.ISalesQuote;
 import org.colorcoding.ibas.sales.bo.salesquote.SalesQuote;
+import org.colorcoding.ibas.sales.bo.salesreserveinvoice.ISalesReserveInvoice;
+import org.colorcoding.ibas.sales.bo.salesreserveinvoice.SalesReserveInvoice;
 import org.colorcoding.ibas.sales.bo.salesreturn.ISalesReturn;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
 
@@ -417,6 +419,50 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	public IOperationResult<IDownPaymentRequest> saveDownPaymentRequest(IDownPaymentRequest bo) {
 		return new OperationResult<IDownPaymentRequest>(
 				this.saveDownPaymentRequest((DownPaymentRequest) bo, this.getUserToken()));
+	}
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-销售预留发票
+	 * 
+	 * @param criteria 查询
+	 * @param token    口令
+	 * @return 操作结果
+	 */
+	public OperationResult<SalesReserveInvoice> fetchSalesReserveInvoice(ICriteria criteria, String token) {
+		return super.fetch(criteria, token, SalesReserveInvoice.class);
+	}
+
+	/**
+	 * 查询-销售预留发票（提前设置用户口令）
+	 * 
+	 * @param criteria 查询
+	 * @return 操作结果
+	 */
+	public IOperationResult<ISalesReserveInvoice> fetchSalesReserveInvoice(ICriteria criteria) {
+		return new OperationResult<ISalesReserveInvoice>(this.fetchSalesReserveInvoice(criteria, this.getUserToken()));
+	}
+
+	/**
+	 * 保存-销售预留发票
+	 * 
+	 * @param bo    对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	public OperationResult<SalesReserveInvoice> saveSalesReserveInvoice(SalesReserveInvoice bo, String token) {
+		return super.save(bo, token);
+	}
+
+	/**
+	 * 保存-销售预留发票（提前设置用户口令）
+	 * 
+	 * @param bo 对象实例
+	 * @return 操作结果
+	 */
+	public IOperationResult<ISalesReserveInvoice> saveSalesReserveInvoice(ISalesReserveInvoice bo) {
+		return new OperationResult<ISalesReserveInvoice>(
+				this.saveSalesReserveInvoice((SalesReserveInvoice) bo, this.getUserToken()));
 	}
 
 	// --------------------------------------------------------------------------------------------//

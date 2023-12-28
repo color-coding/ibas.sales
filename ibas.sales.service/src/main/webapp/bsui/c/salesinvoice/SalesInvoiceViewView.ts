@@ -8,7 +8,7 @@
 namespace sales {
     export namespace ui {
         export namespace c {
-            /** 查看视图-销售交货 */
+            /** 查看视图-销售发票 */
             export class SalesInvoiceViewView extends ibas.BOViewView implements app.ISalesInvoiceViewView {
                 /** 绘制视图 */
                 draw(): any {

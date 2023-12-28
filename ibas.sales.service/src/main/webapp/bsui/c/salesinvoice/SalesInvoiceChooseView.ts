@@ -9,7 +9,7 @@ namespace sales {
     export namespace ui {
         export namespace c {
             /**
-             * 选择视图-销售交货
+             * 选择视图-销售发票
              */
             export class SalesInvoiceChooseView extends ibas.BOQueryDialogViewWithPanel implements app.ISalesInvoiceChooseView {
                 /** 返回查询的对象 */
@@ -445,15 +445,20 @@ namespace sales {
                                                         if (selectItems.length > 0) {
                                                             let selects: bo.SalesInvoice[] = that.table.getSelecteds();
                                                             for (let select of selects) {
-                                                                for (let i: number = 0; i < select.salesInvoiceItems.length; i++) {
+                                                                let has: boolean = false;
+                                                                for (let i: number = select.salesInvoiceItems.length - 1; i >= 0; i--) {
                                                                     let item: any = select.salesInvoiceItems[i];
                                                                     if (selectItems.find(c => c === item)) {
+                                                                        has = true;
                                                                         continue;
                                                                     }
                                                                     select.salesInvoiceItems.removeAt(i);
                                                                 }
+                                                                if (has === false) {
+                                                                    select.markDeleted();
+                                                                }
                                                             }
-                                                            that.fireViewEvents(that.chooseDataEvent, selects);
+                                                            that.fireViewEvents(that.chooseDataEvent, selects.filter(c => c.isDeleted === false));
                                                         }
                                                     }
                                                 }),

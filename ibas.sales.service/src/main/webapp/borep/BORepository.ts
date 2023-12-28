@@ -226,6 +226,21 @@ namespace sales {
             saveDownPaymentRequest(saver: ibas.ISaveCaller<bo.DownPaymentRequest>): void {
                 super.save(bo.DownPaymentRequest.name, saver);
             }
+            /**
+             * 查询 销售预留发票
+             * @param fetcher 查询者
+             */
+            fetchSalesReserveInvoice(fetcher: ibas.IFetchCaller<bo.SalesReserveInvoice>): void {
+                super.fetch(bo.SalesReserveInvoice.name, fetcher);
+            }
+            /**
+             * 保存 销售预留发票
+             * @param saver 保存者
+             */
+            saveSalesReserveInvoice(saver: ibas.ISaveCaller<bo.SalesReserveInvoice>): void {
+                super.save(bo.SalesReserveInvoice.name, saver);
+            }
+
         }
     }
 }

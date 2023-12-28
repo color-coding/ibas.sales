@@ -16,6 +16,7 @@
 /// <reference path="./shippingaddress/index.ts" />
 /// <reference path="./blanketagreement/index.ts" />
 /// <reference path="./downpaymentrequest/index.ts" />
+/// <reference path="./salesreserveinvoice/index.ts" />
 /// <reference path="./others/index.ts" />
 namespace sales {
     export namespace app {
@@ -46,6 +47,7 @@ namespace sales {
                 this.register(new SalesDeliveryFunc());
                 this.register(new SalesReturnFunc());
                 this.register(new SalesInvoiceFunc());
+                this.register(new SalesReserveInvoiceFunc());
                 this.register(new SalesCreditNoteFunc());
                 this.register(new DownPaymentRequestFunc());
                 this.register(new ProductSuitFunc());
@@ -78,6 +80,8 @@ namespace sales {
                 this.register(new DownPaymentRequestChooseServiceMapping());
                 this.register(new DownPaymentRequestLinkServiceMapping());
                 this.register(new DownPaymentRequestEditServiceMapping());
+                this.register(new SalesReserveInvoiceChooseServiceMapping());
+                this.register(new SalesReserveInvoiceLinkServiceMapping());
                 // 注册常驻应用
                 // 收付款服务
                 // this.register(new SalesReturnPaymentServiceMapping()); 没这种情况
@@ -86,6 +90,7 @@ namespace sales {
                 this.register(new SalesOrderReceiptServiceMapping());
                 this.register(new SalesInvoiceReceiptServiceMapping());
                 this.register(new DownPaymentRequestReceiptServiceMapping());
+                this.register(new SalesReserveInvoiceReceiptServiceMapping());
                 // 权限元素
                 this.register(ELEMENT_SALES_ORDER_EXTRA);
                 this.register(ELEMENT_SALES_QUOTE_EXTRA);

@@ -48,6 +48,9 @@ namespace sales {
         export const BO_CODE_BLANKETAGREEMENT: string = "${Company}_SL_BLANKETAGT";
         /** 业务对象编码-预收款申请 */
         export const BO_CODE_DOWNPAYMNETREQUEST: string = "${Company}_SL_PAYREQUEST";
+        /** 业务对象编码-销售预留发票 */
+        export const BO_CODE_SALESRESERVEINVOICE: string = "${Company}_SL_SALESRSVINVOICE";
+
 
         /** 运输状态 */
         export enum emShippingStatus {

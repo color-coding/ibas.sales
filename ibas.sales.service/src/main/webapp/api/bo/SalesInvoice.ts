@@ -124,7 +124,7 @@ namespace sales {
         }
 
         /** 销售发票-行 */
-        export interface ISalesInvoiceItem extends ibas.IBODocumentLine, ibas.IBOUserFields {
+        export interface ISalesInvoiceItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent, ibas.IBOUserFields {
             /** 编码 */
             docEntry: number;
             /** 行号 */

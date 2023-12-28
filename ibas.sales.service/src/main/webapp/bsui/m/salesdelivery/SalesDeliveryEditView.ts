@@ -42,6 +42,8 @@ namespace sales {
                 chooseSalesDeliverySalesOrderEvent: Function;
                 /** 选择销售交货项目-一揽子协议事件 */
                 chooseSalesDeliveryBlanketAgreementEvent: Function;
+                /** 选择销售交货-销售预留发票事件 */
+                chooseSalesDeliverySalesReserveInvoiceEvent: Function;
                 /** 选择客户合同 */
                 chooseCustomerAgreementsEvent: Function;
                 /** 收款销售交货 */
@@ -116,6 +118,16 @@ namespace sales {
                                                 visible: shell.app.privileges.canRun({
                                                     id: app.SalesOrderChooseApp.APPLICATION_ID,
                                                     name: app.SalesOrderChooseApp.APPLICATION_NAME,
+                                                })
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("bo_salesreserveinvoice"),
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.chooseSalesDeliverySalesReserveInvoiceEvent);
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: app.SalesReserveInvoiceChooseApp.APPLICATION_ID,
+                                                    name: app.SalesReserveInvoiceChooseApp.APPLICATION_NAME,
                                                 })
                                             }),
                                             new sap.m.MenuItem("", {

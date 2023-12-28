@@ -18,6 +18,7 @@
 /// <reference path="./shippingaddress/index.ts" />
 /// <reference path="./blanketagreement/index.ts" />
 /// <reference path="./downpaymentrequest/index.ts" />
+/// <reference path="./salesreserveinvoice/index.ts" />
 namespace sales {
     export namespace ui {
         /**
@@ -144,6 +145,18 @@ namespace sales {
                         break;
                     case app.DownPaymentRequestEditApp.APPLICATION_ID:
                         view = new c.DownPaymentRequestEditView();
+                        break;
+                    case app.SalesReserveInvoiceListApp.APPLICATION_ID:
+                        view = new c.SalesReserveInvoiceListView();
+                        break;
+                    case app.SalesReserveInvoiceChooseApp.APPLICATION_ID:
+                        view = new c.SalesReserveInvoiceChooseView();
+                        break;
+                    case app.SalesReserveInvoiceViewApp.APPLICATION_ID:
+                        view = new c.SalesReserveInvoiceViewView();
+                        break;
+                    case app.SalesReserveInvoiceEditApp.APPLICATION_ID:
+                        view = new c.SalesReserveInvoiceEditView();
                         break;
                     default:
                         break;

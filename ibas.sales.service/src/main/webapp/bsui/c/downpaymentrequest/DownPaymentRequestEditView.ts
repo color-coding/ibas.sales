@@ -38,6 +38,8 @@ namespace sales {
                 chooseDownPaymentRequestSalesOrderEvent: Function;
                 /** 选择预收款申请-一揽子协议事件 */
                 chooseDownPaymentRequestBlanketAgreementEvent: Function;
+                /** 选择预收款申请-销售交货事件 */
+                chooseDownPaymentRequestSalesDeliveryEvent: Function;
                 /** 选择客户合同 */
                 chooseCustomerAgreementsEvent: Function;
                 /** 绘制视图 */
@@ -208,13 +210,23 @@ namespace sales {
                                                         }
                                                     }),
                                                     new sap.m.MenuItem("", {
-                                                        text: ibas.i18n.prop("bo_purchaseorder"),
+                                                        text: ibas.i18n.prop("bo_salesorder"),
                                                         press: function (): void {
                                                             that.fireViewEvents(that.chooseDownPaymentRequestSalesOrderEvent);
                                                         },
                                                         visible: shell.app.privileges.canRun({
                                                             id: app.SalesOrderChooseApp.APPLICATION_ID,
                                                             name: app.SalesOrderChooseApp.APPLICATION_NAME,
+                                                        })
+                                                    }),
+                                                    new sap.m.MenuItem("", {
+                                                        text: ibas.i18n.prop("bo_salesdelivery"),
+                                                        press: function (): void {
+                                                            that.fireViewEvents(that.chooseDownPaymentRequestSalesDeliveryEvent);
+                                                        },
+                                                        visible: shell.app.privileges.canRun({
+                                                            id: app.SalesDeliveryChooseApp.APPLICATION_ID,
+                                                            name: app.SalesDeliveryChooseApp.APPLICATION_NAME,
                                                         })
                                                     }),
                                                     new sap.m.MenuItem("", {
