@@ -44,6 +44,8 @@ namespace sales {
                 showSalesQuoteItemExtraEvent: Function;
                 /** 转为销售报价事件 */
                 turnToSalesOrderEvent: Function;
+                /** 预留物料库存 */
+                reserveMaterialsInventoryEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
@@ -788,6 +790,17 @@ namespace sales {
                                                 visible: shell.app.privileges.canRun({
                                                     id: sales.app.SalesOrderFunc.FUNCTION_ID,
                                                     name: sales.app.SalesOrderFunc.FUNCTION_NAME,
+                                                })
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("sales_inventory_reservation"),
+                                                icon: "sap-icon://blank-tag",
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.reserveMaterialsInventoryEvent);
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: materials.app.MaterialInventoryReservationService.APPLICATION_ID,
+                                                    name: materials.app.MaterialInventoryReservationService.APPLICATION_NAME,
                                                 })
                                             }),
                                         ],

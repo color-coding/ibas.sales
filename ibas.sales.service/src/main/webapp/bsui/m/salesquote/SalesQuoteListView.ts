@@ -18,6 +18,8 @@ namespace sales {
                 editDataEvent: Function;
                 /** 删除数据事件，参数：删除对象集合 */
                 deleteDataEvent: Function;
+                /** 预留物料库存 */
+                reserveMaterialsInventoryEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;

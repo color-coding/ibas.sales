@@ -43,6 +43,7 @@ namespace sales {
                 this.view.chooseCustomerAgreementsEvent = this.chooseCustomerAgreements;
                 this.view.showSalesQuoteItemExtraEvent = this.showSalesQuoteItemExtra;
                 this.view.turnToSalesOrderEvent = this.turnToSalesOrder;
+                this.view.reserveMaterialsInventoryEvent = this.reserveMaterialsInventory;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -1093,6 +1094,33 @@ namespace sales {
                     }
                 });
             }
+            /** 预留物料库存 */
+            private reserveMaterialsInventory(): void {
+                if (ibas.objects.isNull(this.editData) || this.editData.isDirty) {
+                    throw new Error(ibas.i18n.prop("shell_data_saved_first"));
+                }
+
+                let contract: materials.app.IMaterialInventoryReservationTarget = {
+                    targetType: this.editData.objectCode,
+                    targetEntry: this.editData.docEntry,
+                    businessPartner: ibas.strings.format("{1} ({0})", this.editData.customerCode, this.editData.customerName),
+                    items: []
+                };
+                for (let item of this.editData.salesQuoteItems) {
+                    contract.items.push({
+                        targetLineId: item.lineId,
+                        itemCode: item.itemCode,
+                        itemDescription: item.itemDescription,
+                        itemVersion: item.itemVersion,
+                        warehouse: item.warehouse,
+                        quantity: item.quantity,
+                        uom: item.uom
+                    });
+                }
+                ibas.servicesManager.runApplicationService<materials.app.IMaterialInventoryReservationTarget | materials.app.IMaterialInventoryReservationTarget[]>({
+                    proxy: new materials.app.MaterialInventoryReservationServiceProxy(contract)
+                });
+            }
         }
         /** 视图-销售报价 */
         export interface ISalesQuoteEditView extends ibas.IBOEditView {
@@ -1132,6 +1160,8 @@ namespace sales {
             showSalesQuoteItemExtraEvent: Function;
             /** 转为销售订单事件 */
             turnToSalesOrderEvent: Function;
+            /** 预留物料库存 */
+            reserveMaterialsInventoryEvent: Function;
             /** 默认税组 */
             defaultTaxGroup: string;
         }

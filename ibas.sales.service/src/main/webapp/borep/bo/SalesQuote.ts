@@ -7,7 +7,7 @@
  */
 namespace sales {
     export namespace bo {
-        /** 销售订单 */
+        /** 销售报价 */
         export class SalesQuote extends ibas.BODocument<SalesQuote> implements ISalesQuote, ibas.IConvertedData {
 
             /** 业务对象编码 */
@@ -671,7 +671,7 @@ namespace sales {
             }
         }
 
-        /** 销售订单-行 集合 */
+        /** 销售报价-行 集合 */
         export class SalesQuoteItems extends ibas.BusinessObjects<SalesQuoteItem, SalesQuote> implements ISalesQuoteItems {
 
             /** 创建并添加子项 */
@@ -735,7 +735,7 @@ namespace sales {
             }
         }
 
-        /** 销售订单-行 */
+        /** 销售报价-行 */
         export class SalesQuoteItem extends ibas.BODocumentLine<SalesQuoteItem> implements ISalesQuoteItem {
 
             /** 构造函数 */

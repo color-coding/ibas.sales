@@ -11,11 +11,14 @@ import javax.xml.bind.annotation.XmlType;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
+import org.colorcoding.ibas.bobas.data.ArrayList;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
+import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
@@ -23,6 +26,8 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.logic.IMaterialInventoryReservationStatusContract;
+import org.colorcoding.ibas.sales.logic.IMaterialOrderedReservationStatusContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceQtyTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceTaxTotal;
@@ -33,7 +38,8 @@ import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceTaxTotal;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = SalesQuoteItem.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements ISalesQuoteItem, IBOUserFields {
+public class SalesQuoteItem extends BusinessObject<SalesQuoteItem>
+		implements ISalesQuoteItem, IBOUserFields, IBusinessLogicsHost {
 
 	private static final long serialVersionUID = 7103110292052269544L;
 
@@ -2455,4 +2461,79 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem> implements IS
 	 */
 	ISalesQuote parent;
 
+	@Override
+	public IBusinessLogicContract[] getContracts() {
+		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>(4);
+		// 订购预留关闭
+		contracts.add(new IMaterialOrderedReservationStatusContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesQuoteItem.this.getIdentifiers();
+			}
+
+			@Override
+			public String getTargetDocumentType() {
+				return SalesQuoteItem.this.getObjectCode();
+			}
+
+			@Override
+			public Integer getTargetDocumentEntry() {
+				return SalesQuoteItem.this.getDocEntry();
+			}
+
+			@Override
+			public Integer getTargetDocumentLineId() {
+				return SalesQuoteItem.this.getLineId();
+			}
+
+			@Override
+			public emDocumentStatus getTargetDocumentStatus() {
+				if (SalesQuoteItem.this.getCanceled() == emYesNo.YES) {
+					return emDocumentStatus.CLOSED;
+				}
+				if (SalesQuoteItem.this.getDeleted() == emYesNo.YES) {
+					return emDocumentStatus.CLOSED;
+				}
+				return SalesQuoteItem.this.getLineStatus();
+			}
+
+		});
+		// 库存预留关闭
+		contracts.add(new IMaterialInventoryReservationStatusContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesQuoteItem.this.getIdentifiers();
+			}
+
+			@Override
+			public String getTargetDocumentType() {
+				return SalesQuoteItem.this.getObjectCode();
+			}
+
+			@Override
+			public Integer getTargetDocumentEntry() {
+				return SalesQuoteItem.this.getDocEntry();
+			}
+
+			@Override
+			public Integer getTargetDocumentLineId() {
+				return SalesQuoteItem.this.getLineId();
+			}
+
+			@Override
+			public emDocumentStatus getTargetDocumentStatus() {
+				if (SalesQuoteItem.this.getCanceled() == emYesNo.YES) {
+					return emDocumentStatus.CLOSED;
+				}
+				if (SalesQuoteItem.this.getDeleted() == emYesNo.YES) {
+					return emDocumentStatus.CLOSED;
+				}
+				return SalesQuoteItem.this.getLineStatus();
+			}
+
+		});
+		return contracts.toArray(new IBusinessLogicContract[] {});
+	}
 }

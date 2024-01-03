@@ -42,6 +42,8 @@ namespace sales {
                 showSalesQuoteItemExtraEvent: Function;
                 /** 转为销售订单事件 */
                 turnToSalesOrderEvent: Function;
+                /** 预留物料库存 */
+                reserveMaterialsInventoryEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */
