@@ -2102,14 +2102,14 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent = new JournalEntrySmartContent(line);
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SALES_CREDIT_ACCOUNT);
-								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
+								jeContent.setAmount(line.getPreTaxLineTotal().negate());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContents.add(jeContent);
 								// 销项税
 								jeContent = new JournalEntrySmartContent(line);
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
-								jeContent.setAmount(line.getTaxTotal());// 税总计
+								jeContent.setAmount(line.getTaxTotal().negate());// 税总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContents.add(jeContent);
 							} else if (SalesInvoiceCode.equals(line.getBaseDocumentType())) {
@@ -2132,14 +2132,14 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent = new JournalEntrySmartContent(line);
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SALES_CREDIT_ACCOUNT);
-								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
+								jeContent.setAmount(line.getPreTaxLineTotal().negate());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContents.add(jeContent);
 								// 销项税
 								jeContent = new JournalEntrySmartContent(line);
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
-								jeContent.setAmount(line.getTaxTotal());// 税总计
+								jeContent.setAmount(line.getTaxTotal().negate());// 税总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContents.add(jeContent);
 							} else {
@@ -2162,14 +2162,14 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent = new JournalEntrySmartContent(line);
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SALES_CREDIT_ACCOUNT);
-								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
+								jeContent.setAmount(line.getPreTaxLineTotal().negate());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContents.add(jeContent);
 								// 销项税
 								jeContent = new JournalEntrySmartContent(line);
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
-								jeContent.setAmount(line.getTaxTotal());// 税总计
+								jeContent.setAmount(line.getTaxTotal().negate());// 税总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContents.add(jeContent);
 							}
