@@ -2090,6 +2090,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
 								jeContent.setAmount(Decimal.ZERO);// 待计算
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 已装载货物科目
 								jeContent = new SalesCreditNoteReturnMaterialsCost(line);
@@ -2097,6 +2098,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
 								jeContent.setAmount(Decimal.ZERO);// 待计算
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 销售贷方科目
 								jeContent = new JournalEntrySmartContent(line);
@@ -2104,6 +2106,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SALES_CREDIT_ACCOUNT);
 								jeContent.setAmount(line.getPreTaxLineTotal().negate());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 销项税
 								jeContent = new JournalEntrySmartContent(line);
@@ -2111,6 +2114,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
 								jeContent.setAmount(line.getTaxTotal().negate());// 税总计
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 							} else if (SalesInvoiceCode.equals(line.getBaseDocumentType())) {
 								/** 基于发票 **/
@@ -2120,6 +2124,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
 								jeContent.setAmount(Decimal.ZERO);// 待计算
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 销售退货科目
 								jeContent = new SalesCreditNoteInvoiceMaterialsCost(line);
@@ -2127,6 +2132,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SALES_RETURNS_ACCOUNT);
 								jeContent.setAmount(Decimal.ZERO);// 待计算
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 销售贷方科目
 								jeContent = new JournalEntrySmartContent(line);
@@ -2134,6 +2140,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SALES_CREDIT_ACCOUNT);
 								jeContent.setAmount(line.getPreTaxLineTotal().negate());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 销项税
 								jeContent = new JournalEntrySmartContent(line);
@@ -2141,6 +2148,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
 								jeContent.setAmount(line.getTaxTotal().negate());// 税总计
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 							} else {
 								/** 不基于单据 **/
@@ -2150,6 +2158,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
 								jeContent.setAmount(Decimal.ZERO);// 待计算
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 销售退货科目
 								jeContent = new SalesCreditNoteMaterialsCost(line);
@@ -2157,6 +2166,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SALES_RETURNS_ACCOUNT);
 								jeContent.setAmount(Decimal.ZERO);// 待计算
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 销售贷方科目
 								jeContent = new JournalEntrySmartContent(line);
@@ -2164,6 +2174,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SALES_CREDIT_ACCOUNT);
 								jeContent.setAmount(line.getPreTaxLineTotal().negate());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 销项税
 								jeContent = new JournalEntrySmartContent(line);
@@ -2171,6 +2182,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 								jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
 								jeContent.setAmount(line.getTaxTotal().negate());// 税总计
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 							}
 						}
@@ -2180,6 +2192,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 						jeContent.setLedger(Ledgers.LEDGER_SALES_DOMESTIC_ACCOUNTS_RECEIVABLE);
 						jeContent.setAmount(SalesCreditNote.this.getDocumentTotal().negate());
 						jeContent.setCurrency(SalesCreditNote.this.getDocumentCurrency());
+						jeContent.setRate(SalesCreditNote.this.getDocumentRate());
 						jeContents.add(jeContent);
 						return jeContents.toArray(new JournalEntryContent[] {});
 					}

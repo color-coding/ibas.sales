@@ -449,7 +449,7 @@ namespace sales {
                 this.shippingStatus = emShippingStatus.WAITING;
                 this.name = "--";
                 this.expense = 0;
-                this.currency = ibas.config.get(ibas.CONFIG_ITEM_DEFAULT_CURRENCY);
+                this.currency = accounting.config.currency("LOCAL");
             }
 
             protected registerRules(): ibas.IBusinessRule[] {

@@ -287,7 +287,7 @@ namespace sales {
             }
             /** 更改行价格 */
             private changeSalesCreditNoteItemPrice(priceList: number | ibas.Criteria): void {
-                if (typeof priceList === "number" && priceList > 0) {
+                if (typeof priceList === "number" && ibas.numbers.valueOf(priceList) !== 0) {
                     let criteria: ibas.Criteria = new ibas.Criteria();
                     let condition: ibas.ICondition = criteria.conditions.create();
                     condition.alias = materials.app.conditions.materialprice.CONDITION_ALIAS_PRICELIST;
@@ -336,14 +336,16 @@ namespace sales {
                         onCompleted: (opRslt) => {
                             for (let item of opRslt.resultObjects) {
                                 this.editData.salesCreditNoteItems.forEach((value) => {
-                                    if (item.taxed === ibas.emYesNo.YES) {
-                                        value.unitPrice = 0;
-                                        value.price = item.price;
-                                        value.currency = item.currency;
-                                    } else {
-                                        value.unitPrice = 0;
-                                        value.preTaxPrice = item.price;
-                                        value.currency = item.currency;
+                                    if (item.itemCode === value.itemCode) {
+                                        if (item.taxed === ibas.emYesNo.YES) {
+                                            value.unitPrice = 0;
+                                            value.price = item.price;
+                                            value.currency = item.currency;
+                                        } else {
+                                            value.unitPrice = 0;
+                                            value.preTaxPrice = item.price;
+                                            value.currency = item.currency;
+                                        }
                                     }
                                 });
                             }
@@ -358,7 +360,7 @@ namespace sales {
                 let condition: ibas.ICondition;
                 let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.product.create();
                 // 添加价格清单条件
-                if (this.editData.priceList > 0) {
+                if (ibas.numbers.valueOf(this.editData.priceList) !== 0) {
                     condition = new ibas.Condition();
                     condition.alias = materials.app.conditions.product.CONDITION_ALIAS_PRICELIST;
                     condition.value = this.editData.priceList.toString();

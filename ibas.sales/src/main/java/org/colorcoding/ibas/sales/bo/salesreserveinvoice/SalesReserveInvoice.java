@@ -2080,6 +2080,7 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice>
 							jeContent.setLedger(Ledgers.LEDGER_SALES_REVENUE_ACCOUNT);
 							jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 							jeContent.setCurrency(line.getCurrency());
+							jeContent.setRate(line.getRate());
 							jeContents.add(jeContent);
 							// 销项税
 							jeContent = new JournalEntrySmartContent(line);
@@ -2087,6 +2088,7 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice>
 							jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
 							jeContent.setAmount(line.getTaxTotal());// 税前总计
 							jeContent.setCurrency(line.getCurrency());
+							jeContent.setRate(line.getRate());
 							jeContents.add(jeContent);
 						}
 						// 应收科目
@@ -2095,6 +2097,7 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice>
 						jeContent.setLedger(Ledgers.LEDGER_SALES_DOMESTIC_ACCOUNTS_RECEIVABLE);
 						jeContent.setAmount(SalesReserveInvoice.this.getDocumentTotal());
 						jeContent.setCurrency(SalesReserveInvoice.this.getDocumentCurrency());
+						jeContent.setRate(SalesReserveInvoice.this.getDocumentRate());
 						jeContents.add(jeContent);
 						return jeContents.toArray(new JournalEntryContent[] {});
 					}

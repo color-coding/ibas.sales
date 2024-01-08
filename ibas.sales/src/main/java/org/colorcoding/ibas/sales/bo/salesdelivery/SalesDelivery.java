@@ -2086,6 +2086,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 								jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
 								jeContent.setAmount(Decimal.ZERO);// 待计算
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 库存科目
 								jeContent = new SalesDeliveryMaterialsCost(line);
@@ -2093,6 +2094,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 								jeContent.setLedger(Ledgers.LEDGER_INVENTORY_INVENTORY_ACCOUNT);
 								jeContent.setAmount(Decimal.ZERO);// 待计算
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 							} else {
 								// 已装载货物科目
@@ -2101,6 +2103,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
 								jeContent.setAmount(Decimal.ZERO);// 待计算
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 库存科目
 								jeContent = new SalesDeliveryMaterialsCost(line);
@@ -2108,6 +2111,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 								jeContent.setLedger(Ledgers.LEDGER_INVENTORY_INVENTORY_ACCOUNT);
 								jeContent.setAmount(Decimal.ZERO);// 待计算
 								jeContent.setCurrency(line.getCurrency());
+								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 							}
 						}
