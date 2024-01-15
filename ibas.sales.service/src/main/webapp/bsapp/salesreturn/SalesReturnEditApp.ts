@@ -58,6 +58,24 @@ namespace sales {
                 }
                 this.view.showSalesReturn(this.editData);
                 this.view.showSalesReturnItems(this.editData.salesReturnItems.filterDeleted());
+                // 查询额外信息
+                if (!ibas.strings.isEmpty(this.editData.customerCode)) {
+                    let boRepository: businesspartner.bo.BORepositoryBusinessPartner = new businesspartner.bo.BORepositoryBusinessPartner();
+                    boRepository.fetchCustomer({
+                        criteria: [
+                            new ibas.Condition(businesspartner.bo.Customer.PROPERTY_CODE_NAME, ibas.emConditionOperation.EQUAL, this.editData.customerCode)
+                        ],
+                        onCompleted: (opRslt) => {
+                            let customer: businesspartner.bo.Customer = opRslt.resultObjects.firstOrDefault();
+                            if (!ibas.objects.isNull(customer)) {
+                                this.customer = customer;
+                                if (!ibas.strings.isEmpty(customer.warehouse)) {
+                                    this.view.defaultWarehouse = customer.warehouse;
+                                }
+                            }
+                        }
+                    });
+                }
             }
             /** 运行,覆盖原方法 */
             run(): void;
@@ -230,6 +248,7 @@ namespace sales {
                     createData();
                 }
             }
+            private customer: businesspartner.bo.ICustomer;
             /** 选择销售退货客户事件 */
             private chooseSalesReturnCustomer(): void {
                 let items: bo.SalesReturnItem[] = this.editData.salesReturnItems.where(c =>
@@ -268,6 +287,7 @@ namespace sales {
                         if (!ibas.strings.isEmpty(selected.warehouse)) {
                             that.view.defaultWarehouse = selected.warehouse;
                         }
+                        that.customer = selected;
                         // 客户改变，清除旧地址
                         that.editData.shippingAddresss.clear();
                         that.changeSalesReturnItemPrice(that.editData.priceList);
@@ -543,6 +563,7 @@ namespace sales {
                         quantity: item.inventoryQuantity,
                         uom: item.inventoryUOM,
                         materialBatches: item.materialBatches,
+                        agreements: item.agreements
                     });
                 }
                 ibas.servicesManager.runApplicationService<materials.app.IMaterialBatchContract[], materials.app.IServiceExtraBatches>({
@@ -751,6 +772,20 @@ namespace sales {
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_BUSINESSPARTNER_NAME;
                 condition.value = this.editData.customerCode;
+                if (!ibas.strings.isEmpty(this.customer?.lead)) {
+                    // 也可使用潜在客户的
+                    criteria.conditions.firstOrDefault().bracketOpen = 2;
+                    criteria.conditions.lastOrDefault().bracketClose = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = businesspartner.bo.ContactPerson.PROPERTY_OWNERTYPE_NAME;
+                    condition.value = businesspartner.bo.emBusinessPartnerType.LEAD.toString();
+                    condition.bracketOpen = 1;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition = criteria.conditions.create();
+                    condition.alias = businesspartner.bo.ContactPerson.PROPERTY_BUSINESSPARTNER_NAME;
+                    condition.value = this.customer.lead;
+                    condition.bracketClose = 2;
+                }
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_ACTIVATED_NAME;
                 condition.value = ibas.emYesNo.YES.toString();

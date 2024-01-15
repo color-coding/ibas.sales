@@ -37,7 +37,6 @@ import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.IMaterialIssueContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.sales.MyConfiguration;
-import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.logic.IBlanketAgreementQuantityContract;
 import org.colorcoding.ibas.sales.logic.ISalesOrderIssueContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
@@ -2528,6 +2527,16 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 	ISalesDelivery parent;
 
 	@Override
+	public DateTime getPostingDate() {
+		return this.parent.getPostingDate();
+	}
+
+	@Override
+	public DateTime getDocumentDate() {
+		return this.parent.getDocumentDate();
+	}
+
+	@Override
 	public IBusinessLogicContract[] getContracts() {
 		return new IBusinessLogicContract[] {
 				// 物料发货
@@ -2634,7 +2643,6 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 				},
 				// 销售订单发货
 				new ISalesOrderIssueContract() {
-					String SalesOrderCode = MyConfiguration.applyVariables(SalesOrder.BUSINESS_OBJECT_CODE);
 
 					@Override
 					public String getIdentifiers() {
@@ -2648,25 +2656,16 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 
 					@Override
 					public String getBaseDocumentType() {
-						if (SalesOrderCode.equalsIgnoreCase(SalesDeliveryItem.this.getOriginalDocumentType())) {
-							return SalesDeliveryItem.this.getOriginalDocumentType();
-						}
 						return SalesDeliveryItem.this.getBaseDocumentType();
 					}
 
 					@Override
 					public Integer getBaseDocumentEntry() {
-						if (SalesOrderCode.equalsIgnoreCase(SalesDeliveryItem.this.getOriginalDocumentType())) {
-							return SalesDeliveryItem.this.getOriginalDocumentEntry();
-						}
 						return SalesDeliveryItem.this.getBaseDocumentEntry();
 					}
 
 					@Override
 					public Integer getBaseDocumentLineId() {
-						if (SalesOrderCode.equalsIgnoreCase(SalesDeliveryItem.this.getOriginalDocumentType())) {
-							return SalesDeliveryItem.this.getOriginalDocumentLineId();
-						}
 						return SalesDeliveryItem.this.getBaseDocumentLineId();
 					}
 

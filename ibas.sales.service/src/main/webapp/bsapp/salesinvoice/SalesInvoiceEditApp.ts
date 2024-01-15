@@ -70,6 +70,7 @@ namespace sales {
                         onCompleted: (opRslt) => {
                             let customer: businesspartner.bo.Customer = opRslt.resultObjects.firstOrDefault();
                             if (!ibas.objects.isNull(customer)) {
+                                this.customer = customer;
                                 if (!ibas.strings.isEmpty(customer.warehouse)) {
                                     this.view.defaultWarehouse = customer.warehouse;
                                 }
@@ -232,6 +233,7 @@ namespace sales {
                     createData();
                 }
             }
+            private customer: businesspartner.bo.ICustomer;
             /** 选择销售发票客户事件 */
             private chooseSalesInvoiceCustomer(): void {
                 let items: bo.SalesInvoiceItem[] = this.editData.salesInvoiceItems.where(c =>
@@ -273,6 +275,7 @@ namespace sales {
                         if (!ibas.strings.isEmpty(selected.taxGroup)) {
                             that.view.defaultTaxGroup = selected.taxGroup;
                         }
+                        that.customer = selected;
                         // 客户改变，清除旧地址
                         that.editData.shippingAddresss.clear();
                         that.changeSalesInvoiceItemPrice(that.editData.priceList);
@@ -932,6 +935,20 @@ namespace sales {
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_BUSINESSPARTNER_NAME;
                 condition.value = this.editData.customerCode;
+                if (!ibas.strings.isEmpty(this.customer?.lead)) {
+                    // 也可使用潜在客户的
+                    criteria.conditions.firstOrDefault().bracketOpen = 2;
+                    criteria.conditions.lastOrDefault().bracketClose = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = businesspartner.bo.ContactPerson.PROPERTY_OWNERTYPE_NAME;
+                    condition.value = businesspartner.bo.emBusinessPartnerType.LEAD.toString();
+                    condition.bracketOpen = 1;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition = criteria.conditions.create();
+                    condition.alias = businesspartner.bo.ContactPerson.PROPERTY_BUSINESSPARTNER_NAME;
+                    condition.value = this.customer.lead;
+                    condition.bracketClose = 2;
+                }
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_ACTIVATED_NAME;
                 condition.value = ibas.emYesNo.YES.toString();

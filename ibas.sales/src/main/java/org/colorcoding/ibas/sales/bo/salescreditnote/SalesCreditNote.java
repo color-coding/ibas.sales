@@ -2190,6 +2190,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 						jeContent = new JournalEntrySmartContent(SalesCreditNote.this);
 						jeContent.setCategory(Category.Debit);
 						jeContent.setLedger(Ledgers.LEDGER_SALES_DOMESTIC_ACCOUNTS_RECEIVABLE);
+						jeContent.setShortName(SalesCreditNote.this.getCustomerCode());
 						jeContent.setAmount(SalesCreditNote.this.getDocumentTotal().negate());
 						jeContent.setCurrency(SalesCreditNote.this.getDocumentCurrency());
 						jeContent.setRate(SalesCreditNote.this.getDocumentRate());

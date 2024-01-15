@@ -36,6 +36,7 @@ import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.logic.IBlanketAgreementQuantityContract;
+import org.colorcoding.ibas.sales.logic.ISalesOrderIssueContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceQtyTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceTaxTotal;
@@ -2550,7 +2551,36 @@ public class SalesReserveInvoiceItem extends BusinessObject<SalesReserveInvoiceI
 					public Integer getBaseDocumentLineId() {
 						return SalesReserveInvoiceItem.this.getBaseDocumentLineId();
 					}
-				}
+				},
+				// 销售订单发货
+				new ISalesOrderIssueContract() {
+
+					@Override
+					public String getIdentifiers() {
+						return SalesReserveInvoiceItem.this.getIdentifiers();
+					}
+
+					@Override
+					public BigDecimal getQuantity() {
+						return SalesReserveInvoiceItem.this.getQuantity();
+					}
+
+					@Override
+					public String getBaseDocumentType() {
+						return SalesReserveInvoiceItem.this.getBaseDocumentType();
+					}
+
+					@Override
+					public Integer getBaseDocumentEntry() {
+						return SalesReserveInvoiceItem.this.getBaseDocumentEntry();
+					}
+
+					@Override
+					public Integer getBaseDocumentLineId() {
+						return SalesReserveInvoiceItem.this.getBaseDocumentLineId();
+					}
+
+				},
 
 		};
 	}

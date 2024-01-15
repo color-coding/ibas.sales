@@ -244,6 +244,7 @@ namespace sales {
                                     },
                                 }),
                                 new sap.extension.m.ObjectNumber("", {
+                                    textAlign: sap.ui.core.TextAlign.Right,
                                     number: {
                                         path: "documentTotal",
                                         type: new sap.extension.data.Sum()

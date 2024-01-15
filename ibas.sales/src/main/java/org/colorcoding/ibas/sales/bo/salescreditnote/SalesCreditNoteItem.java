@@ -2538,6 +2538,16 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 	ISalesCreditNote parent;
 
 	@Override
+	public DateTime getPostingDate() {
+		return this.parent.getPostingDate();
+	}
+
+	@Override
+	public DateTime getDocumentDate() {
+		return this.parent.getDocumentDate();
+	}
+
+	@Override
 	public IBusinessLogicContract[] getContracts() {
 		// 基于销售退货不执行库存逻辑
 		if (MyConfiguration.applyVariables(SalesReturn.BUSINESS_OBJECT_CODE)

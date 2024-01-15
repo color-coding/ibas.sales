@@ -2152,6 +2152,7 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 						jeContent = new JournalEntrySmartContent(SalesInvoice.this);
 						jeContent.setCategory(Category.Debit);
 						jeContent.setLedger(Ledgers.LEDGER_SALES_DOMESTIC_ACCOUNTS_RECEIVABLE);
+						jeContent.setShortName(SalesInvoice.this.getCustomerCode());
 						jeContent.setAmount(SalesInvoice.this.getDocumentTotal());
 						jeContent.setCurrency(SalesInvoice.this.getDocumentCurrency());
 						jeContent.setRate(SalesInvoice.this.getDocumentRate());

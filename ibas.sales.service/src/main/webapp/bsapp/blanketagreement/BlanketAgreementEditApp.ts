@@ -48,6 +48,24 @@ namespace sales {
                 }
                 this.view.showBlanketAgreement(this.editData);
                 this.view.showBlanketAgreementItems(this.editData.blanketAgreementItems.filterDeleted());
+                // 查询额外信息
+                if (!ibas.strings.isEmpty(this.editData.customerCode)) {
+                    let boRepository: businesspartner.bo.BORepositoryBusinessPartner = new businesspartner.bo.BORepositoryBusinessPartner();
+                    boRepository.fetchCustomer({
+                        criteria: [
+                            new ibas.Condition(businesspartner.bo.Customer.PROPERTY_CODE_NAME, ibas.emConditionOperation.EQUAL, this.editData.customerCode)
+                        ],
+                        onCompleted: (opRslt) => {
+                            let customer: businesspartner.bo.Customer = opRslt.resultObjects.firstOrDefault();
+                            if (!ibas.objects.isNull(customer)) {
+                                this.customer = customer;
+                                if (!ibas.strings.isEmpty(customer.taxGroup)) {
+                                    this.view.defaultTaxGroup = customer.taxGroup;
+                                }
+                            }
+                        }
+                    });
+                }
             }
             run(): void;
             run(data: bo.BlanketAgreement): void;
@@ -209,6 +227,7 @@ namespace sales {
                 // 仅显示没有标记删除的
                 this.view.showBlanketAgreementItems(this.editData.blanketAgreementItems.filterDeleted());
             }
+            private customer: businesspartner.bo.ICustomer;
             /** 选择一揽子协议客户事件 */
             private chooseBlanketAgreementCustomer(): void {
                 let that: this = this;
@@ -222,6 +241,10 @@ namespace sales {
                         that.editData.customerName = selected.name;
                         that.editData.contactPerson = selected.contactPerson;
                         that.editData.paymentCode = selected.paymentCode;
+                        if (!ibas.strings.isEmpty(selected.taxGroup)) {
+                            that.view.defaultTaxGroup = selected.taxGroup;
+                        }
+                        that.customer = selected;
                     }
                 });
             }
@@ -240,6 +263,20 @@ namespace sales {
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_BUSINESSPARTNER_NAME;
                 condition.value = this.editData.customerCode;
+                if (!ibas.strings.isEmpty(this.customer?.lead)) {
+                    // 也可使用潜在客户的
+                    criteria.conditions.firstOrDefault().bracketOpen = 2;
+                    criteria.conditions.lastOrDefault().bracketClose = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = businesspartner.bo.ContactPerson.PROPERTY_OWNERTYPE_NAME;
+                    condition.value = businesspartner.bo.emBusinessPartnerType.LEAD.toString();
+                    condition.bracketOpen = 1;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition = criteria.conditions.create();
+                    condition.alias = businesspartner.bo.ContactPerson.PROPERTY_BUSINESSPARTNER_NAME;
+                    condition.value = this.customer.lead;
+                    condition.bracketClose = 2;
+                }
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_ACTIVATED_NAME;
                 condition.value = ibas.emYesNo.YES.toString();
@@ -287,6 +324,21 @@ namespace sales {
                             item.uom = selected.salesUOM;
                             if (ibas.strings.isEmpty(item.uom)) {
                                 item.uom = selected.inventoryUOM;
+                            }
+                            if (!ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
+                                item.tax = that.view.defaultTaxGroup;
+                                if (!ibas.strings.isEmpty(item.tax)) {
+                                    accounting.taxrate.assign(item.tax, (rate) => {
+                                        if (rate >= 0) {
+                                            item.taxRate = rate;
+                                            if (selected.taxed === ibas.emYesNo.NO) {
+                                                item.preTaxPrice = selected.price;
+                                            } else {
+                                                item.price = selected.price;
+                                            }
+                                        }
+                                    });
+                                }
                             }
                             item = null;
                         }
@@ -400,6 +452,8 @@ namespace sales {
             chooseBlanketAgreementItemUnitEvent: Function;
             /** 选择客户合同 */
             chooseCustomerAgreementsEvent: Function;
+            /** 默认税组 */
+            defaultTaxGroup: string;
         }
         /** 一揽子协议编辑服务映射 */
         export class BlanketAgreementEditServiceMapping extends ibas.BOEditServiceMapping {

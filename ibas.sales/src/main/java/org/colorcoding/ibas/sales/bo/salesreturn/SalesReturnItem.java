@@ -2527,6 +2527,16 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	ISalesReturn parent;
 
 	@Override
+	public DateTime getPostingDate() {
+		return this.parent.getPostingDate();
+	}
+
+	@Override
+	public DateTime getDocumentDate() {
+		return this.parent.getDocumentDate();
+	}
+
+	@Override
 	public IBusinessLogicContract[] getContracts() {
 		return new IBusinessLogicContract[] {
 				// 物料收货

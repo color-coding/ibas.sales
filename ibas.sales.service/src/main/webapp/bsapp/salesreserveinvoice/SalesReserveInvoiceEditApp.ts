@@ -47,6 +47,7 @@ namespace sales {
                 this.view.receiptSalesReserveInvoiceEvent = this.receiptSalesReserveInvoice;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
                 this.view.turnToSalesCreditNoteEvent = this.turnToSalesCreditNote;
+                this.view.turnToSalesDeliveryEvent = this.turnToSalesDelivery;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -69,6 +70,7 @@ namespace sales {
                         onCompleted: (opRslt) => {
                             let customer: businesspartner.bo.Customer = opRslt.resultObjects.firstOrDefault();
                             if (!ibas.objects.isNull(customer)) {
+                                this.customer = customer;
                                 if (!ibas.strings.isEmpty(customer.warehouse)) {
                                     this.view.defaultWarehouse = customer.warehouse;
                                 }
@@ -231,6 +233,7 @@ namespace sales {
                     createData();
                 }
             }
+            private customer: businesspartner.bo.ICustomer;
             /** 选择销售预留发票客户事件 */
             private chooseSalesReserveInvoiceCustomer(): void {
                 let items: bo.SalesReserveInvoiceItem[] = this.editData.salesReserveInvoiceItems.where(c =>
@@ -272,6 +275,7 @@ namespace sales {
                         if (!ibas.strings.isEmpty(selected.taxGroup)) {
                             that.view.defaultTaxGroup = selected.taxGroup;
                         }
+                        that.customer = selected;
                         // 客户改变，清除旧地址
                         that.editData.shippingAddresss.clear();
                         that.changeSalesReserveInvoiceItemPrice(that.editData.priceList);
@@ -855,6 +859,20 @@ namespace sales {
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_BUSINESSPARTNER_NAME;
                 condition.value = this.editData.customerCode;
+                if (!ibas.strings.isEmpty(this.customer?.lead)) {
+                    // 也可使用潜在客户的
+                    criteria.conditions.firstOrDefault().bracketOpen = 2;
+                    criteria.conditions.lastOrDefault().bracketClose = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = businesspartner.bo.ContactPerson.PROPERTY_OWNERTYPE_NAME;
+                    condition.value = businesspartner.bo.emBusinessPartnerType.LEAD.toString();
+                    condition.bracketOpen = 1;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition = criteria.conditions.create();
+                    condition.alias = businesspartner.bo.ContactPerson.PROPERTY_BUSINESSPARTNER_NAME;
+                    condition.value = this.customer.lead;
+                    condition.bracketClose = 2;
+                }
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_ACTIVATED_NAME;
                 condition.value = ibas.emYesNo.YES.toString();
@@ -950,6 +968,48 @@ namespace sales {
                     }
                 });
 
+            }
+            /** 转为销售交货 */
+            protected turnToSalesDelivery(): void {
+                if (ibas.objects.isNull(this.editData) || this.editData.isDirty === true) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
+                    return;
+                }
+                let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
+                boRepository.fetchSalesReserveInvoice({
+                    criteria: this.editData.criteria(),
+                    onCompleted: (opRslt) => {
+                        try {
+                            if (opRslt.resultCode !== 0) {
+                                throw new Error(opRslt.message);
+                            }
+                            if (opRslt.resultObjects.length === 0) {
+                                throw new Error(ibas.i18n.prop("shell_data_deleted"));
+                            }
+                            this.editData = opRslt.resultObjects.firstOrDefault();
+                            this.view.showSalesReserveInvoice(this.editData);
+                            this.view.showSalesReserveInvoiceItems(this.editData.salesReserveInvoiceItems.filterDeleted());
+                            if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
+                                || this.editData.deleted === ibas.emYesNo.YES
+                                || this.editData.canceled === ibas.emYesNo.YES
+                                || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
+                            ) {
+                                throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                            }
+                            let target: bo.SalesDelivery = new bo.SalesDelivery();
+                            target.customerCode = this.editData.customerCode;
+                            target.customerName = this.editData.customerName;
+                            target.baseDocument(this.editData);
+
+                            let app: SalesDeliveryEditApp = new SalesDeliveryEditApp();
+                            app.navigation = this.navigation;
+                            app.viewShower = this.viewShower;
+                            app.run(target);
+                        } catch (error) {
+                            this.messages(error);
+                        }
+                    }
+                });
             }
             /** 选择一揽子协议事件 */
             private chooseSalesReserveInvoiceBlanketAgreement(): void {
@@ -1306,6 +1366,8 @@ namespace sales {
             editShippingAddressesEvent: Function;
             /** 转为销售交货事件 */
             turnToSalesCreditNoteEvent: Function;
+            /** 转为销售交货事件 */
+            turnToSalesDeliveryEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */

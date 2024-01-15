@@ -50,6 +50,8 @@ namespace sales {
                 editShippingAddressesEvent: Function;
                 /** 转为销售交货事件 */
                 turnToSalesCreditNoteEvent: Function;
+                /** 转为销售交货事件 */
+                turnToSalesDeliveryEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */
@@ -216,6 +218,18 @@ namespace sales {
                                                     visible: shell.app.privileges.canRun({
                                                         id: sales.app.SalesCreditNoteFunc.FUNCTION_ID,
                                                         name: sales.app.SalesCreditNoteFunc.FUNCTION_NAME,
+                                                    })
+                                                }),
+                                                new sap.m.Button("", {
+                                                    type: sap.m.ButtonType.Transparent,
+                                                    text: ibas.i18n.prop("bo_salescreditnote"),
+                                                    icon: "sap-icon://doc-attachment",
+                                                    press: function (): void {
+                                                        that.fireViewEvents(that.turnToSalesDeliveryEvent);
+                                                    },
+                                                    visible: shell.app.privileges.canRun({
+                                                        id: sales.app.SalesDeliveryFunc.FUNCTION_ID,
+                                                        name: sales.app.SalesDeliveryFunc.FUNCTION_NAME,
                                                     })
                                                 }),
                                             ]
@@ -703,33 +717,42 @@ namespace sales {
                                                         },
                                                     }),
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreserveinvoice_documenttotal") }),
-                                                    new sap.extension.m.Input("", {
-                                                        editable: true,
-
-                                                    }).bindProperty("bindingValue", {
-                                                        path: "documentTotal",
-                                                        type: new sap.extension.data.Sum()
-                                                    }),
-                                                    new sap.extension.m.CurrencyRateSelect("", {
-                                                        editable: {
-                                                            path: "priceList",
-                                                            formatter(data: any): boolean {
-                                                                return ibas.numbers.valueOf(data) === 0 ? true : false;
-                                                            }
-                                                        },
-                                                        baseCurrency: accounting.config.currency("LOCAL"),
-                                                        currency: {
-                                                            path: "documentCurrency",
-                                                            type: new sap.extension.data.Alphanumeric()
-                                                        },
-                                                        rate: {
-                                                            path: "documentRate",
-                                                            type: new sap.extension.data.Rate()
-                                                        },
-                                                        date: {
-                                                            path: "documentDate",
-                                                            type: new sap.extension.data.Date()
-                                                        }
+                                                    new sap.m.FlexBox("", {
+                                                        width: "100%",
+                                                        justifyContent: sap.m.FlexJustifyContent.Start,
+                                                        renderType: sap.m.FlexRendertype.Bare,
+                                                        alignContent: sap.m.FlexAlignContent.Center,
+                                                        alignItems: sap.m.FlexAlignItems.Center,
+                                                        items: [
+                                                            new sap.extension.m.Input("", {
+                                                                width: "70%",
+                                                                editable: true,
+                                                            }).bindProperty("bindingValue", {
+                                                                path: "documentTotal",
+                                                                type: new sap.extension.data.Sum()
+                                                            }).addStyleClass("sapUiTinyMarginEnd"),
+                                                            new sap.extension.m.CurrencyRateSelect("", {
+                                                                editable: {
+                                                                    path: "priceList",
+                                                                    formatter(data: any): boolean {
+                                                                        return ibas.numbers.valueOf(data) === 0 ? true : false;
+                                                                    }
+                                                                },
+                                                                baseCurrency: accounting.config.currency("LOCAL"),
+                                                                currency: {
+                                                                    path: "documentCurrency",
+                                                                    type: new sap.extension.data.Alphanumeric()
+                                                                },
+                                                                rate: {
+                                                                    path: "documentRate",
+                                                                    type: new sap.extension.data.Rate()
+                                                                },
+                                                                date: {
+                                                                    path: "documentDate",
+                                                                    type: new sap.extension.data.Date()
+                                                                }
+                                                            }),
+                                                        ]
                                                     }),
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreserveinvoice_paidtotal") }),
                                                     new sap.extension.m.Input("", {
@@ -822,7 +845,7 @@ namespace sales {
                                                     }).bindProperty("bindingValue", {
                                                         path: "project",
                                                         type: new sap.extension.data.Alphanumeric({
-                                                            maxLength: 8
+                                                            maxLength: 20
                                                         })
                                                     }),
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salesreserveinvoice_organization") }),

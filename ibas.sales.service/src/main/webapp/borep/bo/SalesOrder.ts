@@ -815,7 +815,7 @@ namespace sales {
                             if (item.isLoading) {
                                 continue;
                             }
-                            if (!ibas.strings.isEmpty(item.baseDocumentType)) {
+                            if (!ibas.strings.isEmpty(item.baseDocumentType) && !ibas.strings.isEmpty(item.agreements)) {
                                 continue;
                             }
                             item.agreements = argument;
@@ -826,7 +826,7 @@ namespace sales {
                             if (item.isLoading) {
                                 continue;
                             }
-                            if (!ibas.strings.isEmpty(item.baseDocumentType)) {
+                            if (!ibas.strings.isEmpty(item.baseDocumentType) && ibas.numbers.valueOf(item.rate) > 0) {
                                 continue;
                             }
                             item.rate = rate;
@@ -837,7 +837,7 @@ namespace sales {
                             if (item.isLoading) {
                                 continue;
                             }
-                            if (!ibas.strings.isEmpty(item.baseDocumentType)) {
+                            if (!ibas.strings.isEmpty(item.baseDocumentType) && !ibas.strings.isEmpty(item.currency)) {
                                 continue;
                             }
                             item.currency = currency;

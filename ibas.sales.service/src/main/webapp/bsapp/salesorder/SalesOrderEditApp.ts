@@ -49,6 +49,7 @@ namespace sales {
                 this.view.showSalesOrderItemExtraEvent = this.showSaleOrderItemExtra;
                 this.view.turnToSalesDeliveryEvent = this.turnToSalesDelivery;
                 this.view.turnToSalesInvoiceEvent = this.turnToSalesInvoice;
+                this.view.turnToSalesReserveInvoiceEvent = this.turnToSalesReserveInvoice;
                 this.view.turnToSalesReturnEvent = this.turnToSalesReturn;
                 this.view.reserveMaterialsInventoryEvent = this.reserveMaterialsInventory;
             }
@@ -884,6 +885,20 @@ namespace sales {
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_BUSINESSPARTNER_NAME;
                 condition.value = this.editData.customerCode;
+                if (!ibas.strings.isEmpty(this.customer?.lead)) {
+                    // 也可使用潜在客户的
+                    criteria.conditions.firstOrDefault().bracketOpen = 2;
+                    criteria.conditions.lastOrDefault().bracketClose = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = businesspartner.bo.ContactPerson.PROPERTY_OWNERTYPE_NAME;
+                    condition.value = businesspartner.bo.emBusinessPartnerType.LEAD.toString();
+                    condition.bracketOpen = 1;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition = criteria.conditions.create();
+                    condition.alias = businesspartner.bo.ContactPerson.PROPERTY_BUSINESSPARTNER_NAME;
+                    condition.value = this.customer.lead;
+                    condition.bracketClose = 2;
+                }
                 condition = criteria.conditions.create();
                 condition.alias = businesspartner.bo.ContactPerson.PROPERTY_ACTIVATED_NAME;
                 condition.value = ibas.emYesNo.YES.toString();
@@ -1173,6 +1188,49 @@ namespace sales {
                                 }
                             });
 
+                        } catch (error) {
+                            this.messages(error);
+                        }
+                    }
+                });
+
+            }
+            /** 转为销售预留发票 */
+            protected turnToSalesReserveInvoice(): void {
+                if (ibas.objects.isNull(this.editData) || this.editData.isDirty === true) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
+                    return;
+                }
+                let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
+                boRepository.fetchSalesOrder({
+                    criteria: this.editData.criteria(),
+                    onCompleted: (opRslt) => {
+                        try {
+                            if (opRslt.resultCode !== 0) {
+                                throw new Error(opRslt.message);
+                            }
+                            if (opRslt.resultObjects.length === 0) {
+                                throw new Error(ibas.i18n.prop("shell_data_deleted"));
+                            }
+                            this.editData = opRslt.resultObjects.firstOrDefault();
+                            this.view.showSalesOrder(this.editData);
+                            this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
+                            if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
+                                || this.editData.deleted === ibas.emYesNo.YES
+                                || this.editData.canceled === ibas.emYesNo.YES
+                                || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
+                            ) {
+                                throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                            }
+                            let target: bo.SalesReserveInvoice = new bo.SalesReserveInvoice();
+                            target.customerCode = this.editData.customerCode;
+                            target.customerName = this.editData.customerName;
+                            target.baseDocument(this.editData);
+
+                            let app: SalesReserveInvoiceEditApp = new SalesReserveInvoiceEditApp();
+                            app.navigation = this.navigation;
+                            app.viewShower = this.viewShower;
+                            app.run(target);
                         } catch (error) {
                             this.messages(error);
                         }
@@ -1569,6 +1627,8 @@ namespace sales {
             turnToSalesReturnEvent: Function;
             /** 转为销售发票事件 */
             turnToSalesInvoiceEvent: Function;
+            /** 转为销售预留发票事件 */
+            turnToSalesReserveInvoiceEvent: Function;
             /** 预留物料库存 */
             reserveMaterialsInventoryEvent: Function;
             /** 默认仓库 */

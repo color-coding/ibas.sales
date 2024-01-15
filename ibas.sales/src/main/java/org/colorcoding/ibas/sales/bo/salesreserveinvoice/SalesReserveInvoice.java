@@ -2095,6 +2095,7 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice>
 						jeContent = new JournalEntrySmartContent(SalesReserveInvoice.this);
 						jeContent.setCategory(Category.Debit);
 						jeContent.setLedger(Ledgers.LEDGER_SALES_DOMESTIC_ACCOUNTS_RECEIVABLE);
+						jeContent.setShortName(SalesReserveInvoice.this.getCustomerCode());
 						jeContent.setAmount(SalesReserveInvoice.this.getDocumentTotal());
 						jeContent.setCurrency(SalesReserveInvoice.this.getDocumentCurrency());
 						jeContent.setRate(SalesReserveInvoice.this.getDocumentRate());

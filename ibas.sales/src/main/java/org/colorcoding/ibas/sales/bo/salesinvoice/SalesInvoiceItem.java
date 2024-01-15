@@ -2538,6 +2538,16 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 	ISalesInvoice parent;
 
 	@Override
+	public DateTime getPostingDate() {
+		return this.parent.getPostingDate();
+	}
+
+	@Override
+	public DateTime getDocumentDate() {
+		return this.parent.getDocumentDate();
+	}
+
+	@Override
 	public IBusinessLogicContract[] getContracts() {
 		// 基于销售交货
 		if (MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE)
