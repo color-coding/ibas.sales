@@ -2640,6 +2640,11 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 					public BigDecimal getRate() {
 						return SalesDeliveryItem.this.getRate();
 					}
+
+					@Override
+					public String getItemVersion() {
+						return SalesDeliveryItem.this.getItemVersion();
+					}
 				},
 				// 销售订单发货
 				new ISalesOrderIssueContract() {

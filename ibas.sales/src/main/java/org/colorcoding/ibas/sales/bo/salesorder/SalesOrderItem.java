@@ -2671,6 +2671,11 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 			public DateTime getPostingDate() {
 				return SalesOrderItem.this.parent.getPostingDate();
 			}
+
+			@Override
+			public String getItemVersion() {
+				return SalesOrderItem.this.getItemVersion();
+			}
 		});
 		// 一揽子协议
 		contracts.add(new IBlanketAgreementQuantityContract() {

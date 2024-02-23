@@ -378,6 +378,7 @@ namespace sales {
                                             }),
                                         }),
                                         width: "8rem",
+                                        visible: materials.config.isEnableMaterialVersions(),
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesquoteitem_quantity"),

@@ -2688,6 +2688,11 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 					public BigDecimal getRate() {
 						return SalesInvoiceItem.this.getRate();
 					}
+
+					@Override
+					public String getItemVersion() {
+						return SalesInvoiceItem.this.getItemVersion();
+					}
 				},
 
 				// 销售订单发货

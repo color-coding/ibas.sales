@@ -2641,6 +2641,11 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 					public BigDecimal getRate() {
 						return SalesReturnItem.this.getRate();
 					}
+
+					@Override
+					public String getItemVersion() {
+						return SalesReturnItem.this.getItemVersion();
+					}
 				},
 				// 基础单据为销售订单
 				new ISalesOrderReturnContract() {

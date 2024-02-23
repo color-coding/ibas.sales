@@ -2688,6 +2688,11 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 					public BigDecimal getRate() {
 						return SalesCreditNoteItem.this.getRate();
 					}
+
+					@Override
+					public String getItemVersion() {
+						return SalesCreditNoteItem.this.getItemVersion();
+					}
 				},
 				// 基础单据为销售订单
 				new ISalesOrderReturnContract() {
