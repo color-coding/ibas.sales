@@ -2038,6 +2038,23 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 				new IJournalEntryCreationContract() {
 
 					@Override
+					public boolean isOffsetting() {
+						if (SalesInvoice.this instanceof IBOTagCanceled) {
+							IBOTagCanceled boTag = (IBOTagCanceled) SalesInvoice.this;
+							if (boTag.getCanceled() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesInvoice.this instanceof IBOTagDeleted) {
+							IBOTagDeleted boTag = (IBOTagDeleted) SalesInvoice.this;
+							if (boTag.getDeleted() == emYesNo.YES) {
+								return true;
+							}
+						}
+						return false;
+					}
+
+					@Override
 					public String getIdentifiers() {
 						return SalesInvoice.this.toString();
 					}
@@ -2078,6 +2095,15 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 						List<JournalEntryContent> jeContents = new ArrayList<>();
 						String SalesDeliveryCode = MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE);
 						for (ISalesInvoiceItem line : SalesInvoice.this.getSalesInvoiceItems()) {
+							if (line.getDeleted() == emYesNo.YES) {
+								continue;
+							}
+							if (line.getCanceled() == emYesNo.YES) {
+								continue;
+							}
+							if (line.getLineStatus() == emDocumentStatus.PLANNED) {
+								continue;
+							}
 							if (SalesDeliveryCode.equals(line.getBaseDocumentType())) {
 								/** 基于交货 **/
 								// 销售成本科目

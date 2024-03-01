@@ -2041,6 +2041,23 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 				new IJournalEntryCreationContract() {
 
 					@Override
+					public boolean isOffsetting() {
+						if (SalesCreditNote.this instanceof IBOTagCanceled) {
+							IBOTagCanceled boTag = (IBOTagCanceled) SalesCreditNote.this;
+							if (boTag.getCanceled() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesCreditNote.this instanceof IBOTagDeleted) {
+							IBOTagDeleted boTag = (IBOTagDeleted) SalesCreditNote.this;
+							if (boTag.getDeleted() == emYesNo.YES) {
+								return true;
+							}
+						}
+						return false;
+					}
+
+					@Override
 					public String getIdentifiers() {
 						return SalesCreditNote.this.toString();
 					}
@@ -2082,6 +2099,15 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 						String SalesReturnCode = MyConfiguration.applyVariables(SalesReturn.BUSINESS_OBJECT_CODE),
 								SalesInvoiceCode = MyConfiguration.applyVariables(SalesInvoice.BUSINESS_OBJECT_CODE);
 						for (ISalesCreditNoteItem line : SalesCreditNote.this.getSalesCreditNoteItems()) {
+							if (line.getDeleted() == emYesNo.YES) {
+								continue;
+							}
+							if (line.getCanceled() == emYesNo.YES) {
+								continue;
+							}
+							if (line.getLineStatus() == emDocumentStatus.PLANNED) {
+								continue;
+							}
 							if (SalesReturnCode.equals(line.getBaseDocumentType())) {
 								/** 基于退货 **/
 								// 销售成本科目

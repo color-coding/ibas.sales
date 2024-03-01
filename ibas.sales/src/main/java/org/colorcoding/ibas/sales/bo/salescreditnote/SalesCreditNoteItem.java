@@ -2590,6 +2590,35 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 				new IMaterialReceiptContract() {
 
 					@Override
+					public boolean isOffsetting() {
+						if (SalesCreditNoteItem.this instanceof IBOTagCanceled) {
+							IBOTagCanceled boTag = (IBOTagCanceled) SalesCreditNoteItem.this;
+							if (boTag.getCanceled() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesCreditNoteItem.this instanceof IBOTagDeleted) {
+							IBOTagDeleted boTag = (IBOTagDeleted) SalesCreditNoteItem.this;
+							if (boTag.getDeleted() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesCreditNoteItem.this.parent instanceof IBOTagCanceled) {
+							IBOTagCanceled boTag = (IBOTagCanceled) SalesCreditNoteItem.this.parent;
+							if (boTag.getCanceled() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesCreditNoteItem.this.parent instanceof IBOTagDeleted) {
+							IBOTagDeleted boTag = (IBOTagDeleted) SalesCreditNoteItem.this.parent;
+							if (boTag.getDeleted() == emYesNo.YES) {
+								return true;
+							}
+						}
+						return false;
+					}
+
+					@Override
 					public String getIdentifiers() {
 						return SalesCreditNoteItem.this.getIdentifiers();
 					}

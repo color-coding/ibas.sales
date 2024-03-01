@@ -2036,6 +2036,23 @@ public class SalesReturn extends BusinessObject<SalesReturn>
 				new IJournalEntryCreationContract() {
 
 					@Override
+					public boolean isOffsetting() {
+						if (SalesReturn.this instanceof IBOTagCanceled) {
+							IBOTagCanceled boTag = (IBOTagCanceled) SalesReturn.this;
+							if (boTag.getCanceled() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesReturn.this instanceof IBOTagDeleted) {
+							IBOTagDeleted boTag = (IBOTagDeleted) SalesReturn.this;
+							if (boTag.getDeleted() == emYesNo.YES) {
+								return true;
+							}
+						}
+						return false;
+					}
+
+					@Override
 					public String getIdentifiers() {
 						return SalesReturn.this.toString();
 					}
@@ -2076,6 +2093,15 @@ public class SalesReturn extends BusinessObject<SalesReturn>
 						List<JournalEntryContent> jeContents = new ArrayList<>();
 						String SalesDeliveryCode = MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE);
 						for (ISalesReturnItem line : SalesReturn.this.getSalesReturnItems()) {
+							if (line.getDeleted() == emYesNo.YES) {
+								continue;
+							}
+							if (line.getCanceled() == emYesNo.YES) {
+								continue;
+							}
+							if (line.getLineStatus() == emDocumentStatus.PLANNED) {
+								continue;
+							}
 							if (SalesDeliveryCode.equals(line.getBaseDocumentType())) {
 								/** 基于交货 **/
 								// 已装载货物科目

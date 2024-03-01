@@ -2035,6 +2035,23 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice>
 				new IJournalEntryCreationContract() {
 
 					@Override
+					public boolean isOffsetting() {
+						if (SalesReserveInvoice.this instanceof IBOTagCanceled) {
+							IBOTagCanceled boTag = (IBOTagCanceled) SalesReserveInvoice.this;
+							if (boTag.getCanceled() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesReserveInvoice.this instanceof IBOTagDeleted) {
+							IBOTagDeleted boTag = (IBOTagDeleted) SalesReserveInvoice.this;
+							if (boTag.getDeleted() == emYesNo.YES) {
+								return true;
+							}
+						}
+						return false;
+					}
+
+					@Override
 					public String getIdentifiers() {
 						return SalesReserveInvoice.this.toString();
 					}
@@ -2074,6 +2091,15 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice>
 						JournalEntryContent jeContent;
 						List<JournalEntryContent> jeContents = new ArrayList<>();
 						for (ISalesReserveInvoiceItem line : SalesReserveInvoice.this.getSalesReserveInvoiceItems()) {
+							if (line.getDeleted() == emYesNo.YES) {
+								continue;
+							}
+							if (line.getCanceled() == emYesNo.YES) {
+								continue;
+							}
+							if (line.getLineStatus() == emDocumentStatus.PLANNED) {
+								continue;
+							}
 							// 收入科目
 							jeContent = new JournalEntrySmartContent(line);
 							jeContent.setCategory(Category.Credit);

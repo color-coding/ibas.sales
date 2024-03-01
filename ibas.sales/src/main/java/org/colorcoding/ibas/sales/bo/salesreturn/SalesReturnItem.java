@@ -2543,6 +2543,35 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 				new IMaterialReceiptContract() {
 
 					@Override
+					public boolean isOffsetting() {
+						if (SalesReturnItem.this instanceof IBOTagCanceled) {
+							IBOTagCanceled boTag = (IBOTagCanceled) SalesReturnItem.this;
+							if (boTag.getCanceled() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesReturnItem.this instanceof IBOTagDeleted) {
+							IBOTagDeleted boTag = (IBOTagDeleted) SalesReturnItem.this;
+							if (boTag.getDeleted() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesReturnItem.this.parent instanceof IBOTagCanceled) {
+							IBOTagCanceled boTag = (IBOTagCanceled) SalesReturnItem.this.parent;
+							if (boTag.getCanceled() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesReturnItem.this.parent instanceof IBOTagDeleted) {
+							IBOTagDeleted boTag = (IBOTagDeleted) SalesReturnItem.this.parent;
+							if (boTag.getDeleted() == emYesNo.YES) {
+								return true;
+							}
+						}
+						return false;
+					}
+
+					@Override
 					public String getIdentifiers() {
 						return SalesReturnItem.this.getIdentifiers();
 					}

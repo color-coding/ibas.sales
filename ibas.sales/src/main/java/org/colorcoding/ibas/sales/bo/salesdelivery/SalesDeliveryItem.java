@@ -2542,6 +2542,35 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 				// 物料发货
 				new IMaterialIssueContract() {
 					@Override
+					public boolean isOffsetting() {
+						if (SalesDeliveryItem.this instanceof IBOTagCanceled) {
+							IBOTagCanceled boTag = (IBOTagCanceled) SalesDeliveryItem.this;
+							if (boTag.getCanceled() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesDeliveryItem.this instanceof IBOTagDeleted) {
+							IBOTagDeleted boTag = (IBOTagDeleted) SalesDeliveryItem.this;
+							if (boTag.getDeleted() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesDeliveryItem.this.parent instanceof IBOTagCanceled) {
+							IBOTagCanceled boTag = (IBOTagCanceled) SalesDeliveryItem.this.parent;
+							if (boTag.getCanceled() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesDeliveryItem.this.parent instanceof IBOTagDeleted) {
+							IBOTagDeleted boTag = (IBOTagDeleted) SalesDeliveryItem.this.parent;
+							if (boTag.getDeleted() == emYesNo.YES) {
+								return true;
+							}
+						}
+						return false;
+					}
+
+					@Override
 					public String getIdentifiers() {
 						return SalesDeliveryItem.this.getIdentifiers();
 					}
