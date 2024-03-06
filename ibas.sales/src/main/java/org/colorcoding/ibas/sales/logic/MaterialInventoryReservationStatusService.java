@@ -93,6 +93,8 @@ public class MaterialInventoryReservationStatusService extends
 					|| contract.getTargetDocumentStatus() == emDocumentStatus.RELEASED) {
 				if (item.getQuantity().compareTo(item.getClosedQuantity()) > 0) {
 					item.setStatus(emBOStatus.OPEN);
+				} else {
+					item.setStatus(emBOStatus.CLOSED);
 				}
 			} else {
 				item.setStatus(emBOStatus.CLOSED);

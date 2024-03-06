@@ -2551,7 +2551,9 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 	public IBusinessLogicContract[] getContracts() {
 		// 基于销售交货
 		if (MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE)
-				.equalsIgnoreCase(this.getBaseDocumentType())) {
+				.equalsIgnoreCase(this.getBaseDocumentType())
+				|| MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE)
+						.equalsIgnoreCase(this.getOriginalDocumentType())) {
 			return new IBusinessLogicContract[] {
 					// 销售交货开票
 					new ISalesDeliveryInvoiceContract() {
@@ -2723,7 +2725,6 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 						return SalesInvoiceItem.this.getItemVersion();
 					}
 				},
-
 				// 销售订单发货
 				new ISalesOrderIssueContract() {
 

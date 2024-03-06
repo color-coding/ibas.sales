@@ -184,8 +184,8 @@ namespace sales {
                                             itemDescription: item.itemDescription,
                                             itemVersion: item.itemVersion,
                                             warehouse: item.warehouse,
-                                            quantity: item.quantity,
-                                            uom: item.uom
+                                            quantity: ibas.numbers.valueOf(item.quantity) - ibas.numbers.valueOf(item.closedQuantity),
+                                            uom: item.uom,
                                         });
                                     }
                                     contracts.add(contract);

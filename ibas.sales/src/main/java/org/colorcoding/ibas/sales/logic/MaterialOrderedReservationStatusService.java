@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBODocument;
 import org.colorcoding.ibas.bobas.bo.IBODocumentLine;
+import org.colorcoding.ibas.bobas.bo.IBOTagCanceled;
+import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
 import org.colorcoding.ibas.bobas.bo.IBusinessObject;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
@@ -17,6 +19,7 @@ import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
+import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.logic.BusinessLogicException;
 import org.colorcoding.ibas.bobas.logic.IBusinessObjectGroup;
 import org.colorcoding.ibas.bobas.mapping.DbField;
@@ -91,10 +94,18 @@ public class MaterialOrderedReservationStatusService extends
 		for (IMaterialOrderedReservation item : this.getBeAffected().getItems()) {
 			if (contract.getTargetDocumentStatus() == emDocumentStatus.PLANNED
 					|| contract.getTargetDocumentStatus() == emDocumentStatus.RELEASED) {
-				if (item.getQuantity().compareTo(item.getClosedQuantity()) > 0) {
-					item.setStatus(emBOStatus.OPEN);
+				item.setTargetDocumentClosed(emYesNo.NO);
+				if (item.getSourceDocumentClosed() == emYesNo.YES) {
+					item.setStatus(emBOStatus.CLOSED);
+				} else {
+					if (item.getQuantity().compareTo(item.getClosedQuantity()) > 0) {
+						item.setStatus(emBOStatus.OPEN);
+					} else {
+						item.setStatus(emBOStatus.CLOSED);
+					}
 				}
 			} else {
+				item.setTargetDocumentClosed(emYesNo.YES);
 				item.setStatus(emBOStatus.CLOSED);
 			}
 		}
@@ -104,6 +115,20 @@ public class MaterialOrderedReservationStatusService extends
 	protected void revoke(IMaterialOrderedReservationStatusContract contract) {
 		for (IMaterialOrderedReservation item : this.getBeAffected().getItems()) {
 			item.setStatus(emBOStatus.CLOSED);
+			// 删除的记录状态，否则源对象编辑时逻辑不对
+			if (this.getLogicChain().getTrigger().isDeleted()) {
+				item.setTargetDocumentClosed(emYesNo.YES);
+			}
+			if (this.getLogicChain().getTrigger() instanceof IBOTagCanceled) {
+				if (((IBOTagCanceled) this.getLogicChain().getTrigger()).getCanceled() == emYesNo.YES) {
+					item.setTargetDocumentClosed(emYesNo.YES);
+				}
+			}
+			if (this.getLogicChain().getTrigger() instanceof IBOTagDeleted) {
+				if (((IBOTagDeleted) this.getLogicChain().getTrigger()).getDeleted() == emYesNo.YES) {
+					item.setTargetDocumentClosed(emYesNo.YES);
+				}
+			}
 		}
 
 	}
