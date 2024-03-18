@@ -14,6 +14,7 @@ import org.colorcoding.ibas.bobas.bo.IBOTagCanceled;
 import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
 import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
+import org.colorcoding.ibas.bobas.data.ArrayList;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
@@ -37,9 +38,10 @@ import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.IMaterialReceiptContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
-import org.colorcoding.ibas.sales.logic.ISalesOrderReturnContract;
-import org.colorcoding.ibas.sales.logic.ISalesReturnCreditNoteContract;
+import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
+import org.colorcoding.ibas.materials.logic.IDocumentQuantityReturnContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceQtyTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceTaxTotal;
@@ -2549,211 +2551,212 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 
 	@Override
 	public IBusinessLogicContract[] getContracts() {
-		// 基于销售退货不执行库存逻辑
-		if (MyConfiguration.applyVariables(SalesReturn.BUSINESS_OBJECT_CODE)
-				.equalsIgnoreCase(this.getBaseDocumentType())) {
-			return new IBusinessLogicContract[] {
-					// 销售退货贷项
-					new ISalesReturnCreditNoteContract() {
+		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>();
+		// 基于单据完成数量
+		if (!MyConfiguration.applyVariables(SalesOrder.BUSINESS_OBJECT_CODE)
+				.equals(SalesCreditNoteItem.this.getBaseDocumentType())) {
+			// 不基于销售订单
+			contracts.add(new IDocumentQuantityClosingContract() {
 
-						@Override
-						public String getIdentifiers() {
-							return SalesCreditNoteItem.this.getIdentifiers();
-						}
+				@Override
+				public String getIdentifiers() {
+					return SalesCreditNoteItem.this.getIdentifiers();
+				}
 
-						@Override
-						public BigDecimal getQuantity() {
-							return SalesCreditNoteItem.this.getQuantity();
-						}
+				@Override
+				public BigDecimal getQuantity() {
+					return SalesCreditNoteItem.this.getQuantity();
+				}
 
-						@Override
-						public String getBaseDocumentType() {
-							return SalesCreditNoteItem.this.getBaseDocumentType();
-						}
+				@Override
+				public String getBaseDocumentType() {
+					return SalesCreditNoteItem.this.getBaseDocumentType();
+				}
 
-						@Override
-						public Integer getBaseDocumentEntry() {
-							return SalesCreditNoteItem.this.getBaseDocumentEntry();
-						}
+				@Override
+				public Integer getBaseDocumentEntry() {
+					return SalesCreditNoteItem.this.getBaseDocumentEntry();
+				}
 
-						@Override
-						public Integer getBaseDocumentLineId() {
-							return SalesCreditNoteItem.this.getBaseDocumentLineId();
-						}
+				@Override
+				public Integer getBaseDocumentLineId() {
+					return SalesCreditNoteItem.this.getBaseDocumentLineId();
+				}
 
-					}
+			});
+		} else {
+			// 基于销售订单是退回
+			contracts.add(new IDocumentQuantityReturnContract() {
 
-			};
+				@Override
+				public String getIdentifiers() {
+					return SalesCreditNoteItem.this.getIdentifiers();
+				}
+
+				@Override
+				public BigDecimal getQuantity() {
+					return SalesCreditNoteItem.this.getQuantity();
+				}
+
+				@Override
+				public String getBaseDocumentType() {
+					return SalesCreditNoteItem.this.getBaseDocumentType();
+				}
+
+				@Override
+				public Integer getBaseDocumentEntry() {
+					return SalesCreditNoteItem.this.getBaseDocumentEntry();
+				}
+
+				@Override
+				public Integer getBaseDocumentLineId() {
+					return SalesCreditNoteItem.this.getBaseDocumentLineId();
+				}
+
+			});
+
 		}
-		return new IBusinessLogicContract[] {
-				// 物料收货
-				new IMaterialReceiptContract() {
+		// 不基于销售退货执行库存逻辑
+		if (!MyConfiguration.applyVariables(SalesReturn.BUSINESS_OBJECT_CODE).equals(this.getBaseDocumentType())) {
+			// 物料收货
+			contracts.add(new IMaterialReceiptContract() {
 
-					@Override
-					public boolean isOffsetting() {
-						if (SalesCreditNoteItem.this instanceof IBOTagCanceled) {
-							IBOTagCanceled boTag = (IBOTagCanceled) SalesCreditNoteItem.this;
-							if (boTag.getCanceled() == emYesNo.YES) {
-								return true;
-							}
+				@Override
+				public boolean isOffsetting() {
+					if (SalesCreditNoteItem.this instanceof IBOTagCanceled) {
+						IBOTagCanceled boTag = (IBOTagCanceled) SalesCreditNoteItem.this;
+						if (boTag.getCanceled() == emYesNo.YES) {
+							return true;
 						}
-						if (SalesCreditNoteItem.this instanceof IBOTagDeleted) {
-							IBOTagDeleted boTag = (IBOTagDeleted) SalesCreditNoteItem.this;
-							if (boTag.getDeleted() == emYesNo.YES) {
-								return true;
-							}
+					}
+					if (SalesCreditNoteItem.this instanceof IBOTagDeleted) {
+						IBOTagDeleted boTag = (IBOTagDeleted) SalesCreditNoteItem.this;
+						if (boTag.getDeleted() == emYesNo.YES) {
+							return true;
 						}
-						if (SalesCreditNoteItem.this.parent instanceof IBOTagCanceled) {
-							IBOTagCanceled boTag = (IBOTagCanceled) SalesCreditNoteItem.this.parent;
-							if (boTag.getCanceled() == emYesNo.YES) {
-								return true;
-							}
+					}
+					if (SalesCreditNoteItem.this.parent instanceof IBOTagCanceled) {
+						IBOTagCanceled boTag = (IBOTagCanceled) SalesCreditNoteItem.this.parent;
+						if (boTag.getCanceled() == emYesNo.YES) {
+							return true;
 						}
-						if (SalesCreditNoteItem.this.parent instanceof IBOTagDeleted) {
-							IBOTagDeleted boTag = (IBOTagDeleted) SalesCreditNoteItem.this.parent;
-							if (boTag.getDeleted() == emYesNo.YES) {
-								return true;
-							}
+					}
+					if (SalesCreditNoteItem.this.parent instanceof IBOTagDeleted) {
+						IBOTagDeleted boTag = (IBOTagDeleted) SalesCreditNoteItem.this.parent;
+						if (boTag.getDeleted() == emYesNo.YES) {
+							return true;
 						}
-						return false;
 					}
+					return false;
+				}
 
-					@Override
-					public String getIdentifiers() {
-						return SalesCreditNoteItem.this.getIdentifiers();
-					}
+				@Override
+				public String getIdentifiers() {
+					return SalesCreditNoteItem.this.getIdentifiers();
+				}
 
-					@Override
-					public String getItemCode() {
-						return SalesCreditNoteItem.this.getItemCode();
-					}
+				@Override
+				public String getItemCode() {
+					return SalesCreditNoteItem.this.getItemCode();
+				}
 
-					@Override
-					public String getItemName() {
-						return SalesCreditNoteItem.this.getItemDescription();
-					}
+				@Override
+				public String getItemName() {
+					return SalesCreditNoteItem.this.getItemDescription();
+				}
 
-					@Override
-					public String getWarehouse() {
-						return SalesCreditNoteItem.this.getWarehouse();
-					}
+				@Override
+				public String getWarehouse() {
+					return SalesCreditNoteItem.this.getWarehouse();
+				}
 
-					@Override
-					public String getDocumentType() {
-						return SalesCreditNoteItem.this.getObjectCode();
-					}
+				@Override
+				public String getDocumentType() {
+					return SalesCreditNoteItem.this.getObjectCode();
+				}
 
-					@Override
-					public Integer getDocumentEntry() {
-						return SalesCreditNoteItem.this.getDocEntry();
-					}
+				@Override
+				public Integer getDocumentEntry() {
+					return SalesCreditNoteItem.this.getDocEntry();
+				}
 
-					@Override
-					public Integer getDocumentLineId() {
-						return SalesCreditNoteItem.this.getLineId();
-					}
+				@Override
+				public Integer getDocumentLineId() {
+					return SalesCreditNoteItem.this.getLineId();
+				}
 
-					@Override
-					public BigDecimal getQuantity() {
-						return SalesCreditNoteItem.this.getInventoryQuantity();
-					}
+				@Override
+				public BigDecimal getQuantity() {
+					return SalesCreditNoteItem.this.getInventoryQuantity();
+				}
 
-					@Override
-					public String getUOM() {
-						return SalesCreditNoteItem.this.getInventoryUOM();
-					}
+				@Override
+				public String getUOM() {
+					return SalesCreditNoteItem.this.getInventoryUOM();
+				}
 
-					@Override
-					public DateTime getPostingDate() {
-						return SalesCreditNoteItem.this.parent.getPostingDate();
-					}
+				@Override
+				public DateTime getPostingDate() {
+					return SalesCreditNoteItem.this.parent.getPostingDate();
+				}
 
-					@Override
-					public DateTime getDeliveryDate() {
-						return SalesCreditNoteItem.this.parent.getDeliveryDate();
-					}
+				@Override
+				public DateTime getDeliveryDate() {
+					return SalesCreditNoteItem.this.parent.getDeliveryDate();
+				}
 
-					@Override
-					public DateTime getDocumentDate() {
-						return SalesCreditNoteItem.this.parent.getDocumentDate();
-					}
+				@Override
+				public DateTime getDocumentDate() {
+					return SalesCreditNoteItem.this.parent.getDocumentDate();
+				}
 
-					@Override
-					public emYesNo getBatchManagement() {
-						return SalesCreditNoteItem.this.getBatchManagement();
-					}
+				@Override
+				public emYesNo getBatchManagement() {
+					return SalesCreditNoteItem.this.getBatchManagement();
+				}
 
-					@Override
-					public emYesNo getSerialManagement() {
-						return SalesCreditNoteItem.this.getSerialManagement();
-					}
+				@Override
+				public emYesNo getSerialManagement() {
+					return SalesCreditNoteItem.this.getSerialManagement();
+				}
 
-					@Override
-					public String getBaseDocumentType() {
-						return SalesCreditNoteItem.this.getBaseDocumentType();
-					}
+				@Override
+				public String getBaseDocumentType() {
+					return SalesCreditNoteItem.this.getBaseDocumentType();
+				}
 
-					@Override
-					public Integer getBaseDocumentEntry() {
-						return SalesCreditNoteItem.this.getBaseDocumentEntry();
-					}
+				@Override
+				public Integer getBaseDocumentEntry() {
+					return SalesCreditNoteItem.this.getBaseDocumentEntry();
+				}
 
-					@Override
-					public Integer getBaseDocumentLineId() {
-						return SalesCreditNoteItem.this.getBaseDocumentLineId();
-					}
+				@Override
+				public Integer getBaseDocumentLineId() {
+					return SalesCreditNoteItem.this.getBaseDocumentLineId();
+				}
 
-					@Override
-					public BigDecimal getPrice() {
-						return SalesCreditNoteItem.this.getPreTaxPrice();
-					}
+				@Override
+				public BigDecimal getPrice() {
+					return SalesCreditNoteItem.this.getPreTaxPrice();
+				}
 
-					@Override
-					public String getCurrency() {
-						return SalesCreditNoteItem.this.getCurrency();
-					}
+				@Override
+				public String getCurrency() {
+					return SalesCreditNoteItem.this.getCurrency();
+				}
 
-					@Override
-					public BigDecimal getRate() {
-						return SalesCreditNoteItem.this.getRate();
-					}
+				@Override
+				public BigDecimal getRate() {
+					return SalesCreditNoteItem.this.getRate();
+				}
 
-					@Override
-					public String getItemVersion() {
-						return SalesCreditNoteItem.this.getItemVersion();
-					}
-				},
-				// 基础单据为销售订单
-				new ISalesOrderReturnContract() {
-
-					@Override
-					public String getIdentifiers() {
-						return SalesCreditNoteItem.this.getIdentifiers();
-					}
-
-					@Override
-					public BigDecimal getQuantity() {
-						return SalesCreditNoteItem.this.getQuantity();
-					}
-
-					@Override
-					public String getBaseDocumentType() {
-						return SalesCreditNoteItem.this.getBaseDocumentType();
-					}
-
-					@Override
-					public Integer getBaseDocumentEntry() {
-						return SalesCreditNoteItem.this.getBaseDocumentEntry();
-					}
-
-					@Override
-					public Integer getBaseDocumentLineId() {
-						return SalesCreditNoteItem.this.getBaseDocumentLineId();
-					}
-
-				},
-
-		};
+				@Override
+				public String getItemVersion() {
+					return SalesCreditNoteItem.this.getItemVersion();
+				}
+			});
+		}
+		return contracts.toArray(new IBusinessLogicContract[] {});
 	}
 
 	@Override

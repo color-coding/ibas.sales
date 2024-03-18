@@ -14,6 +14,7 @@ import org.colorcoding.ibas.bobas.bo.IBOTagCanceled;
 import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
 import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
+import org.colorcoding.ibas.bobas.data.ArrayList;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
@@ -37,8 +38,9 @@ import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.IMaterialReceiptContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.sales.MyConfiguration;
-import org.colorcoding.ibas.sales.logic.ISalesDeliveryReturnContract;
-import org.colorcoding.ibas.sales.logic.ISalesOrderReturnContract;
+import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
+import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
+import org.colorcoding.ibas.materials.logic.IDocumentQuantityReturnContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceQtyTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceTaxTotal;
@@ -2538,232 +2540,238 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 
 	@Override
 	public IBusinessLogicContract[] getContracts() {
-		return new IBusinessLogicContract[] {
-				// 物料收货
-				new IMaterialReceiptContract() {
+		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>();
+		// 物料收货
+		contracts.add(new IMaterialReceiptContract() {
 
-					@Override
-					public boolean isOffsetting() {
-						if (SalesReturnItem.this instanceof IBOTagCanceled) {
-							IBOTagCanceled boTag = (IBOTagCanceled) SalesReturnItem.this;
-							if (boTag.getCanceled() == emYesNo.YES) {
-								return true;
-							}
-						}
-						if (SalesReturnItem.this instanceof IBOTagDeleted) {
-							IBOTagDeleted boTag = (IBOTagDeleted) SalesReturnItem.this;
-							if (boTag.getDeleted() == emYesNo.YES) {
-								return true;
-							}
-						}
-						if (SalesReturnItem.this.parent instanceof IBOTagCanceled) {
-							IBOTagCanceled boTag = (IBOTagCanceled) SalesReturnItem.this.parent;
-							if (boTag.getCanceled() == emYesNo.YES) {
-								return true;
-							}
-						}
-						if (SalesReturnItem.this.parent instanceof IBOTagDeleted) {
-							IBOTagDeleted boTag = (IBOTagDeleted) SalesReturnItem.this.parent;
-							if (boTag.getDeleted() == emYesNo.YES) {
-								return true;
-							}
-						}
-						return false;
+			@Override
+			public boolean isOffsetting() {
+				if (SalesReturnItem.this instanceof IBOTagCanceled) {
+					IBOTagCanceled boTag = (IBOTagCanceled) SalesReturnItem.this;
+					if (boTag.getCanceled() == emYesNo.YES) {
+						return true;
 					}
-
-					@Override
-					public String getIdentifiers() {
-						return SalesReturnItem.this.getIdentifiers();
+				}
+				if (SalesReturnItem.this instanceof IBOTagDeleted) {
+					IBOTagDeleted boTag = (IBOTagDeleted) SalesReturnItem.this;
+					if (boTag.getDeleted() == emYesNo.YES) {
+						return true;
 					}
-
-					@Override
-					public String getItemCode() {
-						return SalesReturnItem.this.getItemCode();
+				}
+				if (SalesReturnItem.this.parent instanceof IBOTagCanceled) {
+					IBOTagCanceled boTag = (IBOTagCanceled) SalesReturnItem.this.parent;
+					if (boTag.getCanceled() == emYesNo.YES) {
+						return true;
 					}
-
-					@Override
-					public String getItemName() {
-						return SalesReturnItem.this.getItemDescription();
+				}
+				if (SalesReturnItem.this.parent instanceof IBOTagDeleted) {
+					IBOTagDeleted boTag = (IBOTagDeleted) SalesReturnItem.this.parent;
+					if (boTag.getDeleted() == emYesNo.YES) {
+						return true;
 					}
+				}
+				return false;
+			}
 
-					@Override
-					public String getWarehouse() {
-						return SalesReturnItem.this.getWarehouse();
-					}
+			@Override
+			public String getIdentifiers() {
+				return SalesReturnItem.this.getIdentifiers();
+			}
 
-					@Override
-					public String getDocumentType() {
-						return SalesReturnItem.this.getObjectCode();
-					}
+			@Override
+			public String getItemCode() {
+				return SalesReturnItem.this.getItemCode();
+			}
 
-					@Override
-					public Integer getDocumentEntry() {
-						return SalesReturnItem.this.getDocEntry();
-					}
+			@Override
+			public String getItemName() {
+				return SalesReturnItem.this.getItemDescription();
+			}
 
-					@Override
-					public Integer getDocumentLineId() {
-						return SalesReturnItem.this.getLineId();
-					}
+			@Override
+			public String getWarehouse() {
+				return SalesReturnItem.this.getWarehouse();
+			}
 
-					@Override
-					public BigDecimal getQuantity() {
-						return SalesReturnItem.this.getInventoryQuantity();
-					}
+			@Override
+			public String getDocumentType() {
+				return SalesReturnItem.this.getObjectCode();
+			}
 
-					@Override
-					public String getUOM() {
-						return SalesReturnItem.this.getInventoryUOM();
-					}
+			@Override
+			public Integer getDocumentEntry() {
+				return SalesReturnItem.this.getDocEntry();
+			}
 
-					@Override
-					public DateTime getPostingDate() {
-						return SalesReturnItem.this.parent.getPostingDate();
-					}
+			@Override
+			public Integer getDocumentLineId() {
+				return SalesReturnItem.this.getLineId();
+			}
 
-					@Override
-					public DateTime getDeliveryDate() {
-						return SalesReturnItem.this.parent.getDeliveryDate();
-					}
+			@Override
+			public BigDecimal getQuantity() {
+				return SalesReturnItem.this.getInventoryQuantity();
+			}
 
-					@Override
-					public DateTime getDocumentDate() {
-						return SalesReturnItem.this.parent.getDocumentDate();
-					}
+			@Override
+			public String getUOM() {
+				return SalesReturnItem.this.getInventoryUOM();
+			}
 
-					@Override
-					public emYesNo getBatchManagement() {
-						return SalesReturnItem.this.getBatchManagement();
-					}
+			@Override
+			public DateTime getPostingDate() {
+				return SalesReturnItem.this.parent.getPostingDate();
+			}
 
-					@Override
-					public emYesNo getSerialManagement() {
-						return SalesReturnItem.this.getSerialManagement();
-					}
+			@Override
+			public DateTime getDeliveryDate() {
+				return SalesReturnItem.this.parent.getDeliveryDate();
+			}
 
-					@Override
-					public String getBaseDocumentType() {
-						return SalesReturnItem.this.getBaseDocumentType();
-					}
+			@Override
+			public DateTime getDocumentDate() {
+				return SalesReturnItem.this.parent.getDocumentDate();
+			}
 
-					@Override
-					public Integer getBaseDocumentEntry() {
-						return SalesReturnItem.this.getBaseDocumentEntry();
-					}
+			@Override
+			public emYesNo getBatchManagement() {
+				return SalesReturnItem.this.getBatchManagement();
+			}
 
-					@Override
-					public Integer getBaseDocumentLineId() {
-						return SalesReturnItem.this.getBaseDocumentLineId();
-					}
+			@Override
+			public emYesNo getSerialManagement() {
+				return SalesReturnItem.this.getSerialManagement();
+			}
 
-					@Override
-					public BigDecimal getPrice() {
-						return SalesReturnItem.this.getPreTaxPrice();
-					}
+			@Override
+			public String getBaseDocumentType() {
+				return SalesReturnItem.this.getBaseDocumentType();
+			}
 
-					@Override
-					public String getCurrency() {
-						return SalesReturnItem.this.getCurrency();
-					}
+			@Override
+			public Integer getBaseDocumentEntry() {
+				return SalesReturnItem.this.getBaseDocumentEntry();
+			}
 
-					@Override
-					public BigDecimal getRate() {
-						return SalesReturnItem.this.getRate();
-					}
+			@Override
+			public Integer getBaseDocumentLineId() {
+				return SalesReturnItem.this.getBaseDocumentLineId();
+			}
 
-					@Override
-					public String getItemVersion() {
-						return SalesReturnItem.this.getItemVersion();
-					}
-				},
-				// 基础单据为销售订单
-				new ISalesOrderReturnContract() {
+			@Override
+			public BigDecimal getPrice() {
+				return SalesReturnItem.this.getPreTaxPrice();
+			}
 
-					@Override
-					public String getIdentifiers() {
-						return SalesReturnItem.this.getIdentifiers();
-					}
+			@Override
+			public String getCurrency() {
+				return SalesReturnItem.this.getCurrency();
+			}
 
-					@Override
-					public BigDecimal getQuantity() {
-						return SalesReturnItem.this.getQuantity();
-					}
+			@Override
+			public BigDecimal getRate() {
+				return SalesReturnItem.this.getRate();
+			}
 
-					@Override
-					public String getBaseDocumentType() {
-						return SalesReturnItem.this.getBaseDocumentType();
-					}
+			@Override
+			public String getItemVersion() {
+				return SalesReturnItem.this.getItemVersion();
+			}
+		});
+		if (MyConfiguration.applyVariables(SalesOrder.BUSINESS_OBJECT_CODE)
+				.equals(SalesReturnItem.this.getBaseDocumentType())) {
+			// 基础单据销售订单
+			contracts.add(new IDocumentQuantityReturnContract() {
 
-					@Override
-					public Integer getBaseDocumentEntry() {
-						return SalesReturnItem.this.getBaseDocumentEntry();
-					}
-
-					@Override
-					public Integer getBaseDocumentLineId() {
-						return SalesReturnItem.this.getBaseDocumentLineId();
-					}
-
-				},
-				// 原始单据为销售订单
-				new ISalesOrderReturnContract() {
-
-					@Override
-					public String getIdentifiers() {
-						return SalesReturnItem.this.getIdentifiers();
-					}
-
-					@Override
-					public BigDecimal getQuantity() {
-						return SalesReturnItem.this.getQuantity();
-					}
-
-					@Override
-					public String getBaseDocumentType() {
-						return SalesReturnItem.this.getOriginalDocumentType();
-					}
-
-					@Override
-					public Integer getBaseDocumentEntry() {
-						return SalesReturnItem.this.getOriginalDocumentEntry();
-					}
-
-					@Override
-					public Integer getBaseDocumentLineId() {
-						return SalesReturnItem.this.getOriginalDocumentLineId();
-					}
-
-				},
-				// 销售交货的退货
-				new ISalesDeliveryReturnContract() {
-					@Override
-					public String getIdentifiers() {
-						return SalesReturnItem.this.getIdentifiers();
-					}
-
-					@Override
-					public BigDecimal getQuantity() {
-						return SalesReturnItem.this.getQuantity();
-					}
-
-					@Override
-					public String getBaseDocumentType() {
-						return SalesReturnItem.this.getBaseDocumentType();
-					}
-
-					@Override
-					public Integer getBaseDocumentEntry() {
-						return SalesReturnItem.this.getBaseDocumentEntry();
-					}
-
-					@Override
-					public Integer getBaseDocumentLineId() {
-						return SalesReturnItem.this.getBaseDocumentLineId();
-					}
-
+				@Override
+				public String getIdentifiers() {
+					return SalesReturnItem.this.getIdentifiers();
 				}
 
-		};
+				@Override
+				public BigDecimal getQuantity() {
+					return SalesReturnItem.this.getQuantity();
+				}
+
+				@Override
+				public String getBaseDocumentType() {
+					return SalesReturnItem.this.getBaseDocumentType();
+				}
+
+				@Override
+				public Integer getBaseDocumentEntry() {
+					return SalesReturnItem.this.getBaseDocumentEntry();
+				}
+
+				@Override
+				public Integer getBaseDocumentLineId() {
+					return SalesReturnItem.this.getBaseDocumentLineId();
+				}
+
+			});
+		} else if (MyConfiguration.applyVariables(SalesOrder.BUSINESS_OBJECT_CODE)
+				.equals(SalesReturnItem.this.getOriginalDocumentType())) {
+			// 原始单据销售订单
+			contracts.add(new IDocumentQuantityReturnContract() {
+
+				@Override
+				public String getIdentifiers() {
+					return SalesReturnItem.this.getIdentifiers();
+				}
+
+				@Override
+				public BigDecimal getQuantity() {
+					return SalesReturnItem.this.getQuantity();
+				}
+
+				@Override
+				public String getBaseDocumentType() {
+					return SalesReturnItem.this.getOriginalDocumentType();
+				}
+
+				@Override
+				public Integer getBaseDocumentEntry() {
+					return SalesReturnItem.this.getOriginalDocumentEntry();
+				}
+
+				@Override
+				public Integer getBaseDocumentLineId() {
+					return SalesReturnItem.this.getOriginalDocumentLineId();
+				}
+
+			});
+		} else {
+			// 其他基础单据
+			contracts.add(new IDocumentQuantityClosingContract() {
+
+				@Override
+				public String getIdentifiers() {
+					return SalesReturnItem.this.getIdentifiers();
+				}
+
+				@Override
+				public BigDecimal getQuantity() {
+					return SalesReturnItem.this.getQuantity();
+				}
+
+				@Override
+				public String getBaseDocumentType() {
+					return SalesReturnItem.this.getBaseDocumentType();
+				}
+
+				@Override
+				public Integer getBaseDocumentEntry() {
+					return SalesReturnItem.this.getBaseDocumentEntry();
+				}
+
+				@Override
+				public Integer getBaseDocumentLineId() {
+					return SalesReturnItem.this.getBaseDocumentLineId();
+				}
+
+			});
+		}
+		return contracts.toArray(new IBusinessLogicContract[] {});
 	}
 
 	@Override

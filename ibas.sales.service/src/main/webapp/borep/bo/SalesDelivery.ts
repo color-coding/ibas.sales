@@ -739,11 +739,17 @@ namespace sales {
                             let myBatch: materials.bo.IMaterialBatchItem = myItem.materialBatches.create();
                             myBatch.batchCode = batch.batchCode;
                             myBatch.quantity = batch.quantity;
+                            if (myItem.materialBatches.total() >= openQty) {
+                                break;
+                            }
                         }
                         // 复制序列
                         for (let serial of item.materialSerials) {
                             let mySerial: materials.bo.IMaterialSerialItem = myItem.materialSerials.create();
                             mySerial.serialCode = serial.serialCode;
+                            if (myItem.materialSerials.length >= openQty) {
+                                break;
+                            }
                         }
                     }
                     // 复制地址
@@ -790,11 +796,17 @@ namespace sales {
                             let myBatch: materials.bo.IMaterialBatchItem = myItem.materialBatches.create();
                             myBatch.batchCode = batch.batchCode;
                             myBatch.quantity = batch.quantity;
+                            if (myItem.materialBatches.total() >= openQty) {
+                                break;
+                            }
                         }
                         // 复制序列
                         for (let serial of item.materialSerials) {
                             let mySerial: materials.bo.IMaterialSerialItem = myItem.materialSerials.create();
                             mySerial.serialCode = serial.serialCode;
+                            if (myItem.materialSerials.length >= openQty) {
+                                break;
+                            }
                         }
                     }
                     // 复制地址

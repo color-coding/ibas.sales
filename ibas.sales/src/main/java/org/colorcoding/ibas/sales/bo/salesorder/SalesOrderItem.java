@@ -2710,7 +2710,6 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 				return SalesOrderItem.this.getBaseDocumentLineId();
 			}
 		});
-
 		// 订购预留关闭
 		contracts.add(new IMaterialOrderedReservationStatusContract() {
 
@@ -2781,7 +2780,6 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 			}
 
 		});
-
 		return contracts.toArray(new IBusinessLogicContract[] {});
 	}
 

@@ -37,8 +37,10 @@ import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.IMaterialIssueContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
+import org.colorcoding.ibas.sales.bo.salesreserveinvoice.SalesReserveInvoice;
 import org.colorcoding.ibas.sales.logic.IBlanketAgreementQuantityContract;
-import org.colorcoding.ibas.sales.logic.ISalesOrderIssueContract;
+import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceQtyTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceTaxTotal;
@@ -2675,8 +2677,19 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 						return SalesDeliveryItem.this.getItemVersion();
 					}
 				},
-				// 销售订单发货
-				new ISalesOrderIssueContract() {
+				// 基于单据数量关闭
+				new IDocumentQuantityClosingContract() {
+
+					@Override
+					public boolean checkDataStatus() {
+						if (MyConfiguration.applyVariables(SalesOrder.BUSINESS_OBJECT_CODE)
+								.equals(SalesDeliveryItem.this.getBaseDocumentType())
+								|| MyConfiguration.applyVariables(SalesReserveInvoice.BUSINESS_OBJECT_CODE)
+										.equals(SalesDeliveryItem.this.getBaseDocumentType())) {
+							return true;
+						}
+						return IDocumentQuantityClosingContract.super.checkDataStatus();
+					}
 
 					@Override
 					public String getIdentifiers() {

@@ -1,6 +1,7 @@
 package org.colorcoding.ibas.sales.bo.salescreditnote;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.function.Predicate;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -44,6 +45,8 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
+import org.colorcoding.ibas.document.IDocumentCloseQuantityItem;
+import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.journalentry.JournalEntrySmartContent;
@@ -67,9 +70,9 @@ import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 @XmlType(name = SalesCreditNote.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = SalesCreditNote.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BusinessObjectUnit(code = SalesCreditNote.BUSINESS_OBJECT_CODE)
-public class SalesCreditNote extends BusinessObject<SalesCreditNote>
-		implements ISalesCreditNote, IDataOwnership, IApprovalData, IPeriodData, IProjectData, IBOTagDeleted,
-		IBOTagCanceled, IBusinessLogicsHost, IBOSeriesKey, IBOUserFields, IDocumentPaidTotalOperator {
+public class SalesCreditNote extends BusinessObject<SalesCreditNote> implements ISalesCreditNote, IDataOwnership,
+		IApprovalData, IPeriodData, IProjectData, IBOTagDeleted, IBOTagCanceled, IBusinessLogicsHost, IBOSeriesKey,
+		IBOUserFields, IDocumentPaidTotalOperator, IDocumentCloseQuantityOperator {
 
 	/**
 	 * 序列化版本标记
@@ -2228,4 +2231,28 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 		};
 	}
 
+	@Override
+	public Iterator<IDocumentCloseQuantityItem> getItems() {
+		return new Iterator<IDocumentCloseQuantityItem>() {
+			int index = -1;
+
+			@Override
+			public IDocumentCloseQuantityItem next() {
+				this.index += 1;
+				return SalesCreditNote.this.getSalesCreditNoteItems().get(this.index);
+			}
+
+			@Override
+			public boolean hasNext() {
+				if (SalesCreditNote.this.getSalesCreditNoteItems().isEmpty()) {
+					return false;
+				}
+				int nIndex = this.index + 1;
+				if (nIndex >= SalesCreditNote.this.getSalesCreditNoteItems().size()) {
+					return false;
+				}
+				return true;
+			}
+		};
+	}
 }

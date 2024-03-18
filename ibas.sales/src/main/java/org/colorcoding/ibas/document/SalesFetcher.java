@@ -4,7 +4,7 @@ import org.colorcoding.ibas.bobas.core.IBORepository;
 import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 import org.colorcoding.ibas.sales.repository.BORepositorySales;
 
-public abstract class SalesFetcher<T extends IDocumentPaidTotalOperator> implements IDocumentFetcher<T> {
+public abstract class SalesFetcher<T extends IDocumentOperatingTarget> implements IDocumentFetcher<T> {
 
 	private BORepositorySales repository;
 

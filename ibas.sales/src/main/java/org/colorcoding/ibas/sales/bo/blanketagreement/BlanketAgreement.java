@@ -1,6 +1,7 @@
 package org.colorcoding.ibas.sales.bo.blanketagreement;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -34,6 +35,8 @@ import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleDocumentStatus;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
+import org.colorcoding.ibas.document.IDocumentCloseQuantityItem;
+import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emAgreementMethod;
 import org.colorcoding.ibas.sales.data.emAgreementType;
@@ -48,7 +51,7 @@ import org.colorcoding.ibas.sales.data.emAgreementType;
 @BusinessObjectUnit(code = BlanketAgreement.BUSINESS_OBJECT_CODE)
 public class BlanketAgreement extends BusinessObject<BlanketAgreement>
 		implements IBlanketAgreement, IDataOwnership, IApprovalData, IPeriodData, IProjectData, IBOTagDeleted,
-		IBOTagCanceled, IBOSeriesKey, IBOUserFields, IBusinessLogicsHost {
+		IBOTagCanceled, IBOSeriesKey, IBOUserFields, IBusinessLogicsHost, IDocumentCloseQuantityOperator {
 
 	/**
 	 * 序列化版本标记
@@ -1602,6 +1605,31 @@ public class BlanketAgreement extends BusinessObject<BlanketAgreement>
 					}
 				}
 
+		};
+	}
+
+	@Override
+	public Iterator<IDocumentCloseQuantityItem> getItems() {
+		return new Iterator<IDocumentCloseQuantityItem>() {
+			int index = -1;
+
+			@Override
+			public IDocumentCloseQuantityItem next() {
+				this.index += 1;
+				return BlanketAgreement.this.getBlanketAgreementItems().get(this.index);
+			}
+
+			@Override
+			public boolean hasNext() {
+				if (BlanketAgreement.this.getBlanketAgreementItems().isEmpty()) {
+					return false;
+				}
+				int nIndex = this.index + 1;
+				if (nIndex >= BlanketAgreement.this.getBlanketAgreementItems().size()) {
+					return false;
+				}
+				return true;
+			}
 		};
 	}
 

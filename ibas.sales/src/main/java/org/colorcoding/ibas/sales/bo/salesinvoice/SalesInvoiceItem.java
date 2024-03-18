@@ -14,6 +14,7 @@ import org.colorcoding.ibas.bobas.bo.IBOTagCanceled;
 import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
 import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
+import org.colorcoding.ibas.bobas.data.ArrayList;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
@@ -39,8 +40,7 @@ import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuanti
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
 import org.colorcoding.ibas.sales.logic.IBlanketAgreementQuantityContract;
-import org.colorcoding.ibas.sales.logic.ISalesDeliveryInvoiceContract;
-import org.colorcoding.ibas.sales.logic.ISalesOrderIssueContract;
+import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceQtyTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceTaxTotal;
@@ -2549,246 +2549,212 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 
 	@Override
 	public IBusinessLogicContract[] getContracts() {
-		// 基于销售交货
-		if (MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE)
+		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>();
+		// 基于单据完成数量
+		contracts.add(new IDocumentQuantityClosingContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesInvoiceItem.this.getIdentifiers();
+			}
+
+			@Override
+			public BigDecimal getQuantity() {
+				return SalesInvoiceItem.this.getQuantity();
+			}
+
+			@Override
+			public String getBaseDocumentType() {
+				return SalesInvoiceItem.this.getBaseDocumentType();
+			}
+
+			@Override
+			public Integer getBaseDocumentEntry() {
+				return SalesInvoiceItem.this.getBaseDocumentEntry();
+			}
+
+			@Override
+			public Integer getBaseDocumentLineId() {
+				return SalesInvoiceItem.this.getBaseDocumentLineId();
+			}
+
+		});
+		// 不基于交货的，库存变化
+		if (!MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE)
 				.equalsIgnoreCase(this.getBaseDocumentType())
-				|| MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE)
+				&& !MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE)
 						.equalsIgnoreCase(this.getOriginalDocumentType())) {
-			return new IBusinessLogicContract[] {
-					// 销售交货开票
-					new ISalesDeliveryInvoiceContract() {
-
-						@Override
-						public String getIdentifiers() {
-							return SalesInvoiceItem.this.getIdentifiers();
+			// 物料发货
+			contracts.add(new IMaterialIssueContract() {
+				@Override
+				public boolean isOffsetting() {
+					if (SalesInvoiceItem.this instanceof IBOTagCanceled) {
+						IBOTagCanceled boTag = (IBOTagCanceled) SalesInvoiceItem.this;
+						if (boTag.getCanceled() == emYesNo.YES) {
+							return true;
 						}
-
-						@Override
-						public BigDecimal getQuantity() {
-							return SalesInvoiceItem.this.getQuantity();
+					}
+					if (SalesInvoiceItem.this instanceof IBOTagDeleted) {
+						IBOTagDeleted boTag = (IBOTagDeleted) SalesInvoiceItem.this;
+						if (boTag.getDeleted() == emYesNo.YES) {
+							return true;
 						}
-
-						@Override
-						public String getBaseDocumentType() {
-							return SalesInvoiceItem.this.getBaseDocumentType();
+					}
+					if (SalesInvoiceItem.this.parent instanceof IBOTagCanceled) {
+						IBOTagCanceled boTag = (IBOTagCanceled) SalesInvoiceItem.this.parent;
+						if (boTag.getCanceled() == emYesNo.YES) {
+							return true;
 						}
-
-						@Override
-						public Integer getBaseDocumentEntry() {
-							return SalesInvoiceItem.this.getBaseDocumentEntry();
+					}
+					if (SalesInvoiceItem.this.parent instanceof IBOTagDeleted) {
+						IBOTagDeleted boTag = (IBOTagDeleted) SalesInvoiceItem.this.parent;
+						if (boTag.getDeleted() == emYesNo.YES) {
+							return true;
 						}
-
-						@Override
-						public Integer getBaseDocumentLineId() {
-							return SalesInvoiceItem.this.getBaseDocumentLineId();
-						}
-
 					}
-
-			};
-		}
-		return new IBusinessLogicContract[] {
-
-				// 物料发货
-				new IMaterialIssueContract() {
-					@Override
-					public boolean isOffsetting() {
-						if (SalesInvoiceItem.this instanceof IBOTagCanceled) {
-							IBOTagCanceled boTag = (IBOTagCanceled) SalesInvoiceItem.this;
-							if (boTag.getCanceled() == emYesNo.YES) {
-								return true;
-							}
-						}
-						if (SalesInvoiceItem.this instanceof IBOTagDeleted) {
-							IBOTagDeleted boTag = (IBOTagDeleted) SalesInvoiceItem.this;
-							if (boTag.getDeleted() == emYesNo.YES) {
-								return true;
-							}
-						}
-						if (SalesInvoiceItem.this.parent instanceof IBOTagCanceled) {
-							IBOTagCanceled boTag = (IBOTagCanceled) SalesInvoiceItem.this.parent;
-							if (boTag.getCanceled() == emYesNo.YES) {
-								return true;
-							}
-						}
-						if (SalesInvoiceItem.this.parent instanceof IBOTagDeleted) {
-							IBOTagDeleted boTag = (IBOTagDeleted) SalesInvoiceItem.this.parent;
-							if (boTag.getDeleted() == emYesNo.YES) {
-								return true;
-							}
-						}
-						return false;
-					}
-
-					@Override
-					public String getIdentifiers() {
-						return SalesInvoiceItem.this.getIdentifiers();
-					}
-
-					@Override
-					public String getItemCode() {
-						return SalesInvoiceItem.this.getItemCode();
-					}
-
-					@Override
-					public String getItemName() {
-						return SalesInvoiceItem.this.getItemDescription();
-					}
-
-					@Override
-					public String getWarehouse() {
-						return SalesInvoiceItem.this.getWarehouse();
-					}
-
-					@Override
-					public String getDocumentType() {
-						return SalesInvoiceItem.this.getObjectCode();
-					}
-
-					@Override
-					public Integer getDocumentEntry() {
-						return SalesInvoiceItem.this.getDocEntry();
-					}
-
-					@Override
-					public Integer getDocumentLineId() {
-						return SalesInvoiceItem.this.getLineId();
-					}
-
-					@Override
-					public BigDecimal getQuantity() {
-						return SalesInvoiceItem.this.getInventoryQuantity();
-					}
-
-					@Override
-					public String getUOM() {
-						return SalesInvoiceItem.this.getInventoryUOM();
-					}
-
-					@Override
-					public DateTime getPostingDate() {
-						return SalesInvoiceItem.this.parent.getPostingDate();
-					}
-
-					@Override
-					public DateTime getDeliveryDate() {
-						return SalesInvoiceItem.this.parent.getDeliveryDate();
-					}
-
-					@Override
-					public DateTime getDocumentDate() {
-						return SalesInvoiceItem.this.parent.getDocumentDate();
-					}
-
-					@Override
-					public emYesNo getBatchManagement() {
-						return SalesInvoiceItem.this.getBatchManagement();
-					}
-
-					@Override
-					public emYesNo getSerialManagement() {
-						return SalesInvoiceItem.this.getSerialManagement();
-					}
-
-					@Override
-					public String getBaseDocumentType() {
-						return SalesInvoiceItem.this.getBaseDocumentType();
-					}
-
-					@Override
-					public Integer getBaseDocumentEntry() {
-						return SalesInvoiceItem.this.getBaseDocumentEntry();
-					}
-
-					@Override
-					public Integer getBaseDocumentLineId() {
-						return SalesInvoiceItem.this.getBaseDocumentLineId();
-					}
-
-					@Override
-					public BigDecimal getPrice() {
-						return SalesInvoiceItem.this.getPrice();
-					}
-
-					@Override
-					public String getCurrency() {
-						return SalesInvoiceItem.this.getCurrency();
-					}
-
-					@Override
-					public BigDecimal getRate() {
-						return SalesInvoiceItem.this.getRate();
-					}
-
-					@Override
-					public String getItemVersion() {
-						return SalesInvoiceItem.this.getItemVersion();
-					}
-				},
-				// 销售订单发货
-				new ISalesOrderIssueContract() {
-
-					@Override
-					public String getIdentifiers() {
-						return SalesInvoiceItem.this.getIdentifiers();
-					}
-
-					@Override
-					public BigDecimal getQuantity() {
-						return SalesInvoiceItem.this.getQuantity();
-					}
-
-					@Override
-					public String getBaseDocumentType() {
-						return SalesInvoiceItem.this.getBaseDocumentType();
-					}
-
-					@Override
-					public Integer getBaseDocumentEntry() {
-						return SalesInvoiceItem.this.getBaseDocumentEntry();
-					}
-
-					@Override
-					public Integer getBaseDocumentLineId() {
-						return SalesInvoiceItem.this.getBaseDocumentLineId();
-					}
-
-				},
-				// 一揽子协议
-				new IBlanketAgreementQuantityContract() {
-
-					@Override
-					public String getIdentifiers() {
-						return SalesInvoiceItem.this.getIdentifiers();
-					}
-
-					@Override
-					public BigDecimal getQuantity() {
-						return SalesInvoiceItem.this.getQuantity();
-					}
-
-					@Override
-					public BigDecimal getAmount() {
-						return SalesInvoiceItem.this.getLineTotal();
-					}
-
-					@Override
-					public String getBaseDocumentType() {
-						return SalesInvoiceItem.this.getBaseDocumentType();
-					}
-
-					@Override
-					public Integer getBaseDocumentEntry() {
-						return SalesInvoiceItem.this.getBaseDocumentEntry();
-					}
-
-					@Override
-					public Integer getBaseDocumentLineId() {
-						return SalesInvoiceItem.this.getBaseDocumentLineId();
-					}
+					return false;
 				}
 
-		};
+				@Override
+				public String getIdentifiers() {
+					return SalesInvoiceItem.this.getIdentifiers();
+				}
+
+				@Override
+				public String getItemCode() {
+					return SalesInvoiceItem.this.getItemCode();
+				}
+
+				@Override
+				public String getItemName() {
+					return SalesInvoiceItem.this.getItemDescription();
+				}
+
+				@Override
+				public String getWarehouse() {
+					return SalesInvoiceItem.this.getWarehouse();
+				}
+
+				@Override
+				public String getDocumentType() {
+					return SalesInvoiceItem.this.getObjectCode();
+				}
+
+				@Override
+				public Integer getDocumentEntry() {
+					return SalesInvoiceItem.this.getDocEntry();
+				}
+
+				@Override
+				public Integer getDocumentLineId() {
+					return SalesInvoiceItem.this.getLineId();
+				}
+
+				@Override
+				public BigDecimal getQuantity() {
+					return SalesInvoiceItem.this.getInventoryQuantity();
+				}
+
+				@Override
+				public String getUOM() {
+					return SalesInvoiceItem.this.getInventoryUOM();
+				}
+
+				@Override
+				public DateTime getPostingDate() {
+					return SalesInvoiceItem.this.parent.getPostingDate();
+				}
+
+				@Override
+				public DateTime getDeliveryDate() {
+					return SalesInvoiceItem.this.parent.getDeliveryDate();
+				}
+
+				@Override
+				public DateTime getDocumentDate() {
+					return SalesInvoiceItem.this.parent.getDocumentDate();
+				}
+
+				@Override
+				public emYesNo getBatchManagement() {
+					return SalesInvoiceItem.this.getBatchManagement();
+				}
+
+				@Override
+				public emYesNo getSerialManagement() {
+					return SalesInvoiceItem.this.getSerialManagement();
+				}
+
+				@Override
+				public String getBaseDocumentType() {
+					return SalesInvoiceItem.this.getBaseDocumentType();
+				}
+
+				@Override
+				public Integer getBaseDocumentEntry() {
+					return SalesInvoiceItem.this.getBaseDocumentEntry();
+				}
+
+				@Override
+				public Integer getBaseDocumentLineId() {
+					return SalesInvoiceItem.this.getBaseDocumentLineId();
+				}
+
+				@Override
+				public BigDecimal getPrice() {
+					return SalesInvoiceItem.this.getPrice();
+				}
+
+				@Override
+				public String getCurrency() {
+					return SalesInvoiceItem.this.getCurrency();
+				}
+
+				@Override
+				public BigDecimal getRate() {
+					return SalesInvoiceItem.this.getRate();
+				}
+
+				@Override
+				public String getItemVersion() {
+					return SalesInvoiceItem.this.getItemVersion();
+				}
+			});
+		}
+		// 一揽子协议
+		contracts.add(new IBlanketAgreementQuantityContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesInvoiceItem.this.getIdentifiers();
+			}
+
+			@Override
+			public BigDecimal getQuantity() {
+				return SalesInvoiceItem.this.getQuantity();
+			}
+
+			@Override
+			public BigDecimal getAmount() {
+				return SalesInvoiceItem.this.getLineTotal();
+			}
+
+			@Override
+			public String getBaseDocumentType() {
+				return SalesInvoiceItem.this.getBaseDocumentType();
+			}
+
+			@Override
+			public Integer getBaseDocumentEntry() {
+				return SalesInvoiceItem.this.getBaseDocumentEntry();
+			}
+
+			@Override
+			public Integer getBaseDocumentLineId() {
+				return SalesInvoiceItem.this.getBaseDocumentLineId();
+			}
+		});
+		return contracts.toArray(new IBusinessLogicContract[] {});
 	}
 
 	@Override

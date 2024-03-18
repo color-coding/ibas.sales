@@ -36,8 +36,8 @@ public class BlanketAgreementQuantityService
 
 	@Override
 	protected boolean checkDataStatus(Object data) {
-		if (data instanceof ISalesBaseDocument) {
-			ISalesBaseDocument contract = (ISalesBaseDocument) data;
+		if (data instanceof IBlanketAgreementQuantityContract) {
+			IBlanketAgreementQuantityContract contract = (IBlanketAgreementQuantityContract) data;
 			if (!MyConfiguration.applyVariables(BlanketAgreement.BUSINESS_OBJECT_CODE)
 					.equals(contract.getBaseDocumentType())) {
 				Logger.log(MessageLevel.DEBUG, MSG_LOGICS_SKIP_LOGIC_EXECUTION, this.getClass().getName(),
@@ -81,9 +81,6 @@ public class BlanketAgreementQuantityService
 
 	@Override
 	protected void impact(IBlanketAgreementQuantityContract contract) {
-		if (this.getBeAffected() == null) {
-			return;
-		}
 		IBlanketAgreementItem orderItem = this.getBeAffected().getBlanketAgreementItems()
 				.firstOrDefault(c -> c.getLineId().compareTo(contract.getBaseDocumentLineId()) == 0);
 		if (orderItem == null) {
@@ -114,9 +111,6 @@ public class BlanketAgreementQuantityService
 
 	@Override
 	protected void revoke(IBlanketAgreementQuantityContract contract) {
-		if (this.getBeAffected() == null) {
-			return;
-		}
 		IBlanketAgreementItem orderItem = this.getBeAffected().getBlanketAgreementItems()
 				.firstOrDefault(c -> c.getLineId().compareTo(contract.getBaseDocumentLineId()) == 0);
 		if (orderItem == null) {

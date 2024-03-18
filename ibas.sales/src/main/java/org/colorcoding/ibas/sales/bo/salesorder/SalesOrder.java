@@ -39,6 +39,8 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
+import org.colorcoding.ibas.document.IDocumentCloseQuantityItem;
+import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.materials.logic.IMaterialPriceCheckContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
@@ -59,7 +61,7 @@ import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 @BusinessObjectUnit(code = SalesOrder.BUSINESS_OBJECT_CODE)
 public class SalesOrder extends BusinessObject<SalesOrder>
 		implements ISalesOrder, IDataOwnership, IApprovalData, IPeriodData, IProjectData, IBOTagDeleted, IBOTagCanceled,
-		IBusinessLogicsHost, IBOSeriesKey, IBOUserFields, IDocumentPaidTotalOperator {
+		IBusinessLogicsHost, IBOSeriesKey, IBOUserFields, IDocumentPaidTotalOperator, IDocumentCloseQuantityOperator {
 
 	/**
 	 * 序列化版本标记
@@ -2054,53 +2056,71 @@ public class SalesOrder extends BusinessObject<SalesOrder>
 					}
 
 					@Override
-					public Iterable<IMaterialPrice> getMaterialPrices() {
-						return new Iterable<IMaterialPrice>() {
+					public Iterator<IMaterialPrice> getMaterialPrices() {
+
+						return new Iterator<IMaterialPrice>() {
+
+							Iterator<ISalesOrderItem> iterator = SalesOrder.this.getSalesOrderItems().stream()
+									.filter(c -> c.isDeleted() != true && c.getDeleted() != emYesNo.YES).iterator();
 
 							@Override
-							public Iterator<IMaterialPrice> iterator() {
-
-								return new Iterator<IMaterialPrice>() {
-
-									Iterator<ISalesOrderItem> iterator = SalesOrder.this.getSalesOrderItems().stream()
-											.filter(c -> c.isDeleted() != true && c.getDeleted() != emYesNo.YES)
-											.iterator();
-
-									@Override
-									public boolean hasNext() {
-										return iterator.hasNext();
-									}
-
-									@Override
-									public IMaterialPrice next() {
-
-										return new IMaterialPrice() {
-											ISalesOrderItem item = iterator.next();
-
-											@Override
-											public String getItemCode() {
-												return item.getItemCode();
-											}
-
-											@Override
-											public BigDecimal getPrice() {
-												return item.getPrice();
-											}
-
-											@Override
-											public String getCurrency() {
-												return item.getCurrency();
-											}
-
-										};
-									}
-								};
+							public boolean hasNext() {
+								return iterator.hasNext();
 							}
 
+							@Override
+							public IMaterialPrice next() {
+
+								return new IMaterialPrice() {
+									ISalesOrderItem item = iterator.next();
+
+									@Override
+									public String getItemCode() {
+										return item.getItemCode();
+									}
+
+									@Override
+									public BigDecimal getPrice() {
+										return item.getPrice();
+									}
+
+									@Override
+									public String getCurrency() {
+										return item.getCurrency();
+									}
+
+								};
+							}
 						};
 					}
+
 				}
 
+		};
+	}
+
+	@Override
+	public Iterator<IDocumentCloseQuantityItem> getItems() {
+		return new Iterator<IDocumentCloseQuantityItem>() {
+			int index = -1;
+
+			@Override
+			public IDocumentCloseQuantityItem next() {
+				this.index += 1;
+				return SalesOrder.this.getSalesOrderItems().get(this.index);
+			}
+
+			@Override
+			public boolean hasNext() {
+				if (SalesOrder.this.getSalesOrderItems().isEmpty()) {
+					return false;
+				}
+				int nIndex = this.index + 1;
+				if (nIndex >= SalesOrder.this.getSalesOrderItems().size()) {
+					return false;
+				}
+				return true;
+			}
 		};
 	}
 }
