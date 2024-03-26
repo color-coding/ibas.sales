@@ -177,14 +177,20 @@ namespace sales {
                                         let uomRate: number = pickLine.uomRate > 0 ? pickLine.uomRate : 1;
                                         resultLine.quantity = ibas.numbers.round(pickLine.pickQuantity / uomRate);
                                         resultLine.inventoryQuantity = pickLine.pickQuantity;
-                                        for (const materialBatch of pickLine.materialBatches) {
+                                        for (let item of pickLine.pickListsNumbers) {
+                                            if (orderLine.batchManagement !== ibas.emYesNo.YES) {
+                                                continue;
+                                            }
                                             let itemBatch: materials.bo.IMaterialBatchItem = resultLine.materialBatches.create();
-                                            itemBatch.batchCode = materialBatch.batchCode;
-                                            itemBatch.quantity = materialBatch.quantity;
+                                            itemBatch.batchCode = item.batchCode;
+                                            itemBatch.quantity = item.pickQuantity;
                                         }
-                                        for (const materialSerial of pickLine.materialSerials) {
+                                        for (let item of pickLine.pickListsNumbers) {
+                                            if (orderLine.serialManagement !== ibas.emYesNo.YES) {
+                                                continue;
+                                            }
                                             let itemSerial: materials.bo.IMaterialSerialItem = resultLine.materialSerials.create();
-                                            itemSerial.serialCode = materialSerial.serialCode;
+                                            itemSerial.serialCode = item.serialCode;
                                         }
                                     }
                                 }
@@ -203,7 +209,7 @@ namespace sales {
                                     onCompleted: async (result: bo.SalesDelivery) => {
                                         let closedLines: ibas.ArrayList<materials.bo.IPickListsLine> = new ibas.ArrayList();
                                         if (!ibas.objects.isNull(result)) {
-                                            for (const item of result.salesDeliveryItems) {
+                                            for (let item of result.salesDeliveryItems) {
                                                 let line: materials.bo.IPickListsLine = pickLines.find(c => ibas.strings.equals(c.baseDocumentType, item.baseDocumentType)
                                                     && c.baseDocumentEntry === item.baseDocumentEntry && c.baseDocumentLineId === item.baseDocumentLineId
                                                 );
