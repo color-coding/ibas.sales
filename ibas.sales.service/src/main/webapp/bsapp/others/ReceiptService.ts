@@ -341,11 +341,11 @@ namespace sales {
                 condition.comparedAlias = sales.bo.SalesInvoice.PROPERTY_PAIDTOTAL_NAME;
                 // 调用选择服务
                 let that: this = this;
-                ibas.servicesManager.runChooseService<sales.bo.ISalesInvoice>({
+                ibas.servicesManager.runChooseService<sales.bo.SalesInvoice>({
                     boCode: sales.bo.BO_CODE_SALESINVOICE,
                     chooseType: ibas.emChooseType.MULTIPLE,
                     criteria: criteria,
-                    onCompleted(selecteds: ibas.IList<sales.bo.ISalesInvoice>): void {
+                    onCompleted(selecteds: ibas.IList<sales.bo.SalesInvoice>): void {
                         for (let selected of selecteds) {
                             if (contract.receipt.receiptItems.firstOrDefault(
                                 c => c.baseDocumentType === selected.objectCode
@@ -353,12 +353,15 @@ namespace sales {
                                     && c.baseDocumentLineId === -1) !== null) {
                                 continue;
                             }
+                            if ((selected.documentTotal - selected.paidTotal - selected.downPaymentTotal) <= 0) {
+                                continue;
+                            }
                             let item: receiptpayment.bo.ReceiptItem = contract.receipt.receiptItems.create();
                             item.baseDocumentType = selected.objectCode;
                             item.baseDocumentEntry = selected.docEntry;
                             item.baseDocumentLineId = -1;
                             item.consumer = selected.consumer;
-                            item.amount = selected.documentTotal - selected.paidTotal;
+                            item.amount = selected.documentTotal - selected.paidTotal - selected.downPaymentTotal;
                             item.currency = selected.documentCurrency;
                         }
                         that.fireCompleted(contract.receipt.receiptItems);

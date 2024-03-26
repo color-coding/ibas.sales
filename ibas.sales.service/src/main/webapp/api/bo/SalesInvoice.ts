@@ -107,6 +107,8 @@ namespace sales {
             branch: string;
             /** 销售发票-行集合 */
             salesInvoiceItems: ISalesInvoiceItems;
+            /** 销售发票-预收款集合 */
+            salesInvoiceDownPayments: ISalesInvoiceDownPayments;
             /** 送货地址集合 */
             shippingAddresss: IShippingAddresss;
             /** 基于销售订单 */
@@ -122,6 +124,12 @@ namespace sales {
             /** 创建并添加子项 */
             create(): ISalesInvoiceItem;
         }
+        /** 销售发票-预收款 集合 */
+        export interface ISalesInvoiceDownPayments extends ibas.IBusinessObjects<ISalesInvoiceDownPayment> {
+            /** 创建并添加子项 */
+            create(): ISalesInvoiceDownPayment;
+        }
+
 
         /** 销售发票-行 */
         export interface ISalesInvoiceItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent, ibas.IBOUserFields {
@@ -253,6 +261,73 @@ namespace sales {
             agreements: string;
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;
+        }
+        /** 销售发票-预收款 */
+        export interface ISalesInvoiceDownPayment extends ibas.IBODocumentLine {
+            /** 凭证编号 */
+            docEntry: number;
+            /** 行号 */
+            lineId: number;
+            /** 显示顺序 */
+            visOrder: number;
+            /** 类型 */
+            objectCode: string;
+            /** 实例号（版本） */
+            logInst: number;
+            /** 数据源 */
+            dataSource: string;
+            /** 状态 */
+            status: ibas.emBOStatus;
+            /** 单据状态 */
+            lineStatus: ibas.emDocumentStatus;
+            /** 创建日期 */
+            createDate: Date;
+            /** 创建时间 */
+            createTime: number;
+            /** 修改日期 */
+            updateDate: Date;
+            /** 修改时间 */
+            updateTime: number;
+            /** 创建用户 */
+            createUserSign: number;
+            /** 修改用户 */
+            updateUserSign: number;
+            /** 创建动作标识 */
+            createActionId: string;
+            /** 更新动作标识 */
+            updateActionId: string;
+            /** 参考1 */
+            reference1: string;
+            /** 参考2 */
+            reference2: string;
+            /** 收款类型 */
+            paymentType: string;
+            /** 收款编号 */
+            paymentEntry: number;
+            /** 收款行号 */
+            paymentLineId: number;
+            /** 收款总计 */
+            paymentTotal: number;
+            /** 收款货币 */
+            paymentCurrency: string;
+            /** 收款汇率 */
+            paymentRate: number;
+            /** 提取金额 */
+            drawnTotal: number;
+            /** 基于类型 */
+            baseDocumentType: string;
+            /** 基于标识 */
+            baseDocumentEntry: number;
+            /** 基于行号 */
+            baseDocumentLineId: number;
+            /** 原始类型 */
+            originalDocumentType: string;
+            /** 原始标识 */
+            originalDocumentEntry: number;
+            /** 原始行号 */
+            originalDocumentLineId: number;
+            /** 基于收款 */
+            baseDocument(document: receiptpayment.bo.IReceiptItem): void;
         }
     }
 }

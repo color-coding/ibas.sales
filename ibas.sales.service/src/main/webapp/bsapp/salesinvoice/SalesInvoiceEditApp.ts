@@ -48,6 +48,8 @@ namespace sales {
                 this.view.receiptSalesInvoiceEvent = this.receiptSalesInvoice;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
                 this.view.turnToSalesCreditNoteEvent = this.turnToSalesCreditNote;
+                this.view.addSalesInvoiceDownPaymentEvent = this.addSalesInvoiceDownPayment;
+                this.view.removeSalesInvoiceDownPaymentEvent = this.removeSalesInvoiceDownPayment;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -60,6 +62,7 @@ namespace sales {
                 }
                 this.view.showSalesInvoice(this.editData);
                 this.view.showSalesInvoiceItems(this.editData.salesInvoiceItems.filterDeleted());
+                this.view.showSalesInvoiceDownPayments(this.editData.salesInvoiceDownPayments.filterDeleted());
                 // 查询额外信息
                 if (!ibas.strings.isEmpty(this.editData.customerCode)) {
                     let boRepository: businesspartner.bo.BORepositoryBusinessPartner = new businesspartner.bo.BORepositoryBusinessPartner();
@@ -808,6 +811,26 @@ namespace sales {
                 condition.alias = bo.SalesOrder.PROPERTY_CUSTOMERCODE_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = this.editData.customerCode;
+                // 指定了合同/协议
+                if (!ibas.strings.isEmpty(this.editData.agreements)) {
+                    let index: number = criteria.conditions.length;
+                    for (let item of this.editData.agreements.split(ibas.DATA_SEPARATOR)) {
+                        if (ibas.strings.isEmpty(item)) {
+                            continue;
+                        }
+                        condition = criteria.conditions.create();
+                        condition.alias = bo.SalesOrder.PROPERTY_AGREEMENTS_NAME;
+                        condition.operation = ibas.emConditionOperation.CONTAIN;
+                        condition.value = item;
+                        if (criteria.conditions.length > (index + 1)) {
+                            condition.relationship = ibas.emConditionRelationship.OR;
+                        }
+                    }
+                    if (criteria.conditions.length > (index + 2)) {
+                        criteria.conditions[index].bracketOpen += 1;
+                        criteria.conditions[criteria.conditions.length - 1].bracketClose += 1;
+                    }
+                }
                 // 子项查询
                 let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
                 cCriteria.propertyPath = bo.SalesOrder.PROPERTY_SALESORDERITEMS_NAME;
@@ -830,11 +853,47 @@ namespace sales {
                     chooseType: ibas.emChooseType.MULTIPLE,
                     criteria: criteria,
                     onCompleted(selecteds: ibas.IList<bo.SalesOrder>): void {
+                        criteria = new ibas.Criteria();
+                        let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
+                        cCriteria.propertyPath = receiptpayment.bo.Receipt.PROPERTY_RECEIPTITEMS_NAME;
+                        cCriteria.onlyHasChilds = true;
                         for (let selected of selecteds) {
                             if (!ibas.strings.equals(that.editData.customerCode, selected.customerCode)) {
                                 continue;
                             }
                             that.editData.baseDocument(selected);
+                            // 预付款查询
+                            // 基于单据为订单
+                            condition = cCriteria.conditions.create();
+                            condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_BASEDOCUMENTTYPE_NAME;
+                            condition.value = selected.objectCode;
+                            condition.bracketOpen = 1;
+                            if (cCriteria.conditions.length > 2) {
+                                condition.relationship = ibas.emConditionRelationship.OR;
+                            }
+                            condition = cCriteria.conditions.create();
+                            condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_BASEDOCUMENTENTRY_NAME;
+                            condition.value = selected.docEntry.toString();
+                            condition.bracketClose = 1;
+                            // 原始单据为订单
+                            condition = cCriteria.conditions.create();
+                            condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_ORIGINALDOCUMENTTYPE_NAME;
+                            condition.value = selected.objectCode;
+                            condition.bracketOpen = 1;
+                            if (cCriteria.conditions.length > 2) {
+                                condition.relationship = ibas.emConditionRelationship.OR;
+                            }
+                            condition = cCriteria.conditions.create();
+                            condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_ORIGINALDOCUMENTENTRY_NAME;
+                            condition.value = selected.docEntry.toString();
+                            condition = cCriteria.conditions.create();
+                            condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_BASEDOCUMENTTYPE_NAME;
+                            condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                            condition.value = that.editData.objectCode;
+                            condition.bracketClose = 1;
+                        }
+                        if (cCriteria.conditions.length > 0) {
+                            that.addSalesInvoiceDownPayment(criteria);
                         }
                         that.view.showSalesInvoiceItems(that.editData.salesInvoiceItems.filterDeleted());
                     }
@@ -899,6 +958,26 @@ namespace sales {
                 condition.alias = bo.SalesDelivery.PROPERTY_CUSTOMERCODE_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = this.editData.customerCode;
+                // 指定了合同/协议
+                if (!ibas.strings.isEmpty(this.editData.agreements)) {
+                    let index: number = criteria.conditions.length;
+                    for (let item of this.editData.agreements.split(ibas.DATA_SEPARATOR)) {
+                        if (ibas.strings.isEmpty(item)) {
+                            continue;
+                        }
+                        condition = criteria.conditions.create();
+                        condition.alias = bo.SalesDelivery.PROPERTY_AGREEMENTS_NAME;
+                        condition.operation = ibas.emConditionOperation.CONTAIN;
+                        condition.value = item;
+                        if (criteria.conditions.length > (index + 1)) {
+                            condition.relationship = ibas.emConditionRelationship.OR;
+                        }
+                    }
+                    if (criteria.conditions.length > (index + 2)) {
+                        criteria.conditions[index].bracketOpen += 1;
+                        criteria.conditions[criteria.conditions.length - 1].bracketClose += 1;
+                    }
+                }
                 // 子项查询
                 let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
                 cCriteria.propertyPath = bo.SalesDelivery.PROPERTY_SALESDELIVERYITEMS_NAME;
@@ -921,11 +1000,30 @@ namespace sales {
                     chooseType: ibas.emChooseType.MULTIPLE,
                     criteria: criteria,
                     onCompleted(selecteds: ibas.IList<bo.SalesDelivery>): void {
+                        criteria = new ibas.Criteria();
+                        let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
+                        cCriteria.propertyPath = receiptpayment.bo.Receipt.PROPERTY_RECEIPTITEMS_NAME;
+                        cCriteria.onlyHasChilds = true;
                         for (let selected of selecteds) {
                             if (!ibas.strings.equals(that.editData.customerCode, selected.customerCode)) {
                                 continue;
                             }
                             that.editData.baseDocument(selected);
+                            // 预付款查询
+                            condition = cCriteria.conditions.create();
+                            condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_BASEDOCUMENTTYPE_NAME;
+                            condition.value = selected.objectCode;
+                            condition.bracketOpen = 1;
+                            if (cCriteria.conditions.length > 2) {
+                                condition.relationship = ibas.emConditionRelationship.OR;
+                            }
+                            condition = cCriteria.conditions.create();
+                            condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_BASEDOCUMENTENTRY_NAME;
+                            condition.value = selected.docEntry.toString();
+                            condition.bracketClose = 1;
+                        }
+                        if (cCriteria.conditions.length > 0) {
+                            that.addSalesInvoiceDownPayment(criteria);
                         }
                         that.view.showSalesInvoiceItems(that.editData.salesInvoiceItems.filterDeleted());
                     }
@@ -1134,6 +1232,26 @@ namespace sales {
                 condition.alias = bo.BlanketAgreement.PROPERTY_CUSTOMERCODE_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = this.editData.customerCode;
+                // 指定了合同/协议
+                if (!ibas.strings.isEmpty(this.editData.agreements)) {
+                    let index: number = criteria.conditions.length;
+                    for (let item of this.editData.agreements.split(ibas.DATA_SEPARATOR)) {
+                        if (ibas.strings.isEmpty(item)) {
+                            continue;
+                        }
+                        condition = criteria.conditions.create();
+                        condition.alias = bo.BlanketAgreement.PROPERTY_AGREEMENTS_NAME;
+                        condition.operation = ibas.emConditionOperation.CONTAIN;
+                        condition.value = item;
+                        if (criteria.conditions.length > (index + 1)) {
+                            condition.relationship = ibas.emConditionRelationship.OR;
+                        }
+                    }
+                    if (criteria.conditions.length > (index + 2)) {
+                        criteria.conditions[index].bracketOpen += 1;
+                        criteria.conditions[criteria.conditions.length - 1].bracketClose += 1;
+                    }
+                }
                 // 未过期的
                 condition = criteria.conditions.create();
                 condition.bracketOpen = 1;
@@ -1383,6 +1501,218 @@ namespace sales {
                     }
                 });
             }
+            /** 添加销售发票-预收款事件 */
+            public addSalesInvoiceDownPayment(criteria?: ibas.ICriteria): void {
+                let condition: ibas.ICondition;
+                if (ibas.objects.isNull(criteria)) {
+                    criteria = new ibas.Criteria();
+                }
+                // 未取消的
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_CANCELED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 未删除的
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_DELETED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 仅下达的
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emDocumentStatus.RELEASED.toString();
+                // 审批通过的或未进审批
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.APPROVED.toString();
+                condition.bracketOpen = 1;
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.UNAFFECTED.toString();
+                condition.relationship = ibas.emConditionRelationship.OR;
+                condition.bracketClose = 1;
+                // 是否指定分支
+                if (!ibas.strings.isEmpty(this.editData.branch)) {
+                    condition = criteria.conditions.create();
+                    condition.alias = receiptpayment.bo.Receipt.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = this.editData.branch;
+                } else {
+                    condition = criteria.conditions.create();
+                    condition.alias = receiptpayment.bo.Receipt.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = "";
+                    condition.bracketOpen = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = receiptpayment.bo.Receipt.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.IS_NULL;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition.bracketClose = 1;
+                }
+                // 当前客户的
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_BUSINESSPARTNERTYPE_NAME;
+                condition.value = businesspartner.bo.emBusinessPartnerType.CUSTOMER.toString();
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_BUSINESSPARTNERCODE_NAME;
+                condition.value = this.editData.customerCode;
+                // 存在已清金额
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_DOCUMENTTOTAL_NAME;
+                condition.operation = ibas.emConditionOperation.GRATER_THAN;
+                condition.value = "0";
+
+                let boRepository: receiptpayment.bo.BORepositoryReceiptPayment = new receiptpayment.bo.BORepositoryReceiptPayment();
+                boRepository.fetchReceipt({
+                    criteria: criteria,
+                    onCompleted: (opRslt) => {
+                        try {
+                            if (opRslt.resultCode !== 0) {
+                                throw new Error(opRslt.message);
+                            }
+                            let amount: number = ibas.numbers.valueOf(this.editData.documentTotal)
+                                - ibas.numbers.valueOf(this.editData.paidTotal) - ibas.numbers.valueOf(this.editData.downPaymentTotal);
+                            for (let item of opRslt.resultObjects) {
+                                for (let sItem of item.receiptItems) {
+                                    if (!ibas.objects.isNull(this.editData.salesInvoiceDownPayments.firstOrDefault(
+                                        c => c.paymentType === sItem.objectCode && c.paymentEntry === sItem.docEntry && c.paymentLineId === sItem.lineId
+                                    ))) {
+                                        continue;
+                                    }
+                                    let item: bo.SalesInvoiceDownPayment = this.editData.salesInvoiceDownPayments.create();
+                                    item.baseDocument(sItem);
+                                    if (amount > sItem.amount) {
+                                        item.drawnTotal = sItem.amount;
+                                    } else {
+                                        item.drawnTotal = amount;
+                                    }
+                                    amount -= item.drawnTotal;
+                                }
+                            }
+                            this.view.showSalesInvoiceDownPayments(this.editData.salesInvoiceDownPayments.filterDeleted());
+                        } catch (error) {
+                            this.messages(error);
+                        }
+                    }
+                });
+            }
+            /** 删除销售发票-预收款事件 */
+            protected removeSalesInvoiceDownPayment(items: bo.SalesInvoiceDownPayment[]): void {
+                // 非数组，转为数组
+                if (!(items instanceof Array)) {
+                    items = [items];
+                }
+                if (items.length === 0) {
+                    return;
+                }
+                // 移除项目
+                for (let item of items) {
+                    if (this.editData.salesInvoiceDownPayments.indexOf(item) >= 0) {
+                        if (item.isNew) {
+                            // 新建的移除集合
+                            this.editData.salesInvoiceDownPayments.remove(item);
+                        } else {
+                            // 非新建标记删除
+                            item.delete();
+                        }
+                    }
+                }
+                // 仅显示没有标记删除的
+                this.view.showSalesInvoiceDownPayments(this.editData.salesInvoiceDownPayments.filterDeleted());
+            }
+            /** 添加销售发票-预收款事件 */
+            protected chooseSalesInvoiceDownPayment(): void {
+                let condition: ibas.ICondition;
+                let criteria: ibas.Criteria = new ibas.Criteria();
+                // 未取消的
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_CANCELED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 未删除的
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_DELETED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 仅下达的
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emDocumentStatus.RELEASED.toString();
+                // 审批通过的或未进审批
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.APPROVED.toString();
+                condition.bracketOpen = 1;
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.UNAFFECTED.toString();
+                condition.relationship = ibas.emConditionRelationship.OR;
+                condition.bracketClose = 1;
+                // 是否指定分支
+                if (!ibas.strings.isEmpty(this.editData.branch)) {
+                    condition = criteria.conditions.create();
+                    condition.alias = receiptpayment.bo.Receipt.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = this.editData.branch;
+                } else {
+                    condition = criteria.conditions.create();
+                    condition.alias = receiptpayment.bo.Receipt.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = "";
+                    condition.bracketOpen = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = receiptpayment.bo.Receipt.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.IS_NULL;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition.bracketClose = 1;
+                }
+                // 当前客户的
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_BUSINESSPARTNERTYPE_NAME;
+                condition.value = businesspartner.bo.emBusinessPartnerType.CUSTOMER.toString();
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_BUSINESSPARTNERCODE_NAME;
+                condition.value = this.editData.customerCode;
+                // 存在已清金额
+                condition = criteria.conditions.create();
+                condition.alias = receiptpayment.bo.Receipt.PROPERTY_DOCUMENTTOTAL_NAME;
+                condition.operation = ibas.emConditionOperation.GRATER_THAN;
+                condition.value = "0";
+
+                ibas.servicesManager.runChooseService<receiptpayment.bo.Receipt>({
+                    boCode: receiptpayment.bo.Receipt.BUSINESS_OBJECT_CODE,
+                    chooseType: ibas.emChooseType.MULTIPLE,
+                    criteria: criteria,
+                    onCompleted: (selecteds) => {
+                        let amount: number = ibas.numbers.valueOf(this.editData.documentTotal)
+                            - ibas.numbers.valueOf(this.editData.paidTotal) - ibas.numbers.valueOf(this.editData.downPaymentTotal);
+                        for (let selected of selecteds) {
+                            for (let sItem of selected.receiptItems) {
+                                if (!ibas.objects.isNull(this.editData.salesInvoiceDownPayments.firstOrDefault(
+                                    c => c.paymentType === sItem.objectCode && c.paymentEntry === sItem.docEntry && c.paymentLineId === sItem.lineId
+                                ))) {
+                                    continue;
+                                }
+                                let item: bo.SalesInvoiceDownPayment = this.editData.salesInvoiceDownPayments.create();
+                                item.baseDocument(sItem);
+                                if (amount > sItem.amount) {
+                                    item.drawnTotal = sItem.amount;
+                                } else {
+                                    item.drawnTotal = amount;
+                                }
+                                amount -= item.drawnTotal;
+                            }
+                        }
+                        this.view.showSalesInvoiceDownPayments(this.editData.salesInvoiceDownPayments.filterDeleted());
+                    }
+                });
+            }
         }
         /** 视图-销售发票 */
         export interface ISalesInvoiceEditView extends ibas.IBOEditView {
@@ -1432,6 +1762,12 @@ namespace sales {
             editShippingAddressesEvent: Function;
             /** 转为销售交货事件 */
             turnToSalesCreditNoteEvent: Function;
+            /** 添加销售发票-预收款事件 */
+            addSalesInvoiceDownPaymentEvent: Function;
+            /** 删除销售发票-预收款事件 */
+            removeSalesInvoiceDownPaymentEvent: Function;
+            /** 显示数据-销售发票-预收款 */
+            showSalesInvoiceDownPayments(datas: bo.SalesInvoiceDownPayment[]): void;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */

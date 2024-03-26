@@ -40,11 +40,14 @@ import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
 import org.colorcoding.ibas.bobas.period.IPeriodData;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleDocumentStatus;
+import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMaxProperty;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
+import org.colorcoding.ibas.businesspartner.logic.IDocumentReconciliationContent;
+import org.colorcoding.ibas.businesspartner.logic.IDocumentReconciliationContract;
 import org.colorcoding.ibas.document.IDocumentCloseQuantityItem;
 import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
@@ -56,6 +59,7 @@ import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
 import org.colorcoding.ibas.sales.logic.journalentry.SalesInvoiceDeliveryMaterialsCost;
+import org.colorcoding.ibas.sales.logic.journalentry.SalesInvoiceDownPaymentAmount;
 import org.colorcoding.ibas.sales.logic.journalentry.SalesInvoiceMaterialsCost;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
@@ -1812,6 +1816,38 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 	}
 
 	/**
+	 * 属性名称-销售发票-预收款
+	 */
+	private static final String PROPERTY_SALESINVOICEDOWNPAYMENTS_NAME = "SalesInvoiceDownPayments";
+
+	/**
+	 * 销售发票-预收款的集合属性
+	 * 
+	 */
+	public static final IPropertyInfo<ISalesInvoiceDownPayments> PROPERTY_SALESINVOICEDOWNPAYMENTS = registerProperty(
+			PROPERTY_SALESINVOICEDOWNPAYMENTS_NAME, ISalesInvoiceDownPayments.class, MY_CLASS);
+
+	/**
+	 * 获取-销售发票-预收款集合
+	 * 
+	 * @return 值
+	 */
+	@XmlElementWrapper(name = PROPERTY_SALESINVOICEDOWNPAYMENTS_NAME)
+	@XmlElement(name = SalesInvoiceDownPayment.BUSINESS_OBJECT_NAME, type = SalesInvoiceDownPayment.class)
+	public final ISalesInvoiceDownPayments getSalesInvoiceDownPayments() {
+		return this.getProperty(PROPERTY_SALESINVOICEDOWNPAYMENTS);
+	}
+
+	/**
+	 * 设置-销售发票-预收款集合
+	 * 
+	 * @param value 值
+	 */
+	public final void setSalesInvoiceDownPayments(ISalesInvoiceDownPayments value) {
+		this.setProperty(PROPERTY_SALESINVOICEDOWNPAYMENTS, value);
+	}
+
+	/**
 	 * 初始化数据
 	 */
 	@Override
@@ -1819,6 +1855,7 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 		super.initialize();// 基类初始化，不可去除
 		this.setSalesInvoiceItems(new SalesInvoiceItems(this));
 		this.setShippingAddresss(new ShippingAddresss(this));
+		this.setSalesInvoiceDownPayments(new SalesInvoiceDownPayments(this));
 		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 		this.setPostingDate(DateTime.getToday());
 		this.setDocumentDate(DateTime.getToday());
@@ -1944,6 +1981,35 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 		this.setProperty(PROPERTY_SHIPPINGSTAXTOTAL, value);
 	}
 
+	/**
+	 * 属性名称-预付款总计
+	 */
+	private static final String PROPERTY_DOWNPAYMENTTOTAL_NAME = "DownPaymentTotal";
+
+	/**
+	 * 预付款总计 属性
+	 */
+	public static final IPropertyInfo<BigDecimal> PROPERTY_DOWNPAYMENTTOTAL = registerProperty(
+			PROPERTY_DOWNPAYMENTTOTAL_NAME, BigDecimal.class, MY_CLASS);
+
+	/**
+	 * 获取-预付款总计
+	 * 
+	 * @return 值
+	 */
+	public final BigDecimal getDownPaymentTotal() {
+		return this.getProperty(PROPERTY_DOWNPAYMENTTOTAL);
+	}
+
+	/**
+	 * 设置-预付款总计
+	 * 
+	 * @param value 值
+	 */
+	final void setDownPaymentTotal(BigDecimal value) {
+		this.setProperty(PROPERTY_DOWNPAYMENTTOTAL, value);
+	}
+
 	@Override
 	protected IBusinessRule[] registerRules() {
 		return new IBusinessRule[] {
@@ -1985,6 +2051,9 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 				// 计算运输-税总计
 				new BusinessRuleSumElements(PROPERTY_SHIPPINGSTAXTOTAL, PROPERTY_SHIPPINGADDRESSS,
 						ShippingAddress.PROPERTY_TAXTOTAL),
+				// 计算预付款-总计
+				new BusinessRuleSumElements(PROPERTY_DOWNPAYMENTTOTAL, PROPERTY_SALESINVOICEDOWNPAYMENTS,
+						SalesInvoiceDownPayment.PROPERTY_DRAWNTOTAL),
 				// 折扣后总计 = 项目-行总计 * 折扣
 				new BusinessRuleDeductionDiscountTotal(PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMSLINETOTAL,
 						PROPERTY_DISCOUNT),
@@ -1993,6 +2062,7 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 						PROPERTY_SHIPPINGSEXPENSETOTAL),
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DISCOUNTTOTAL), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DOCUMENTTOTAL), // 不能低于0
+				new BusinessRuleMaxProperty<BigDecimal>(PROPERTY_DOCUMENTTOTAL, PROPERTY_DOWNPAYMENTTOTAL), // 不能预付款不能大过单据总计
 		};
 	}
 
@@ -2002,6 +2072,7 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 		this.setPaidTotal(Decimal.ZERO);
 		this.setDocumentStatus(emDocumentStatus.RELEASED);
 		this.getSalesInvoiceItems().forEach(c -> c.setLineStatus(emDocumentStatus.RELEASED));
+		this.getSalesInvoiceDownPayments().forEach(c -> c.setLineStatus(emDocumentStatus.RELEASED));
 	}
 
 	@Override
@@ -2011,60 +2082,230 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 
 	@Override
 	public IBusinessLogicContract[] getContracts() {
-		return new IBusinessLogicContract[] {
-				// 检查客户
-				new ICustomerCheckContract() {
-					@Override
-					public String getIdentifiers() {
-						return SalesInvoice.this.getIdentifiers();
+		List<IBusinessLogicContract> contracts = new ArrayList<>(4);
+		// 检查客户
+		contracts.add(new ICustomerCheckContract() {
+			@Override
+			public String getIdentifiers() {
+				return SalesInvoice.this.getIdentifiers();
+			}
+
+			@Override
+			public String getCustomerCode() {
+				return SalesInvoice.this.getCustomerCode();
+			}
+		});
+		// 分支检查
+		contracts.add(new IBranchCheckContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesInvoice.this.toString();
+			}
+
+			@Override
+			public String getBranch() {
+				return SalesInvoice.this.getBranch();
+			}
+		});
+		// 创建分录
+		contracts.add(new IJournalEntryCreationContract() {
+
+			@Override
+			public boolean isOffsetting() {
+				if (SalesInvoice.this instanceof IBOTagCanceled) {
+					IBOTagCanceled boTag = (IBOTagCanceled) SalesInvoice.this;
+					if (boTag.getCanceled() == emYesNo.YES) {
+						return true;
 					}
+				}
+				if (SalesInvoice.this instanceof IBOTagDeleted) {
+					IBOTagDeleted boTag = (IBOTagDeleted) SalesInvoice.this;
+					if (boTag.getDeleted() == emYesNo.YES) {
+						return true;
+					}
+				}
+				return false;
+			}
+
+			@Override
+			public String getIdentifiers() {
+				return SalesInvoice.this.toString();
+			}
+
+			@Override
+			public String getBranch() {
+				return SalesInvoice.this.getBranch();
+			}
+
+			@Override
+			public String getBaseDocumentType() {
+				return SalesInvoice.this.getObjectCode();
+			}
+
+			@Override
+			public Integer getBaseDocumentEntry() {
+				return SalesInvoice.this.getDocEntry();
+			}
+
+			@Override
+			public DateTime getDocumentDate() {
+				return SalesInvoice.this.getDocumentDate();
+			}
+
+			@Override
+			public String getReference1() {
+				return SalesInvoice.this.getReference1();
+			}
+
+			@Override
+			public String getReference2() {
+				return SalesInvoice.this.getReference2();
+			}
+
+			@Override
+			public JournalEntryContent[] getContents() {
+				JournalEntryContent jeContent;
+				List<JournalEntryContent> jeContents = new ArrayList<>();
+				String SalesDeliveryCode = MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE);
+				for (ISalesInvoiceItem line : SalesInvoice.this.getSalesInvoiceItems()) {
+					if (line.getDeleted() == emYesNo.YES) {
+						continue;
+					}
+					if (line.getCanceled() == emYesNo.YES) {
+						continue;
+					}
+					if (line.getLineStatus() == emDocumentStatus.PLANNED) {
+						continue;
+					}
+					if (SalesDeliveryCode.equals(line.getBaseDocumentType())) {
+						/** 基于交货 **/
+						// 销售成本科目
+						jeContent = new SalesInvoiceDeliveryMaterialsCost(line);
+						jeContent.setCategory(Category.Debit);
+						jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
+						jeContent.setAmount(Decimal.ZERO);// 待计算
+						jeContent.setCurrency(line.getCurrency());
+						jeContent.setRate(line.getRate());
+						jeContents.add(jeContent);
+						// 已装载货物科目
+						jeContent = new SalesInvoiceDeliveryMaterialsCost(line);
+						jeContent.setCategory(Category.Credit);
+						jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
+						jeContent.setAmount(Decimal.ZERO);// 待计算
+						jeContent.setCurrency(line.getCurrency());
+						jeContent.setRate(line.getRate());
+						jeContents.add(jeContent);
+						// 收入科目
+						jeContent = new JournalEntrySmartContent(line);
+						jeContent.setCategory(Category.Credit);
+						jeContent.setLedger(Ledgers.LEDGER_SALES_REVENUE_ACCOUNT);
+						jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
+						jeContent.setCurrency(line.getCurrency());
+						jeContent.setRate(line.getRate());
+						jeContents.add(jeContent);
+						// 销项税
+						jeContent = new JournalEntrySmartContent(line);
+						jeContent.setCategory(Category.Credit);
+						jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
+						jeContent.setAmount(line.getTaxTotal());// 税前总计
+						jeContent.setCurrency(line.getCurrency());
+						jeContent.setRate(line.getRate());
+						jeContents.add(jeContent);
+					} else {
+						/** 不基于单据 **/
+						// 销售成本科目
+						jeContent = new SalesInvoiceMaterialsCost(line);
+						jeContent.setCategory(Category.Debit);
+						jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
+						jeContent.setAmount(Decimal.ZERO);// 待计算
+						jeContent.setCurrency(line.getCurrency());
+						jeContent.setRate(line.getRate());
+						jeContents.add(jeContent);
+						// 已装载货物科目
+						jeContent = new SalesInvoiceMaterialsCost(line);
+						jeContent.setCategory(Category.Credit);
+						jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
+						jeContent.setAmount(Decimal.ZERO);// 待计算
+						jeContent.setCurrency(line.getCurrency());
+						jeContent.setRate(line.getRate());
+						jeContents.add(jeContent);
+						// 收入科目
+						jeContent = new JournalEntrySmartContent(line);
+						jeContent.setCategory(Category.Credit);
+						jeContent.setLedger(Ledgers.LEDGER_SALES_REVENUE_ACCOUNT);
+						jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
+						jeContent.setCurrency(line.getCurrency());
+						jeContent.setRate(line.getRate());
+						jeContents.add(jeContent);
+						// 销项税
+						jeContent = new JournalEntrySmartContent(line);
+						jeContent.setCategory(Category.Credit);
+						jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
+						jeContent.setAmount(line.getTaxTotal());// 税前总计
+						jeContent.setCurrency(line.getCurrency());
+						jeContent.setRate(line.getRate());
+						jeContents.add(jeContent);
+					}
+				}
+				// 预付款
+				for (ISalesInvoiceDownPayment item : SalesInvoice.this.getSalesInvoiceDownPayments()) {
+					// 应付账款
+					jeContent = new JournalEntrySmartContent(SalesInvoice.this);
+					jeContent.setCategory(Category.Credit);
+					jeContent.setLedger(Ledgers.LEDGER_SALES_DOMESTIC_ACCOUNTS_RECEIVABLE);
+					jeContent.setShortName(SalesInvoice.this.getCustomerCode());
+					jeContent.setAmount(item.getDrawnTotal());
+					jeContent.setCurrency(item.getPaymentCurrency());
+					jeContent.setRate(item.getPaymentRate());
+					jeContents.add(jeContent);
+					// 预付款（取分录）
+					jeContent = new SalesInvoiceDownPaymentAmount(item);
+					jeContent.setCategory(Category.Debit);
+					jeContent.setShortName(SalesInvoice.this.getCustomerCode());
+					jeContent.setAmount(item.getDrawnTotal());
+					jeContent.setCurrency(item.getPaymentCurrency());
+					jeContent.setRate(item.getPaymentRate());
+					jeContents.add(jeContent);
+				}
+				// 应收科目
+				jeContent = new JournalEntrySmartContent(SalesInvoice.this);
+				jeContent.setCategory(Category.Debit);
+				jeContent.setLedger(Ledgers.LEDGER_SALES_DOMESTIC_ACCOUNTS_RECEIVABLE);
+				jeContent.setShortName(SalesInvoice.this.getCustomerCode());
+				jeContent.setAmount(SalesInvoice.this.getDocumentTotal());
+				jeContent.setCurrency(SalesInvoice.this.getDocumentCurrency());
+				jeContent.setRate(SalesInvoice.this.getDocumentRate());
+				jeContents.add(jeContent);
+				return jeContents.toArray(new JournalEntryContent[] {});
+			}
+		}); // 自动对账
+		contracts.add(new IDocumentReconciliationContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesInvoice.this.toString();
+			}
+
+			@Override
+			public String getBaseDocumentType() {
+				return SalesInvoice.this.getObjectCode();
+			}
+
+			@Override
+			public Integer getBaseDocumentEntry() {
+				return SalesInvoice.this.getDocEntry();
+			}
+
+			@Override
+			public IDocumentReconciliationContent[] getContents() {
+				ArrayList<IDocumentReconciliationContent> contents = new ArrayList<>(
+						SalesInvoice.this.getSalesInvoiceDownPayments().size() + 1);
+				contents.add(new IDocumentReconciliationContent() {
 
 					@Override
-					public String getCustomerCode() {
+					public String getShortName() {
 						return SalesInvoice.this.getCustomerCode();
-					}
-				},
-				// 分支检查
-				new IBranchCheckContract() {
-
-					@Override
-					public String getIdentifiers() {
-						return SalesInvoice.this.toString();
-					}
-
-					@Override
-					public String getBranch() {
-						return SalesInvoice.this.getBranch();
-					}
-				},
-				// 创建分录
-				new IJournalEntryCreationContract() {
-
-					@Override
-					public boolean isOffsetting() {
-						if (SalesInvoice.this instanceof IBOTagCanceled) {
-							IBOTagCanceled boTag = (IBOTagCanceled) SalesInvoice.this;
-							if (boTag.getCanceled() == emYesNo.YES) {
-								return true;
-							}
-						}
-						if (SalesInvoice.this instanceof IBOTagDeleted) {
-							IBOTagDeleted boTag = (IBOTagDeleted) SalesInvoice.this;
-							if (boTag.getDeleted() == emYesNo.YES) {
-								return true;
-							}
-						}
-						return false;
-					}
-
-					@Override
-					public String getIdentifiers() {
-						return SalesInvoice.this.toString();
-					}
-
-					@Override
-					public String getBranch() {
-						return SalesInvoice.this.getBranch();
 					}
 
 					@Override
@@ -2078,119 +2319,51 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 					}
 
 					@Override
-					public DateTime getDocumentDate() {
-						return SalesInvoice.this.getDocumentDate();
+					public BigDecimal getAmount() {
+						return SalesInvoice.this.getDownPaymentTotal();
 					}
 
 					@Override
-					public String getReference1() {
-						return SalesInvoice.this.getReference1();
+					public String getCurrency() {
+						return SalesInvoice.this.getDocumentCurrency();
 					}
 
-					@Override
-					public String getReference2() {
-						return SalesInvoice.this.getReference2();
-					}
+				});
+				for (ISalesInvoiceDownPayment item : SalesInvoice.this.getSalesInvoiceDownPayments()) {
+					contents.add(new IDocumentReconciliationContent() {
 
-					@Override
-					public JournalEntryContent[] getContents() {
-						JournalEntryContent jeContent;
-						List<JournalEntryContent> jeContents = new ArrayList<>();
-						String SalesDeliveryCode = MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE);
-						for (ISalesInvoiceItem line : SalesInvoice.this.getSalesInvoiceItems()) {
-							if (line.getDeleted() == emYesNo.YES) {
-								continue;
-							}
-							if (line.getCanceled() == emYesNo.YES) {
-								continue;
-							}
-							if (line.getLineStatus() == emDocumentStatus.PLANNED) {
-								continue;
-							}
-							if (SalesDeliveryCode.equals(line.getBaseDocumentType())) {
-								/** 基于交货 **/
-								// 销售成本科目
-								jeContent = new SalesInvoiceDeliveryMaterialsCost(line);
-								jeContent.setCategory(Category.Debit);
-								jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
-								jeContent.setCurrency(line.getCurrency());
-								jeContent.setRate(line.getRate());
-								jeContents.add(jeContent);
-								// 已装载货物科目
-								jeContent = new SalesInvoiceDeliveryMaterialsCost(line);
-								jeContent.setCategory(Category.Credit);
-								jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
-								jeContent.setCurrency(line.getCurrency());
-								jeContent.setRate(line.getRate());
-								jeContents.add(jeContent);
-								// 收入科目
-								jeContent = new JournalEntrySmartContent(line);
-								jeContent.setCategory(Category.Credit);
-								jeContent.setLedger(Ledgers.LEDGER_SALES_REVENUE_ACCOUNT);
-								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
-								jeContent.setCurrency(line.getCurrency());
-								jeContent.setRate(line.getRate());
-								jeContents.add(jeContent);
-								// 销项税
-								jeContent = new JournalEntrySmartContent(line);
-								jeContent.setCategory(Category.Credit);
-								jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
-								jeContent.setAmount(line.getTaxTotal());// 税前总计
-								jeContent.setCurrency(line.getCurrency());
-								jeContent.setRate(line.getRate());
-								jeContents.add(jeContent);
-							} else {
-								/** 不基于单据 **/
-								// 销售成本科目
-								jeContent = new SalesInvoiceMaterialsCost(line);
-								jeContent.setCategory(Category.Debit);
-								jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
-								jeContent.setCurrency(line.getCurrency());
-								jeContent.setRate(line.getRate());
-								jeContents.add(jeContent);
-								// 已装载货物科目
-								jeContent = new SalesInvoiceMaterialsCost(line);
-								jeContent.setCategory(Category.Credit);
-								jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
-								jeContent.setCurrency(line.getCurrency());
-								jeContent.setRate(line.getRate());
-								jeContents.add(jeContent);
-								// 收入科目
-								jeContent = new JournalEntrySmartContent(line);
-								jeContent.setCategory(Category.Credit);
-								jeContent.setLedger(Ledgers.LEDGER_SALES_REVENUE_ACCOUNT);
-								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
-								jeContent.setCurrency(line.getCurrency());
-								jeContent.setRate(line.getRate());
-								jeContents.add(jeContent);
-								// 销项税
-								jeContent = new JournalEntrySmartContent(line);
-								jeContent.setCategory(Category.Credit);
-								jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
-								jeContent.setAmount(line.getTaxTotal());// 税前总计
-								jeContent.setCurrency(line.getCurrency());
-								jeContent.setRate(line.getRate());
-								jeContents.add(jeContent);
-							}
+						@Override
+						public String getShortName() {
+							return SalesInvoice.this.getCustomerCode();
 						}
-						// 应收科目
-						jeContent = new JournalEntrySmartContent(SalesInvoice.this);
-						jeContent.setCategory(Category.Debit);
-						jeContent.setLedger(Ledgers.LEDGER_SALES_DOMESTIC_ACCOUNTS_RECEIVABLE);
-						jeContent.setShortName(SalesInvoice.this.getCustomerCode());
-						jeContent.setAmount(SalesInvoice.this.getDocumentTotal());
-						jeContent.setCurrency(SalesInvoice.this.getDocumentCurrency());
-						jeContent.setRate(SalesInvoice.this.getDocumentRate());
-						jeContents.add(jeContent);
-						return jeContents.toArray(new JournalEntryContent[] {});
-					}
-				}
 
-		};
+						@Override
+						public String getBaseDocumentType() {
+							return item.getBaseDocumentType();
+						}
+
+						@Override
+						public Integer getBaseDocumentEntry() {
+							return item.getBaseDocumentEntry();
+						}
+
+						@Override
+						public BigDecimal getAmount() {
+							return item.getDrawnTotal().negate();
+						}
+
+						@Override
+						public String getCurrency() {
+							return item.getPaymentCurrency();
+						}
+
+					});
+				}
+				return contents.toArray(new IDocumentReconciliationContent[] {});
+			}
+		});
+
+		return contracts.toArray(new IBusinessLogicContract[] {});
 	}
 
 	@Override

@@ -555,6 +555,16 @@ namespace sales {
             set salesInvoiceItems(value: SalesInvoiceItems) {
                 this.setProperty(SalesInvoice.PROPERTY_SALESINVOICEITEMS_NAME, value);
             }
+            /** 映射的属性名称-销售发票-预收款集合 */
+            static PROPERTY_SALESINVOICEDOWNPAYMENTS_NAME: string = "SalesInvoiceDownPayments";
+            /** 获取-销售发票-预收款集合 */
+            get salesInvoiceDownPayments(): SalesInvoiceDownPayments {
+                return this.getProperty<SalesInvoiceDownPayments>(SalesInvoice.PROPERTY_SALESINVOICEDOWNPAYMENTS_NAME);
+            }
+            /** 设置-销售发票-预收款集合 */
+            set salesInvoiceDownPayments(value: SalesInvoiceDownPayments) {
+                this.setProperty(SalesInvoice.PROPERTY_SALESINVOICEDOWNPAYMENTS_NAME, value);
+            }
 
             /** 映射的属性名称-送货地址集合 */
             static PROPERTY_SHIPPINGADDRESSS_NAME: string = "ShippingAddresss";
@@ -570,6 +580,7 @@ namespace sales {
             /** 初始化数据 */
             protected init(): void {
                 this.salesInvoiceItems = new SalesInvoiceItems(this);
+                this.salesInvoiceDownPayments = new SalesInvoiceDownPayments(this);
                 this.shippingAddresss = new ShippingAddresss(this);
                 this.objectCode = ibas.config.applyVariables(SalesInvoice.BUSINESS_OBJECT_CODE);
                 this.documentStatus = ibas.emDocumentStatus.RELEASED;
@@ -635,6 +646,17 @@ namespace sales {
                 this.setProperty(SalesInvoice.PROPERTY_SHIPPINGSTAXTOTAL_NAME, value);
             }
 
+            /** 映射的属性名称-预付款总计 */
+            static PROPERTY_DOWNPAYMENTTOTAL_NAME: string = "DownPaymentTotal";
+            /** 获取-预付款总计 */
+            get downPaymentTotal(): number {
+                return this.getProperty<number>(SalesInvoice.PROPERTY_DOWNPAYMENTTOTAL_NAME);
+            }
+            /** 设置-预付款总计 */
+            set downPaymentTotal(value: number) {
+                this.setProperty(SalesInvoice.PROPERTY_DOWNPAYMENTTOTAL_NAME, value);
+            }
+
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
                     // 计算行-总计（含税）
@@ -673,6 +695,9 @@ namespace sales {
                     // 计算运输-税总计
                     new ibas.BusinessRuleSumElements(
                         SalesInvoice.PROPERTY_SHIPPINGSTAXTOTAL_NAME, SalesInvoice.PROPERTY_SHIPPINGADDRESSS_NAME, ShippingAddress.PROPERTY_TAXTOTAL_NAME),
+                    // 计算预付款总计
+                    new ibas.BusinessRuleSumElements(
+                        SalesInvoice.PROPERTY_DOWNPAYMENTTOTAL_NAME, SalesInvoice.PROPERTY_SALESINVOICEDOWNPAYMENTS_NAME, SalesInvoiceDownPayment.PROPERTY_DRAWNTOTAL_NAME),
                     // 折扣后总计（含税） = 行-总计（含税）* 折扣
                     new BusinessRuleDeductionDiscountTotal(
                         SalesInvoice.PROPERTY_DISCOUNTTOTAL_NAME, SalesInvoice.PROPERTY_ITEMSLINETOTAL_NAME, SalesInvoice.PROPERTY_DISCOUNT_NAME
@@ -911,7 +936,15 @@ namespace sales {
                 }
             }
         }
-
+        /** 销售发票-预收款 集合 */
+        export class SalesInvoiceDownPayments extends ibas.BusinessObjects<SalesInvoiceDownPayment, SalesInvoice> implements ISalesInvoiceDownPayments {
+            /** 创建并添加子项 */
+            create(): SalesInvoiceDownPayment {
+                let item: SalesInvoiceDownPayment = new SalesInvoiceDownPayment();
+                this.add(item);
+                return item;
+            }
+        }
 
         /** 销售发票-行 */
         export class SalesInvoiceItem extends ibas.BODocumentLine<SalesInvoiceItem> implements ISalesInvoiceItem {
@@ -1687,6 +1720,374 @@ namespace sales {
                 this.closedQuantity = 0;
             }
 
+        }
+
+        /** 销售发票-预收款 */
+        export class SalesInvoiceDownPayment extends ibas.BODocumentLine<SalesInvoiceDownPayment> implements ISalesInvoiceDownPayment {
+            /** 构造函数 */
+            constructor() {
+                super();
+            }
+            /** 映射的属性名称-凭证编号 */
+            static PROPERTY_DOCENTRY_NAME: string = "DocEntry";
+            /** 获取-凭证编号 */
+            get docEntry(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_DOCENTRY_NAME);
+            }
+            /** 设置-凭证编号 */
+            set docEntry(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_DOCENTRY_NAME, value);
+            }
+
+            /** 映射的属性名称-行号 */
+            static PROPERTY_LINEID_NAME: string = "LineId";
+            /** 获取-行号 */
+            get lineId(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_LINEID_NAME);
+            }
+            /** 设置-行号 */
+            set lineId(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_LINEID_NAME, value);
+            }
+
+            /** 映射的属性名称-显示顺序 */
+            static PROPERTY_VISORDER_NAME: string = "VisOrder";
+            /** 获取-显示顺序 */
+            get visOrder(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_VISORDER_NAME);
+            }
+            /** 设置-显示顺序 */
+            set visOrder(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_VISORDER_NAME, value);
+            }
+
+            /** 映射的属性名称-类型 */
+            static PROPERTY_OBJECTCODE_NAME: string = "ObjectCode";
+            /** 获取-类型 */
+            get objectCode(): string {
+                return this.getProperty<string>(SalesInvoiceDownPayment.PROPERTY_OBJECTCODE_NAME);
+            }
+            /** 设置-类型 */
+            set objectCode(value: string) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_OBJECTCODE_NAME, value);
+            }
+
+            /** 映射的属性名称-实例号（版本） */
+            static PROPERTY_LOGINST_NAME: string = "LogInst";
+            /** 获取-实例号（版本） */
+            get logInst(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_LOGINST_NAME);
+            }
+            /** 设置-实例号（版本） */
+            set logInst(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_LOGINST_NAME, value);
+            }
+
+            /** 映射的属性名称-数据源 */
+            static PROPERTY_DATASOURCE_NAME: string = "DataSource";
+            /** 获取-数据源 */
+            get dataSource(): string {
+                return this.getProperty<string>(SalesInvoiceDownPayment.PROPERTY_DATASOURCE_NAME);
+            }
+            /** 设置-数据源 */
+            set dataSource(value: string) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_DATASOURCE_NAME, value);
+            }
+
+            /** 映射的属性名称-状态 */
+            static PROPERTY_STATUS_NAME: string = "Status";
+            /** 获取-状态 */
+            get status(): ibas.emBOStatus {
+                return this.getProperty<ibas.emBOStatus>(SalesInvoiceDownPayment.PROPERTY_STATUS_NAME);
+            }
+            /** 设置-状态 */
+            set status(value: ibas.emBOStatus) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_STATUS_NAME, value);
+            }
+
+            /** 映射的属性名称-单据状态 */
+            static PROPERTY_LINESTATUS_NAME: string = "LineStatus";
+            /** 获取-单据状态 */
+            get lineStatus(): ibas.emDocumentStatus {
+                return this.getProperty<ibas.emDocumentStatus>(SalesInvoiceDownPayment.PROPERTY_LINESTATUS_NAME);
+            }
+            /** 设置-单据状态 */
+            set lineStatus(value: ibas.emDocumentStatus) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_LINESTATUS_NAME, value);
+            }
+
+            /** 映射的属性名称-创建日期 */
+            static PROPERTY_CREATEDATE_NAME: string = "CreateDate";
+            /** 获取-创建日期 */
+            get createDate(): Date {
+                return this.getProperty<Date>(SalesInvoiceDownPayment.PROPERTY_CREATEDATE_NAME);
+            }
+            /** 设置-创建日期 */
+            set createDate(value: Date) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_CREATEDATE_NAME, value);
+            }
+
+            /** 映射的属性名称-创建时间 */
+            static PROPERTY_CREATETIME_NAME: string = "CreateTime";
+            /** 获取-创建时间 */
+            get createTime(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_CREATETIME_NAME);
+            }
+            /** 设置-创建时间 */
+            set createTime(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_CREATETIME_NAME, value);
+            }
+
+            /** 映射的属性名称-修改日期 */
+            static PROPERTY_UPDATEDATE_NAME: string = "UpdateDate";
+            /** 获取-修改日期 */
+            get updateDate(): Date {
+                return this.getProperty<Date>(SalesInvoiceDownPayment.PROPERTY_UPDATEDATE_NAME);
+            }
+            /** 设置-修改日期 */
+            set updateDate(value: Date) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_UPDATEDATE_NAME, value);
+            }
+
+            /** 映射的属性名称-修改时间 */
+            static PROPERTY_UPDATETIME_NAME: string = "UpdateTime";
+            /** 获取-修改时间 */
+            get updateTime(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_UPDATETIME_NAME);
+            }
+            /** 设置-修改时间 */
+            set updateTime(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_UPDATETIME_NAME, value);
+            }
+
+            /** 映射的属性名称-创建用户 */
+            static PROPERTY_CREATEUSERSIGN_NAME: string = "CreateUserSign";
+            /** 获取-创建用户 */
+            get createUserSign(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_CREATEUSERSIGN_NAME);
+            }
+            /** 设置-创建用户 */
+            set createUserSign(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_CREATEUSERSIGN_NAME, value);
+            }
+
+            /** 映射的属性名称-修改用户 */
+            static PROPERTY_UPDATEUSERSIGN_NAME: string = "UpdateUserSign";
+            /** 获取-修改用户 */
+            get updateUserSign(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_UPDATEUSERSIGN_NAME);
+            }
+            /** 设置-修改用户 */
+            set updateUserSign(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_UPDATEUSERSIGN_NAME, value);
+            }
+
+            /** 映射的属性名称-创建动作标识 */
+            static PROPERTY_CREATEACTIONID_NAME: string = "CreateActionId";
+            /** 获取-创建动作标识 */
+            get createActionId(): string {
+                return this.getProperty<string>(SalesInvoiceDownPayment.PROPERTY_CREATEACTIONID_NAME);
+            }
+            /** 设置-创建动作标识 */
+            set createActionId(value: string) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_CREATEACTIONID_NAME, value);
+            }
+
+            /** 映射的属性名称-更新动作标识 */
+            static PROPERTY_UPDATEACTIONID_NAME: string = "UpdateActionId";
+            /** 获取-更新动作标识 */
+            get updateActionId(): string {
+                return this.getProperty<string>(SalesInvoiceDownPayment.PROPERTY_UPDATEACTIONID_NAME);
+            }
+            /** 设置-更新动作标识 */
+            set updateActionId(value: string) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_UPDATEACTIONID_NAME, value);
+            }
+
+            /** 映射的属性名称-参考1 */
+            static PROPERTY_REFERENCE1_NAME: string = "Reference1";
+            /** 获取-参考1 */
+            get reference1(): string {
+                return this.getProperty<string>(SalesInvoiceDownPayment.PROPERTY_REFERENCE1_NAME);
+            }
+            /** 设置-参考1 */
+            set reference1(value: string) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_REFERENCE1_NAME, value);
+            }
+
+            /** 映射的属性名称-参考2 */
+            static PROPERTY_REFERENCE2_NAME: string = "Reference2";
+            /** 获取-参考2 */
+            get reference2(): string {
+                return this.getProperty<string>(SalesInvoiceDownPayment.PROPERTY_REFERENCE2_NAME);
+            }
+            /** 设置-参考2 */
+            set reference2(value: string) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_REFERENCE2_NAME, value);
+            }
+
+            /** 映射的属性名称-收款类型 */
+            static PROPERTY_PAYMENTTYPE_NAME: string = "PaymentType";
+            /** 获取-收款类型 */
+            get paymentType(): string {
+                return this.getProperty<string>(SalesInvoiceDownPayment.PROPERTY_PAYMENTTYPE_NAME);
+            }
+            /** 设置-收款类型 */
+            set paymentType(value: string) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_PAYMENTTYPE_NAME, value);
+            }
+
+            /** 映射的属性名称-收款编号 */
+            static PROPERTY_PAYMENTENTRY_NAME: string = "PaymentEntry";
+            /** 获取-收款编号 */
+            get paymentEntry(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_PAYMENTENTRY_NAME);
+            }
+            /** 设置-收款编号 */
+            set paymentEntry(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_PAYMENTENTRY_NAME, value);
+            }
+
+            /** 映射的属性名称-收款行号 */
+            static PROPERTY_PAYMENTLINEID_NAME: string = "PaymentLineId";
+            /** 获取-收款行号 */
+            get paymentLineId(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_PAYMENTLINEID_NAME);
+            }
+            /** 设置-收款行号 */
+            set paymentLineId(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_PAYMENTLINEID_NAME, value);
+            }
+
+            /** 映射的属性名称-收款总计 */
+            static PROPERTY_PAYMENTTOTAL_NAME: string = "PaymentTotal";
+            /** 获取-收款总计 */
+            get paymentTotal(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_PAYMENTTOTAL_NAME);
+            }
+            /** 设置-收款总计 */
+            set paymentTotal(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_PAYMENTTOTAL_NAME, value);
+            }
+
+            /** 映射的属性名称-收款货币 */
+            static PROPERTY_PAYMENTCURRENCY_NAME: string = "PaymentCurrency";
+            /** 获取-收款货币 */
+            get paymentCurrency(): string {
+                return this.getProperty<string>(SalesInvoiceDownPayment.PROPERTY_PAYMENTCURRENCY_NAME);
+            }
+            /** 设置-收款货币 */
+            set paymentCurrency(value: string) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_PAYMENTCURRENCY_NAME, value);
+            }
+
+            /** 映射的属性名称-收款汇率 */
+            static PROPERTY_PAYMENTRATE_NAME: string = "PaymentRate";
+            /** 获取-收款汇率 */
+            get paymentRate(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_PAYMENTRATE_NAME);
+            }
+            /** 设置-收款汇率 */
+            set paymentRate(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_PAYMENTRATE_NAME, value);
+            }
+
+            /** 映射的属性名称-提取金额 */
+            static PROPERTY_DRAWNTOTAL_NAME: string = "DrawnTotal";
+            /** 获取-提取金额 */
+            get drawnTotal(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_DRAWNTOTAL_NAME);
+            }
+            /** 设置-提取金额 */
+            set drawnTotal(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_DRAWNTOTAL_NAME, value);
+            }
+
+            /** 映射的属性名称-基于类型 */
+            static PROPERTY_BASEDOCUMENTTYPE_NAME: string = "BaseDocumentType";
+            /** 获取-基于类型 */
+            get baseDocumentType(): string {
+                return this.getProperty<string>(SalesInvoiceDownPayment.PROPERTY_BASEDOCUMENTTYPE_NAME);
+            }
+            /** 设置-基于类型 */
+            set baseDocumentType(value: string) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_BASEDOCUMENTTYPE_NAME, value);
+            }
+
+            /** 映射的属性名称-基于标识 */
+            static PROPERTY_BASEDOCUMENTENTRY_NAME: string = "BaseDocumentEntry";
+            /** 获取-基于标识 */
+            get baseDocumentEntry(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_BASEDOCUMENTENTRY_NAME);
+            }
+            /** 设置-基于标识 */
+            set baseDocumentEntry(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_BASEDOCUMENTENTRY_NAME, value);
+            }
+
+            /** 映射的属性名称-基于行号 */
+            static PROPERTY_BASEDOCUMENTLINEID_NAME: string = "BaseDocumentLineId";
+            /** 获取-基于行号 */
+            get baseDocumentLineId(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_BASEDOCUMENTLINEID_NAME);
+            }
+            /** 设置-基于行号 */
+            set baseDocumentLineId(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_BASEDOCUMENTLINEID_NAME, value);
+            }
+
+            /** 映射的属性名称-原始类型 */
+            static PROPERTY_ORIGINALDOCUMENTTYPE_NAME: string = "OriginalDocumentType";
+            /** 获取-原始类型 */
+            get originalDocumentType(): string {
+                return this.getProperty<string>(SalesInvoiceDownPayment.PROPERTY_ORIGINALDOCUMENTTYPE_NAME);
+            }
+            /** 设置-原始类型 */
+            set originalDocumentType(value: string) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_ORIGINALDOCUMENTTYPE_NAME, value);
+            }
+
+            /** 映射的属性名称-原始标识 */
+            static PROPERTY_ORIGINALDOCUMENTENTRY_NAME: string = "OriginalDocumentEntry";
+            /** 获取-原始标识 */
+            get originalDocumentEntry(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_ORIGINALDOCUMENTENTRY_NAME);
+            }
+            /** 设置-原始标识 */
+            set originalDocumentEntry(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_ORIGINALDOCUMENTENTRY_NAME, value);
+            }
+
+            /** 映射的属性名称-原始行号 */
+            static PROPERTY_ORIGINALDOCUMENTLINEID_NAME: string = "OriginalDocumentLineId";
+            /** 获取-原始行号 */
+            get originalDocumentLineId(): number {
+                return this.getProperty<number>(SalesInvoiceDownPayment.PROPERTY_ORIGINALDOCUMENTLINEID_NAME);
+            }
+            /** 设置-原始行号 */
+            set originalDocumentLineId(value: number) {
+                this.setProperty(SalesInvoiceDownPayment.PROPERTY_ORIGINALDOCUMENTLINEID_NAME, value);
+            }
+
+            /** 基于收款 */
+            baseDocument(document: receiptpayment.bo.IReceiptItem): void {
+                this.paymentType = document.objectCode;
+                this.paymentEntry = document.docEntry;
+                this.paymentLineId = document.lineId;
+                this.paymentTotal = document.amount;
+                this.paymentCurrency = document.currency;
+                this.paymentRate = document.rate;
+                this.baseDocumentType = document.baseDocumentType;
+                this.baseDocumentEntry = document.baseDocumentEntry;
+                this.baseDocumentLineId = document.baseDocumentLineId;
+                this.originalDocumentType = document.originalDocumentType;
+                this.originalDocumentEntry = document.originalDocumentEntry;
+                this.originalDocumentLineId = document.originalDocumentLineId;
+            }
+
+            /** 初始化数据 */
+            protected init(): void {
+            }
         }
     }
 }

@@ -811,6 +811,26 @@ namespace sales {
                 condition.alias = bo.SalesQuote.PROPERTY_CUSTOMERCODE_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = this.editData.customerCode;
+                // 指定了合同/协议
+                if (!ibas.strings.isEmpty(this.editData.agreements)) {
+                    let index: number = criteria.conditions.length;
+                    for (let item of this.editData.agreements.split(ibas.DATA_SEPARATOR)) {
+                        if (ibas.strings.isEmpty(item)) {
+                            continue;
+                        }
+                        condition = criteria.conditions.create();
+                        condition.alias = bo.SalesQuote.PROPERTY_AGREEMENTS_NAME;
+                        condition.operation = ibas.emConditionOperation.CONTAIN;
+                        condition.value = item;
+                        if (criteria.conditions.length > (index + 1)) {
+                            condition.relationship = ibas.emConditionRelationship.OR;
+                        }
+                    }
+                    if (criteria.conditions.length > (index + 2)) {
+                        criteria.conditions[index].bracketOpen += 1;
+                        criteria.conditions[criteria.conditions.length - 1].bracketClose += 1;
+                    }
+                }
                 // 潜在客户的
                 if (!ibas.objects.isNull(this.customer) && !ibas.strings.isEmpty(this.customer.lead)) {
                     condition.bracketOpen = 1;
@@ -1013,6 +1033,12 @@ namespace sales {
                                         ).forEach(c => c.quantity = 0);
                                         // 使用预留库存
                                         for (let result of results) {
+                                            if (result.status === ibas.emBOStatus.CLOSED) {
+                                                continue;
+                                            }
+                                            if (result.closedQuantity >= result.quantity) {
+                                                continue;
+                                            }
                                             let wItems: bo.SalesDeliveryItem[] = target.salesDeliveryItems.where(c =>
                                                 result.targetDocumentType === c.baseDocumentType
                                                 && result.targetDocumentEntry === c.baseDocumentEntry
@@ -1030,13 +1056,18 @@ namespace sales {
                                                 target.salesDeliveryItems.add(wItem);
                                             }
                                             // 应用库存
-                                            wItem.quantity += result.quantity;
+                                            wItem.quantity = ibas.numbers.round(wItem.quantity + result.quantity - result.closedQuantity);
                                             // 处理明细项
                                             if (!ibas.strings.isEmpty(result.batchCode)) {
                                                 // 批次管理
-                                                let bItem: materials.bo.IMaterialBatchItem = wItem.materialBatches.create();
-                                                bItem.batchCode = result.batchCode;
-                                                bItem.quantity = result.quantity;
+                                                let bItem: materials.bo.IMaterialBatchItem = wItem.materialBatches.find(c => c.batchCode === result.batchCode);
+                                                if (ibas.objects.isNull(bItem)) {
+                                                    // 没有同批次的，则新建行
+                                                    bItem = wItem.materialBatches.create();
+                                                    bItem.batchCode = result.batchCode;
+                                                    bItem.quantity = 0;
+                                                }
+                                                bItem.quantity = ibas.numbers.round(bItem.quantity + result.quantity - result.closedQuantity);
                                             } else if (!ibas.strings.isEmpty(result.serialCode)) {
                                                 // 序列管理
                                                 let sItem: materials.bo.IMaterialSerialItem = wItem.materialSerials.create();
@@ -1132,7 +1163,26 @@ namespace sales {
                             target.customerCode = this.editData.customerCode;
                             target.customerName = this.editData.customerName;
                             target.baseDocument(this.editData);
-
+                            // 预付款查询
+                            let condition: ibas.ICondition;
+                            let criteria: ibas.ICriteria = new ibas.Criteria();
+                            let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
+                            cCriteria.propertyPath = receiptpayment.bo.Receipt.PROPERTY_RECEIPTITEMS_NAME;
+                            cCriteria.onlyHasChilds = true;
+                            for (let item of this.editData.salesOrderItems) {
+                                // 基于单据为订单
+                                condition = cCriteria.conditions.create();
+                                condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_BASEDOCUMENTTYPE_NAME;
+                                condition.value = item.objectCode;
+                                condition.bracketOpen = 1;
+                                if (cCriteria.conditions.length > 2) {
+                                    condition.relationship = ibas.emConditionRelationship.OR;
+                                }
+                                condition = cCriteria.conditions.create();
+                                condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_BASEDOCUMENTENTRY_NAME;
+                                condition.value = item.docEntry.toString();
+                                condition.bracketClose = 1;
+                            }
                             // 使用预留库存
                             materials.app.useReservedMaterialsInventory({
                                 targetType: this.editData.objectCode,
@@ -1149,6 +1199,12 @@ namespace sales {
                                         ).forEach(c => c.quantity = 0);
                                         // 使用预留库存
                                         for (let result of results) {
+                                            if (result.status === ibas.emBOStatus.CLOSED) {
+                                                continue;
+                                            }
+                                            if (result.closedQuantity >= result.quantity) {
+                                                continue;
+                                            }
                                             let wItems: bo.SalesInvoiceItem[] = target.salesInvoiceItems.where(c =>
                                                 result.targetDocumentType === c.baseDocumentType
                                                 && result.targetDocumentEntry === c.baseDocumentEntry
@@ -1166,13 +1222,18 @@ namespace sales {
                                                 target.salesInvoiceItems.add(wItem);
                                             }
                                             // 应用库存
-                                            wItem.quantity += result.quantity;
+                                            wItem.quantity = ibas.numbers.round(wItem.quantity + result.quantity - result.closedQuantity);
                                             // 处理明细项
                                             if (!ibas.strings.isEmpty(result.batchCode)) {
                                                 // 批次管理
-                                                let bItem: materials.bo.IMaterialBatchItem = wItem.materialBatches.create();
-                                                bItem.batchCode = result.batchCode;
-                                                bItem.quantity = result.quantity;
+                                                let bItem: materials.bo.IMaterialBatchItem = wItem.materialBatches.find(c => c.batchCode === result.batchCode);
+                                                if (ibas.objects.isNull(bItem)) {
+                                                    // 没有同批次的，则新建行
+                                                    bItem = wItem.materialBatches.create();
+                                                    bItem.batchCode = result.batchCode;
+                                                    bItem.quantity = 0;
+                                                }
+                                                bItem.quantity = ibas.numbers.round(bItem.quantity + result.quantity - result.closedQuantity);
                                             } else if (!ibas.strings.isEmpty(result.serialCode)) {
                                                 // 序列管理
                                                 let sItem: materials.bo.IMaterialSerialItem = wItem.materialSerials.create();
@@ -1185,9 +1246,11 @@ namespace sales {
                                     app.navigation = this.navigation;
                                     app.viewShower = this.viewShower;
                                     app.run(target);
+                                    if (target.isNew) {
+                                        app.addSalesInvoiceDownPayment(criteria);
+                                    }
                                 }
                             });
-
                         } catch (error) {
                             this.messages(error);
                         }
@@ -1297,6 +1360,26 @@ namespace sales {
                 condition.alias = bo.BlanketAgreement.PROPERTY_CUSTOMERCODE_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = this.editData.customerCode;
+                // 指定了合同/协议
+                if (!ibas.strings.isEmpty(this.editData.agreements)) {
+                    let index: number = criteria.conditions.length;
+                    for (let item of this.editData.agreements.split(ibas.DATA_SEPARATOR)) {
+                        if (ibas.strings.isEmpty(item)) {
+                            continue;
+                        }
+                        condition = criteria.conditions.create();
+                        condition.alias = bo.BlanketAgreement.PROPERTY_AGREEMENTS_NAME;
+                        condition.operation = ibas.emConditionOperation.CONTAIN;
+                        condition.value = item;
+                        if (criteria.conditions.length > (index + 1)) {
+                            condition.relationship = ibas.emConditionRelationship.OR;
+                        }
+                    }
+                    if (criteria.conditions.length > (index + 2)) {
+                        criteria.conditions[index].bracketOpen += 1;
+                        criteria.conditions[criteria.conditions.length - 1].bracketClose += 1;
+                    }
+                }
                 // 未过期的
                 condition = criteria.conditions.create();
                 condition.bracketOpen = 1;

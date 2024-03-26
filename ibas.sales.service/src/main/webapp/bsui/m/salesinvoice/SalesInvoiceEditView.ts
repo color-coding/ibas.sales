@@ -52,6 +52,10 @@ namespace sales {
                 editShippingAddressesEvent: Function;
                 /** 转为销售交货事件 */
                 turnToSalesCreditNoteEvent: Function;
+                /** 添加销售发票-预收款事件 */
+                addSalesInvoiceDownPaymentEvent: Function;
+                /** 删除销售发票-预收款事件 */
+                removeSalesInvoiceDownPaymentEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */
@@ -885,6 +889,9 @@ namespace sales {
                 /** 显示数据（销售发票-行） */
                 showSalesInvoiceItems(datas: bo.SalesInvoiceItem[]): void {
                     this.listSalesInvoiceItem.setModel(new sap.extension.model.JSONModel({ rows: datas }));
+                }
+                /** 显示数据-销售发票-预收款 */
+                showSalesInvoiceDownPayments(datas: bo.SalesInvoiceDownPayment[]): void {
                 }
                 /** 编辑数据（销售发票-行） */
                 editSalesInvoiceItem(data: bo.SalesInvoiceItem): void {

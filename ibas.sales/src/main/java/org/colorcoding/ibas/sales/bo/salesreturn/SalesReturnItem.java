@@ -35,12 +35,12 @@ import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItems;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.data.Ledgers;
+import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
+import org.colorcoding.ibas.materials.logic.IDocumentQuantityReturnContract;
 import org.colorcoding.ibas.materials.logic.IMaterialReceiptContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
-import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
-import org.colorcoding.ibas.materials.logic.IDocumentQuantityReturnContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceQtyTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceTaxTotal;
@@ -2709,37 +2709,6 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 				}
 
 			});
-		} else if (MyConfiguration.applyVariables(SalesOrder.BUSINESS_OBJECT_CODE)
-				.equals(SalesReturnItem.this.getOriginalDocumentType())) {
-			// 原始单据销售订单
-			contracts.add(new IDocumentQuantityReturnContract() {
-
-				@Override
-				public String getIdentifiers() {
-					return SalesReturnItem.this.getIdentifiers();
-				}
-
-				@Override
-				public BigDecimal getQuantity() {
-					return SalesReturnItem.this.getQuantity();
-				}
-
-				@Override
-				public String getBaseDocumentType() {
-					return SalesReturnItem.this.getOriginalDocumentType();
-				}
-
-				@Override
-				public Integer getBaseDocumentEntry() {
-					return SalesReturnItem.this.getOriginalDocumentEntry();
-				}
-
-				@Override
-				public Integer getBaseDocumentLineId() {
-					return SalesReturnItem.this.getOriginalDocumentLineId();
-				}
-
-			});
 		} else {
 			// 其他基础单据
 			contracts.add(new IDocumentQuantityClosingContract() {
@@ -2767,6 +2736,38 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 				@Override
 				public Integer getBaseDocumentLineId() {
 					return SalesReturnItem.this.getBaseDocumentLineId();
+				}
+
+			});
+		}
+		if (MyConfiguration.applyVariables(SalesOrder.BUSINESS_OBJECT_CODE)
+				.equals(SalesReturnItem.this.getOriginalDocumentType())) {
+			// 原始单据销售订单
+			contracts.add(new IDocumentQuantityReturnContract() {
+
+				@Override
+				public String getIdentifiers() {
+					return SalesReturnItem.this.getIdentifiers();
+				}
+
+				@Override
+				public BigDecimal getQuantity() {
+					return SalesReturnItem.this.getQuantity();
+				}
+
+				@Override
+				public String getBaseDocumentType() {
+					return SalesReturnItem.this.getOriginalDocumentType();
+				}
+
+				@Override
+				public Integer getBaseDocumentEntry() {
+					return SalesReturnItem.this.getOriginalDocumentEntry();
+				}
+
+				@Override
+				public Integer getBaseDocumentLineId() {
+					return SalesReturnItem.this.getOriginalDocumentLineId();
 				}
 
 			});

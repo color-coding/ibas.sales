@@ -844,9 +844,17 @@ public interface ISalesInvoice extends IBODocument, IShippingAddressParent {
 	void setShippingAddresss(IShippingAddresss value);
 
 	/**
-	 * 获取-项目的行总计
+	 * 获取-销售发票-预收款集合
 	 * 
+	 * @return 值
 	 */
-	BigDecimal getItemsLineTotal();
+	ISalesInvoiceDownPayments getSalesInvoiceDownPayments();
+
+	/**
+	 * 设置-销售发票-预收款集合
+	 * 
+	 * @param value 值
+	 */
+	void setSalesInvoiceDownPayments(ISalesInvoiceDownPayments value);
 
 }
