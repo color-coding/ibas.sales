@@ -7,9 +7,12 @@ import org.colorcoding.ibas.bobas.common.IChildCriteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.data.Decimal;
-import org.colorcoding.ibas.bobas.i18n.I18N;
+import org.colorcoding.ibas.bobas.data.emDirection;
 import org.colorcoding.ibas.bobas.logic.BusinessLogicException;
-import org.colorcoding.ibas.materials.logic.journalentry.MaterialsCost;
+import org.colorcoding.ibas.materials.bo.materialinventory.IMaterialInventoryJournal;
+import org.colorcoding.ibas.materials.bo.materialinventory.MaterialInventoryJournal;
+import org.colorcoding.ibas.materials.logic.journalentry.MaterialsInventoryCost;
+import org.colorcoding.ibas.materials.repository.BORepositoryMaterials;
 import org.colorcoding.ibas.sales.bo.salesdelivery.ISalesDelivery;
 import org.colorcoding.ibas.sales.bo.salesdelivery.ISalesDeliveryItem;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
@@ -18,14 +21,15 @@ import org.colorcoding.ibas.sales.bo.salesinvoice.ISalesInvoiceItem;
 import org.colorcoding.ibas.sales.data.DataConvert;
 import org.colorcoding.ibas.sales.repository.BORepositorySales;
 
-public class SalesInvoiceDeliveryMaterialsCost extends MaterialsCost {
+public class SalesInvoiceDeliveryMaterialsCost extends MaterialsInventoryCost {
 
-	public SalesInvoiceDeliveryMaterialsCost(Object sourceData) {
-		super(sourceData);
+	public SalesInvoiceDeliveryMaterialsCost(Object sourceData, BigDecimal quantity) {
+		super(sourceData, quantity);
+		this.setNegate(false);
 	}
 
 	@Override
-	public void caculate() throws Exception {
+	protected boolean caculate(String itemCode, String warehouse) {
 		if (this.getSourceData() instanceof ISalesInvoiceItem) {
 			ISalesInvoiceItem item = (ISalesInvoiceItem) this.getSourceData();
 			if (!DataConvert.isNullOrEmpty(item.getBaseDocumentType()) && item.getBaseDocumentEntry() > 0
@@ -62,8 +66,31 @@ public class SalesInvoiceDeliveryMaterialsCost extends MaterialsCost {
 							// 新建的取物料上的
 							avaPrice = this.getAvgPrice(item.getItemCode(), item.getWarehouse());
 						} else {
-							avaPrice = this.getAvgPrice(item.getObjectCode(), item.getDocEntry(), item.getLineId(),
-									item.getItemCode(), item.getWarehouse());
+							criteria = new Criteria();
+							condition = criteria.getConditions().create();
+							condition.setAlias(MaterialInventoryJournal.PROPERTY_DIRECTION.getName());
+							condition.setValue(emDirection.OUT);
+							condition = criteria.getConditions().create();
+							condition.setAlias(MaterialInventoryJournal.PROPERTY_BASEDOCUMENTTYPE.getName());
+							condition.setValue(item.getObjectCode());
+							condition = criteria.getConditions().create();
+							condition.setAlias(MaterialInventoryJournal.PROPERTY_BASEDOCUMENTTYPE.getName());
+							condition.setValue(item.getDocEntry());
+							condition = criteria.getConditions().create();
+							condition.setAlias(MaterialInventoryJournal.PROPERTY_BASEDOCUMENTLINEID.getName());
+							condition.setValue(item.getLineId());
+							BORepositoryMaterials boRepositoryMM = new BORepositoryMaterials();
+							boRepositoryMM.setRepository(this.getService().getRepository());
+							for (IMaterialInventoryJournal journal : boRepositoryMM
+									.fetchMaterialInventoryJournal(criteria).getResultObjects()) {
+								if (!journal.getItemCode().equals(itemCode)) {
+									continue;
+								}
+								if (!journal.getWarehouse().equals(warehouse)) {
+									continue;
+								}
+								avaPrice = journal.getCalculatedPrice();
+							}
 							if (avaPrice == null) {
 								// 库存记录没有
 								avaPrice = this.getAvgPrice(item.getItemCode(), item.getWarehouse());
@@ -71,15 +98,13 @@ public class SalesInvoiceDeliveryMaterialsCost extends MaterialsCost {
 						}
 						if (avaPrice != null) {
 							this.setAmount(Decimal.multiply(item.getQuantity(), avaPrice));
-							return;
+							return true;
 						}
-						break;
 					}
-					break;
 				}
 			}
 		}
-		throw new Exception(I18N.prop("msg_bobas_not_support_the_compute"));
+		return false;
 	}
 
 }

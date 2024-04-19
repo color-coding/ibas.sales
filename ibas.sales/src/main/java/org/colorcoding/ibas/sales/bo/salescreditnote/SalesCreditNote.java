@@ -50,6 +50,7 @@ import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.journalentry.JournalEntrySmartContent;
+import org.colorcoding.ibas.materials.logic.journalentry.MaterialsInventoryCost;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.salesinvoice.SalesInvoice;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
@@ -57,7 +58,6 @@ import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
 import org.colorcoding.ibas.sales.logic.journalentry.SalesCreditNoteInvoiceMaterialsCost;
-import org.colorcoding.ibas.sales.logic.journalentry.SalesCreditNoteMaterialsCost;
 import org.colorcoding.ibas.sales.logic.journalentry.SalesCreditNoteReturnMaterialsCost;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
@@ -2114,18 +2114,18 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote> implements 
 							if (SalesReturnCode.equals(line.getBaseDocumentType())) {
 								/** 基于退货 **/
 								// 销售成本科目
-								jeContent = new SalesCreditNoteMaterialsCost(line);
+								jeContent = new MaterialsInventoryCost(line, line.getInventoryQuantity(), true);
 								jeContent.setCategory(Category.Debit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 已装载货物科目
-								jeContent = new SalesCreditNoteReturnMaterialsCost(line);
+								jeContent = new SalesCreditNoteReturnMaterialsCost(line, line.getInventoryQuantity());
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
@@ -2148,18 +2148,18 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote> implements 
 							} else if (SalesInvoiceCode.equals(line.getBaseDocumentType())) {
 								/** 基于发票 **/
 								// 销售成本科目
-								jeContent = new SalesCreditNoteInvoiceMaterialsCost(line);
+								jeContent = new SalesCreditNoteInvoiceMaterialsCost(line, line.getInventoryQuantity());
 								jeContent.setCategory(Category.Debit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 销售退货科目
-								jeContent = new SalesCreditNoteInvoiceMaterialsCost(line);
+								jeContent = new SalesCreditNoteInvoiceMaterialsCost(line, line.getInventoryQuantity());
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SALES_RETURNS_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
@@ -2182,18 +2182,18 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote> implements 
 							} else {
 								/** 不基于单据 **/
 								// 销售成本科目
-								jeContent = new SalesCreditNoteMaterialsCost(line);
+								jeContent = new MaterialsInventoryCost(line, line.getInventoryQuantity(), true);
 								jeContent.setCategory(Category.Debit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 销售退货科目
-								jeContent = new SalesCreditNoteMaterialsCost(line);
+								jeContent = new MaterialsInventoryCost(line, line.getInventoryQuantity(), true);
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SALES_RETURNS_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);

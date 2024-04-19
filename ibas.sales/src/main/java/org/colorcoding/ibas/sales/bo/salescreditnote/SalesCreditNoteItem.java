@@ -35,13 +35,14 @@ import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItems;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.data.Ledgers;
+import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
+import org.colorcoding.ibas.materials.logic.IDocumentQuantityReturnContract;
 import org.colorcoding.ibas.materials.logic.IMaterialReceiptContract;
+import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCheckContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
-import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
-import org.colorcoding.ibas.materials.logic.IDocumentQuantityReturnContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceQtyTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceTaxTotal;
@@ -2477,7 +2478,6 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 		return new IBusinessRule[] {
 				// 注册的业务规则
 				new BusinessRuleRequired(PROPERTY_ITEMCODE), // 要求有值
-				new BusinessRuleRequired(PROPERTY_WAREHOUSE), // 要求有值
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_CLOSEDQUANTITY), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_CLOSEDAMOUNT), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_QUANTITY), // 不能低于0
@@ -2551,7 +2551,40 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 
 	@Override
 	public IBusinessLogicContract[] getContracts() {
-		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>();
+		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>(4);
+		// 物料及仓库检查
+		contracts.add(new IMaterialWarehouseCheckContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesCreditNoteItem.this.getIdentifiers();
+			}
+
+			@Override
+			public String getItemCode() {
+				return SalesCreditNoteItem.this.getItemCode();
+			}
+
+			@Override
+			public String getItemVersion() {
+				return SalesCreditNoteItem.this.getItemVersion();
+			}
+
+			@Override
+			public emYesNo getBatchManagement() {
+				return SalesCreditNoteItem.this.getBatchManagement();
+			}
+
+			@Override
+			public emYesNo getSerialManagement() {
+				return SalesCreditNoteItem.this.getSerialManagement();
+			}
+
+			@Override
+			public String getWarehouse() {
+				return SalesCreditNoteItem.this.getWarehouse();
+			}
+		});
 		// 基于单据完成数量
 		if (!MyConfiguration.applyVariables(SalesOrder.BUSINESS_OBJECT_CODE)
 				.equals(SalesCreditNoteItem.this.getBaseDocumentType())) {

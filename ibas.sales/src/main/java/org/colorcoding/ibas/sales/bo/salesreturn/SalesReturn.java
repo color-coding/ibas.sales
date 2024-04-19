@@ -49,13 +49,13 @@ import org.colorcoding.ibas.document.IDocumentCloseQuantityItem;
 import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
+import org.colorcoding.ibas.materials.logic.journalentry.MaterialsInventoryCost;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
 import org.colorcoding.ibas.sales.logic.journalentry.SalesReturnDeliveryMaterialsCost;
-import org.colorcoding.ibas.sales.logic.journalentry.SalesReturnMaterialsCost;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 
@@ -2108,36 +2108,36 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 							if (SalesDeliveryCode.equals(line.getBaseDocumentType())) {
 								/** 基于交货 **/
 								// 已装载货物科目
-								jeContent = new SalesReturnDeliveryMaterialsCost(line);
+								jeContent = new SalesReturnDeliveryMaterialsCost(line, line.getInventoryQuantity());
 								jeContent.setCategory(Category.Debit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 销售退货科目
-								jeContent = new SalesReturnDeliveryMaterialsCost(line);
+								jeContent = new SalesReturnDeliveryMaterialsCost(line, line.getInventoryQuantity());
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SALES_RETURNS_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 							} else {
 								/** 不基于单据 **/
 								// 已装载货物科目
-								jeContent = new SalesReturnMaterialsCost(line);
+								jeContent = new MaterialsInventoryCost(line, line.getInventoryQuantity(), true);
 								jeContent.setCategory(Category.Debit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 								// 销售退货科目
-								jeContent = new SalesReturnMaterialsCost(line);
+								jeContent = new MaterialsInventoryCost(line, line.getInventoryQuantity(), true);
 								jeContent.setCategory(Category.Credit);
 								jeContent.setLedger(Ledgers.LEDGER_SALES_SALES_RETURNS_ACCOUNT);
-								jeContent.setAmount(Decimal.ZERO);// 待计算
+								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);

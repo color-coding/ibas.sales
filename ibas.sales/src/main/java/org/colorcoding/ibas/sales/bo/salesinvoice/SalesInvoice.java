@@ -53,6 +53,7 @@ import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.journalentry.JournalEntrySmartContent;
+import org.colorcoding.ibas.materials.logic.journalentry.MaterialsInventoryCost;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
@@ -60,7 +61,6 @@ import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
 import org.colorcoding.ibas.sales.logic.journalentry.SalesInvoiceDeliveryMaterialsCost;
 import org.colorcoding.ibas.sales.logic.journalentry.SalesInvoiceDownPaymentAmount;
-import org.colorcoding.ibas.sales.logic.journalentry.SalesInvoiceMaterialsCost;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 
@@ -2181,18 +2181,18 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 					if (SalesDeliveryCode.equals(line.getBaseDocumentType())) {
 						/** 基于交货 **/
 						// 销售成本科目
-						jeContent = new SalesInvoiceDeliveryMaterialsCost(line);
+						jeContent = new SalesInvoiceDeliveryMaterialsCost(line, line.getInventoryQuantity());
 						jeContent.setCategory(Category.Debit);
 						jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
-						jeContent.setAmount(Decimal.ZERO);// 待计算
+						jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 						jeContent.setCurrency(line.getCurrency());
 						jeContent.setRate(line.getRate());
 						jeContents.add(jeContent);
 						// 已装载货物科目
-						jeContent = new SalesInvoiceDeliveryMaterialsCost(line);
+						jeContent = new SalesInvoiceDeliveryMaterialsCost(line, line.getInventoryQuantity());
 						jeContent.setCategory(Category.Credit);
 						jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
-						jeContent.setAmount(Decimal.ZERO);// 待计算
+						jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 						jeContent.setCurrency(line.getCurrency());
 						jeContent.setRate(line.getRate());
 						jeContents.add(jeContent);
@@ -2215,18 +2215,18 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 					} else {
 						/** 不基于单据 **/
 						// 销售成本科目
-						jeContent = new SalesInvoiceMaterialsCost(line);
+						jeContent = new MaterialsInventoryCost(line, line.getInventoryQuantity());
 						jeContent.setCategory(Category.Debit);
 						jeContent.setLedger(Ledgers.LEDGER_SALES_COST_OF_GOODS_SOLD_ACCOUNT);
-						jeContent.setAmount(Decimal.ZERO);// 待计算
+						jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 						jeContent.setCurrency(line.getCurrency());
 						jeContent.setRate(line.getRate());
 						jeContents.add(jeContent);
-						// 已装载货物科目
-						jeContent = new SalesInvoiceMaterialsCost(line);
+						// 库存科目
+						jeContent = new MaterialsInventoryCost(line, line.getInventoryQuantity());
 						jeContent.setCategory(Category.Credit);
-						jeContent.setLedger(Ledgers.LEDGER_SALES_SHIPPED_GOODS_ACCOUNT);
-						jeContent.setAmount(Decimal.ZERO);// 待计算
+						jeContent.setLedger(Ledgers.LEDGER_INVENTORY_INVENTORY_ACCOUNT);
+						jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 						jeContent.setCurrency(line.getCurrency());
 						jeContent.setRate(line.getRate());
 						jeContents.add(jeContent);
@@ -2301,35 +2301,7 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 			public IDocumentReconciliationContent[] getContents() {
 				ArrayList<IDocumentReconciliationContent> contents = new ArrayList<>(
 						SalesInvoice.this.getSalesInvoiceDownPayments().size() + 1);
-				contents.add(new IDocumentReconciliationContent() {
-
-					@Override
-					public String getShortName() {
-						return SalesInvoice.this.getCustomerCode();
-					}
-
-					@Override
-					public String getBaseDocumentType() {
-						return SalesInvoice.this.getObjectCode();
-					}
-
-					@Override
-					public Integer getBaseDocumentEntry() {
-						return SalesInvoice.this.getDocEntry();
-					}
-
-					@Override
-					public BigDecimal getAmount() {
-						return SalesInvoice.this.getDownPaymentTotal();
-					}
-
-					@Override
-					public String getCurrency() {
-						return SalesInvoice.this.getDocumentCurrency();
-					}
-
-				});
-				for (ISalesInvoiceDownPayment item : SalesInvoice.this.getSalesInvoiceDownPayments()) {
+				if (!SalesInvoice.this.getSalesInvoiceDownPayments().isEmpty()) {
 					contents.add(new IDocumentReconciliationContent() {
 
 						@Override
@@ -2339,25 +2311,55 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 
 						@Override
 						public String getBaseDocumentType() {
-							return item.getBaseDocumentType();
+							return SalesInvoice.this.getObjectCode();
 						}
 
 						@Override
 						public Integer getBaseDocumentEntry() {
-							return item.getBaseDocumentEntry();
+							return SalesInvoice.this.getDocEntry();
 						}
 
 						@Override
 						public BigDecimal getAmount() {
-							return item.getDrawnTotal().negate();
+							return SalesInvoice.this.getDownPaymentTotal();
 						}
 
 						@Override
 						public String getCurrency() {
-							return item.getPaymentCurrency();
+							return SalesInvoice.this.getDocumentCurrency();
 						}
 
 					});
+					for (ISalesInvoiceDownPayment item : SalesInvoice.this.getSalesInvoiceDownPayments()) {
+						contents.add(new IDocumentReconciliationContent() {
+
+							@Override
+							public String getShortName() {
+								return SalesInvoice.this.getCustomerCode();
+							}
+
+							@Override
+							public String getBaseDocumentType() {
+								return item.getBaseDocumentType();
+							}
+
+							@Override
+							public Integer getBaseDocumentEntry() {
+								return item.getBaseDocumentEntry();
+							}
+
+							@Override
+							public BigDecimal getAmount() {
+								return item.getDrawnTotal().negate();
+							}
+
+							@Override
+							public String getCurrency() {
+								return item.getPaymentCurrency();
+							}
+
+						});
+					}
 				}
 				return contents.toArray(new IDocumentReconciliationContent[] {});
 			}

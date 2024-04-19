@@ -24,6 +24,7 @@ import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
+import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCheckContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.logic.IMaterialInventoryReservationStatusContract;
@@ -2464,6 +2465,39 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem>
 	@Override
 	public IBusinessLogicContract[] getContracts() {
 		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>(4);
+		// 物料及仓库检查
+		contracts.add(new IMaterialWarehouseCheckContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesQuoteItem.this.getIdentifiers();
+			}
+
+			@Override
+			public String getItemCode() {
+				return SalesQuoteItem.this.getItemCode();
+			}
+
+			@Override
+			public String getItemVersion() {
+				return SalesQuoteItem.this.getItemVersion();
+			}
+
+			@Override
+			public emYesNo getBatchManagement() {
+				return SalesQuoteItem.this.getBatchManagement();
+			}
+
+			@Override
+			public emYesNo getSerialManagement() {
+				return SalesQuoteItem.this.getSerialManagement();
+			}
+
+			@Override
+			public String getWarehouse() {
+				return SalesQuoteItem.this.getWarehouse();
+			}
+		});
 		// 订购预留关闭
 		contracts.add(new IMaterialOrderedReservationStatusContract() {
 

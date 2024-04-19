@@ -35,12 +35,13 @@ import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItems;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.data.Ledgers;
+import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
 import org.colorcoding.ibas.materials.logic.IMaterialIssueContract;
+import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCheckContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
 import org.colorcoding.ibas.sales.logic.IBlanketAgreementQuantityContract;
-import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceQtyTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceTaxTotal;
@@ -2475,7 +2476,6 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 		return new IBusinessRule[] {
 				// 注册的业务规则
 				new BusinessRuleRequired(PROPERTY_ITEMCODE), // 要求有值
-				new BusinessRuleRequired(PROPERTY_WAREHOUSE), // 要求有值
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_CLOSEDQUANTITY), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_CLOSEDAMOUNT), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_QUANTITY), // 不能低于0
@@ -2549,7 +2549,40 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 
 	@Override
 	public IBusinessLogicContract[] getContracts() {
-		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>();
+		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>(4);
+		// 物料及仓库检查
+		contracts.add(new IMaterialWarehouseCheckContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesInvoiceItem.this.getIdentifiers();
+			}
+
+			@Override
+			public String getItemCode() {
+				return SalesInvoiceItem.this.getItemCode();
+			}
+
+			@Override
+			public String getItemVersion() {
+				return SalesInvoiceItem.this.getItemVersion();
+			}
+
+			@Override
+			public emYesNo getBatchManagement() {
+				return SalesInvoiceItem.this.getBatchManagement();
+			}
+
+			@Override
+			public emYesNo getSerialManagement() {
+				return SalesInvoiceItem.this.getSerialManagement();
+			}
+
+			@Override
+			public String getWarehouse() {
+				return SalesInvoiceItem.this.getWarehouse();
+			}
+		});
 		// 基于单据完成数量
 		contracts.add(new IDocumentQuantityClosingContract() {
 
