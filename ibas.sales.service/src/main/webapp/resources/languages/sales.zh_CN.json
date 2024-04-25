@@ -101,5 +101,6 @@
   "sales_document_receipted": "单据已收款，单号：{0}，金额：{1} {2}",
   "sales_material_packing_create_multiple_delivery": "物料拣配生成[{0}]个交货单据",
   "sales_material_packing_cannot_multiple_customer": "多个客户的订单不能一起拣配",
+  "sales_documents_no_amount_to_be_paid": "单据没有需要付款的金额",
   "sales_closing_delimiter": "----结束----"
 }
