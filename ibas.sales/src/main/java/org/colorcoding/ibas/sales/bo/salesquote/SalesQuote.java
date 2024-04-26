@@ -39,8 +39,8 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.businesspartner.data.emBusinessPartnerType;
 import org.colorcoding.ibas.businesspartner.logic.ILeadCheckContract;
-import org.colorcoding.ibas.document.IDocumentClosingItem;
 import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
+import org.colorcoding.ibas.document.IDocumentClosingItem;
 import org.colorcoding.ibas.materials.logic.IMaterialPriceCheckContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.logic.ICustomerAndFloorListCheckContract;
@@ -2039,7 +2039,7 @@ public class SalesQuote extends BusinessObject<SalesQuote> implements ISalesQuot
 	}
 
 	@Override
-	public Iterator<IDocumentClosingItem> getItems() {
+	public Iterator<IDocumentClosingItem> getQuantityItems() {
 		return new Iterator<IDocumentClosingItem>() {
 			int index = -1;
 

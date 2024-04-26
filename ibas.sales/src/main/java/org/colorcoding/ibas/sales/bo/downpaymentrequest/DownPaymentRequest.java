@@ -39,8 +39,8 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
-import org.colorcoding.ibas.document.IDocumentClosingItem;
 import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
+import org.colorcoding.ibas.document.IDocumentClosingItem;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountTotal;
@@ -1747,7 +1747,7 @@ public class DownPaymentRequest extends BusinessObject<DownPaymentRequest> imple
 	}
 
 	@Override
-	public Iterator<IDocumentClosingItem> getItems() {
+	public Iterator<IDocumentClosingItem> getQuantityItems() {
 		return new Iterator<IDocumentClosingItem>() {
 			int index = -1;
 
