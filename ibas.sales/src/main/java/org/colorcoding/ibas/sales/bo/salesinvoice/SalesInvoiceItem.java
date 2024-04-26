@@ -35,6 +35,7 @@ import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItems;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.data.Ledgers;
+import org.colorcoding.ibas.materials.logic.IDocumentAmountClosingContract;
 import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
 import org.colorcoding.ibas.materials.logic.IMaterialIssueContract;
 import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCheckContract;
@@ -2549,7 +2550,7 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 
 	@Override
 	public IBusinessLogicContract[] getContracts() {
-		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>(4);
+		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>(6);
 		// 物料及仓库检查
 		contracts.add(new IMaterialWarehouseCheckContract() {
 
@@ -2594,6 +2595,35 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 			@Override
 			public BigDecimal getQuantity() {
 				return SalesInvoiceItem.this.getQuantity();
+			}
+
+			@Override
+			public String getBaseDocumentType() {
+				return SalesInvoiceItem.this.getBaseDocumentType();
+			}
+
+			@Override
+			public Integer getBaseDocumentEntry() {
+				return SalesInvoiceItem.this.getBaseDocumentEntry();
+			}
+
+			@Override
+			public Integer getBaseDocumentLineId() {
+				return SalesInvoiceItem.this.getBaseDocumentLineId();
+			}
+
+		});
+		// 基于单据完成金额
+		contracts.add(new IDocumentAmountClosingContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesInvoiceItem.this.getIdentifiers();
+			}
+
+			@Override
+			public BigDecimal getAmount() {
+				return SalesInvoiceItem.this.getPreTaxLineTotal();
 			}
 
 			@Override

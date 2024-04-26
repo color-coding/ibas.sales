@@ -45,7 +45,7 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
-import org.colorcoding.ibas.document.IDocumentCloseQuantityItem;
+import org.colorcoding.ibas.document.IDocumentClosingItem;
 import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
@@ -2151,12 +2151,12 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 	}
 
 	@Override
-	public Iterator<IDocumentCloseQuantityItem> getItems() {
-		return new Iterator<IDocumentCloseQuantityItem>() {
+	public Iterator<IDocumentClosingItem> getItems() {
+		return new Iterator<IDocumentClosingItem>() {
 			int index = -1;
 
 			@Override
-			public IDocumentCloseQuantityItem next() {
+			public IDocumentClosingItem next() {
 				this.index += 1;
 				return SalesReturn.this.getSalesReturnItems().get(this.index);
 			}

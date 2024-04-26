@@ -198,7 +198,10 @@ namespace sales {
                 if (this.editData.agreementMethod === bo.emAgreementMethod.ITEM) {
                     this.chooseBlanketAgreementItemMaterial(null);
                 } else {
-                    this.editData.blanketAgreementItems.create();
+                    let item: bo.IBlanketAgreementItem = this.editData.blanketAgreementItems.create();
+                    if (!ibas.objects.isNull(this.customer)) {
+                        item.currency = this.customer.currency;
+                    }
                     // 仅显示没有标记删除的
                     this.view.showBlanketAgreementItems(this.editData.blanketAgreementItems.filterDeleted());
                 }
@@ -339,6 +342,9 @@ namespace sales {
                                         }
                                     });
                                 }
+                            }
+                            if (!ibas.objects.isNull(that.customer)) {
+                                item.currency = that.customer.currency;
                             }
                             item = null;
                         }
