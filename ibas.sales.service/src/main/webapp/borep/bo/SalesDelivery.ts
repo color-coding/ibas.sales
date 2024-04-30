@@ -1677,7 +1677,7 @@ namespace sales {
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
                     // 计算库存数量 = 数量 * 换算率
-                    new materials.bo.BusinessRuleCalculateInventoryQuantity(
+                    new BusinessRuleCalculateInventoryQuantity(
                         SalesDeliveryItem.PROPERTY_INVENTORYQUANTITY_NAME, SalesDeliveryItem.PROPERTY_QUANTITY_NAME, SalesDeliveryItem.PROPERTY_UOMRATE_NAME),
                     // 计算折扣前总计 = 数量 * 折扣前价格
                     new BusinessRuleDeductionPriceQtyTotal(
