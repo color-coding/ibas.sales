@@ -1,6 +1,7 @@
 package org.colorcoding.ibas.sales.service.rest;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -9,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.OperationResult;
+import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.blanketagreement.BlanketAgreement;
 import org.colorcoding.ibas.sales.bo.downpaymentrequest.DownPaymentRequest;
 import org.colorcoding.ibas.sales.bo.productsuit.ProductSuit;
@@ -39,8 +41,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("fetchProductSuit")
-	public OperationResult<ProductSuit> fetchProductSuit(Criteria criteria, @QueryParam("token") String token) {
-		return super.fetchProductSuit(criteria, token);
+	public OperationResult<ProductSuit> fetchProductSuit(Criteria criteria,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.fetchProductSuit(criteria, MyConfiguration.optToken(authorization, token));
 	}
 
 	/**
@@ -54,8 +57,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("saveProductSuit")
-	public OperationResult<ProductSuit> saveProductSuit(ProductSuit bo, @QueryParam("token") String token) {
-		return super.saveProductSuit(bo, token);
+	public OperationResult<ProductSuit> saveProductSuit(ProductSuit bo,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.saveProductSuit(bo, MyConfiguration.optToken(authorization, token));
 	}
 
 	// --------------------------------------------------------------------------------------------//
@@ -70,8 +74,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("fetchSalesDelivery")
-	public OperationResult<SalesDelivery> fetchSalesDelivery(Criteria criteria, @QueryParam("token") String token) {
-		return super.fetchSalesDelivery(criteria, token);
+	public OperationResult<SalesDelivery> fetchSalesDelivery(Criteria criteria,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.fetchSalesDelivery(criteria, MyConfiguration.optToken(authorization, token));
 	}
 
 	/**
@@ -85,8 +90,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("saveSalesDelivery")
-	public OperationResult<SalesDelivery> saveSalesDelivery(SalesDelivery bo, @QueryParam("token") String token) {
-		return super.saveSalesDelivery(bo, token);
+	public OperationResult<SalesDelivery> saveSalesDelivery(SalesDelivery bo,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.saveSalesDelivery(bo, MyConfiguration.optToken(authorization, token));
 	}
 
 	// --------------------------------------------------------------------------------------------//
@@ -101,8 +107,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("fetchSalesOrder")
-	public OperationResult<SalesOrder> fetchSalesOrder(Criteria criteria, @QueryParam("token") String token) {
-		return super.fetchSalesOrder(criteria, token);
+	public OperationResult<SalesOrder> fetchSalesOrder(Criteria criteria,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.fetchSalesOrder(criteria, MyConfiguration.optToken(authorization, token));
 	}
 
 	/**
@@ -116,8 +123,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("saveSalesOrder")
-	public OperationResult<SalesOrder> saveSalesOrder(SalesOrder bo, @QueryParam("token") String token) {
-		return super.saveSalesOrder(bo, token);
+	public OperationResult<SalesOrder> saveSalesOrder(SalesOrder bo, @HeaderParam("authorization") String authorization,
+			@QueryParam("token") String token) {
+		return super.saveSalesOrder(bo, MyConfiguration.optToken(authorization, token));
 	}
 
 	// --------------------------------------------------------------------------------------------//
@@ -132,8 +140,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("fetchSalesReturn")
-	public OperationResult<SalesReturn> fetchSalesReturn(Criteria criteria, @QueryParam("token") String token) {
-		return super.fetchSalesReturn(criteria, token);
+	public OperationResult<SalesReturn> fetchSalesReturn(Criteria criteria,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.fetchSalesReturn(criteria, MyConfiguration.optToken(authorization, token));
 	}
 
 	/**
@@ -147,8 +156,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("saveSalesReturn")
-	public OperationResult<SalesReturn> saveSalesReturn(SalesReturn bo, @QueryParam("token") String token) {
-		return super.saveSalesReturn(bo, token);
+	public OperationResult<SalesReturn> saveSalesReturn(SalesReturn bo,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.saveSalesReturn(bo, MyConfiguration.optToken(authorization, token));
 	}
 
 	// --------------------------------------------------------------------------------------------//
@@ -163,8 +173,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("fetchSalesQuote")
-	public OperationResult<SalesQuote> fetchSalesQuote(Criteria criteria, @QueryParam("token") String token) {
-		return super.fetchSalesQuote(criteria, token);
+	public OperationResult<SalesQuote> fetchSalesQuote(Criteria criteria,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.fetchSalesQuote(criteria, MyConfiguration.optToken(authorization, token));
 	}
 
 	/**
@@ -178,8 +189,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("saveSalesQuote")
-	public OperationResult<SalesQuote> saveSalesQuote(SalesQuote bo, @QueryParam("token") String token) {
-		return super.saveSalesQuote(bo, token);
+	public OperationResult<SalesQuote> saveSalesQuote(SalesQuote bo, @HeaderParam("authorization") String authorization,
+			@QueryParam("token") String token) {
+		return super.saveSalesQuote(bo, MyConfiguration.optToken(authorization, token));
 	}
 
 	// --------------------------------------------------------------------------------------------//
@@ -194,8 +206,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("fetchSalesCreditNote")
-	public OperationResult<SalesCreditNote> fetchSalesCreditNote(Criteria criteria, @QueryParam("token") String token) {
-		return super.fetchSalesCreditNote(criteria, token);
+	public OperationResult<SalesCreditNote> fetchSalesCreditNote(Criteria criteria,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.fetchSalesCreditNote(criteria, MyConfiguration.optToken(authorization, token));
 	}
 
 	/**
@@ -209,8 +222,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("saveSalesCreditNote")
-	public OperationResult<SalesCreditNote> saveSalesCreditNote(SalesCreditNote bo, @QueryParam("token") String token) {
-		return super.saveSalesCreditNote(bo, token);
+	public OperationResult<SalesCreditNote> saveSalesCreditNote(SalesCreditNote bo,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.saveSalesCreditNote(bo, MyConfiguration.optToken(authorization, token));
 	}
 
 	// --------------------------------------------------------------------------------------------//
@@ -225,8 +239,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("fetchSalesInvoice")
-	public OperationResult<SalesInvoice> fetchSalesInvoice(Criteria criteria, @QueryParam("token") String token) {
-		return super.fetchSalesInvoice(criteria, token);
+	public OperationResult<SalesInvoice> fetchSalesInvoice(Criteria criteria,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.fetchSalesInvoice(criteria, MyConfiguration.optToken(authorization, token));
 	}
 
 	/**
@@ -240,8 +255,9 @@ public class DataService extends BORepositorySales {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("saveSalesInvoice")
-	public OperationResult<SalesInvoice> saveSalesInvoice(SalesInvoice bo, @QueryParam("token") String token) {
-		return super.saveSalesInvoice(bo, token);
+	public OperationResult<SalesInvoice> saveSalesInvoice(SalesInvoice bo,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.saveSalesInvoice(bo, MyConfiguration.optToken(authorization, token));
 	}
 
 	// --------------------------------------------------------------------------------------------//
@@ -257,8 +273,8 @@ public class DataService extends BORepositorySales {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("fetchBlanketAgreement")
 	public OperationResult<BlanketAgreement> fetchBlanketAgreement(Criteria criteria,
-			@QueryParam("token") String token) {
-		return super.fetchBlanketAgreement(criteria, token);
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.fetchBlanketAgreement(criteria, MyConfiguration.optToken(authorization, token));
 	}
 
 	/**
@@ -273,8 +289,8 @@ public class DataService extends BORepositorySales {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("saveBlanketAgreement")
 	public OperationResult<BlanketAgreement> saveBlanketAgreement(BlanketAgreement bo,
-			@QueryParam("token") String token) {
-		return super.saveBlanketAgreement(bo, token);
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.saveBlanketAgreement(bo, MyConfiguration.optToken(authorization, token));
 	}
 
 	// --------------------------------------------------------------------------------------------//
@@ -290,8 +306,8 @@ public class DataService extends BORepositorySales {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("fetchDownPaymentRequest")
 	public OperationResult<DownPaymentRequest> fetchDownPaymentRequest(Criteria criteria,
-			@QueryParam("token") String token) {
-		return super.fetchDownPaymentRequest(criteria, token);
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.fetchDownPaymentRequest(criteria, MyConfiguration.optToken(authorization, token));
 	}
 
 	/**
@@ -306,8 +322,8 @@ public class DataService extends BORepositorySales {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("saveDownPaymentRequest")
 	public OperationResult<DownPaymentRequest> saveDownPaymentRequest(DownPaymentRequest bo,
-			@QueryParam("token") String token) {
-		return super.saveDownPaymentRequest(bo, token);
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.saveDownPaymentRequest(bo, MyConfiguration.optToken(authorization, token));
 	}
 
 	// --------------------------------------------------------------------------------------------//
@@ -323,8 +339,8 @@ public class DataService extends BORepositorySales {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("fetchSalesReserveInvoice")
 	public OperationResult<SalesReserveInvoice> fetchSalesReserveInvoice(Criteria criteria,
-			@QueryParam("token") String token) {
-		return super.fetchSalesReserveInvoice(criteria, token);
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.fetchSalesReserveInvoice(criteria, MyConfiguration.optToken(authorization, token));
 	}
 
 	/**
@@ -339,8 +355,8 @@ public class DataService extends BORepositorySales {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("saveSalesReserveInvoice")
 	public OperationResult<SalesReserveInvoice> saveSalesReserveInvoice(SalesReserveInvoice bo,
-			@QueryParam("token") String token) {
-		return super.saveSalesReserveInvoice(bo, token);
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.saveSalesReserveInvoice(bo, MyConfiguration.optToken(authorization, token));
 	}
 
 	// --------------------------------------------------------------------------------------------//
