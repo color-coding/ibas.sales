@@ -2576,6 +2576,9 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 
 			@Override
 			public boolean isOffsetting() {
+				if (SalesReturnItem.this.isDeleted()) {
+					return true;
+				}
 				if (SalesReturnItem.this instanceof IBOTagCanceled) {
 					IBOTagCanceled boTag = (IBOTagCanceled) SalesReturnItem.this;
 					if (boTag.getCanceled() == emYesNo.YES) {
@@ -2587,6 +2590,9 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 					if (boTag.getDeleted() == emYesNo.YES) {
 						return true;
 					}
+				}
+				if (SalesReturnItem.this.parent.isDeleted()) {
+					return true;
 				}
 				if (SalesReturnItem.this.parent instanceof IBOTagCanceled) {
 					IBOTagCanceled boTag = (IBOTagCanceled) SalesReturnItem.this.parent;

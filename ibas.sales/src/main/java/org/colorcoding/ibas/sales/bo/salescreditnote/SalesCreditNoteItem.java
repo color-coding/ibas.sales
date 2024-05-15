@@ -2683,6 +2683,9 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 
 				@Override
 				public boolean isOffsetting() {
+					if (SalesCreditNoteItem.this.isDeleted()) {
+						return true;
+					}
 					if (SalesCreditNoteItem.this instanceof IBOTagCanceled) {
 						IBOTagCanceled boTag = (IBOTagCanceled) SalesCreditNoteItem.this;
 						if (boTag.getCanceled() == emYesNo.YES) {
@@ -2694,6 +2697,9 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 						if (boTag.getDeleted() == emYesNo.YES) {
 							return true;
 						}
+					}
+					if (SalesCreditNoteItem.this.parent.isDeleted()) {
+						return true;
 					}
 					if (SalesCreditNoteItem.this.parent instanceof IBOTagCanceled) {
 						IBOTagCanceled boTag = (IBOTagCanceled) SalesCreditNoteItem.this.parent;

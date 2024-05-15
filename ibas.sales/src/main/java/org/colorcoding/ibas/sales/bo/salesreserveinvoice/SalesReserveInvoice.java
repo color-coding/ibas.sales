@@ -2039,6 +2039,9 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 
 					@Override
 					public boolean isOffsetting() {
+						if (SalesReserveInvoice.this.isDeleted()) {
+							return true;
+						}
 						if (SalesReserveInvoice.this instanceof IBOTagCanceled) {
 							IBOTagCanceled boTag = (IBOTagCanceled) SalesReserveInvoice.this;
 							if (boTag.getCanceled() == emYesNo.YES) {

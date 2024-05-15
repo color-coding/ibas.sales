@@ -2041,6 +2041,9 @@ public class SalesDelivery extends BusinessObject<SalesDelivery> implements ISal
 
 					@Override
 					public boolean isOffsetting() {
+						if (SalesDelivery.this.isDeleted()) {
+							return true;
+						}
 						if (SalesDelivery.this instanceof IBOTagCanceled) {
 							IBOTagCanceled boTag = (IBOTagCanceled) SalesDelivery.this;
 							if (boTag.getCanceled() == emYesNo.YES) {

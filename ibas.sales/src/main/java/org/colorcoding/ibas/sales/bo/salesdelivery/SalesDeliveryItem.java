@@ -2575,6 +2575,9 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 				new IMaterialIssueContract() {
 					@Override
 					public boolean isOffsetting() {
+						if (SalesDeliveryItem.this.isDeleted()) {
+							return true;
+						}
 						if (SalesDeliveryItem.this instanceof IBOTagCanceled) {
 							IBOTagCanceled boTag = (IBOTagCanceled) SalesDeliveryItem.this;
 							if (boTag.getCanceled() == emYesNo.YES) {
@@ -2586,6 +2589,9 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 							if (boTag.getDeleted() == emYesNo.YES) {
 								return true;
 							}
+						}
+						if (SalesDeliveryItem.this.parent.isDeleted()) {
+							return true;
 						}
 						if (SalesDeliveryItem.this.parent instanceof IBOTagCanceled) {
 							IBOTagCanceled boTag = (IBOTagCanceled) SalesDeliveryItem.this.parent;

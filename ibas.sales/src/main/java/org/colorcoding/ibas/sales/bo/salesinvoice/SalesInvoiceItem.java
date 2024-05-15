@@ -2648,6 +2648,9 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 			contracts.add(new IMaterialIssueContract() {
 				@Override
 				public boolean isOffsetting() {
+					if (SalesInvoiceItem.this.isDeleted()) {
+						return true;
+					}
 					if (SalesInvoiceItem.this instanceof IBOTagCanceled) {
 						IBOTagCanceled boTag = (IBOTagCanceled) SalesInvoiceItem.this;
 						if (boTag.getCanceled() == emYesNo.YES) {
@@ -2659,6 +2662,9 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 						if (boTag.getDeleted() == emYesNo.YES) {
 							return true;
 						}
+					}
+					if (SalesInvoiceItem.this.parent.isDeleted()) {
+						return true;
 					}
 					if (SalesInvoiceItem.this.parent instanceof IBOTagCanceled) {
 						IBOTagCanceled boTag = (IBOTagCanceled) SalesInvoiceItem.this.parent;

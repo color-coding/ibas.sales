@@ -2113,6 +2113,9 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 
 			@Override
 			public boolean isOffsetting() {
+				if (SalesInvoice.this.isDeleted()) {
+					return true;
+				}
 				if (SalesInvoice.this instanceof IBOTagCanceled) {
 					IBOTagCanceled boTag = (IBOTagCanceled) SalesInvoice.this;
 					if (boTag.getCanceled() == emYesNo.YES) {

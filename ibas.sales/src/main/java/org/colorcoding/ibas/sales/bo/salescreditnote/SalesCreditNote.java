@@ -2045,6 +2045,9 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote> implements 
 
 					@Override
 					public boolean isOffsetting() {
+						if (SalesCreditNote.this.isDeleted()) {
+							return true;
+						}
 						if (SalesCreditNote.this instanceof IBOTagCanceled) {
 							IBOTagCanceled boTag = (IBOTagCanceled) SalesCreditNote.this;
 							if (boTag.getCanceled() == emYesNo.YES) {

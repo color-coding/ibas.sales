@@ -2040,6 +2040,9 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 
 					@Override
 					public boolean isOffsetting() {
+						if (SalesReturn.this.isDeleted()) {
+							return true;
+						}
 						if (SalesReturn.this instanceof IBOTagCanceled) {
 							IBOTagCanceled boTag = (IBOTagCanceled) SalesReturn.this;
 							if (boTag.getCanceled() == emYesNo.YES) {
