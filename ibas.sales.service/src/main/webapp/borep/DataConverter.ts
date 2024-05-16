@@ -127,6 +127,12 @@ namespace sales {
                     if (property === bo.DownPaymentRequest.PROPERTY_ROUNDING_NAME) {
                         return ibas.enums.toString(ibas.emYesNo, value);
                     }
+                } else if (boName === bo.DownPaymentRequestItem.name) {
+                    if (property === bo.DownPaymentRequestItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    } else if (property === bo.DownPaymentRequestItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    }
                 }
                 return super.convertData(boName, property, value);
             }
@@ -223,6 +229,12 @@ namespace sales {
                     }
                 } else if (boName === bo.DownPaymentRequest.name) {
                     if (property === bo.DownPaymentRequest.PROPERTY_ROUNDING_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.DownPaymentRequestItem.name) {
+                    if (property === bo.DownPaymentRequestItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    } else if (property === bo.DownPaymentRequestItem.PROPERTY_SERIALMANAGEMENT_NAME) {
                         return ibas.enums.valueOf(ibas.emYesNo, value);
                     }
                 }

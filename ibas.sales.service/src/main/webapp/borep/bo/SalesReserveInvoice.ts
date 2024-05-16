@@ -736,7 +736,7 @@ namespace sales {
                         for (let batch of item.materialBatches) {
                             let myBatch: materials.bo.IMaterialBatchItem = myItem.materialBatches.create();
                             myBatch.batchCode = batch.batchCode;
-                            myBatch.quantity = batch.quantity;
+                            myBatch.quantity = openQty * (item.uomRate > 0 ? item.uomRate : 1);
                             if (myItem.materialBatches.total() >= openQty) {
                                 break;
                             }

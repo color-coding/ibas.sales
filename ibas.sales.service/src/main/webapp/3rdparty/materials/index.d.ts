@@ -431,7 +431,7 @@ declare namespace materials {
             uom: string;
             warehouse?: string;
             deliveryDate?: Date;
-            onReserved: (documentType: string, docEntry: number, lineId: number, quantity: number, deliveryDate?: Date) => void;
+            onReserved: (documentType: string, docEntry: number, lineId: number, quantity: number, deliveryDate?: Date, warehouse?: string) => void;
         }
         /** 物料订购预留目标单据服务代理 */
         class MaterialOrderedReservationTargetServiceProxy extends ibas.ServiceProxy<IMaterialOrderedReservationTarget> {
@@ -17537,7 +17537,7 @@ declare namespace materials {
             /** 选择拣配清单序列事件 */
             private choosePickListsLineMaterialSerial;
             /** 转为交货 */
-            protected turnToDelivery(agent: ibas.IServiceAgent): void;
+            protected turnToDelivery(agent: ibas.IServiceAgent, selectItems?: bo.PickListsLine[]): void;
             /** 使用预留拣配 */
             protected useInventoryReservationToPick(): Promise<void>;
             /**
