@@ -2385,6 +2385,37 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 	}
 
 	/**
+	 * 属性名称-退货成本（本币）
+	 */
+	private static final String PROPERTY_RETURNCOST_NAME = "ReturnCost";
+
+	/**
+	 * 退货成本（本币） 属性
+	 */
+	@DbField(name = "RetCost", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<BigDecimal> PROPERTY_RETURNCOST = registerProperty(PROPERTY_RETURNCOST_NAME,
+			BigDecimal.class, MY_CLASS);
+
+	/**
+	 * 获取-退货成本（本币）
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_RETURNCOST_NAME)
+	public final BigDecimal getReturnCost() {
+		return this.getProperty(PROPERTY_RETURNCOST);
+	}
+
+	/**
+	 * 设置-退货成本（本币）
+	 * 
+	 * @param value 值
+	 */
+	public final void setReturnCost(BigDecimal value) {
+		this.setProperty(PROPERTY_RETURNCOST, value);
+	}
+
+	/**
 	 * 属性名称-物料批次
 	 */
 	private static final String PROPERTY_MATERIALBATCHES_NAME = "MaterialBatches";

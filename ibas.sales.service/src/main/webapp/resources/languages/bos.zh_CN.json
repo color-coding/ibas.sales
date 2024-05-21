@@ -456,6 +456,7 @@
         "bo_salesreturnitem_distributionrule4": "成本中心4",
         "bo_salesreturnitem_distributionrule5": "成本中心5",
         "bo_salesreturnitem_agreements": "合同/协议",
+        "bo_salesreturnitem_returncost": "退货成本（本币）",
         "bo_salesreturn_closing_delimiter": "----结束----"
     },
     {
@@ -920,6 +921,7 @@
         "bo_salescreditnoteitem_distributionrule4": "成本中心4",
         "bo_salescreditnoteitem_distributionrule5": "成本中心5",
         "bo_salescreditnoteitem_agreements": "合同/协议",
+        "bo_salescreditnoteitem_returncost": "退货成本（本币）",
         "bo_salescreditnoteitem_salescreditnoteitemextras": "销售贷项-行-额外信息集合",
         "bo_salescreditnoteitemextra": "销售贷项-行-额外信息",
         "bo_salescreditnoteitemextra_docentry": "凭证编号",

@@ -1648,6 +1648,17 @@ namespace sales {
                 this.setProperty(SalesCreditNoteItem.PROPERTY_AGREEMENTS_NAME, value);
             }
 
+            /** 映射的属性名称-退货成本（本币） */
+            static PROPERTY_RETURNCOST_NAME: string = "ReturnCost";
+            /** 获取-退货成本（本币） */
+            get returnCost(): number {
+                return this.getProperty<number>(SalesCreditNoteItem.PROPERTY_RETURNCOST_NAME);
+            }
+            /** 设置-退货成本（本币） */
+            set returnCost(value: number) {
+                this.setProperty(SalesCreditNoteItem.PROPERTY_RETURNCOST_NAME, value);
+            }
+
             /** 映射的属性名称-物料批次集合 */
             static PROPERTY_MATERIALBATCHES_NAME: string = "MaterialBatches";
             /** 获取-物料批次集合 */

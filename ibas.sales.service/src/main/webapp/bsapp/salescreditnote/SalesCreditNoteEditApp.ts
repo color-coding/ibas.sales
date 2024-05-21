@@ -536,6 +536,7 @@ namespace sales {
                                     created = true;
                                 }
                                 item.baseProduct(selected);
+                                item.returnCost = selected.price;
                                 if (!ibas.strings.isEmpty(that.view.defaultWarehouse)) {
                                     item.warehouse = that.view.defaultWarehouse;
                                 }

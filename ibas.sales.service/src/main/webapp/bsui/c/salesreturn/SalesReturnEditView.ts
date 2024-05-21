@@ -534,6 +534,20 @@ namespace sales {
                                         }),
                                     }),
                                     new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salesreturnitem_returncost"),
+                                        template: new sap.extension.m.Input("", {
+                                            editable: {
+                                                path: "baseDocumentType",
+                                                formatter(data: any): boolean {
+                                                    return ibas.strings.isEmpty(data) ? true : false;
+                                                }
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "returnCost",
+                                            type: new sap.extension.data.Price(),
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesreturnitem_reference1"),
                                         template: new sap.extension.m.Input("", {
                                         }).bindProperty("bindingValue", {

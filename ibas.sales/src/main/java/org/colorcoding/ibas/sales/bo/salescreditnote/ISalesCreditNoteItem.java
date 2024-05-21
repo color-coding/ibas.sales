@@ -1172,4 +1172,18 @@ public interface ISalesCreditNoteItem
 	 * @param value 值
 	 */
 	void setAgreements(String value);
+
+	/**
+	 * 获取-退货成本（本币）
+	 * 
+	 * @return 值
+	 */
+	BigDecimal getReturnCost();
+
+	/**
+	 * 设置-退货成本（本币）
+	 * 
+	 * @param value 值
+	 */
+	void setReturnCost(BigDecimal value);
 }

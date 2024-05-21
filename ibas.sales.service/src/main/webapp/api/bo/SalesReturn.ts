@@ -363,6 +363,9 @@ namespace sales {
             /** 合同 */
             agreements: string;
 
+            /** 退货成本（本币） */
+            returnCost: number;
+
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;
         }
