@@ -2242,6 +2242,17 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote> implements 
 								jeContents.add(jeContent);
 							}
 						}
+						// 单据折扣不是1
+						if (!Decimal.ONE.equals(SalesCreditNote.this.getDiscount())) {
+							for (JournalEntryContent item : jeContents) {
+								// 行税前总计和行税 × 折扣
+								if (Ledgers.LEDGER_SALES_REVENUE_ACCOUNT.equals(item.getLedger())
+										|| Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT.equals(item.getLedger())) {
+									item.setAmount(
+											Decimal.multiply(item.getAmount(), SalesCreditNote.this.getDiscount()));
+								}
+							}
+						}
 						// 应收科目
 						jeContent = new JournalEntrySmartContent(SalesCreditNote.this);
 						jeContent.setCategory(Category.Debit);

@@ -2271,6 +2271,16 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 					jeContent.setRate(item.getPaymentRate());
 					jeContents.add(jeContent);
 				}
+				// 单据折扣不是1
+				if (!Decimal.ONE.equals(SalesInvoice.this.getDiscount())) {
+					for (JournalEntryContent item : jeContents) {
+						// 行税前总计和行税 × 折扣
+						if (Ledgers.LEDGER_SALES_REVENUE_ACCOUNT.equals(item.getLedger())
+								|| Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT.equals(item.getLedger())) {
+							item.setAmount(Decimal.multiply(item.getAmount(), SalesInvoice.this.getDiscount()));
+						}
+					}
+				}
 				// 应收科目
 				jeContent = new JournalEntrySmartContent(SalesInvoice.this);
 				jeContent.setCategory(Category.Debit);
