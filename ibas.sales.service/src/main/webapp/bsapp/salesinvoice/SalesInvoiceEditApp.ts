@@ -1527,36 +1527,58 @@ namespace sales {
                     condition = cCriteria.conditions.create();
                     condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_BASEDOCUMENTTYPE_NAME;
                     condition.operation = ibas.emConditionOperation.IS_NULL;
+                    condition.relationship = ibas.emConditionRelationship.OR;
                     condition.bracketClose = 1;
                     let orderType: string = ibas.config.applyVariables(bo.SalesOrder.BUSINESS_OBJECT_CODE);
                     let deliveryType: string = ibas.config.applyVariables(bo.SalesDelivery.BUSINESS_OBJECT_CODE);
+                    let requestType: string = ibas.config.applyVariables(bo.DownPaymentRequest.BUSINESS_OBJECT_CODE);
                     for (let item of this.editData.salesInvoiceItems) {
+                        // 基于单据相同（订单，交货）
                         if (ibas.strings.equals(item.baseDocumentType, orderType) || ibas.strings.equals(item.baseDocumentType, deliveryType)) {
-                            // 基于单据相同
                             condition = cCriteria.conditions.create();
-                            condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_BASEDOCUMENTTYPE_NAME;
+                            condition.alias = receiptpayment.bo.PaymentItem.PROPERTY_BASEDOCUMENTTYPE_NAME;
                             condition.value = item.baseDocumentType;
                             condition.bracketOpen = 1;
                             if (cCriteria.conditions.length > 2) {
                                 condition.relationship = ibas.emConditionRelationship.OR;
                             }
                             condition = cCriteria.conditions.create();
-                            condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_BASEDOCUMENTENTRY_NAME;
+                            condition.alias = receiptpayment.bo.PaymentItem.PROPERTY_BASEDOCUMENTENTRY_NAME;
                             condition.value = item.baseDocumentEntry.toString();
                             condition.bracketClose = 1;
                         }
-                        if (ibas.strings.equals(item.originalDocumentType, orderType)) {
+                        // 原始单据相同（订单，交货）
+                        if (ibas.strings.equals(item.originalDocumentType, orderType) || ibas.strings.equals(item.originalDocumentType, deliveryType)) {
                             condition = cCriteria.conditions.create();
-                            condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_ORIGINALDOCUMENTTYPE_NAME;
+                            condition.alias = receiptpayment.bo.PaymentItem.PROPERTY_ORIGINALDOCUMENTTYPE_NAME;
                             condition.value = item.originalDocumentType;
                             condition.bracketOpen = 1;
                             if (cCriteria.conditions.length > 2) {
                                 condition.relationship = ibas.emConditionRelationship.OR;
                             }
                             condition = cCriteria.conditions.create();
-                            condition.alias = receiptpayment.bo.ReceiptItem.PROPERTY_ORIGINALDOCUMENTENTRY_NAME;
+                            condition.alias = receiptpayment.bo.PaymentItem.PROPERTY_ORIGINALDOCUMENTENTRY_NAME;
                             condition.value = item.baseDocumentEntry.toString();
                             condition.bracketClose = 1;
+                        }
+                        // 未基于单据（可不基于的预付款）
+                        if (ibas.strings.isEmpty(item.baseDocumentType)) {
+                            condition = cCriteria.conditions.create();
+                            condition.alias = receiptpayment.bo.PaymentItem.PROPERTY_BASEDOCUMENTTYPE_NAME;
+                            condition.value = requestType;
+                            condition.bracketOpen = 1;
+                            if (cCriteria.conditions.length > 2) {
+                                condition.relationship = ibas.emConditionRelationship.OR;
+                            }
+                            condition = cCriteria.conditions.create();
+                            condition.bracketOpen = 1;
+                            condition.alias = receiptpayment.bo.PaymentItem.PROPERTY_ORIGINALDOCUMENTTYPE_NAME;
+                            condition.value = "";
+                            condition = cCriteria.conditions.create();
+                            condition.alias = receiptpayment.bo.PaymentItem.PROPERTY_ORIGINALDOCUMENTTYPE_NAME;
+                            condition.operation = ibas.emConditionOperation.IS_NULL;
+                            condition.relationship = ibas.emConditionRelationship.OR;
+                            condition.bracketClose = 2;
                         }
                     }
                 } else {

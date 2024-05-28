@@ -2489,6 +2489,56 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 		return this.getInventoryUOM();
 	}
 
+	@Override
+	public BigDecimal getBatchPrice() {
+		if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+			return SalesReturnItem.this.getReturnCost();
+		}
+		return SalesReturnItem.this.getPreTaxPrice();
+	}
+
+	@Override
+	public String getBatchCurrency() {
+		if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+			return org.colorcoding.ibas.accounting.MyConfiguration
+					.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY);
+		}
+		return SalesReturnItem.this.getCurrency();
+	}
+
+	@Override
+	public BigDecimal getBatchRate() {
+		if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+			return Decimal.ONE;
+		}
+		return SalesReturnItem.this.getRate();
+	}
+
+	@Override
+	public BigDecimal getSerialPrice() {
+		if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+			return SalesReturnItem.this.getReturnCost();
+		}
+		return SalesReturnItem.this.getPreTaxPrice();
+	}
+
+	@Override
+	public String getSerialCurrency() {
+		if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+			return org.colorcoding.ibas.accounting.MyConfiguration
+					.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY);
+		}
+		return SalesReturnItem.this.getCurrency();
+	}
+
+	@Override
+	public BigDecimal getSerialRate() {
+		if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+			return Decimal.ONE;
+		}
+		return SalesReturnItem.this.getRate();
+	}
+
 	/**
 	 * 初始化数据
 	 */
@@ -2727,16 +2777,26 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 
 			@Override
 			public BigDecimal getPrice() {
+				if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+					return SalesReturnItem.this.getReturnCost();
+				}
 				return SalesReturnItem.this.getPreTaxPrice();
 			}
 
 			@Override
 			public String getCurrency() {
+				if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+					return org.colorcoding.ibas.accounting.MyConfiguration
+							.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY);
+				}
 				return SalesReturnItem.this.getCurrency();
 			}
 
 			@Override
 			public BigDecimal getRate() {
+				if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+					return Decimal.ONE;
+				}
 				return SalesReturnItem.this.getRate();
 			}
 

@@ -2491,6 +2491,56 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 		return this.getInventoryUOM();
 	}
 
+	@Override
+	public BigDecimal getBatchPrice() {
+		if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+			return SalesCreditNoteItem.this.getReturnCost();
+		}
+		return SalesCreditNoteItem.this.getPreTaxPrice();
+	}
+
+	@Override
+	public String getBatchCurrency() {
+		if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+			return org.colorcoding.ibas.accounting.MyConfiguration
+					.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY);
+		}
+		return SalesCreditNoteItem.this.getCurrency();
+	}
+
+	@Override
+	public BigDecimal getBatchRate() {
+		if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+			return Decimal.ONE;
+		}
+		return SalesCreditNoteItem.this.getRate();
+	}
+
+	@Override
+	public BigDecimal getSerialPrice() {
+		if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+			return SalesCreditNoteItem.this.getReturnCost();
+		}
+		return SalesCreditNoteItem.this.getPreTaxPrice();
+	}
+
+	@Override
+	public String getSerialCurrency() {
+		if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+			return org.colorcoding.ibas.accounting.MyConfiguration
+					.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY);
+		}
+		return SalesCreditNoteItem.this.getCurrency();
+	}
+
+	@Override
+	public BigDecimal getSerialRate() {
+		if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+			return Decimal.ONE;
+		}
+		return SalesCreditNoteItem.this.getRate();
+	}
+
 	/**
 	 * 初始化数据
 	 */
@@ -2834,16 +2884,26 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 
 				@Override
 				public BigDecimal getPrice() {
+					if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+						return SalesCreditNoteItem.this.getReturnCost();
+					}
 					return SalesCreditNoteItem.this.getPreTaxPrice();
 				}
 
 				@Override
 				public String getCurrency() {
+					if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+						return org.colorcoding.ibas.accounting.MyConfiguration.getConfigValue(
+								org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY);
+					}
 					return SalesCreditNoteItem.this.getCurrency();
 				}
 
 				@Override
 				public BigDecimal getRate() {
+					if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+						return Decimal.ONE;
+					}
 					return SalesCreditNoteItem.this.getRate();
 				}
 
