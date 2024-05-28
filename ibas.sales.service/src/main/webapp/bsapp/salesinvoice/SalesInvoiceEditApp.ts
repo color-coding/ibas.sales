@@ -370,7 +370,7 @@ namespace sales {
                 }
             }
             /** 选择销售发票行物料事件 */
-            private chooseSalesInvoiceItemMaterial(caller: bo.SalesInvoiceItem): void {
+            private chooseSalesInvoiceItemMaterial(caller: bo.SalesInvoiceItem, type?: string): void {
                 let that: this = this;
                 let condition: ibas.ICondition;
                 let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.product.create();
@@ -406,9 +406,18 @@ namespace sales {
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.relationship = ibas.emConditionRelationship.AND;
                 conditions.add(condition);
+                // 产品库存时
+                if (materials.bo.BO_CODE_PRODUCT_INVENTORY === type) {
+                    // 有库存的
+                    condition = new ibas.Condition();
+                    condition.alias = materials.bo.Product.PROPERTY_ONHAND_NAME;
+                    condition.value = "0";
+                    condition.operation = ibas.emConditionOperation.GRATER_THAN;
+                    conditions.add(condition);
+                }
                 // 调用选择服务
                 ibas.servicesManager.runChooseService<materials.bo.IProduct>({
-                    boCode: materials.bo.BO_CODE_PRODUCT,
+                    boCode: type ? materials.bo.BO_CODE_PRODUCT_INVENTORY : materials.bo.BO_CODE_PRODUCT,
                     criteria: conditions,
                     onCompleted(selecteds: ibas.IList<materials.bo.IProduct>): void {
                         // 获取触发的对象

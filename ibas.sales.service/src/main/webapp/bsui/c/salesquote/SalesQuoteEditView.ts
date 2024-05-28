@@ -265,6 +265,12 @@ namespace sales {
                                                         }
                                                     }),
                                                     new sap.m.MenuItem("", {
+                                                        text: ibas.i18n.prop("bo_materialinventory"),
+                                                        press: function (): void {
+                                                            that.fireViewEvents(that.chooseSalesQuoteItemMaterialEvent, undefined, materials.bo.BO_CODE_PRODUCT_INVENTORY);
+                                                        }
+                                                    }),
+                                                    new sap.m.MenuItem("", {
                                                         text: ibas.i18n.prop("bo_blanketagreement"),
                                                         press: function (): void {
                                                             that.fireViewEvents(that.chooseSalesQuoteBlanketAgreementEvent);
