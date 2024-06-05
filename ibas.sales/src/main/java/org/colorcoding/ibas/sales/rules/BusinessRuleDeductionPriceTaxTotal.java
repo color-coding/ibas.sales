@@ -22,10 +22,11 @@ public class BusinessRuleDeductionPriceTaxTotal extends BusinessRuleCommon {
 	 * @param taxRate  属性-税率
 	 * @param taxTotal 属性-税总计
 	 * @param preTotal 属性-税前总计
+	 * @param prePrice 属性-税前价格
 	 */
 	public BusinessRuleDeductionPriceTaxTotal(IPropertyInfo<BigDecimal> total, IPropertyInfo<BigDecimal> price,
 			IPropertyInfo<BigDecimal> quantity, IPropertyInfo<BigDecimal> taxRate, IPropertyInfo<BigDecimal> taxTotal,
-			IPropertyInfo<BigDecimal> preTotal) {
+			IPropertyInfo<BigDecimal> preTotal, IPropertyInfo<BigDecimal> prePrice) {
 		this();
 		this.setTotal(total);
 		this.setPrice(price);
@@ -33,6 +34,7 @@ public class BusinessRuleDeductionPriceTaxTotal extends BusinessRuleCommon {
 		this.setTaxRate(taxRate);
 		this.setTaxTotal(taxTotal);
 		this.setPreTotal(preTotal);
+		this.setPrePrice(prePrice);
 		// 要输入的参数
 		this.getInputProperties().add(this.getTotal());
 		this.getInputProperties().add(this.getPrice());
@@ -40,11 +42,13 @@ public class BusinessRuleDeductionPriceTaxTotal extends BusinessRuleCommon {
 		this.getInputProperties().add(this.getTaxRate());
 		this.getInputProperties().add(this.getTaxTotal());
 		this.getInputProperties().add(this.getPreTotal());
+		this.getInputProperties().add(this.getPrePrice());
 		// 要输出的参数
 		this.getAffectedProperties().add(this.getTotal());
-		this.getAffectedProperties().add(this.getPrice());
 		this.getAffectedProperties().add(this.getTaxTotal());
 		this.getAffectedProperties().add(this.getPreTotal());
+		this.getAffectedProperties().add(this.getPrice());
+		this.getAffectedProperties().add(this.getPrePrice());
 	}
 
 	/** 价格 */
@@ -113,6 +117,17 @@ public class BusinessRuleDeductionPriceTaxTotal extends BusinessRuleCommon {
 		this.preTotal = preTotal;
 	}
 
+	private IPropertyInfo<BigDecimal> prePrice;
+
+	/** 税前价格 */
+	protected final IPropertyInfo<BigDecimal> getPrePrice() {
+		return prePrice;
+	}
+
+	protected final void setPrePrice(IPropertyInfo<BigDecimal> prePrice) {
+		this.prePrice = prePrice;
+	}
+
 	@Override
 	protected void execute(BusinessRuleContext context) throws Exception {
 		BigDecimal price = (BigDecimal) context.getInputValues().get(this.getPrice());
@@ -139,54 +154,124 @@ public class BusinessRuleDeductionPriceTaxTotal extends BusinessRuleCommon {
 		if (preTotal == null) {
 			preTotal = Decimal.ZERO;
 		}
-		if (this.getTotal().getName().equalsIgnoreCase(context.getTrigger())) {
-			if (Decimal.ZERO.compareTo(quantity) >= 0) {
-				return;
+		BigDecimal prePrice = (BigDecimal) context.getInputValues().get(this.getPrePrice());
+		if (prePrice == null) {
+			prePrice = Decimal.ZERO;
+		}
+		if (Decimal.ZERO.compareTo(quantity) == 0) {
+			/** 数量为0，总计等为0 */
+			context.getOutputValues().put(this.getTaxTotal(), Decimal.ZERO);
+			context.getOutputValues().put(this.getTotal(), Decimal.ZERO);
+			context.getOutputValues().put(this.getPreTotal(), Decimal.ZERO);
+		} else {
+			/** 数量不是0 */
+			if (Decimal.ZERO.compareTo(taxRate) == 0 && Decimal.ZERO.compareTo(taxTotal) != 0) {
+				// 税率为0，税总计为0
+				taxTotal = Decimal.ZERO;
+				context.getOutputValues().put(this.getTaxTotal(), taxTotal);
 			}
-			BigDecimal rPrice = Decimal.divide(total, quantity);
-			BigDecimal rPreTotal = Decimal.divide(total, Decimal.ONE.add(taxRate));
-			BigDecimal rTaxTotal = total.subtract(rPreTotal);
-			context.getOutputValues().put(this.getPrice(), Decimal.round(rPrice, Decimal.DECIMAL_PLACES_RUNNING));
-			if (Decimal.ONE.compareTo(rPreTotal.subtract(preTotal).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
-				context.getOutputValues().put(this.getPreTotal(),
-						Decimal.round(rPreTotal, Decimal.DECIMAL_PLACES_RUNNING));
+			if (Decimal.ZERO.compareTo(total) == 0) {
+				// 总计是0
+				if (Decimal.ZERO.compareTo(price) != 0) {
+					// 价格不是0
+					total = Decimal.multiply(price, quantity);
+					context.getOutputValues().put(this.getTotal(), total);
+				} else {
+					// 由税前推
+					if (Decimal.ZERO.compareTo(preTotal) == 0) {
+						if (Decimal.ZERO.compareTo(prePrice) != 0) {
+							preTotal = Decimal.multiply(prePrice, quantity);
+							context.getOutputValues().put(this.getPreTotal(), preTotal);
+						} else if (Decimal.ZERO.compareTo(taxTotal) != 0 && Decimal.ZERO.compareTo(taxRate) != 0) {
+							preTotal = Decimal.divide(taxTotal, taxRate);
+							context.getOutputValues().put(this.getPreTotal(), total);
+						}
+					}
+					if (Decimal.ZERO.compareTo(preTotal) != 0) {
+						if (Decimal.ZERO.compareTo(taxRate) == 0) {
+							// 税率0
+							total = preTotal;
+							context.getOutputValues().put(this.getTotal(), total);
+						} else if (Decimal.ZERO.compareTo(taxTotal) != 0) {
+							// 税率不是0
+							total = preTotal.add(taxTotal);
+							context.getOutputValues().put(this.getTotal(), total);
+						} else {
+							taxTotal = Decimal.multiply(preTotal, taxRate);
+							context.getOutputValues().put(this.getTaxTotal(), taxTotal);
+							total = preTotal.add(taxTotal);
+							context.getOutputValues().put(this.getTotal(), total);
+						}
+					}
+					// 计算价格
+					if (Decimal.ZERO.compareTo(price) == 0) {
+						price = Decimal.divide(total, quantity);
+						context.getOutputValues().put(this.getPrice(), price);
+					}
+				}
+			} else {
+				// 总计不是0
+				if (Decimal.ZERO.compareTo(price) == 0) {
+					// 价格是0
+					price = Decimal.divide(total, quantity);
+					context.getOutputValues().put(this.getPrice(), price);
+				} else {
+					// 总计 = 价格 * 数量
+					BigDecimal result = Decimal.multiply(price, quantity);
+					result.setScale(total.scale());
+					if (Decimal.ONE
+							.compareTo(result.subtract(total).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
+						total = result;
+						context.getOutputValues().put(this.getTotal(), total);
+					}
+				}
 			}
-			if (Decimal.ONE.compareTo(rTaxTotal.subtract(taxTotal).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
-				context.getOutputValues().put(this.getTaxTotal(),
-						Decimal.round(rTaxTotal, Decimal.DECIMAL_PLACES_RUNNING));
+			// 计算税前总计
+			if (Decimal.ZERO.compareTo(preTotal) == 0) {
+				BigDecimal result = Decimal.ZERO;
+				if (Decimal.ZERO.compareTo(taxTotal) != 0) {
+					result = total.subtract(taxTotal);
+				} else if (Decimal.ZERO.compareTo(prePrice) != 0) {
+					result = Decimal.multiply(prePrice, quantity);
+				} else if (Decimal.ZERO.compareTo(total) != 0) {
+					result = Decimal.divide(total, Decimal.ONE.add(taxRate));
+				}
+				if (Decimal.ZERO.compareTo(preTotal) == 0) {
+					preTotal = result;
+					context.getOutputValues().put(this.getPreTotal(), preTotal);
+				} else {
+					result.setScale(preTotal.scale());
+					if (Decimal.ONE
+							.compareTo(result.subtract(preTotal).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
+						preTotal = result;
+						context.getOutputValues().put(this.getPreTotal(), preTotal);
+					}
+				}
 			}
-		} else if (this.getTaxTotal().getName().equalsIgnoreCase(context.getTrigger())) {
-			BigDecimal rTotal = preTotal.add(taxTotal);
-			context.getOutputValues().put(this.getTotal(), Decimal.round(rTotal, Decimal.DECIMAL_PLACES_RUNNING));
-		} else if (this.getPrice().getName().equalsIgnoreCase(context.getTrigger())
-				|| this.getQuantity().getName().equalsIgnoreCase(context.getTrigger())
-				|| this.getTaxRate().getName().equalsIgnoreCase(context.getTrigger())) {
-			BigDecimal rTotal = price.multiply(quantity);
-			BigDecimal rPreTotal = Decimal.divide(rTotal, Decimal.ONE.add(taxRate));
-			BigDecimal rTaxTotal = rTotal.subtract(rPreTotal);
-			if (Decimal.ONE.compareTo(rTotal.subtract(total).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
-				// 与原总计差值，小于0.5就忽略
-				context.getOutputValues().put(this.getTotal(), Decimal.round(rTotal, Decimal.DECIMAL_PLACES_RUNNING));
+			// 计算税
+			if (Decimal.ZERO.compareTo(preTotal) == 0) {
+				taxTotal = Decimal.ZERO;
+				context.getOutputValues().put(this.getTaxTotal(), taxTotal);
+			} else {
+				BigDecimal result = Decimal.multiply(preTotal, taxRate);
+				if (Decimal.ONE
+						.compareTo(result.subtract(taxTotal).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
+					taxTotal = result;
+					context.getOutputValues().put(this.getTaxTotal(), taxTotal);
+				}
 			}
-			if (Decimal.ONE.compareTo(rPreTotal.subtract(preTotal).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
-				// 与原总计差值，小于0.5就忽略
-				context.getOutputValues().put(this.getPreTotal(),
-						Decimal.round(rPreTotal, Decimal.DECIMAL_PLACES_RUNNING));
-			}
-			if (Decimal.ONE.compareTo(rTaxTotal.subtract(taxTotal).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
-				// 与原总计差值，小于0.5就忽略
-				context.getOutputValues().put(this.getTaxTotal(),
-						Decimal.round(rTaxTotal, Decimal.DECIMAL_PLACES_RUNNING));
-			}
-		} else if (this.getPreTotal().getName().equalsIgnoreCase(context.getTrigger())) {
-			BigDecimal rTaxTotal = preTotal.multiply(taxRate);
-			BigDecimal rTotal = preTotal.add(rTaxTotal);
-			if (Decimal.ONE.compareTo(rTaxTotal.subtract(taxTotal).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
-				context.getOutputValues().put(this.getTaxTotal(),
-						Decimal.round(rTaxTotal, Decimal.DECIMAL_PLACES_RUNNING));
-			}
-			if (Decimal.ONE.compareTo(rTotal.subtract(total).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
-				context.getOutputValues().put(this.getTotal(), Decimal.round(rTotal, Decimal.DECIMAL_PLACES_RUNNING));
+			// 计算税前价格
+			BigDecimal result = Decimal.divide(preTotal, quantity);
+			if (Decimal.ZERO.compareTo(prePrice) == 0) {
+				prePrice = result;
+				context.getOutputValues().put(this.getPrePrice(), prePrice);
+			} else {
+				result.setScale(prePrice.scale());
+				if (Decimal.ONE
+						.compareTo(result.subtract(prePrice).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
+					prePrice = result;
+					context.getOutputValues().put(this.getPrePrice(), prePrice);
+				}
 			}
 		}
 	}

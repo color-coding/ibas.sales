@@ -80,29 +80,22 @@ public class BusinessRuleDeductionTaxPrice extends BusinessRuleCommon {
 		if (afterTax == null) {
 			afterTax = Decimal.ZERO;
 		}
-		if (taxRate.compareTo(Decimal.ZERO) < 0) {
+		if (taxRate.compareTo(Decimal.ZERO) <= 0) {
 			context.getOutputValues().put(this.getTaxRate(), Decimal.ZERO);
 			context.getOutputValues().put(this.getAfterTax(), preTax);
-			return;
-		}
-		if (this.getPreTax().getName().equalsIgnoreCase(context.getTrigger())
-				|| this.getTaxRate().getName().equalsIgnoreCase(context.getTrigger())) {
-			// 仅税前价格变化，触发正向税计算
-			if (taxRate.equals(Decimal.ZERO)) {
-				// 税率为0，则
-				context.getOutputValues().put(this.getAfterTax(), preTax);
-			} else {
-				BigDecimal result = Decimal.multiply(preTax, taxRate.add(Decimal.ONE));
-				context.getOutputValues().put(this.getAfterTax(),
-						Decimal.round(result, Decimal.DECIMAL_PLACES_RUNNING));
-			}
 		} else {
-			if (taxRate.equals(Decimal.ZERO)) {
-				// 税率为0，则
-				context.getOutputValues().put(this.getPreTax(), afterTax);
+			if (Decimal.ONE.compareTo(afterTax) == 0 && Decimal.ONE.compareTo(preTax) != 0) {
+				afterTax = Decimal.multiply(preTax, taxRate.add(Decimal.ONE));
+				context.getOutputValues().put(this.getAfterTax(), afterTax);
+			} else if (Decimal.ONE.compareTo(preTax) == 0 && Decimal.ONE.compareTo(afterTax) != 0) {
+				preTax = Decimal.divide(afterTax, taxRate.add(Decimal.ONE));
+				context.getOutputValues().put(this.getPreTax(), preTax);
 			} else {
 				BigDecimal result = Decimal.divide(afterTax, taxRate.add(Decimal.ONE));
-				context.getOutputValues().put(this.getPreTax(), Decimal.round(result, Decimal.DECIMAL_PLACES_RUNNING));
+				result.setScale(preTax.scale());
+				if (Decimal.ONE.compareTo(result.subtract(preTax).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
+					context.getOutputValues().put(this.getPreTax(), preTax);
+				}
 			}
 		}
 	}

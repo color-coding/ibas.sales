@@ -80,20 +80,29 @@ public class BusinessRuleDeductionDiscount extends BusinessRuleCommon {
 		if (afterDiscount == null) {
 			afterDiscount = Decimal.ZERO;
 		}
-
-		if (this.getDiscount().getName().equalsIgnoreCase(context.getTrigger())
-				|| this.getPreDiscount().getName().equalsIgnoreCase(context.getTrigger())) {
-			BigDecimal result = Decimal.multiply(preDiscount, discount);
-			context.getOutputValues().put(this.getAfterDiscount(),
-					Decimal.round(result, Decimal.DECIMAL_PLACES_RUNNING));
+		// 无效折扣，则为1
+		if (Decimal.ZERO.compareTo(discount) >= 0) {
+			discount = Decimal.ONE;
+			context.getOutputValues().put(this.getDiscount(), discount);
+		}
+		if (Decimal.ZERO.compareTo(afterDiscount) == 0 && Decimal.ZERO.compareTo(preDiscount) != 0) {
+			// 根据折前计算折后
+			afterDiscount = Decimal.multiply(preDiscount, discount);
+			context.getOutputValues().put(this.getAfterDiscount(), afterDiscount);
+		} else if (Decimal.ZERO.compareTo(preDiscount) == 0 && Decimal.ZERO.compareTo(afterDiscount) != 0) {
+			// 根据折后计算折前
+			preDiscount = Decimal.divide(afterDiscount, discount);
+			context.getOutputValues().put(this.getPreDiscount(), preDiscount);
 		} else {
-			if (Decimal.ZERO.compareTo(preDiscount) == 0) {
-				context.getOutputValues().put(this.getDiscount(), Decimal.ONE);
-				context.getOutputValues().put(this.getPreDiscount(), afterDiscount);
+			// 计算折扣
+			BigDecimal result = Decimal.divide(afterDiscount, preDiscount);
+			if (discount.scale() > 0) {
+				result.setScale(discount.scale());
+				if (result.compareTo(discount) != 0) {
+					context.getOutputValues().put(this.getDiscount(), result);
+				}
 			} else {
-				BigDecimal result = Decimal.divide(afterDiscount, preDiscount);
-				context.getOutputValues().put(this.getDiscount(),
-						Decimal.round(result, Decimal.DECIMAL_PLACES_RUNNING));
+				context.getOutputValues().put(this.getDiscount(), result);
 			}
 		}
 	}

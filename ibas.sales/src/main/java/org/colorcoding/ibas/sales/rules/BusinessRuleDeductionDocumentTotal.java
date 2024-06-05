@@ -81,13 +81,16 @@ public class BusinessRuleDeductionDocumentTotal extends BusinessRuleCommon {
 		if (shipTotal == null) {
 			shipTotal = Decimal.ZERO;
 		}
-
-		if (this.getDocTotal().getName().equalsIgnoreCase(context.getTrigger())) {
-			context.getOutputValues().put(this.getDisTotal(), docTotal.subtract(shipTotal));
+		if (Decimal.ONE.compareTo(docTotal) == 0) {
+			docTotal = disTotal.add(shipTotal);
+			context.getOutputValues().put(this.getDocTotal(), docTotal);
+		} else if (Decimal.ONE.compareTo(disTotal) == 0) {
+			disTotal = docTotal.subtract(shipTotal);
+			context.getOutputValues().put(this.getDisTotal(), disTotal);
 		} else {
 			BigDecimal result = disTotal.add(shipTotal);
+			result.setScale(docTotal.scale());
 			if (Decimal.ONE.compareTo(result.subtract(docTotal).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
-				// 与原总计差值，小于0.5就忽略
 				context.getOutputValues().put(this.getDocTotal(), disTotal.add(shipTotal));
 			}
 		}

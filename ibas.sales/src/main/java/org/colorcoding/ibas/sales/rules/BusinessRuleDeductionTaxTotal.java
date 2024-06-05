@@ -80,22 +80,21 @@ public class BusinessRuleDeductionTaxTotal extends BusinessRuleCommon {
 		if (total == null) {
 			total = Decimal.ZERO;
 		}
-		if (taxRate.compareTo(Decimal.ZERO) < 0) {
+		if (taxRate.compareTo(Decimal.ZERO) <= 0) {
 			context.getOutputValues().put(this.getTaxRate(), Decimal.ZERO);
 			context.getOutputValues().put(this.getTax(), Decimal.ZERO);
-			return;
-		}
-		if (this.getTotal().getName().equalsIgnoreCase(context.getTrigger())
-				|| this.getTaxRate().getName().equalsIgnoreCase(context.getTrigger())
-				|| Decimal.ZERO.compareTo(tax) > 0) {
-			if (taxRate.equals(Decimal.ZERO)) {
-				// 税率为0，则
-				context.getOutputValues().put(this.getTax(), 0);
+		} else {
+			if (Decimal.ONE.compareTo(tax) == 0 && Decimal.ONE.compareTo(total) != 0) {
+				tax = Decimal.multiply(total, taxRate);
+				context.getOutputValues().put(this.getTax(), tax);
+			} else if (Decimal.ONE.compareTo(total) == 0 && Decimal.ONE.compareTo(tax) != 0) {
+				total = Decimal.divide(tax, taxRate);
+				context.getOutputValues().put(this.getTotal(), total);
 			} else {
 				BigDecimal result = Decimal.multiply(total, taxRate);
+				result.setScale(tax.scale());
 				if (Decimal.ONE.compareTo(result.subtract(tax).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
-					// 与原总计差值，小于0.5就忽略
-					context.getOutputValues().put(this.getTax(), Decimal.round(result, Decimal.DECIMAL_PLACES_RUNNING));
+					context.getOutputValues().put(this.getTax(), tax);
 				}
 			}
 		}

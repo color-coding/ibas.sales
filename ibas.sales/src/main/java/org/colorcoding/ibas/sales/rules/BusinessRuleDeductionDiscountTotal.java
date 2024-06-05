@@ -82,26 +82,23 @@ public class BusinessRuleDeductionDiscountTotal extends BusinessRuleCommon {
 		if (discount.compareTo(Decimal.ZERO) < 0) {
 			context.getOutputValues().put(this.getDiscount(), Decimal.ONE);
 			context.getOutputValues().put(this.getTotal(), preTotal);
-			return;
-		}
-		if (this.getTotal().getName().equalsIgnoreCase(context.getTrigger())) {
-			if (Decimal.ZERO.compareTo(preTotal) == 0) {
-				context.getOutputValues().put(this.getDiscount(), Decimal.ONE);
-				context.getOutputValues().put(this.getTotal(), Decimal.ZERO);
+		} else {
+			if (Decimal.ONE.compareTo(total) == 0 && Decimal.ONE.compareTo(preTotal) != 0) {
+				total = Decimal.multiply(preTotal, discount);
+				context.getOutputValues().put(this.getTotal(), total);
+			} else if (Decimal.ONE.compareTo(preTotal) == 0 && Decimal.ONE.compareTo(total) != 0) {
+				preTotal = Decimal.divide(total, discount);
+				context.getOutputValues().put(this.getPreTotal(), preTotal);
 			} else {
 				BigDecimal result = Decimal.divide(total, preTotal);
-				context.getOutputValues().put(this.getDiscount(),
-						Decimal.round(result, Decimal.DECIMAL_PLACES_RUNNING));
-			}
-		} else {
-			if (Decimal.ONE.compareTo(discount) == 0) {
-				context.getOutputValues().put(this.getTotal(), preTotal);
-			} else {
-				BigDecimal result = Decimal.multiply(preTotal, discount);
-				if (Decimal.ONE.compareTo(result.subtract(total).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
-					// 与原总计差值，小于0.5就忽略
-					context.getOutputValues().put(this.getTotal(),
-							Decimal.round(result, Decimal.DECIMAL_PLACES_RUNNING));
+				if (Decimal.ZERO.compareTo(discount) == 0) {
+					context.getOutputValues().put(this.getDiscount(), result);
+				} else {
+					result.setScale(discount.scale());
+					if (Decimal.ONE.compareTo(result.subtract(total).abs().multiply(Decimal.valueOf("100"))
+							.multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
+						context.getOutputValues().put(this.getDiscount(), result);
+					}
 				}
 			}
 		}
