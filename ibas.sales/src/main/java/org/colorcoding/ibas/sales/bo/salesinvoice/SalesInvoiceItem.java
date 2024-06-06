@@ -2460,7 +2460,7 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 
 	@Override
 	public BigDecimal getBatchPrice() {
-		return this.getPreTaxPrice();
+		return Decimal.divide(this.getPreTaxPrice(), this.getUOMRate());
 	}
 
 	@Override
@@ -2475,7 +2475,7 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 
 	@Override
 	public BigDecimal getSerialPrice() {
-		return this.getPreTaxPrice();
+		return Decimal.divide(this.getPreTaxPrice(), this.getUOMRate());
 	}
 
 	@Override
@@ -2521,13 +2521,12 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 				new BusinessRuleCalculateInventoryQuantity(PROPERTY_INVENTORYQUANTITY, PROPERTY_QUANTITY,
 						PROPERTY_UOMRATE),
 				// 计算 行总计 = 税前总计（折扣后） + 税总计；行总计 = 价格（税后） * 数量；税总计 = 税前总计（折扣后） * 税率
-				new BusinessRuleDeductionPriceTaxTotal(PROPERTY_LINETOTAL, PROPERTY_PRICE, PROPERTY_INVENTORYQUANTITY,
+				new BusinessRuleDeductionPriceTaxTotal(PROPERTY_LINETOTAL, PROPERTY_PRICE, PROPERTY_QUANTITY,
 						PROPERTY_TAXRATE, PROPERTY_TAXTOTAL, PROPERTY_PRETAXLINETOTAL, PROPERTY_PRETAXPRICE),
 				// 计算折扣后总计 = 折扣前总计 * 折扣
 				new BusinessRuleDeductionDiscount(PROPERTY_DISCOUNT, PROPERTY_UNITLINETOTAL, PROPERTY_PRETAXLINETOTAL),
 				// 计算折扣前总计 = 数量 * 折扣前价格
-				new BusinessRuleDeductionPriceQtyTotal(PROPERTY_UNITLINETOTAL, PROPERTY_UNITPRICE,
-						PROPERTY_INVENTORYQUANTITY),
+				new BusinessRuleDeductionPriceQtyTotal(PROPERTY_UNITLINETOTAL, PROPERTY_UNITPRICE, PROPERTY_QUANTITY),
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_INVENTORYQUANTITY), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_PRETAXLINETOTAL), // 不能低于0
@@ -2798,7 +2797,7 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 
 				@Override
 				public BigDecimal getPrice() {
-					return SalesInvoiceItem.this.getPreTaxPrice();
+					return Decimal.divide(SalesInvoiceItem.this.getPreTaxPrice(), SalesInvoiceItem.this.getUOMRate());
 				}
 
 				@Override

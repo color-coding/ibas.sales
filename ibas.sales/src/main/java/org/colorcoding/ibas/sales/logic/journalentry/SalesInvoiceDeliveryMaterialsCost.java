@@ -97,7 +97,7 @@ public class SalesInvoiceDeliveryMaterialsCost extends MaterialsInventoryCost {
 							}
 						}
 						if (avaPrice != null) {
-							this.setAmount(Decimal.multiply(item.getQuantity(), avaPrice));
+							this.setAmount(Decimal.multiply(item.getInventoryQuantity(), avaPrice));
 							return true;
 						}
 					}

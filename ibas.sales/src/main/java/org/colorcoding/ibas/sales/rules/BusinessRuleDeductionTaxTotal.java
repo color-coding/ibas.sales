@@ -92,7 +92,7 @@ public class BusinessRuleDeductionTaxTotal extends BusinessRuleCommon {
 				context.getOutputValues().put(this.getTotal(), total);
 			} else {
 				BigDecimal result = Decimal.multiply(total, taxRate);
-				result.setScale(tax.scale());
+				result.setScale(tax.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 				if (Decimal.ONE.compareTo(result.subtract(tax).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
 					context.getOutputValues().put(this.getTax(), tax);
 				}

@@ -299,22 +299,30 @@ namespace sales {
                 });
             }
             /** 更改行价格 */
-            private changeSalesDeliveryItemPrice(priceList: number | ibas.Criteria): void {
+            private changeSalesDeliveryItemPrice(priceList: number | ibas.Criteria, items?: bo.SalesDeliveryItem[]): void {
+                if (ibas.objects.isNull(items)) {
+                    items = this.editData.salesDeliveryItems.filterDeleted();
+                }
                 if (typeof priceList === "number" && ibas.numbers.valueOf(priceList) !== 0) {
                     let criteria: ibas.Criteria = new ibas.Criteria();
                     let condition: ibas.ICondition = criteria.conditions.create();
                     condition.alias = materials.app.conditions.materialprice.CONDITION_ALIAS_PRICELIST;
                     condition.value = priceList.toString();
-                    for (let item of this.editData.salesDeliveryItems) {
+                    for (let item of items) {
                         if (!ibas.strings.isEmpty(item.parentLineSign)) {
                             continue;
                         }
                         condition = criteria.conditions.create();
                         condition.alias = materials.app.conditions.materialprice.CONDITION_ALIAS_ITEMCODE;
                         condition.value = item.itemCode;
+                        condition.bracketOpen = 1;
                         if (criteria.conditions.length > 2) {
                             condition.relationship = ibas.emConditionRelationship.OR;
                         }
+                        condition = criteria.conditions.create();
+                        condition.alias = materials.app.conditions.materialprice.CONDITION_ALIAS_UOM;
+                        condition.value = item.uom;
+                        condition.bracketClose = 1;
                     }
                     if (criteria.conditions.length < 2) {
                         return;
@@ -325,7 +333,7 @@ namespace sales {
                     }
                     if (config.get(config.CONFIG_ITEM_FORCE_UPDATE_PRICE_FOR_PRICE_LIST_CHANGED, true) === true) {
                         // 强制刷新价格
-                        this.changeSalesDeliveryItemPrice(criteria);
+                        this.changeSalesDeliveryItemPrice(criteria, items);
                     } else {
                         this.messages({
                             type: ibas.emMessageType.QUESTION,
@@ -336,7 +344,7 @@ namespace sales {
                             ],
                             onCompleted: (result) => {
                                 if (result === ibas.emMessageAction.YES) {
-                                    this.changeSalesDeliveryItemPrice(criteria);
+                                    this.changeSalesDeliveryItemPrice(criteria, items);
                                 }
                             }
                         });
@@ -348,8 +356,9 @@ namespace sales {
                         criteria: priceList,
                         onCompleted: (opRslt) => {
                             for (let item of opRslt.resultObjects) {
-                                this.editData.salesDeliveryItems.forEach((value) => {
-                                    if (item.itemCode === value.itemCode) {
+                                items.forEach((value) => {
+                                    if (item.itemCode === value.itemCode
+                                        && (ibas.strings.isEmpty(value.uom) || item.uom === value.uom)) {
                                         if (item.taxed === ibas.emYesNo.YES) {
                                             value.unitPrice = 0;
                                             value.price = item.price;
@@ -1296,6 +1305,7 @@ namespace sales {
                                 }
                             }
                         });
+                        that.changeSalesDeliveryItemPrice(that.editData.priceList, [caller]);
                     }
                 });
             }

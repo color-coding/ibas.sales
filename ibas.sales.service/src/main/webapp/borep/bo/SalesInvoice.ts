@@ -1701,15 +1701,15 @@ namespace sales {
                         SalesInvoiceItem.PROPERTY_INVENTORYQUANTITY_NAME, SalesInvoiceItem.PROPERTY_QUANTITY_NAME, SalesInvoiceItem.PROPERTY_UOMRATE_NAME),
                     // 计算折扣前总计 = 数量 * 折扣前价格
                     new BusinessRuleDeductionPriceQtyTotal(
-                        SalesInvoiceItem.PROPERTY_UNITLINETOTAL_NAME, SalesInvoiceItem.PROPERTY_UNITPRICE_NAME, SalesInvoiceItem.PROPERTY_INVENTORYQUANTITY_NAME
+                        SalesInvoiceItem.PROPERTY_UNITLINETOTAL_NAME, SalesInvoiceItem.PROPERTY_UNITPRICE_NAME, SalesInvoiceItem.PROPERTY_QUANTITY_NAME
                     ),
                     // 计算 行总计 = 税前总计（折扣后） + 税总计；行总计 = 价格（税后） * 数量；税总计 = 税前总计（折扣后） * 税率
-                    new BusinessRuleDeductionPriceTaxTotal(SalesInvoiceItem.PROPERTY_LINETOTAL_NAME, SalesInvoiceItem.PROPERTY_PRICE_NAME, SalesInvoiceItem.PROPERTY_INVENTORYQUANTITY_NAME
+                    new BusinessRuleDeductionPriceTaxTotal(SalesInvoiceItem.PROPERTY_LINETOTAL_NAME, SalesInvoiceItem.PROPERTY_PRICE_NAME, SalesInvoiceItem.PROPERTY_QUANTITY_NAME
                         , SalesInvoiceItem.PROPERTY_TAXRATE_NAME, SalesInvoiceItem.PROPERTY_TAXTOTAL_NAME, SalesInvoiceItem.PROPERTY_PRETAXLINETOTAL_NAME
                     ),
                     // 计算折扣后总计（税前） = 数量 * 折扣后价格（税前）
                     new BusinessRuleDeductionPriceQtyTotal(
-                        SalesInvoiceItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesInvoiceItem.PROPERTY_PRETAXPRICE_NAME, SalesInvoiceItem.PROPERTY_INVENTORYQUANTITY_NAME
+                        SalesInvoiceItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesInvoiceItem.PROPERTY_PRETAXPRICE_NAME, SalesInvoiceItem.PROPERTY_QUANTITY_NAME
                     ),
                     // 计算折扣后总计 = 折扣前总计 * 折扣
                     new BusinessRuleDeductionDiscount(

@@ -90,11 +90,11 @@ public class BusinessRuleDeductionDiscountTotal extends BusinessRuleCommon {
 				preTotal = Decimal.divide(total, discount);
 				context.getOutputValues().put(this.getPreTotal(), preTotal);
 			} else {
-				BigDecimal result = Decimal.divide(total, preTotal);
+				BigDecimal result = Decimal.isZero(preTotal) ? Decimal.ONE : Decimal.divide(total, preTotal);
 				if (Decimal.ZERO.compareTo(discount) == 0) {
 					context.getOutputValues().put(this.getDiscount(), result);
 				} else {
-					result.setScale(discount.scale());
+					result.setScale(discount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 					if (Decimal.ONE.compareTo(result.subtract(total).abs().multiply(Decimal.valueOf("100"))
 							.multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
 						context.getOutputValues().put(this.getDiscount(), result);

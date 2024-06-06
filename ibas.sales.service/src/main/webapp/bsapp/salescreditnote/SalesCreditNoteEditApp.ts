@@ -289,22 +289,30 @@ namespace sales {
                 });
             }
             /** 更改行价格 */
-            private changeSalesCreditNoteItemPrice(priceList: number | ibas.Criteria): void {
+            private changeSalesCreditNoteItemPrice(priceList: number | ibas.Criteria, items?: bo.SalesCreditNoteItem[]): void {
+                if (ibas.objects.isNull(items)) {
+                    items = this.editData.salesCreditNoteItems.filterDeleted();
+                }
                 if (typeof priceList === "number" && ibas.numbers.valueOf(priceList) !== 0) {
                     let criteria: ibas.Criteria = new ibas.Criteria();
                     let condition: ibas.ICondition = criteria.conditions.create();
                     condition.alias = materials.app.conditions.materialprice.CONDITION_ALIAS_PRICELIST;
                     condition.value = priceList.toString();
-                    for (let item of this.editData.salesCreditNoteItems) {
+                    for (let item of items) {
                         if (!ibas.strings.isEmpty(item.parentLineSign)) {
                             continue;
                         }
                         condition = criteria.conditions.create();
                         condition.alias = materials.app.conditions.materialprice.CONDITION_ALIAS_ITEMCODE;
                         condition.value = item.itemCode;
+                        condition.bracketOpen = 1;
                         if (criteria.conditions.length > 2) {
                             condition.relationship = ibas.emConditionRelationship.OR;
                         }
+                        condition = criteria.conditions.create();
+                        condition.alias = materials.app.conditions.materialprice.CONDITION_ALIAS_UOM;
+                        condition.value = item.uom;
+                        condition.bracketClose = 1;
                     }
                     if (criteria.conditions.length < 2) {
                         return;
@@ -315,7 +323,7 @@ namespace sales {
                     }
                     if (config.get(config.CONFIG_ITEM_FORCE_UPDATE_PRICE_FOR_PRICE_LIST_CHANGED, true) === true) {
                         // 强制刷新价格
-                        this.changeSalesCreditNoteItemPrice(criteria);
+                        this.changeSalesCreditNoteItemPrice(criteria, items);
                     } else {
                         this.messages({
                             type: ibas.emMessageType.QUESTION,
@@ -326,7 +334,7 @@ namespace sales {
                             ],
                             onCompleted: (result) => {
                                 if (result === ibas.emMessageAction.YES) {
-                                    this.changeSalesCreditNoteItemPrice(criteria);
+                                    this.changeSalesCreditNoteItemPrice(criteria, items);
                                 }
                             }
                         });
@@ -338,8 +346,9 @@ namespace sales {
                         criteria: priceList,
                         onCompleted: (opRslt) => {
                             for (let item of opRslt.resultObjects) {
-                                this.editData.salesCreditNoteItems.forEach((value) => {
-                                    if (item.itemCode === value.itemCode) {
+                                items.forEach((value) => {
+                                    if (item.itemCode === value.itemCode
+                                        && (ibas.strings.isEmpty(value.uom) || item.uom === value.uom)) {
                                         if (item.taxed === ibas.emYesNo.YES) {
                                             value.unitPrice = 0;
                                             value.price = item.price;
@@ -1013,6 +1022,7 @@ namespace sales {
                                 }
                             }
                         });
+                        that.changeSalesCreditNoteItemPrice(that.editData.priceList, [caller]);
                     }
                 });
             }
