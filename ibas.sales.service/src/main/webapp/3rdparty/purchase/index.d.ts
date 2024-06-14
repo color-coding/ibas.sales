@@ -17,12 +17,15 @@ declare namespace purchase {
         const CONFIG_ITEM_FORCE_UPDATE_PRICE_FOR_PRICE_LIST_CHANGED: string;
         /** 配置项目-允许改变基于单据币种 */
         const CONFIG_ITEM_ALLOW_CHANGE_BASED_DOCUMENT_CURRENCY: string;
+        /** 配置项目-单据行价格类型 */
+        const CONFIG_ITEM_DOCUMENT_LINE_PRICE_TYPE: string;
         /**
          * 获取此模块配置
          * @param key 配置项
          * @param defalut 默认值
          */
         function get<T>(key: string, defalut?: T): T;
+        function isInventoryUnitLinePrice(): boolean;
     }
     namespace bo {
         /** 业务仓库名称 */
@@ -3698,7 +3701,6 @@ declare namespace purchase {
             get materialSerials(): materials.bo.MaterialSerialItems;
             /** 设置-物料序列集合 */
             set materialSerials(value: materials.bo.MaterialSerialItems);
-            get targetQuantity(): number;
             /** 初始化数据 */
             protected init(): void;
             /** 赋值产品 */
@@ -4457,7 +4459,6 @@ declare namespace purchase {
             get materialSerials(): materials.bo.MaterialSerialItems;
             /** 设置-物料序列集合 */
             set materialSerials(value: materials.bo.MaterialSerialItems);
-            get targetQuantity(): number;
             /** 初始化数据 */
             protected init(): void;
             /** 赋值产品 */
@@ -5366,7 +5367,6 @@ declare namespace purchase {
             get materialSerials(): materials.bo.MaterialSerialItems;
             /** 设置-物料序列集合 */
             set materialSerials(value: materials.bo.MaterialSerialItems);
-            get targetQuantity(): number;
             /** 初始化数据 */
             protected init(): void;
             /** 赋值产品 */
@@ -7866,7 +7866,6 @@ declare namespace purchase {
             get materialSerials(): materials.bo.MaterialSerialItems;
             /** 设置-物料序列集合 */
             set materialSerials(value: materials.bo.MaterialSerialItems);
-            get targetQuantity(): number;
             /** 初始化数据 */
             protected init(): void;
             /** 赋值产品 */
@@ -8813,7 +8812,6 @@ declare namespace purchase {
             get materialSerials(): materials.bo.MaterialSerialItems;
             /** 设置-物料序列集合 */
             set materialSerials(value: materials.bo.MaterialSerialItems);
-            get targetQuantity(): number;
             /** 初始化数据 */
             protected init(): void;
             /** 赋值产品 */
@@ -11064,7 +11062,6 @@ declare namespace purchase {
             get materialSerials(): materials.bo.MaterialSerialItems;
             /** 设置-物料序列集合 */
             set materialSerials(value: materials.bo.MaterialSerialItems);
-            get targetQuantity(): number;
             /** 初始化数据 */
             protected init(): void;
             /** 赋值产品 */

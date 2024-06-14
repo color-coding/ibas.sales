@@ -360,7 +360,8 @@ namespace sales {
                             for (let item of opRslt.resultObjects) {
                                 items.forEach((value) => {
                                     if (item.itemCode === value.itemCode
-                                        && (ibas.strings.isEmpty(value.uom) || item.uom === value.uom)) {
+                                        && (ibas.strings.isEmpty(value.uom)
+                                            || (config.isInventoryUnitLinePrice() ? item.uom === value.inventoryUOM : item.uom === value.uom))) {
                                         if (item.taxed === ibas.emYesNo.YES) {
                                             value.unitPrice = 0;
                                             value.price = item.price;

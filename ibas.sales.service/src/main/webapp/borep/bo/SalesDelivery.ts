@@ -1653,10 +1653,6 @@ namespace sales {
                 this.setProperty(SalesDeliveryItem.PROPERTY_MATERIALSERIALS_NAME, value);
             }
 
-            get targetQuantity(): number {
-                return this.inventoryQuantity;
-            }
-
             /** 初始化数据 */
             protected init(): void {
                 this.materialBatches = new materials.bo.MaterialBatchItems(this);
@@ -1681,15 +1677,18 @@ namespace sales {
                         SalesDeliveryItem.PROPERTY_INVENTORYQUANTITY_NAME, SalesDeliveryItem.PROPERTY_QUANTITY_NAME, SalesDeliveryItem.PROPERTY_UOMRATE_NAME),
                     // 计算折扣前总计 = 数量 * 折扣前价格
                     new BusinessRuleDeductionPriceQtyTotal(
-                        SalesDeliveryItem.PROPERTY_UNITLINETOTAL_NAME, SalesDeliveryItem.PROPERTY_UNITPRICE_NAME, SalesDeliveryItem.PROPERTY_QUANTITY_NAME
+                        SalesDeliveryItem.PROPERTY_UNITLINETOTAL_NAME, SalesDeliveryItem.PROPERTY_UNITPRICE_NAME,
+                        config.isInventoryUnitLinePrice() ? SalesDeliveryItem.PROPERTY_INVENTORYQUANTITY_NAME : SalesDeliveryItem.PROPERTY_QUANTITY_NAME
                     ),
                     // 计算 行总计 = 税前总计（折扣后） + 税总计；行总计 = 价格（税后） * 数量；税总计 = 税前总计（折扣后） * 税率
-                    new BusinessRuleDeductionPriceTaxTotal(SalesDeliveryItem.PROPERTY_LINETOTAL_NAME, SalesDeliveryItem.PROPERTY_PRICE_NAME, SalesDeliveryItem.PROPERTY_QUANTITY_NAME
-                        , SalesDeliveryItem.PROPERTY_TAXRATE_NAME, SalesDeliveryItem.PROPERTY_TAXTOTAL_NAME, SalesDeliveryItem.PROPERTY_PRETAXLINETOTAL_NAME
+                    new BusinessRuleDeductionPriceTaxTotal(SalesDeliveryItem.PROPERTY_LINETOTAL_NAME, SalesDeliveryItem.PROPERTY_PRICE_NAME,
+                        config.isInventoryUnitLinePrice() ? SalesDeliveryItem.PROPERTY_INVENTORYQUANTITY_NAME : SalesDeliveryItem.PROPERTY_QUANTITY_NAME,
+                        SalesDeliveryItem.PROPERTY_TAXRATE_NAME, SalesDeliveryItem.PROPERTY_TAXTOTAL_NAME, SalesDeliveryItem.PROPERTY_PRETAXLINETOTAL_NAME
                     ),
                     // 计算折扣后总计（税前） = 数量 * 折扣后价格（税前）
                     new BusinessRuleDeductionPriceQtyTotal(
-                        SalesDeliveryItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesDeliveryItem.PROPERTY_PRETAXPRICE_NAME, SalesDeliveryItem.PROPERTY_QUANTITY_NAME
+                        SalesDeliveryItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesDeliveryItem.PROPERTY_PRETAXPRICE_NAME,
+                        config.isInventoryUnitLinePrice() ? SalesDeliveryItem.PROPERTY_INVENTORYQUANTITY_NAME : SalesDeliveryItem.PROPERTY_QUANTITY_NAME
                     ),
                     // 计算折扣后总计 = 折扣前总计 * 折扣
                     new BusinessRuleDeductionDiscount(

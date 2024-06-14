@@ -31,6 +31,19 @@ public class MyConfiguration extends org.colorcoding.ibas.initialfantasy.MyConfi
 		return create().getConfigValue(key);
 	}
 
+	private static Boolean inventoryUnitLinePrice = null;
+
+	public static boolean isInventoryUnitLinePrice() {
+		if (inventoryUnitLinePrice == null) {
+			if ("InventoryUnit".equalsIgnoreCase(getConfigValue(CONFIG_ITEM_DOCUMENT_LINE_PRICE_TYPE))) {
+				inventoryUnitLinePrice = true;
+			} else {
+				inventoryUnitLinePrice = false;
+			}
+		}
+		return inventoryUnitLinePrice;
+	}
+
 	/**
 	 * 模块标识
 	 */
@@ -56,4 +69,8 @@ public class MyConfiguration extends org.colorcoding.ibas.initialfantasy.MyConfi
 	 */
 	public static final String NAMESPACE_SERVICE = NAMESPACE_ROOT + "service";
 
+	/**
+	 * 配置项目-单据行价格类型
+	 */
+	public final static String CONFIG_ITEM_DOCUMENT_LINE_PRICE_TYPE = "documentLinePriceType";
 }

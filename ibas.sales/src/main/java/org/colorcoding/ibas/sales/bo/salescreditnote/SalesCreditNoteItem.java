@@ -2482,26 +2482,19 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 	}
 
 	@Override
-	public BigDecimal getTargetQuantity() {
-		return this.getInventoryQuantity();
-	}
-
-	@Override
-	public String getTargetUOM() {
-		return this.getInventoryUOM();
-	}
-
-	@Override
-	public BigDecimal getBatchPrice() {
-		if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
-			return SalesCreditNoteItem.this.getReturnCost();
+	public BigDecimal getInventoryPrice() {
+		if (this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+			return this.getReturnCost();
 		}
-		return Decimal.divide(SalesCreditNoteItem.this.getPreTaxPrice(), SalesCreditNoteItem.this.getUOMRate());
+		if (MyConfiguration.isInventoryUnitLinePrice()) {
+			return this.getPreTaxPrice();
+		}
+		return Decimal.divide(this.getPreTaxPrice(), this.getUOMRate());
 	}
 
 	@Override
-	public String getBatchCurrency() {
-		if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+	public String getInventoryCurrency() {
+		if (this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
 			return org.colorcoding.ibas.accounting.MyConfiguration
 					.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY);
 		}
@@ -2509,36 +2502,11 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 	}
 
 	@Override
-	public BigDecimal getBatchRate() {
-		if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+	public BigDecimal getInventoryRate() {
+		if (this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
 			return Decimal.ONE;
 		}
-		return SalesCreditNoteItem.this.getRate();
-	}
-
-	@Override
-	public BigDecimal getSerialPrice() {
-		if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
-			return SalesCreditNoteItem.this.getReturnCost();
-		}
-		return Decimal.divide(SalesCreditNoteItem.this.getPreTaxPrice(), SalesCreditNoteItem.this.getUOMRate());
-	}
-
-	@Override
-	public String getSerialCurrency() {
-		if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
-			return org.colorcoding.ibas.accounting.MyConfiguration
-					.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY);
-		}
-		return SalesCreditNoteItem.this.getCurrency();
-	}
-
-	@Override
-	public BigDecimal getSerialRate() {
-		if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
-			return Decimal.ONE;
-		}
-		return SalesCreditNoteItem.this.getRate();
+		return this.getRate();
 	}
 
 	/**
@@ -2574,12 +2542,14 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 				new BusinessRuleCalculateInventoryQuantity(PROPERTY_INVENTORYQUANTITY, PROPERTY_QUANTITY,
 						PROPERTY_UOMRATE),
 				// 计算 行总计 = 税前总计（折扣后） + 税总计；行总计 = 价格（税后） * 数量；税总计 = 税前总计（折扣后） * 税率
-				new BusinessRuleDeductionPriceTaxTotal(PROPERTY_LINETOTAL, PROPERTY_PRICE, PROPERTY_QUANTITY,
+				new BusinessRuleDeductionPriceTaxTotal(PROPERTY_LINETOTAL, PROPERTY_PRICE,
+						MyConfiguration.isInventoryUnitLinePrice() ? PROPERTY_INVENTORYQUANTITY : PROPERTY_QUANTITY,
 						PROPERTY_TAXRATE, PROPERTY_TAXTOTAL, PROPERTY_PRETAXLINETOTAL, PROPERTY_PRETAXPRICE),
 				// 计算折扣后总计 = 折扣前总计 * 折扣
 				new BusinessRuleDeductionDiscount(PROPERTY_DISCOUNT, PROPERTY_UNITLINETOTAL, PROPERTY_PRETAXLINETOTAL),
 				// 计算折扣前总计 = 数量 * 折扣前价格
-				new BusinessRuleDeductionPriceQtyTotal(PROPERTY_UNITLINETOTAL, PROPERTY_UNITPRICE, PROPERTY_QUANTITY),
+				new BusinessRuleDeductionPriceQtyTotal(PROPERTY_UNITLINETOTAL, PROPERTY_UNITPRICE,
+						MyConfiguration.isInventoryUnitLinePrice() ? PROPERTY_INVENTORYQUANTITY : PROPERTY_QUANTITY),
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_INVENTORYQUANTITY), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_PRETAXLINETOTAL), // 不能低于0
@@ -2885,6 +2855,9 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 				public BigDecimal getPrice() {
 					if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
 						return SalesCreditNoteItem.this.getReturnCost();
+					}
+					if (MyConfiguration.isInventoryUnitLinePrice()) {
+						return SalesCreditNoteItem.this.getPreTaxPrice();
 					}
 					return Decimal.divide(SalesCreditNoteItem.this.getPreTaxPrice(),
 							SalesCreditNoteItem.this.getUOMRate());
