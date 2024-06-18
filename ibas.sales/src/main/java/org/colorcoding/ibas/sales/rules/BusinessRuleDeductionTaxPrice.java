@@ -84,10 +84,10 @@ public class BusinessRuleDeductionTaxPrice extends BusinessRuleCommon {
 			context.getOutputValues().put(this.getTaxRate(), Decimal.ZERO);
 			context.getOutputValues().put(this.getAfterTax(), preTax);
 		} else {
-			if (Decimal.ONE.compareTo(afterTax) == 0 && Decimal.ONE.compareTo(preTax) != 0) {
+			if (Decimal.ZERO.compareTo(afterTax) == 0 && Decimal.ZERO.compareTo(preTax) != 0) {
 				afterTax = Decimal.multiply(preTax, taxRate.add(Decimal.ONE));
 				context.getOutputValues().put(this.getAfterTax(), afterTax);
-			} else if (Decimal.ONE.compareTo(preTax) == 0 && Decimal.ONE.compareTo(afterTax) != 0) {
+			} else if (Decimal.ZERO.compareTo(preTax) == 0 && Decimal.ZERO.compareTo(afterTax) != 0) {
 				preTax = Decimal.divide(afterTax, taxRate.add(Decimal.ONE));
 				context.getOutputValues().put(this.getPreTax(), preTax);
 			} else {

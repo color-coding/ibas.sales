@@ -83,11 +83,11 @@ public class BusinessRuleDeductionDiscountTotal extends BusinessRuleCommon {
 			context.getOutputValues().put(this.getDiscount(), Decimal.ONE);
 			context.getOutputValues().put(this.getTotal(), preTotal);
 		} else {
-			if (Decimal.ONE.compareTo(total) == 0 && Decimal.ONE.compareTo(preTotal) != 0) {
+			if (Decimal.ZERO.compareTo(total) == 0 && Decimal.ZERO.compareTo(preTotal) != 0) {
 				total = Decimal.multiply(preTotal, discount);
 				context.getOutputValues().put(this.getTotal(), total);
-			} else if (Decimal.ONE.compareTo(preTotal) == 0 && Decimal.ONE.compareTo(total) != 0) {
-				preTotal = Decimal.divide(total, discount);
+			} else if (Decimal.ZERO.compareTo(preTotal) == 0 && Decimal.ZERO.compareTo(total) != 0) {
+				preTotal = Decimal.isZero(discount) ? Decimal.ZERO : Decimal.divide(total, discount);
 				context.getOutputValues().put(this.getPreTotal(), preTotal);
 			} else {
 				BigDecimal result = Decimal.isZero(preTotal) ? Decimal.ONE : Decimal.divide(total, preTotal);

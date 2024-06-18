@@ -81,10 +81,10 @@ public class BusinessRuleDeductionDocumentTotal extends BusinessRuleCommon {
 		if (shipTotal == null) {
 			shipTotal = Decimal.ZERO;
 		}
-		if (Decimal.ONE.compareTo(docTotal) == 0) {
+		if (Decimal.ZERO.compareTo(docTotal) == 0) {
 			docTotal = disTotal.add(shipTotal);
 			context.getOutputValues().put(this.getDocTotal(), docTotal);
-		} else if (Decimal.ONE.compareTo(disTotal) == 0) {
+		} else if (Decimal.ZERO.compareTo(disTotal) == 0) {
 			disTotal = docTotal.subtract(shipTotal);
 			context.getOutputValues().put(this.getDisTotal(), disTotal);
 		} else {
