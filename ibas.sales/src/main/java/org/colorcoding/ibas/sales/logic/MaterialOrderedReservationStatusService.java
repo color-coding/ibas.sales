@@ -31,6 +31,7 @@ import org.colorcoding.ibas.materials.bo.materialinventory.MaterialOrderedReserv
 import org.colorcoding.ibas.materials.bo.materialinventory.MaterialOrderedReservations;
 import org.colorcoding.ibas.materials.logic.MaterialInventoryBusinessLogic;
 import org.colorcoding.ibas.materials.repository.BORepositoryMaterials;
+import org.colorcoding.ibas.sales.MyConfiguration;
 
 @LogicContract(IMaterialOrderedReservationStatusContract.class)
 public class MaterialOrderedReservationStatusService extends
@@ -91,7 +92,13 @@ public class MaterialOrderedReservationStatusService extends
 
 	@Override
 	protected void impact(IMaterialOrderedReservationStatusContract contract) {
+		boolean restore = MyConfiguration.getConfigValue(MyConfiguration.CONFIG_ITEM_ENABLE_RESTORE_RESERVATION_STATUS,
+				false);
 		for (IMaterialOrderedReservation item : this.getBeAffected().getItems()) {
+			if (!restore && item.getStatus() == emBOStatus.CLOSED && !item.isNew()) {
+				// 已关闭的，不重新打开
+				continue;
+			}
 			if (contract.getTargetDocumentStatus() == emDocumentStatus.PLANNED
 					|| contract.getTargetDocumentStatus() == emDocumentStatus.RELEASED) {
 				item.setTargetDocumentClosed(emYesNo.NO);
@@ -114,19 +121,21 @@ public class MaterialOrderedReservationStatusService extends
 	@Override
 	protected void revoke(IMaterialOrderedReservationStatusContract contract) {
 		for (IMaterialOrderedReservation item : this.getBeAffected().getItems()) {
-			item.setStatus(emBOStatus.CLOSED);
 			// 删除的记录状态，否则源对象编辑时逻辑不对
 			if (this.getLogicChain().getTrigger().isDeleted()) {
 				item.setTargetDocumentClosed(emYesNo.YES);
+				item.setStatus(emBOStatus.CLOSED);
 			}
 			if (this.getLogicChain().getTrigger() instanceof IBOTagCanceled) {
 				if (((IBOTagCanceled) this.getLogicChain().getTrigger()).getCanceled() == emYesNo.YES) {
 					item.setTargetDocumentClosed(emYesNo.YES);
+					item.setStatus(emBOStatus.CLOSED);
 				}
 			}
 			if (this.getLogicChain().getTrigger() instanceof IBOTagDeleted) {
 				if (((IBOTagDeleted) this.getLogicChain().getTrigger()).getDeleted() == emYesNo.YES) {
 					item.setTargetDocumentClosed(emYesNo.YES);
+					item.setStatus(emBOStatus.CLOSED);
 				}
 			}
 		}

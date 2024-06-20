@@ -73,4 +73,10 @@ public class MyConfiguration extends org.colorcoding.ibas.initialfantasy.MyConfi
 	 * 配置项目-单据行价格类型
 	 */
 	public final static String CONFIG_ITEM_DOCUMENT_LINE_PRICE_TYPE = "documentLinePriceType";
+
+	/**
+	 * 配置项目-启用单据预留状态恢复
+	 */
+	public final static String CONFIG_ITEM_ENABLE_RESTORE_RESERVATION_STATUS = "enableRestoreReservationStatus";
+
 }

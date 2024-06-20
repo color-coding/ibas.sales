@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBODocument;
 import org.colorcoding.ibas.bobas.bo.IBODocumentLine;
+import org.colorcoding.ibas.bobas.bo.IBOTagCanceled;
+import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
 import org.colorcoding.ibas.bobas.bo.IBusinessObject;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
@@ -17,6 +19,7 @@ import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
+import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.logic.BusinessLogicException;
 import org.colorcoding.ibas.bobas.logic.IBusinessObjectGroup;
 import org.colorcoding.ibas.bobas.mapping.DbField;
@@ -28,6 +31,7 @@ import org.colorcoding.ibas.materials.bo.materialinventory.MaterialInventoryRese
 import org.colorcoding.ibas.materials.bo.materialinventory.MaterialInventoryReservations;
 import org.colorcoding.ibas.materials.logic.MaterialInventoryBusinessLogic;
 import org.colorcoding.ibas.materials.repository.BORepositoryMaterials;
+import org.colorcoding.ibas.sales.MyConfiguration;
 
 @LogicContract(IMaterialInventoryReservationStatusContract.class)
 public class MaterialInventoryReservationStatusService extends
@@ -88,7 +92,13 @@ public class MaterialInventoryReservationStatusService extends
 
 	@Override
 	protected void impact(IMaterialInventoryReservationStatusContract contract) {
+		boolean restore = MyConfiguration.getConfigValue(MyConfiguration.CONFIG_ITEM_ENABLE_RESTORE_RESERVATION_STATUS,
+				false);
 		for (IMaterialInventoryReservation item : this.getBeAffected().getItems()) {
+			if (!restore && item.getStatus() == emBOStatus.CLOSED && !item.isNew()) {
+				// 已关闭的，不重新打开
+				continue;
+			}
 			if (contract.getTargetDocumentStatus() == emDocumentStatus.PLANNED
 					|| contract.getTargetDocumentStatus() == emDocumentStatus.RELEASED) {
 				if (item.getQuantity().compareTo(item.getClosedQuantity()) > 0) {
@@ -105,7 +115,20 @@ public class MaterialInventoryReservationStatusService extends
 	@Override
 	protected void revoke(IMaterialInventoryReservationStatusContract contract) {
 		for (IMaterialInventoryReservation item : this.getBeAffected().getItems()) {
-			item.setStatus(emBOStatus.CLOSED);
+			// 仅删除时，修改为
+			if (this.getLogicChain().getTrigger().isDeleted()) {
+				item.setStatus(emBOStatus.CLOSED);
+			}
+			if (this.getLogicChain().getTrigger() instanceof IBOTagCanceled) {
+				if (((IBOTagCanceled) this.getLogicChain().getTrigger()).getCanceled() == emYesNo.YES) {
+					item.setStatus(emBOStatus.CLOSED);
+				}
+			}
+			if (this.getLogicChain().getTrigger() instanceof IBOTagDeleted) {
+				if (((IBOTagDeleted) this.getLogicChain().getTrigger()).getDeleted() == emYesNo.YES) {
+					item.setStatus(emBOStatus.CLOSED);
+				}
+			}
 		}
 	}
 
