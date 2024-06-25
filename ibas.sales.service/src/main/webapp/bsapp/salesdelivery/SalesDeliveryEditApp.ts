@@ -351,6 +351,16 @@ namespace sales {
                     }
                 } else if (priceList instanceof ibas.Criteria) {
                     this.busy(true);
+                    // 增加业务伙伴条件
+                    if (materials.config.isEnableMaterialSpecialPrices() && !ibas.strings.isEmpty(this.editData.customerCode)) {
+                        if (priceList.conditions.length > 1) {
+                            priceList.conditions.firstOrDefault().bracketOpen += 1;
+                            priceList.conditions.lastOrDefault().bracketClose += 1;
+                        }
+                        let condition: ibas.ICondition = priceList.conditions.create();
+                        condition.alias = materials.app.conditions.materialprice.CONDITION_ALIAS_CUSTOMER;
+                        condition.value = this.editData.customerCode;
+                    }
                     let boRepository: materials.bo.BORepositoryMaterials = new materials.bo.BORepositoryMaterials();
                     boRepository.fetchMaterialPrice({
                         criteria: priceList,
@@ -390,6 +400,13 @@ namespace sales {
                     condition.operation = ibas.emConditionOperation.EQUAL;
                     condition.relationship = ibas.emConditionRelationship.AND;
                     conditions.add(condition);
+                    // 增加业务伙伴条件
+                    if (materials.config.isEnableMaterialSpecialPrices() && !ibas.strings.isEmpty(this.editData.customerCode)) {
+                        condition = new ibas.Condition();
+                        condition.alias = materials.app.conditions.materialprice.CONDITION_ALIAS_CUSTOMER;
+                        condition.value = this.editData.customerCode;
+                        conditions.add(condition);
+                    }
                 }
                 // 添加仓库条件
                 if (!ibas.objects.isNull(caller) && !ibas.strings.isEmpty(caller.warehouse)) {
