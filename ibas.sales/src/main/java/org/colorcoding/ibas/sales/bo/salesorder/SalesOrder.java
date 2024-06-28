@@ -1849,35 +1849,6 @@ public class SalesOrder extends BusinessObject<SalesOrder>
 	}
 
 	/**
-	 * 属性名称-项目的行税总计
-	 */
-	private static final String PROPERTY_ITEMSTAXTOTAL_NAME = "ItemsTaxTotal";
-
-	/**
-	 * 项目的行税总计 属性
-	 */
-	public static final IPropertyInfo<BigDecimal> PROPERTY_ITEMSTAXTOTAL = registerProperty(PROPERTY_ITEMSTAXTOTAL_NAME,
-			BigDecimal.class, MY_CLASS);
-
-	/**
-	 * 获取-项目的行税总计
-	 * 
-	 * @return 值
-	 */
-	public final BigDecimal getItemsTaxTotal() {
-		return this.getProperty(PROPERTY_ITEMSTAXTOTAL);
-	}
-
-	/**
-	 * 设置-项目的行税总计
-	 * 
-	 * @param value 值
-	 */
-	final void setItemsTaxTotal(BigDecimal value) {
-		this.setProperty(PROPERTY_ITEMSTAXTOTAL, value);
-	}
-
-	/**
 	 * 属性名称-运送费用总计
 	 */
 	private static final String PROPERTY_SHIPPINGSEXPENSETOTAL_NAME = "ShippingsExpenseTotal";
@@ -1906,35 +1877,6 @@ public class SalesOrder extends BusinessObject<SalesOrder>
 		this.setProperty(PROPERTY_SHIPPINGSEXPENSETOTAL, value);
 	}
 
-	/**
-	 * 属性名称-运送税总计
-	 */
-	private static final String PROPERTY_SHIPPINGSTAXTOTAL_NAME = "ShippingsTaxTotal";
-
-	/**
-	 * 运送税总计 属性
-	 */
-	public static final IPropertyInfo<BigDecimal> PROPERTY_SHIPPINGSTAXTOTAL = registerProperty(
-			PROPERTY_SHIPPINGSTAXTOTAL_NAME, BigDecimal.class, MY_CLASS);
-
-	/**
-	 * 获取-运送税总计
-	 * 
-	 * @return 值
-	 */
-	public final BigDecimal getShippingsTaxTotal() {
-		return this.getProperty(PROPERTY_SHIPPINGSTAXTOTAL);
-	}
-
-	/**
-	 * 设置-运送税总计
-	 * 
-	 * @param value 值
-	 */
-	final void setShippingsTaxTotal(BigDecimal value) {
-		this.setProperty(PROPERTY_SHIPPINGSTAXTOTAL, value);
-	}
-
 	@Override
 	protected IBusinessRule[] registerRules() {
 		return new IBusinessRule[] {
@@ -1958,24 +1900,9 @@ public class SalesOrder extends BusinessObject<SalesOrder>
 								return true;
 							}
 						}),
-				// 计算行-税总计
-				new BusinessRuleSumElements(PROPERTY_ITEMSTAXTOTAL, PROPERTY_SALESORDERITEMS,
-						SalesOrderItem.PROPERTY_TAXTOTAL, new Predicate<SalesOrderItem>() {
-							// 过滤，产品套件子项的价格
-							@Override
-							public boolean test(SalesOrderItem t) {
-								if (t.getParentLineSign() != null && !t.getParentLineSign().isEmpty()) {
-									return false;
-								}
-								return true;
-							}
-						}),
 				// 计算运输-费用总计（含税）
 				new BusinessRuleSumElements(PROPERTY_SHIPPINGSEXPENSETOTAL, PROPERTY_SHIPPINGADDRESSS,
 						ShippingAddress.PROPERTY_EXPENSE),
-				// 计算运输-税总计
-				new BusinessRuleSumElements(PROPERTY_SHIPPINGSTAXTOTAL, PROPERTY_SHIPPINGADDRESSS,
-						ShippingAddress.PROPERTY_TAXTOTAL),
 				// 折扣后总计 = 项目-行总计 * 折扣
 				new BusinessRuleDeductionDiscountTotal(PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMSLINETOTAL,
 						PROPERTY_DISCOUNT),

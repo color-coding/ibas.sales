@@ -1838,35 +1838,6 @@ public class SalesQuote extends BusinessObject<SalesQuote> implements ISalesQuot
 		this.setProperty(PROPERTY_ITEMSLINETOTAL, value);
 	}
 
-	/**
-	 * 属性名称-项目的行税总计
-	 */
-	private static final String PROPERTY_ITEMSTAXTOTAL_NAME = "ItemsTaxTotal";
-
-	/**
-	 * 项目的行税总计 属性
-	 */
-	public static final IPropertyInfo<BigDecimal> PROPERTY_ITEMSTAXTOTAL = registerProperty(PROPERTY_ITEMSTAXTOTAL_NAME,
-			BigDecimal.class, MY_CLASS);
-
-	/**
-	 * 获取-项目的行税总计
-	 * 
-	 * @return 值
-	 */
-	public final BigDecimal getItemsTaxTotal() {
-		return this.getProperty(PROPERTY_ITEMSTAXTOTAL);
-	}
-
-	/**
-	 * 设置-项目的行税总计
-	 * 
-	 * @param value 值
-	 */
-	final void setItemsTaxTotal(BigDecimal value) {
-		this.setProperty(PROPERTY_ITEMSTAXTOTAL, value);
-	}
-
 	@Override
 	protected IBusinessRule[] registerRules() {
 		return new IBusinessRule[] {
@@ -1881,18 +1852,6 @@ public class SalesQuote extends BusinessObject<SalesQuote> implements ISalesQuot
 				// 计算行-总计（含税）
 				new BusinessRuleSumElements(PROPERTY_ITEMSLINETOTAL, PROPERTY_SALESQUOTEITEMS,
 						SalesQuoteItem.PROPERTY_LINETOTAL, new Predicate<SalesQuoteItem>() {
-							// 过滤，产品套件子项的价格
-							@Override
-							public boolean test(SalesQuoteItem t) {
-								if (t.getParentLineSign() != null && !t.getParentLineSign().isEmpty()) {
-									return false;
-								}
-								return true;
-							}
-						}),
-				// 计算行-税总计
-				new BusinessRuleSumElements(PROPERTY_ITEMSTAXTOTAL, PROPERTY_SALESQUOTEITEMS,
-						SalesQuoteItem.PROPERTY_TAXTOTAL, new Predicate<SalesQuoteItem>() {
 							// 过滤，产品套件子项的价格
 							@Override
 							public boolean test(SalesQuoteItem t) {
