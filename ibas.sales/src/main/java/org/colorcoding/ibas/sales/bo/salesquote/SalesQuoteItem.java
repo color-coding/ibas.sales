@@ -28,6 +28,7 @@ import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCheckContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.materials.rules.BusinessRuleDeductionPriceQtyTotal;
 import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.data.DataConvert;
 import org.colorcoding.ibas.sales.logic.IMaterialInventoryReservationStatusContract;
 import org.colorcoding.ibas.sales.logic.IMaterialOrderedReservationStatusContract;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
@@ -2493,7 +2494,7 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem>
 
 			@Override
 			public String getWarehouse() {
-				return SalesQuoteItem.this.getWarehouse();
+				return DataConvert.STRING_VALUE_EMPTY;
 			}
 		});
 		// 订购预留关闭

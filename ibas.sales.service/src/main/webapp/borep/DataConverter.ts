@@ -388,6 +388,17 @@ namespace sales {
                     }
                 });
             }
+            // 复制自定义字段
+            for (let item of source.userFields.forEach()) {
+                let myItem: ibas.IUserField = target.userFields.get(item.name);
+                if (ibas.objects.isNull(myItem)) {
+                    continue;
+                }
+                if (myItem.valueType !== item.valueType) {
+                    continue;
+                }
+                myItem.value = item.value;
+            }
         }
         export function baseProductSuit(
             target: ISalesQuoteItems | ISalesOrderItems | ISalesDeliveryItems,

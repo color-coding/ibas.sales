@@ -652,7 +652,6 @@ namespace sales {
                                                     new sap.m.Label("", { text: ibas.i18n.prop("bo_salescreditnote_documenttaxtotal") }),
                                                     new sap.extension.m.Input("", {
                                                         editable: false,
-
                                                     }).bindProperty("bindingValue", {
                                                         parts: [
                                                             {
@@ -670,7 +669,7 @@ namespace sales {
                                                         ],
                                                         formatter(lineTax: number, shippingTax: number, discount: number): number {
                                                             return sap.extension.data.formatValue(sap.extension.data.Sum,
-                                                                (ibas.numbers.valueOf(lineTax) + ibas.numbers.valueOf(shippingTax)) * ibas.numbers.valueOf(discount)
+                                                                (ibas.numbers.valueOf(lineTax) * ibas.numbers.valueOf(discount)) + ibas.numbers.valueOf(shippingTax)
                                                                 , "string");
                                                         },
                                                     }),

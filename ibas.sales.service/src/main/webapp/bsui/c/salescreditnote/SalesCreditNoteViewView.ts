@@ -360,7 +360,7 @@ namespace sales {
                                             ],
                                             formatter(lineTax: number, shippingTax: number, discount: number, currency: string): string {
                                                 return ibas.strings.format("{0} {1}", sap.extension.data.formatValue(sap.extension.data.Sum,
-                                                    (ibas.numbers.valueOf(lineTax) + ibas.numbers.valueOf(shippingTax)) * ibas.numbers.valueOf(discount)
+                                                    (ibas.numbers.valueOf(lineTax) * ibas.numbers.valueOf(discount)) + ibas.numbers.valueOf(shippingTax)
                                                     , "string"), currency);
                                             },
                                         }
