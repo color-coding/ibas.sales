@@ -867,9 +867,9 @@ namespace sales {
                 condition.value = ibas.emYesNo.NO.toString();
                 // 数量大于已清数量
                 condition = cCriteria.conditions.create();
-                condition.alias = bo.SalesOrderItem.PROPERTY_QUANTITY_NAME;
+                condition.alias = bo.SalesOrderItem.PROPERTY_LINETOTAL_NAME;
                 condition.operation = ibas.emConditionOperation.GRATER_THAN;
-                condition.comparedAlias = bo.SalesOrderItem.PROPERTY_CLOSEDQUANTITY_NAME;
+                condition.comparedAlias = bo.SalesOrderItem.PROPERTY_CLOSEDAMOUNT_NAME;
                 // 调用选择服务
                 let that: this = this;
                 ibas.servicesManager.runChooseService<bo.SalesOrder>({

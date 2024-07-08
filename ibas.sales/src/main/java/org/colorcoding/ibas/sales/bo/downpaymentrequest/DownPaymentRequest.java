@@ -39,8 +39,8 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
-import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
-import org.colorcoding.ibas.document.IDocumentClosingItem;
+import org.colorcoding.ibas.document.IDocumentCloseAmountOperator;
+import org.colorcoding.ibas.document.IDocumentClosingAmountItem;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountTotal;
@@ -56,7 +56,7 @@ import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 @BusinessObjectUnit(code = DownPaymentRequest.BUSINESS_OBJECT_CODE)
 public class DownPaymentRequest extends BusinessObject<DownPaymentRequest> implements IDownPaymentRequest,
 		IDataOwnership, IApprovalData, IPeriodData, IProjectData, IBOTagDeleted, IBOTagCanceled, IBOSeriesKey,
-		IBOUserFields, IBusinessLogicsHost, IDocumentPaidTotalOperator, IDocumentCloseQuantityOperator {
+		IBOUserFields, IBusinessLogicsHost, IDocumentPaidTotalOperator, IDocumentCloseAmountOperator {
 
 	/**
 	 * 序列化版本标记
@@ -1686,12 +1686,12 @@ public class DownPaymentRequest extends BusinessObject<DownPaymentRequest> imple
 	}
 
 	@Override
-	public Iterator<IDocumentClosingItem> getQuantityItems() {
-		return new Iterator<IDocumentClosingItem>() {
+	public Iterator<IDocumentClosingAmountItem> getAmountItems() {
+		return new Iterator<IDocumentClosingAmountItem>() {
 			int index = -1;
 
 			@Override
-			public IDocumentClosingItem next() {
+			public IDocumentClosingAmountItem next() {
 				this.index += 1;
 				return DownPaymentRequest.this.getDownPaymentRequestItems().get(this.index);
 			}

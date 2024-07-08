@@ -7,13 +7,13 @@ import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.document.IDocumentClosingItem;
+import org.colorcoding.ibas.document.IDocumentClosingQuantityItem;
 
 /**
  * 销售报价-行 接口
  * 
  */
-public interface ISalesQuoteItem extends IBODocumentLine, IDocumentClosingItem {
+public interface ISalesQuoteItem extends IBODocumentLine, IDocumentClosingQuantityItem {
 
 	/**
 	 * 获取-编码

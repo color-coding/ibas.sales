@@ -36,7 +36,7 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleDocumentStatus;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
 import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
-import org.colorcoding.ibas.document.IDocumentClosingItem;
+import org.colorcoding.ibas.document.IDocumentClosingQuantityItem;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.data.emAgreementMethod;
 import org.colorcoding.ibas.sales.data.emAgreementType;
@@ -1609,12 +1609,12 @@ public class BlanketAgreement extends BusinessObject<BlanketAgreement>
 	}
 
 	@Override
-	public Iterator<IDocumentClosingItem> getQuantityItems() {
-		return new Iterator<IDocumentClosingItem>() {
+	public Iterator<IDocumentClosingQuantityItem> getQuantityItems() {
+		return new Iterator<IDocumentClosingQuantityItem>() {
 			int index = -1;
 
 			@Override
-			public IDocumentClosingItem next() {
+			public IDocumentClosingQuantityItem next() {
 				this.index += 1;
 				return BlanketAgreement.this.getBlanketAgreementItems().get(this.index);
 			}

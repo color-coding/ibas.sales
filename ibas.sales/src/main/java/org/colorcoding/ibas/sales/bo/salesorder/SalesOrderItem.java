@@ -2565,6 +2565,11 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 		this.setOrderedQuantity(Decimal.ZERO);
 	}
 
+	@Override
+	public BigDecimal getAmount() {
+		return this.getLineTotal();
+	}
+
 	/**
 	 * 父项
 	 */

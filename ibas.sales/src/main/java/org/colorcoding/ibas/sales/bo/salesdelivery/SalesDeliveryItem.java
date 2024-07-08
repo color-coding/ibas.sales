@@ -2545,6 +2545,11 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 	}
 
 	@Override
+	public BigDecimal getAmount() {
+		return this.getLineTotal();
+	}
+
+	@Override
 	public IBusinessLogicContract[] getContracts() {
 		return new IBusinessLogicContract[] {
 				// 物料及仓库检查

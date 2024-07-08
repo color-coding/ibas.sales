@@ -45,8 +45,8 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
-import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
-import org.colorcoding.ibas.document.IDocumentClosingItem;
+import org.colorcoding.ibas.document.IDocumentCloseAmountOperator;
+import org.colorcoding.ibas.document.IDocumentClosingAmountItem;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.journalentry.JournalEntrySmartContent;
@@ -67,7 +67,7 @@ import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 @BusinessObjectUnit(code = SalesReserveInvoice.BUSINESS_OBJECT_CODE)
 public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> implements ISalesReserveInvoice,
 		IDataOwnership, IApprovalData, IPeriodData, IProjectData, IBOTagDeleted, IBOTagCanceled, IBusinessLogicsHost,
-		IBOSeriesKey, IBOUserFields, IDocumentPaidTotalOperator, IDocumentCloseQuantityOperator {
+		IBOSeriesKey, IBOUserFields, IDocumentPaidTotalOperator, IDocumentCloseAmountOperator {
 
 	/**
 	 * 序列化版本标记
@@ -2078,12 +2078,12 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 	}
 
 	@Override
-	public Iterator<IDocumentClosingItem> getQuantityItems() {
-		return new Iterator<IDocumentClosingItem>() {
+	public Iterator<IDocumentClosingAmountItem> getAmountItems() {
+		return new Iterator<IDocumentClosingAmountItem>() {
 			int index = -1;
 
 			@Override
-			public IDocumentClosingItem next() {
+			public IDocumentClosingAmountItem next() {
 				this.index += 1;
 				return SalesReserveInvoice.this.getSalesReserveInvoiceItems().get(this.index);
 			}

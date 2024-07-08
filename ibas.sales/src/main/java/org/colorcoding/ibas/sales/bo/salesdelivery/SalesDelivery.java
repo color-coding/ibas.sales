@@ -45,8 +45,10 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequiredElements;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
+import org.colorcoding.ibas.document.IDocumentCloseAmountOperator;
 import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
-import org.colorcoding.ibas.document.IDocumentClosingItem;
+import org.colorcoding.ibas.document.IDocumentClosingAmountItem;
+import org.colorcoding.ibas.document.IDocumentClosingQuantityItem;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.journalentry.MaterialsInventoryCost;
@@ -68,7 +70,7 @@ import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 @BusinessObjectUnit(code = SalesDelivery.BUSINESS_OBJECT_CODE)
 public class SalesDelivery extends BusinessObject<SalesDelivery> implements ISalesDelivery, IDataOwnership,
 		IApprovalData, IPeriodData, IProjectData, IBOTagDeleted, IBOTagCanceled, IBusinessLogicsHost, IBOSeriesKey,
-		IBOUserFields, IDocumentPaidTotalOperator, IDocumentCloseQuantityOperator {
+		IBOUserFields, IDocumentPaidTotalOperator, IDocumentCloseQuantityOperator, IDocumentCloseAmountOperator {
 
 	/**
 	 * 序列化版本标记
@@ -2082,12 +2084,37 @@ public class SalesDelivery extends BusinessObject<SalesDelivery> implements ISal
 	}
 
 	@Override
-	public Iterator<IDocumentClosingItem> getQuantityItems() {
-		return new Iterator<IDocumentClosingItem>() {
+	public Iterator<IDocumentClosingQuantityItem> getQuantityItems() {
+		return new Iterator<IDocumentClosingQuantityItem>() {
 			int index = -1;
 
 			@Override
-			public IDocumentClosingItem next() {
+			public IDocumentClosingQuantityItem next() {
+				this.index += 1;
+				return SalesDelivery.this.getSalesDeliveryItems().get(this.index);
+			}
+
+			@Override
+			public boolean hasNext() {
+				if (SalesDelivery.this.getSalesDeliveryItems().isEmpty()) {
+					return false;
+				}
+				int nIndex = this.index + 1;
+				if (nIndex >= SalesDelivery.this.getSalesDeliveryItems().size()) {
+					return false;
+				}
+				return true;
+			}
+		};
+	}
+
+	@Override
+	public Iterator<IDocumentClosingAmountItem> getAmountItems() {
+		return new Iterator<IDocumentClosingAmountItem>() {
+			int index = -1;
+
+			@Override
+			public IDocumentClosingAmountItem next() {
 				this.index += 1;
 				return SalesDelivery.this.getSalesDeliveryItems().get(this.index);
 			}

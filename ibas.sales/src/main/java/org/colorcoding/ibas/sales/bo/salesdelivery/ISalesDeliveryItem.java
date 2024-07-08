@@ -7,7 +7,8 @@ import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.document.IDocumentClosingItem;
+import org.colorcoding.ibas.document.IDocumentClosingAmountItem;
+import org.colorcoding.ibas.document.IDocumentClosingQuantityItem;
 import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchIssueParent;
 import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialIssueParent;
 
@@ -15,8 +16,8 @@ import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialIssuePare
  * 销售交货-行 接口
  * 
  */
-public interface ISalesDeliveryItem
-		extends IBODocumentLine, IMaterialBatchIssueParent, IMaterialSerialIssueParent, IDocumentClosingItem {
+public interface ISalesDeliveryItem extends IBODocumentLine, IMaterialBatchIssueParent, IMaterialSerialIssueParent,
+		IDocumentClosingQuantityItem, IDocumentClosingAmountItem {
 
 	/**
 	 * 获取-编码
