@@ -351,6 +351,28 @@ namespace sales {
                                             type: new sap.extension.data.Alphanumeric({
                                                 maxLength: 50
                                             })
+                                        }).bindProperty("editable", {
+                                            parts: [
+                                                {
+                                                    path: "closedQuantity",
+                                                },
+                                                {
+                                                    path: "closedAmount",
+                                                },
+                                                {
+                                                    path: "parentLineSign",
+                                                },
+                                            ],
+                                            formatter(closedQuantity: number, closedAmount: number, parentLineSign: string): boolean {
+                                                if (closedQuantity > 0) {
+                                                    return false;
+                                                } else if (closedAmount > 0) {
+                                                    return false;
+                                                } else if (!ibas.strings.isEmpty(data)) {
+                                                    return false;
+                                                }
+                                                return true;
+                                            }
                                         }),
                                     }),
                                     new sap.extension.table.DataColumn("", {

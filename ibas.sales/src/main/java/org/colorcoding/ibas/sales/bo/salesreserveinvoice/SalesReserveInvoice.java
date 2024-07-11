@@ -51,6 +51,7 @@ import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.journalentry.JournalEntrySmartContent;
 import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
@@ -2042,6 +2043,17 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 							jeContent.setRate(line.getRate());
 							jeContents.add(jeContent);
 							// 销项税
+							jeContent = new JournalEntrySmartContent(line);
+							jeContent.setCategory(Category.Credit);
+							jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
+							jeContent.setAmount(line.getTaxTotal());// 税前总计
+							jeContent.setCurrency(line.getCurrency());
+							jeContent.setRate(line.getRate());
+							jeContents.add(jeContent);
+						}
+						// 送货地址-运费
+						for (IShippingAddress line : SalesReserveInvoice.this.getShippingAddresss()) {
+							// 税科目
 							jeContent = new JournalEntrySmartContent(line);
 							jeContent.setCategory(Category.Credit);
 							jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);

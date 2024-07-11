@@ -57,6 +57,7 @@ import org.colorcoding.ibas.materials.logic.journalentry.JournalEntrySmartConten
 import org.colorcoding.ibas.materials.logic.journalentry.MaterialsInventoryCost;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
+import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
@@ -2178,6 +2179,17 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 						jeContent.setRate(line.getRate());
 						jeContents.add(jeContent);
 					}
+				}
+				// 送货地址-运费
+				for (IShippingAddress line : SalesInvoice.this.getShippingAddresss()) {
+					// 税科目
+					jeContent = new JournalEntrySmartContent(line);
+					jeContent.setCategory(Category.Credit);
+					jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
+					jeContent.setAmount(line.getTaxTotal());// 税前总计
+					jeContent.setCurrency(line.getCurrency());
+					jeContent.setRate(line.getRate());
+					jeContents.add(jeContent);
 				}
 				// 预付款
 				for (ISalesInvoiceDownPayment item : SalesInvoice.this.getSalesInvoiceDownPayments()) {

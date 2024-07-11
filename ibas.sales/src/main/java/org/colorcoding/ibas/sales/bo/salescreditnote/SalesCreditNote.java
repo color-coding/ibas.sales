@@ -55,6 +55,7 @@ import org.colorcoding.ibas.materials.logic.journalentry.MaterialsInventoryCost;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.salesinvoice.SalesInvoice;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
+import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
@@ -2169,6 +2170,17 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote> implements 
 								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
 							}
+						}
+						// 送货地址-运费
+						for (IShippingAddress line : SalesCreditNote.this.getShippingAddresss()) {
+							// 税科目
+							jeContent = new JournalEntrySmartContent(line);
+							jeContent.setCategory(Category.Credit);
+							jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
+							jeContent.setAmount(line.getTaxTotal().negate());// 税总计
+							jeContent.setCurrency(line.getCurrency());
+							jeContent.setRate(line.getRate());
+							jeContents.add(jeContent);
 						}
 						// 单据折扣不是1
 						if (!Decimal.ONE.equals(SalesCreditNote.this.getDiscount())) {
