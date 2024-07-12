@@ -268,13 +268,13 @@ public class BusinessRuleDeductionPriceTaxTotal extends BusinessRuleCommon {
 					taxTotal = result;
 					context.getOutputValues().put(this.getTaxTotal(), taxTotal);
 				}
-				// 确保，总计 = 税前总计 + 税总计
-				preTotal = total.subtract(taxTotal);
-				context.getOutputValues().put(this.getPreTotal(), preTotal);
 			} else {
 				taxTotal = Decimal.multiply(preTotal, taxRate);
 				context.getOutputValues().put(this.getTaxTotal(), taxTotal);
 			}
+			// 确保，总计 = 税前总计 + 税总计
+			preTotal = total.subtract(taxTotal);
+			context.getOutputValues().put(this.getPreTotal(), preTotal);
 			// 计算税前价格
 			BigDecimal result = Decimal.divide(preTotal, quantity);
 			if (Decimal.ZERO.compareTo(prePrice) == 0) {

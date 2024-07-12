@@ -98,6 +98,10 @@ public class SalesCreditNoteInvoiceMaterialsCost extends MaterialsInventoryCost 
 						}
 						if (avaPrice != null) {
 							this.setAmount(Decimal.multiply(this.getQuantity(), avaPrice));
+							// 设置未本币（物料成本均为本币）
+							this.setCurrency(org.colorcoding.ibas.accounting.MyConfiguration.getConfigValue(
+									org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY));
+							this.setRate(Decimal.ONE);
 							return true;
 						}
 					}
