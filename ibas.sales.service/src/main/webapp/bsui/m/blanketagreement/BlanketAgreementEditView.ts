@@ -769,7 +769,7 @@ namespace sales {
                                                     return false;
                                                 } else if (closedAmount > 0) {
                                                     return false;
-                                                } else if (!ibas.strings.isEmpty(data)) {
+                                                } else if (!ibas.strings.isEmpty(parentLineSign)) {
                                                     return false;
                                                 }
                                                 return true;

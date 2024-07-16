@@ -450,7 +450,7 @@ namespace sales {
                                                     return false;
                                                 } else if (closedAmount > 0) {
                                                     return false;
-                                                } else if (!ibas.strings.isEmpty(data)) {
+                                                } else if (!ibas.strings.isEmpty(parentLineSign)) {
                                                     return false;
                                                 }
                                                 return true;
@@ -969,17 +969,30 @@ namespace sales {
                         },
                         toolbar: new sap.m.Toolbar("", {
                             content: [
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("shell_data_add"),
-                                    type: sap.m.ButtonType.Transparent,
+                                new sap.m.MenuButton("", {
+                                    type: sap.m.ButtonType.Default,
                                     icon: "sap-icon://add",
-                                    press(): void {
-                                        that.fireViewEvents(that.addSalesInvoiceDownPaymentEvent);
+                                    text: ibas.i18n.prop("shell_data_add"),
+                                    useDefaultActionOnly: true,
+                                    buttonMode: sap.m.MenuButtonMode.Split,
+                                    menuPosition: sap.ui.core.Popup.Dock.EndBottom,
+                                    menu: new sap.m.Menu("", {
+                                        items: [
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("sales_documents_only_associated"),
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.addSalesInvoiceDownPaymentEvent);
+                                                }
+                                            }),
+                                        ]
+                                    }),
+                                    defaultAction(): void {
+                                        that.fireViewEvents(that.addSalesInvoiceDownPaymentEvent, new ibas.Criteria());
                                     }
                                 }),
                                 new sap.m.Button("", {
                                     text: ibas.i18n.prop("shell_data_remove"),
-                                    type: sap.m.ButtonType.Transparent,
+                                    type: sap.m.ButtonType.Default,
                                     icon: "sap-icon://less",
                                     press(): void {
                                         that.fireViewEvents(that.removeSalesInvoiceDownPaymentEvent, that.tableSalesInvoiceDownPayment.getSelecteds());
