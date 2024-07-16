@@ -2051,17 +2051,6 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 							jeContent.setRate(line.getRate());
 							jeContents.add(jeContent);
 						}
-						// 送货地址-运费
-						for (IShippingAddress line : SalesReserveInvoice.this.getShippingAddresss()) {
-							// 税科目
-							jeContent = new JournalEntrySmartContent(line);
-							jeContent.setCategory(Category.Credit);
-							jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
-							jeContent.setAmount(line.getTaxTotal());// 税前总计
-							jeContent.setCurrency(line.getCurrency());
-							jeContent.setRate(line.getRate());
-							jeContents.add(jeContent);
-						}
 						// 单据折扣不是1
 						if (!Decimal.ONE.equals(SalesReserveInvoice.this.getDiscount())) {
 							for (JournalEntryContent item : jeContents) {
@@ -2072,6 +2061,25 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 											Decimal.multiply(item.getAmount(), SalesReserveInvoice.this.getDiscount()));
 								}
 							}
+						}
+						// 送货地址-运费（运费不折扣）
+						for (IShippingAddress line : SalesReserveInvoice.this.getShippingAddresss()) {
+							// 运费科目
+							jeContent = new JournalEntrySmartContent(line);
+							jeContent.setCategory(Category.Credit);
+							jeContent.setLedger(Ledgers.LEDGER_SALES_FREIGHT_REVENUE_ACCOUNT);
+							jeContent.setAmount(line.getPreTaxExpense());
+							jeContent.setCurrency(line.getCurrency());
+							jeContent.setRate(line.getRate());
+							jeContents.add(jeContent);
+							// 税科目
+							jeContent = new JournalEntrySmartContent(line);
+							jeContent.setCategory(Category.Credit);
+							jeContent.setLedger(Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT);
+							jeContent.setAmount(line.getTaxTotal());// 税前总计
+							jeContent.setCurrency(line.getCurrency());
+							jeContent.setRate(line.getRate());
+							jeContents.add(jeContent);
 						}
 						// 应收科目
 						jeContent = new JournalEntrySmartContent(SalesReserveInvoice.this);
