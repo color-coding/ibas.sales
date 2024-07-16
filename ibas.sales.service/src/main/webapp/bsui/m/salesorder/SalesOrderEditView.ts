@@ -58,6 +58,8 @@ namespace sales {
                 turnToSalesInvoiceEvent: Function;
                 /** 转为销售预留发票事件 */
                 turnToSalesReserveInvoiceEvent: Function;
+                /** 转为预付款申请事件 */
+                turnToDownPaymentRequestEvent: Function;
                 /** 预留物料库存 */
                 reserveMaterialsInventoryEvent: Function;
                 defaultWarehouse: string;
@@ -242,18 +244,6 @@ namespace sales {
                                                 }),
                                                 new sap.m.Button("", {
                                                     type: sap.m.ButtonType.Transparent,
-                                                    text: ibas.i18n.prop("bo_salesreserveinvoice"),
-                                                    icon: "sap-icon://doc-attachment",
-                                                    press(this: sap.m.Button): void {
-                                                        that.fireViewEvents(that.turnToSalesReserveInvoiceEvent);
-                                                    },
-                                                    visible: shell.app.privileges.canRun({
-                                                        id: sales.app.SalesReserveInvoiceFunc.FUNCTION_ID,
-                                                        name: sales.app.SalesReserveInvoiceFunc.FUNCTION_NAME,
-                                                    })
-                                                }),
-                                                new sap.m.Button("", {
-                                                    type: sap.m.ButtonType.Transparent,
                                                     text: ibas.i18n.prop("bo_salesreturn"),
                                                     icon: "sap-icon://doc-attachment",
                                                     press(this: sap.m.Button): void {
@@ -262,6 +252,30 @@ namespace sales {
                                                     visible: shell.app.privileges.canRun({
                                                         id: sales.app.SalesReturnFunc.FUNCTION_ID,
                                                         name: sales.app.SalesReturnFunc.FUNCTION_NAME,
+                                                    })
+                                                }),
+                                                new sap.m.Button("", {
+                                                    type: sap.m.ButtonType.Transparent,
+                                                    text: ibas.i18n.prop("bo_downpaymentrequest"),
+                                                    icon: "sap-icon://doc-attachment",
+                                                    press(this: sap.m.Button): void {
+                                                        that.fireViewEvents(that.turnToDownPaymentRequestEvent);
+                                                    },
+                                                    visible: shell.app.privileges.canRun({
+                                                        id: sales.app.DownPaymentRequestFunc.FUNCTION_ID,
+                                                        name: sales.app.DownPaymentRequestFunc.FUNCTION_NAME,
+                                                    })
+                                                }),
+                                                new sap.m.Button("", {
+                                                    type: sap.m.ButtonType.Transparent,
+                                                    text: ibas.i18n.prop("bo_salesreserveinvoice"),
+                                                    icon: "sap-icon://doc-attachment",
+                                                    press(this: sap.m.Button): void {
+                                                        that.fireViewEvents(that.turnToSalesReserveInvoiceEvent);
+                                                    },
+                                                    visible: shell.app.privileges.canRun({
+                                                        id: sales.app.SalesReserveInvoiceFunc.FUNCTION_ID,
+                                                        name: sales.app.SalesReserveInvoiceFunc.FUNCTION_NAME,
                                                     })
                                                 }),
                                             ]

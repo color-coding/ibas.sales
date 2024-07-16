@@ -32,8 +32,8 @@ namespace sales {
             }
             protected runService(contract: receiptpayment.app.IDocumentReceiptContract): void {
                 let criteria: ibas.ICriteria = new ibas.Criteria();
-                // 不查子项
-                criteria.noChilds = true;
+                // 不查子项（需要记录原始类型）
+                // criteria.noChilds = true;
                 let condition: ibas.ICondition = criteria.conditions.create();
                 // 未取消的
                 condition.alias = sales.bo.SalesOrder.PROPERTY_CANCELED_NAME;
@@ -44,11 +44,15 @@ namespace sales {
                 condition.alias = sales.bo.SalesOrder.PROPERTY_DELETED_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emYesNo.NO.toString();
-                // 未结算的
+                // 未结算的，非计划的
                 condition = criteria.conditions.create();
                 condition.alias = sales.bo.SalesOrder.PROPERTY_DOCUMENTSTATUS_NAME;
                 condition.operation = ibas.emConditionOperation.NOT_EQUAL;
                 condition.value = ibas.emDocumentStatus.CLOSED.toString();
+                condition = criteria.conditions.create();
+                condition.alias = sales.bo.SalesOrder.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                condition.value = ibas.emDocumentStatus.PLANNED.toString();
                 // 审批通过的或未进审批
                 condition = criteria.conditions.create();
                 condition.alias = sales.bo.SalesOrder.PROPERTY_APPROVALSTATUS_NAME;
@@ -97,6 +101,27 @@ namespace sales {
                     criteria: criteria,
                     onCompleted(selecteds: ibas.IList<sales.bo.ISalesOrder>): void {
                         for (let selected of selecteds) {
+                            // 记录原始单据信息（不一致则忽略）
+                            let originalType: string = null;
+                            let originalEntry: number = 0;
+                            for (let item of selected.salesOrderItems) {
+                                if (originalType === null) {
+                                    originalType = item.baseDocumentType;
+                                } else {
+                                    if (originalType !== item.baseDocumentType) {
+                                        originalType = null;
+                                        break;
+                                    }
+                                }
+                                if (originalEntry === 0) {
+                                    originalEntry = item.baseDocumentEntry;
+                                } else {
+                                    if (originalEntry !== item.baseDocumentEntry) {
+                                        originalEntry = 0;
+                                        break;
+                                    }
+                                }
+                            }
                             for (let item of contract.receipt.receiptItems) {
                                 if (item.baseDocumentType === selected.objectCode
                                     && item.baseDocumentEntry === selected.docEntry
@@ -114,6 +139,11 @@ namespace sales {
                             item.consumer = selected.consumer;
                             item.amount = selected.documentTotal - selected.paidTotal;
                             item.currency = selected.documentCurrency;
+                            if (originalType !== null && originalEntry > 0) {
+                                item.originalDocumentType = originalType;
+                                item.originalDocumentEntry = originalEntry;
+                                item.originalDocumentLineId = -1;
+                            }
                         }
                         that.fireCompleted(contract.receipt.receiptItems);
                     }
@@ -161,8 +191,8 @@ namespace sales {
             }
             protected runService(contract: receiptpayment.app.IDocumentReceiptContract): void {
                 let criteria: ibas.ICriteria = new ibas.Criteria();
-                // 不查子项
-                criteria.noChilds = true;
+                // 不查子项（需要记录原始类型）
+                // criteria.noChilds = true;
                 let condition: ibas.ICondition = criteria.conditions.create();
                 // 未取消的
                 condition.alias = sales.bo.SalesDelivery.PROPERTY_CANCELED_NAME;
@@ -173,11 +203,15 @@ namespace sales {
                 condition.alias = sales.bo.SalesDelivery.PROPERTY_DELETED_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emYesNo.NO.toString();
-                // 未结算的
+                // 未结算的，非计划的
                 condition = criteria.conditions.create();
                 condition.alias = sales.bo.SalesDelivery.PROPERTY_DOCUMENTSTATUS_NAME;
                 condition.operation = ibas.emConditionOperation.NOT_EQUAL;
                 condition.value = ibas.emDocumentStatus.CLOSED.toString();
+                condition = criteria.conditions.create();
+                condition.alias = sales.bo.SalesDelivery.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                condition.value = ibas.emDocumentStatus.PLANNED.toString();
                 // 审批通过的或未进审批
                 condition = criteria.conditions.create();
                 condition.alias = sales.bo.SalesDelivery.PROPERTY_APPROVALSTATUS_NAME;
@@ -226,6 +260,27 @@ namespace sales {
                     criteria: criteria,
                     onCompleted(selecteds: ibas.IList<sales.bo.ISalesDelivery>): void {
                         for (let selected of selecteds) {
+                            // 记录原始单据信息（不一致则忽略）
+                            let originalType: string = null;
+                            let originalEntry: number = 0;
+                            for (let item of selected.salesDeliveryItems) {
+                                if (originalType === null) {
+                                    originalType = item.baseDocumentType;
+                                } else {
+                                    if (originalType !== item.baseDocumentType) {
+                                        originalType = null;
+                                        break;
+                                    }
+                                }
+                                if (originalEntry === 0) {
+                                    originalEntry = item.baseDocumentEntry;
+                                } else {
+                                    if (originalEntry !== item.baseDocumentEntry) {
+                                        originalEntry = 0;
+                                        break;
+                                    }
+                                }
+                            }
                             for (let item of contract.receipt.receiptItems) {
                                 if (item.baseDocumentType === selected.objectCode
                                     && item.baseDocumentEntry === selected.docEntry
@@ -243,6 +298,11 @@ namespace sales {
                             item.consumer = selected.consumer;
                             item.amount = selected.documentTotal - selected.paidTotal;
                             item.currency = selected.documentCurrency;
+                            if (originalType !== null && originalEntry > 0) {
+                                item.originalDocumentType = originalType;
+                                item.originalDocumentEntry = originalEntry;
+                                item.originalDocumentLineId = -1;
+                            }
                         }
                         that.fireCompleted(contract.receipt.receiptItems);
                     }
@@ -290,8 +350,8 @@ namespace sales {
             }
             protected runService(contract: receiptpayment.app.IDocumentReceiptContract): void {
                 let criteria: ibas.ICriteria = new ibas.Criteria();
-                // 不查子项
-                criteria.noChilds = true;
+                // 不查子项（需要记录原始类型）
+                // criteria.noChilds = true;
                 let condition: ibas.ICondition = criteria.conditions.create();
                 // 未取消的
                 condition.alias = sales.bo.SalesInvoice.PROPERTY_CANCELED_NAME;
@@ -302,11 +362,15 @@ namespace sales {
                 condition.alias = sales.bo.SalesInvoice.PROPERTY_DELETED_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emYesNo.NO.toString();
-                // 未结算的
+                // 未结算的，非计划的
                 condition = criteria.conditions.create();
                 condition.alias = sales.bo.SalesInvoice.PROPERTY_DOCUMENTSTATUS_NAME;
                 condition.operation = ibas.emConditionOperation.NOT_EQUAL;
                 condition.value = ibas.emDocumentStatus.CLOSED.toString();
+                condition = criteria.conditions.create();
+                condition.alias = sales.bo.SalesInvoice.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                condition.value = ibas.emDocumentStatus.PLANNED.toString();
                 // 审批通过的或未进审批
                 condition = criteria.conditions.create();
                 condition.alias = sales.bo.SalesInvoice.PROPERTY_APPROVALSTATUS_NAME;
@@ -355,6 +419,27 @@ namespace sales {
                     criteria: criteria,
                     onCompleted(selecteds: ibas.IList<sales.bo.SalesInvoice>): void {
                         for (let selected of selecteds) {
+                            // 记录原始单据信息（不一致则忽略）
+                            let originalType: string = null;
+                            let originalEntry: number = 0;
+                            for (let item of selected.salesInvoiceItems) {
+                                if (originalType === null) {
+                                    originalType = item.baseDocumentType;
+                                } else {
+                                    if (originalType !== item.baseDocumentType) {
+                                        originalType = null;
+                                        break;
+                                    }
+                                }
+                                if (originalEntry === 0) {
+                                    originalEntry = item.baseDocumentEntry;
+                                } else {
+                                    if (originalEntry !== item.baseDocumentEntry) {
+                                        originalEntry = 0;
+                                        break;
+                                    }
+                                }
+                            }
                             for (let item of contract.receipt.receiptItems) {
                                 if (item.baseDocumentType === selected.objectCode
                                     && item.baseDocumentEntry === selected.docEntry
@@ -375,6 +460,11 @@ namespace sales {
                             item.consumer = selected.consumer;
                             item.amount = selected.documentTotal - selected.paidTotal - selected.downPaymentTotal;
                             item.currency = selected.documentCurrency;
+                            if (originalType !== null && originalEntry > 0) {
+                                item.originalDocumentType = originalType;
+                                item.originalDocumentEntry = originalEntry;
+                                item.originalDocumentLineId = -1;
+                            }
                         }
                         that.fireCompleted(contract.receipt.receiptItems);
                     }
@@ -422,8 +512,8 @@ namespace sales {
             }
             protected runService(contract: receiptpayment.app.IDocumentReceiptContract): void {
                 let criteria: ibas.ICriteria = new ibas.Criteria();
-                // 不查子项
-                criteria.noChilds = true;
+                // 不查子项（需要记录原始类型）
+                // criteria.noChilds = true;
                 let condition: ibas.ICondition = criteria.conditions.create();
                 // 未取消的
                 condition.alias = sales.bo.DownPaymentRequest.PROPERTY_CANCELED_NAME;
@@ -434,11 +524,15 @@ namespace sales {
                 condition.alias = sales.bo.DownPaymentRequest.PROPERTY_DELETED_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emYesNo.NO.toString();
-                // 未结算的
+                // 未结算的，非计划的
                 condition = criteria.conditions.create();
                 condition.alias = sales.bo.DownPaymentRequest.PROPERTY_DOCUMENTSTATUS_NAME;
                 condition.operation = ibas.emConditionOperation.NOT_EQUAL;
                 condition.value = ibas.emDocumentStatus.CLOSED.toString();
+                condition = criteria.conditions.create();
+                condition.alias = sales.bo.DownPaymentRequest.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                condition.value = ibas.emDocumentStatus.PLANNED.toString();
                 // 审批通过的或未进审批
                 condition = criteria.conditions.create();
                 condition.alias = sales.bo.DownPaymentRequest.PROPERTY_APPROVALSTATUS_NAME;
@@ -487,6 +581,27 @@ namespace sales {
                     criteria: criteria,
                     onCompleted(selecteds: ibas.IList<sales.bo.IDownPaymentRequest>): void {
                         for (let selected of selecteds) {
+                            // 记录原始单据信息（不一致则忽略）
+                            let originalType: string = null;
+                            let originalEntry: number = 0;
+                            for (let item of selected.downPaymentRequestItems) {
+                                if (originalType === null) {
+                                    originalType = item.baseDocumentType;
+                                } else {
+                                    if (originalType !== item.baseDocumentType) {
+                                        originalType = null;
+                                        break;
+                                    }
+                                }
+                                if (originalEntry === 0) {
+                                    originalEntry = item.baseDocumentEntry;
+                                } else {
+                                    if (originalEntry !== item.baseDocumentEntry) {
+                                        originalEntry = 0;
+                                        break;
+                                    }
+                                }
+                            }
                             for (let item of contract.receipt.receiptItems) {
                                 if (item.baseDocumentType === selected.objectCode
                                     && item.baseDocumentEntry === selected.docEntry
@@ -504,6 +619,11 @@ namespace sales {
                             item.consumer = selected.consumer;
                             item.amount = selected.documentTotal - selected.paidTotal;
                             item.currency = selected.documentCurrency;
+                            if (originalType !== null && originalEntry > 0) {
+                                item.originalDocumentType = originalType;
+                                item.originalDocumentEntry = originalEntry;
+                                item.originalDocumentLineId = -1;
+                            }
                         }
                         that.fireCompleted(contract.receipt.receiptItems);
                     }
@@ -551,8 +671,8 @@ namespace sales {
             }
             protected runService(contract: receiptpayment.app.IDocumentReceiptContract): void {
                 let criteria: ibas.ICriteria = new ibas.Criteria();
-                // 不查子项
-                criteria.noChilds = true;
+                // 不查子项（需要记录原始类型）
+                // criteria.noChilds = true;
                 let condition: ibas.ICondition = criteria.conditions.create();
                 // 未取消的
                 condition.alias = sales.bo.SalesReserveInvoice.PROPERTY_CANCELED_NAME;
@@ -563,11 +683,15 @@ namespace sales {
                 condition.alias = sales.bo.SalesReserveInvoice.PROPERTY_DELETED_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emYesNo.NO.toString();
-                // 未结算的
+                // 未结算的，非计划的
                 condition = criteria.conditions.create();
                 condition.alias = sales.bo.SalesReserveInvoice.PROPERTY_DOCUMENTSTATUS_NAME;
                 condition.operation = ibas.emConditionOperation.NOT_EQUAL;
                 condition.value = ibas.emDocumentStatus.CLOSED.toString();
+                condition = criteria.conditions.create();
+                condition.alias = sales.bo.SalesReserveInvoice.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                condition.value = ibas.emDocumentStatus.PLANNED.toString();
                 // 审批通过的或未进审批
                 condition = criteria.conditions.create();
                 condition.alias = sales.bo.SalesReserveInvoice.PROPERTY_APPROVALSTATUS_NAME;
@@ -616,6 +740,27 @@ namespace sales {
                     criteria: criteria,
                     onCompleted(selecteds: ibas.IList<sales.bo.ISalesReserveInvoice>): void {
                         for (let selected of selecteds) {
+                            // 记录原始单据信息（不一致则忽略）
+                            let originalType: string = null;
+                            let originalEntry: number = 0;
+                            for (let item of selected.salesReserveInvoiceItems) {
+                                if (originalType === null) {
+                                    originalType = item.baseDocumentType;
+                                } else {
+                                    if (originalType !== item.baseDocumentType) {
+                                        originalType = null;
+                                        break;
+                                    }
+                                }
+                                if (originalEntry === 0) {
+                                    originalEntry = item.baseDocumentEntry;
+                                } else {
+                                    if (originalEntry !== item.baseDocumentEntry) {
+                                        originalEntry = 0;
+                                        break;
+                                    }
+                                }
+                            }
                             for (let item of contract.receipt.receiptItems) {
                                 if (item.baseDocumentType === selected.objectCode
                                     && item.baseDocumentEntry === selected.docEntry
@@ -633,6 +778,11 @@ namespace sales {
                             item.consumer = selected.consumer;
                             item.amount = selected.documentTotal - selected.paidTotal;
                             item.currency = selected.documentCurrency;
+                            if (originalType !== null && originalEntry > 0) {
+                                item.originalDocumentType = originalType;
+                                item.originalDocumentEntry = originalEntry;
+                                item.originalDocumentLineId = -1;
+                            }
                         }
                         that.fireCompleted(contract.receipt.receiptItems);
                     }

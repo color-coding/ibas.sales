@@ -42,6 +42,8 @@ namespace sales {
                 chooseDownPaymentRequestSalesDeliveryEvent: Function;
                 /** 选择客户合同 */
                 chooseCustomerAgreementsEvent: Function;
+                /** 预收款申请收款事件 */
+                receiptDownPaymentRequestEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
@@ -816,6 +818,17 @@ namespace sales {
                                     type: sap.m.ButtonType.Transparent,
                                     menu: new sap.m.Menu("", {
                                         items: [
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("sales_receipt"),
+                                                icon: "sap-icon://lead",
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.receiptDownPaymentRequestEvent);
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: receiptpayment.app.ReceiptFunc.FUNCTION_ID,
+                                                    name: receiptpayment.app.ReceiptFunc.FUNCTION_NAME,
+                                                })
+                                            }),
                                         ],
                                     })
                                 }),

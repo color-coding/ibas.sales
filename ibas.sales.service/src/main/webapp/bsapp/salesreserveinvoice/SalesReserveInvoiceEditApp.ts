@@ -865,11 +865,11 @@ namespace sales {
                 condition.alias = bo.SalesOrderItem.PROPERTY_CANCELED_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emYesNo.NO.toString();
-                // 数量大于已清数量
+                // 已清金额小于总计
                 condition = cCriteria.conditions.create();
-                condition.alias = bo.SalesOrderItem.PROPERTY_LINETOTAL_NAME;
-                condition.operation = ibas.emConditionOperation.GRATER_THAN;
-                condition.comparedAlias = bo.SalesOrderItem.PROPERTY_CLOSEDAMOUNT_NAME;
+                condition.alias = bo.SalesOrderItem.PROPERTY_CLOSEDAMOUNT_NAME;
+                condition.operation = ibas.emConditionOperation.LESS_THAN;
+                condition.comparedAlias = bo.SalesOrderItem.PROPERTY_LINETOTAL_NAME;
                 // 调用选择服务
                 let that: this = this;
                 ibas.servicesManager.runChooseService<bo.SalesOrder>({
