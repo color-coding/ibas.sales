@@ -66,7 +66,7 @@ namespace sales {
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_general") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesinvoice_customercode") }),
-                            new sap.extension.m.Input("", {
+                            new sap.extension.m.RepositoryInput("", {
                                 showValueHelp: true,
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseSalesInvoiceCustomerEvent);
@@ -77,6 +77,20 @@ namespace sales {
                                         boCode: businesspartner.bo.Customer.BUSINESS_OBJECT_CODE,
                                         linkValue: event.getParameter("value")
                                     });
+                                },
+                                describeValue: false,
+                                showSuggestion: true,
+                                repository: businesspartner.bo.BORepositoryBusinessPartner,
+                                dataInfo: {
+                                    type: businesspartner.bo.Customer,
+                                    key: businesspartner.bo.Customer.PROPERTY_CODE_NAME,
+                                    text: businesspartner.bo.Customer.PROPERTY_NAME_NAME
+                                },
+                                suggestionItemSelected: function (this: sap.extension.m.RepositoryInput, event: sap.ui.base.Event): void {
+                                    let selectedItem: any = event.getParameter("selectedItem");
+                                    if (!ibas.objects.isNull(selectedItem)) {
+                                        that.fireViewEvents(that.chooseSalesInvoiceCustomerEvent, this.itemConditions(selectedItem));
+                                    }
                                 }
                             }).bindProperty("bindingValue", {
                                 path: "customerCode",
@@ -413,7 +427,7 @@ namespace sales {
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesinvoiceitem_itemcode"),
-                                        template: new sap.extension.m.Input("", {
+                                        template: new sap.extension.m.RepositoryInput("", {
                                             showValueHelp: true,
                                             valueHelpRequest: function (): void {
                                                 that.fireViewEvents(that.chooseSalesInvoiceItemMaterialEvent,
@@ -427,7 +441,24 @@ namespace sales {
                                                     boCode: materials.bo.Material.BUSINESS_OBJECT_CODE,
                                                     linkValue: event.getParameter("value")
                                                 });
-                                            }
+                                            },
+                                            describeValue: false,
+                                            showSuggestion: true,
+                                            repository: materials.bo.BORepositoryMaterials,
+                                            dataInfo: {
+                                                type: materials.bo.Material,
+                                                key: materials.bo.Material.PROPERTY_CODE_NAME,
+                                                text: materials.bo.Material.PROPERTY_NAME_NAME
+                                            },
+                                            suggestionItemSelected: function (this: sap.extension.m.RepositoryInput, event: sap.ui.base.Event): void {
+                                                let selectedItem: any = event.getParameter("selectedItem");
+                                                if (!ibas.objects.isNull(selectedItem)) {
+                                                    that.fireViewEvents(that.chooseSalesInvoiceItemMaterialEvent, this.getBindingContext().getObject(), null, this.itemConditions(selectedItem));
+                                                }
+                                            },
+                                            criteria: [
+                                                new ibas.Condition(materials.app.conditions.product.CONDITION_ALIAS_SALES_ITEM, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                                            ]
                                         }).bindProperty("bindingValue", {
                                             path: "itemCode",
                                             type: new sap.extension.data.Alphanumeric({
@@ -499,7 +530,17 @@ namespace sales {
                                                     // 获取当前对象
                                                     this.getBindingContext().getObject()
                                                 );
-                                            }
+                                            },
+                                            showSuggestion: true,
+                                            suggestionItemSelected: function (this: sap.extension.m.RepositoryInput, event: sap.ui.base.Event): void {
+                                                let selectedItem: any = event.getParameter("selectedItem");
+                                                if (!ibas.objects.isNull(selectedItem)) {
+                                                    that.fireViewEvents(that.chooseSalesInvoiceItemWarehouseEvent, this.getBindingContext().getObject(), this.itemConditions(selectedItem));
+                                                }
+                                            },
+                                            criteria: [
+                                                new ibas.Condition(materials.bo.Warehouse.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                                            ]
                                         }).bindProperty("bindingValue", {
                                             path: "warehouse",
                                             type: new sap.extension.data.Alphanumeric({
@@ -523,14 +564,31 @@ namespace sales {
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesinvoiceitem_uom"),
-                                        template: new sap.extension.m.Input("", {
+                                        template: new sap.extension.m.RepositoryInput("", {
                                             showValueHelp: true,
                                             valueHelpRequest: function (): void {
                                                 that.fireViewEvents(that.chooseSalesInvoiceItemUnitEvent,
                                                     // 获取当前对象
                                                     this.getBindingContext().getObject()
                                                 );
-                                            }
+                                            },
+                                            describeValue: false,
+                                            showSuggestion: true,
+                                            repository: materials.bo.BORepositoryMaterials,
+                                            dataInfo: {
+                                                type: materials.bo.Unit,
+                                                key: materials.bo.Unit.PROPERTY_NAME_NAME,
+                                                text: materials.bo.Unit.PROPERTY_NAME_NAME
+                                            },
+                                            suggestionItemSelected: function (this: sap.extension.m.RepositoryInput, event: sap.ui.base.Event): void {
+                                                let selectedItem: any = event.getParameter("selectedItem");
+                                                if (!ibas.objects.isNull(selectedItem)) {
+                                                    that.fireViewEvents(that.chooseSalesInvoiceItemUnitEvent, this.getBindingContext().getObject(), this.itemConditions(selectedItem));
+                                                }
+                                            },
+                                            criteria: [
+                                                new ibas.Condition(materials.bo.Unit.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                                            ]
                                         }).bindProperty("bindingValue", {
                                             path: "uom",
                                             type: new sap.extension.data.Alphanumeric({

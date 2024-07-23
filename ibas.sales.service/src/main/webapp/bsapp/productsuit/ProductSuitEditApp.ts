@@ -204,11 +204,20 @@ namespace sales {
                 this.view.showProductSuitItems(this.editData.productSuitItems.filterDeleted());
             }
 
-            private chooseProductSuitItemMaterial(caller: bo.ProductSuitItem): void {
+            private chooseProductSuitItemMaterial(caller: bo.ProductSuitItem, filterConditions?: ibas.ICondition[]): void {
+                let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.material.create();
+                // 添加输入条件
+                if (filterConditions instanceof Array && filterConditions.length > 0) {
+                    if (conditions.length > 1) {
+                        conditions.firstOrDefault().bracketOpen++;
+                        conditions.lastOrDefault().bracketClose++;
+                    }
+                    conditions.add(filterConditions);
+                }
                 let that: this = this;
                 ibas.servicesManager.runChooseService<materials.bo.IMaterial>({
                     boCode: materials.bo.BO_CODE_MATERIAL,
-                    criteria: materials.app.conditions.material.create(),
+                    criteria: conditions,
                     onCompleted(selecteds: ibas.IList<materials.bo.IMaterial>): void {
                         let index: number = that.editData.productSuitItems.indexOf(caller);
                         let item: bo.ProductSuitItem = that.editData.productSuitItems[index];
@@ -233,12 +242,21 @@ namespace sales {
                     }
                 });
             }
-            private chooseProductSuitMaterial(caller: bo.ProductSuitItem): void {
+            private chooseProductSuitMaterial(filterConditions?: ibas.ICondition[]): void {
+                let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.material.create();
+                // 添加输入条件
+                if (filterConditions instanceof Array && filterConditions.length > 0) {
+                    if (conditions.length > 1) {
+                        conditions.firstOrDefault().bracketOpen++;
+                        conditions.lastOrDefault().bracketClose++;
+                    }
+                    conditions.add(filterConditions);
+                }
                 let that: this = this;
                 ibas.servicesManager.runChooseService<materials.bo.IMaterial>({
                     boCode: materials.bo.BO_CODE_MATERIAL,
                     chooseType: ibas.emChooseType.SINGLE,
-                    criteria: materials.app.conditions.material.create(),
+                    criteria: conditions,
                     onCompleted(selecteds: ibas.IList<materials.bo.IMaterial>): void {
                         let selected: materials.bo.IMaterial = selecteds.firstOrDefault();
                         that.editData.product = selected.code;

@@ -11785,6 +11785,8 @@ declare namespace purchase {
             protected turnToPurchaseInvoice(): void;
             /** 转为采购预留发票 */
             protected turnToPurchaseReserveInvoice(): void;
+            /** 转为预付款申请事件 */
+            protected turnToDownPaymentRequest(): void;
             /** 选择一揽子协议事件 */
             private choosePurchaseOrderBlanketAgreement;
             private choosePurchaseOrderItemUnit;
@@ -11848,6 +11850,8 @@ declare namespace purchase {
             turnToPurchaseInvoiceEvent: Function;
             /** 转为采购预留发票事件 */
             turnToPurchaseReserveInvoiceEvent: Function;
+            /** 转为预付款申请事件 */
+            turnToDownPaymentRequestEvent: Function;
             /** 预留物料订购 */
             reserveMaterialsOrderedEvent: Function;
             /** 默认仓库 */
@@ -14162,6 +14166,7 @@ declare namespace purchase {
             private chooseSupplierAgreements;
             private chooseDownPaymentRequestItemDistributionRule;
             private chooseDownPaymentRequestItemMaterialVersion;
+            private paymentDownPaymentRequest;
         }
         /** 视图-预付款申请 */
         interface IDownPaymentRequestEditView extends ibas.IBOEditView {
@@ -14199,6 +14204,8 @@ declare namespace purchase {
             chooseDownPaymentRequestItemDistributionRuleEvent: Function;
             /** 选择预付款申请-行 物料版本 */
             chooseDownPaymentRequestItemMaterialVersionEvent: Function;
+            /** 预收款申请付款事件 */
+            paymentDownPaymentRequestEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */

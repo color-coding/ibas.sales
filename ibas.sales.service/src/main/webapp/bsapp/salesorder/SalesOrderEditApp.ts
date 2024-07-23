@@ -240,7 +240,7 @@ namespace sales {
             }
             private customer: businesspartner.bo.ICustomer;
             /** 选择销售订单客户事件 */
-            private chooseSalesOrderCustomer(): void {
+            private chooseSalesOrderCustomer(filterConditions?: ibas.ICondition[]): void {
                 let items: bo.SalesOrderItem[] = this.editData.salesOrderItems.where(c =>
                     !ibas.strings.isEmpty(c.baseDocumentType) && c.isDeleted !== true
                 );
@@ -255,17 +255,26 @@ namespace sales {
                         onCompleted: (action) => {
                             if (action === ibas.emMessageAction.YES) {
                                 this.removeSalesOrderItem(items);
-                                this.chooseSalesOrderCustomer();
+                                this.chooseSalesOrderCustomer(filterConditions);
                             }
                         }
                     });
                     return;
                 }
+                let conditions: ibas.IList<ibas.ICondition> = businesspartner.app.conditions.customer.create();
+                // 添加输入条件
+                if (filterConditions instanceof Array && filterConditions.length > 0) {
+                    if (conditions.length > 1) {
+                        conditions.firstOrDefault().bracketOpen++;
+                        conditions.lastOrDefault().bracketClose++;
+                    }
+                    conditions.add(filterConditions);
+                }
                 let that: this = this;
                 ibas.servicesManager.runChooseService<businesspartner.bo.ICustomer>({
                     boCode: businesspartner.bo.BO_CODE_CUSTOMER,
                     chooseType: ibas.emChooseType.SINGLE,
-                    criteria: businesspartner.app.conditions.customer.create(),
+                    criteria: conditions,
                     onCompleted(selecteds: ibas.IList<businesspartner.bo.ICustomer>): void {
                         let selected: businesspartner.bo.ICustomer = selecteds.firstOrDefault();
                         that.editData.customerCode = selected.code;
@@ -392,10 +401,18 @@ namespace sales {
                 }
             }
             /** 选择销售订单物料事件 */
-            private chooseSalesOrderItemMaterial(caller: bo.SalesOrderItem, type?: string): void {
+            private chooseSalesOrderItemMaterial(caller: bo.SalesOrderItem, type?: string, filterConditions?: ibas.ICondition[]): void {
                 let that: this = this;
                 let condition: ibas.ICondition;
                 let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.product.create();
+                // 添加输入条件
+                if (filterConditions instanceof Array && filterConditions.length > 0) {
+                    if (conditions.length > 1) {
+                        conditions.firstOrDefault().bracketOpen++;
+                        conditions.lastOrDefault().bracketClose++;
+                    }
+                    conditions.add(filterConditions);
+                }
                 // 添加价格清单条件
                 if (ibas.numbers.valueOf(this.editData.priceList) !== 0) {
                     condition = new ibas.Condition();
@@ -724,12 +741,21 @@ namespace sales {
                 this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
             }
             /** 选择销售交货行仓库事件 */
-            private chooseSalesOrderItemWarehouse(caller: bo.SalesOrderItem): void {
+            private chooseSalesOrderItemWarehouse(caller: bo.SalesOrderItem, filterConditions?: ibas.ICondition[]): void {
+                let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.warehouse.create(this.editData.branch);
+                // 添加输入条件
+                if (filterConditions instanceof Array && filterConditions.length > 0) {
+                    if (conditions.length > 1) {
+                        conditions.firstOrDefault().bracketOpen++;
+                        conditions.lastOrDefault().bracketClose++;
+                    }
+                    conditions.add(filterConditions);
+                }
                 let that: this = this;
-                ibas.servicesManager.runChooseService<materials.bo.IWarehouse>({
-                    boCode: materials.bo.BO_CODE_WAREHOUSE,
+                ibas.servicesManager.runChooseService<materials.bo.Warehouse>({
+                    boCode: materials.bo.Warehouse.BUSINESS_OBJECT_CODE,
                     chooseType: ibas.emChooseType.SINGLE,
-                    criteria: materials.app.conditions.warehouse.create(this.editData.branch),
+                    criteria: conditions,
                     onCompleted(selecteds: ibas.IList<materials.bo.IWarehouse>): void {
                         let index: number = that.editData.salesOrderItems.indexOf(caller);
                         let item: bo.SalesOrderItem = that.editData.salesOrderItems[index];
@@ -1614,7 +1640,7 @@ namespace sales {
                 });
             }
             /** 选择销售订单-行 单位 */
-            private chooseSalesOrderItemUnit(caller: bo.SalesOrderItem, criteria?: ibas.ICriteria): void {
+            private chooseSalesOrderItemUnit(caller: bo.SalesOrderItem, criteria?: ibas.ICriteria, filterConditions?: ibas.ICondition[]): void {
                 if (ibas.objects.isNull(criteria)) {
                     criteria = new ibas.Criteria();
                     let condition: ibas.ICondition = criteria.conditions.create();
@@ -1661,6 +1687,14 @@ namespace sales {
                         this.chooseSalesOrderItemUnit(caller, criteria);
                     }
                 } else {
+                    // 添加输入条件
+                    if (filterConditions instanceof Array && filterConditions.length > 0) {
+                        if (criteria.conditions.length > 1) {
+                            criteria.conditions.firstOrDefault().bracketOpen++;
+                            criteria.conditions.lastOrDefault().bracketClose++;
+                        }
+                        criteria.conditions.add(filterConditions);
+                    }
                     let that: this = this;
                     ibas.servicesManager.runChooseService<materials.bo.IUnit>({
                         boCode: materials.bo.BO_CODE_UNIT,

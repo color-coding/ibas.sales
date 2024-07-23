@@ -54,50 +54,105 @@ namespace sales {
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("sales_title_general") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_customercode") }),
-                            new sap.extension.m.Input("", {
-                                showValueHelp: true,
-                                valueHelpRequest: function (): void {
-                                    that.fireViewEvents(that.chooseSalesQuoteCustomerEvent);
-                                },
-                                showValueLink: true,
-                                valueLinkRequest: function (this: sap.extension.m.Input, event: sap.ui.base.Event): void {
-                                    let object: any = this.getBindingContext().getObject();
-                                    if (object instanceof bo.SalesQuote) {
-                                        if (object.customerType === businesspartner.bo.emBusinessPartnerType.CUSTOMER) {
+                            new sap.m.HBox("", {
+                                width: "100%",
+                                renderType: sap.m.FlexRendertype.Bare,
+                                items: [
+                                    new sap.extension.m.RepositoryInput("", {
+                                        width: "60%",
+                                        showValueHelp: true,
+                                        valueHelpRequest: function (): void {
+                                            that.fireViewEvents(that.chooseSalesQuoteCustomerEvent);
+                                        },
+                                        showValueLink: true,
+                                        valueLinkRequest: function (event: sap.ui.base.Event): void {
                                             ibas.servicesManager.runLinkService({
                                                 boCode: businesspartner.bo.Customer.BUSINESS_OBJECT_CODE,
                                                 linkValue: event.getParameter("value")
                                             });
-                                        } if (object.customerType === businesspartner.bo.emBusinessPartnerType.LEAD) {
+                                        },
+                                        describeValue: false,
+                                        showSuggestion: true,
+                                        repository: businesspartner.bo.BORepositoryBusinessPartner,
+                                        dataInfo: {
+                                            type: businesspartner.bo.Customer,
+                                            key: businesspartner.bo.Customer.PROPERTY_CODE_NAME,
+                                            text: businesspartner.bo.Customer.PROPERTY_NAME_NAME
+                                        },
+                                        suggestionItemSelected: function (this: sap.extension.m.RepositoryInput, event: sap.ui.base.Event): void {
+                                            let selectedItem: any = event.getParameter("selectedItem");
+                                            if (!ibas.objects.isNull(selectedItem)) {
+                                                that.fireViewEvents(that.chooseSalesQuoteCustomerEvent, this.itemConditions(selectedItem));
+                                            }
+                                        }
+                                    }).bindProperty("bindingValue", {
+                                        path: "customerCode",
+                                        type: new sap.extension.data.Alphanumeric({
+                                            maxLength: 20
+                                        })
+                                    }).bindProperty("visible", {
+                                        path: "customerType",
+                                        formatter(data: any): boolean {
+                                            return data === businesspartner.bo.emBusinessPartnerType.CUSTOMER ? true : false;
+                                        }
+                                    }),
+                                    new sap.extension.m.RepositoryInput("", {
+                                        width: "60%",
+                                        showValueHelp: true,
+                                        valueHelpRequest: function (): void {
+                                            that.fireViewEvents(that.chooseSalesQuoteCustomerEvent);
+                                        },
+                                        showValueLink: true,
+                                        valueLinkRequest: function (event: sap.ui.base.Event): void {
                                             ibas.servicesManager.runLinkService({
                                                 boCode: businesspartner.bo.Lead.BUSINESS_OBJECT_CODE,
                                                 linkValue: event.getParameter("value")
                                             });
+                                        },
+                                        describeValue: false,
+                                        showSuggestion: true,
+                                        repository: businesspartner.bo.BORepositoryBusinessPartner,
+                                        dataInfo: {
+                                            type: businesspartner.bo.Lead,
+                                            key: businesspartner.bo.Lead.PROPERTY_CODE_NAME,
+                                            text: businesspartner.bo.Lead.PROPERTY_NAME_NAME
+                                        },
+                                        suggestionItemSelected: function (this: sap.extension.m.RepositoryInput, event: sap.ui.base.Event): void {
+                                            let selectedItem: any = event.getParameter("selectedItem");
+                                            if (!ibas.objects.isNull(selectedItem)) {
+                                                that.fireViewEvents(that.chooseSalesQuoteCustomerEvent, this.itemConditions(selectedItem));
+                                            }
+                                        },
+                                    }).bindProperty("bindingValue", {
+                                        path: "customerCode",
+                                        type: new sap.extension.data.Alphanumeric({
+                                            maxLength: 20
+                                        })
+                                    }).bindProperty("visible", {
+                                        path: "customerType",
+                                        formatter(data: any): boolean {
+                                            return data === businesspartner.bo.emBusinessPartnerType.LEAD ? true : false;
                                         }
-                                    }
-                                }
-                            }).bindProperty("bindingValue", {
-                                path: "customerCode",
-                                type: new sap.extension.data.Alphanumeric({
-                                    maxLength: 20
-                                })
-                            }),
-                            new sap.extension.m.EnumSelect("", {
-                                items: [
-                                    new sap.extension.m.SelectItem("", {
-                                        key: businesspartner.bo.emBusinessPartnerType.CUSTOMER,
-                                        text: ibas.enums.describe(businesspartner.bo.emBusinessPartnerType, businesspartner.bo.emBusinessPartnerType.CUSTOMER)
                                     }),
-                                    new sap.extension.m.SelectItem("", {
-                                        key: businesspartner.bo.emBusinessPartnerType.LEAD,
-                                        text: ibas.enums.describe(businesspartner.bo.emBusinessPartnerType, businesspartner.bo.emBusinessPartnerType.LEAD)
-                                    })
+                                    new sap.extension.m.EnumSelect("", {
+                                        width: "40%",
+                                        items: [
+                                            new sap.extension.m.SelectItem("", {
+                                                key: businesspartner.bo.emBusinessPartnerType.CUSTOMER,
+                                                text: ibas.enums.describe(businesspartner.bo.emBusinessPartnerType, businesspartner.bo.emBusinessPartnerType.CUSTOMER)
+                                            }),
+                                            new sap.extension.m.SelectItem("", {
+                                                key: businesspartner.bo.emBusinessPartnerType.LEAD,
+                                                text: ibas.enums.describe(businesspartner.bo.emBusinessPartnerType, businesspartner.bo.emBusinessPartnerType.LEAD)
+                                            })
+                                        ]
+                                    }).bindProperty("bindingValue", {
+                                        path: "customerType",
+                                        type: new sap.extension.data.Enum({
+                                            enumType: businesspartner.bo.emBusinessPartnerType
+                                        })
+                                    }).addStyleClass("sapUiTinyMarginBegin"),
                                 ]
-                            }).bindProperty("bindingValue", {
-                                path: "customerType",
-                                type: new sap.extension.data.Enum({
-                                    enumType: businesspartner.bo.emBusinessPartnerType
-                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_customername") }),
                             new sap.extension.m.Input("", {
@@ -332,7 +387,7 @@ namespace sales {
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesquoteitem_itemcode"),
-                                        template: new sap.extension.m.Input("", {
+                                        template: new sap.extension.m.RepositoryInput("", {
                                             showValueHelp: true,
                                             valueHelpRequest: function (): void {
                                                 that.fireViewEvents(that.chooseSalesQuoteItemMaterialEvent,
@@ -346,7 +401,24 @@ namespace sales {
                                                     boCode: materials.bo.Material.BUSINESS_OBJECT_CODE,
                                                     linkValue: event.getParameter("value")
                                                 });
-                                            }
+                                            },
+                                            describeValue: false,
+                                            showSuggestion: true,
+                                            repository: materials.bo.BORepositoryMaterials,
+                                            dataInfo: {
+                                                type: materials.bo.Material,
+                                                key: materials.bo.Material.PROPERTY_CODE_NAME,
+                                                text: materials.bo.Material.PROPERTY_NAME_NAME
+                                            },
+                                            suggestionItemSelected: function (this: sap.extension.m.RepositoryInput, event: sap.ui.base.Event): void {
+                                                let selectedItem: any = event.getParameter("selectedItem");
+                                                if (!ibas.objects.isNull(selectedItem)) {
+                                                    that.fireViewEvents(that.chooseSalesQuoteItemMaterialEvent, this.getBindingContext().getObject(), this.itemConditions(selectedItem));
+                                                }
+                                            },
+                                            criteria: [
+                                                new ibas.Condition(materials.app.conditions.product.CONDITION_ALIAS_SALES_ITEM, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                                            ]
                                         }).bindProperty("bindingValue", {
                                             path: "itemCode",
                                             type: new sap.extension.data.Alphanumeric({
@@ -419,14 +491,31 @@ namespace sales {
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesquoteitem_uom"),
-                                        template: new sap.extension.m.Input("", {
+                                        template: new sap.extension.m.RepositoryInput("", {
                                             showValueHelp: true,
                                             valueHelpRequest: function (): void {
                                                 that.fireViewEvents(that.chooseSalesQuoteItemUnitEvent,
                                                     // 获取当前对象
                                                     this.getBindingContext().getObject()
                                                 );
-                                            }
+                                            },
+                                            describeValue: false,
+                                            showSuggestion: true,
+                                            repository: materials.bo.BORepositoryMaterials,
+                                            dataInfo: {
+                                                type: materials.bo.Unit,
+                                                key: materials.bo.Unit.PROPERTY_NAME_NAME,
+                                                text: materials.bo.Unit.PROPERTY_NAME_NAME
+                                            },
+                                            suggestionItemSelected: function (this: sap.extension.m.RepositoryInput, event: sap.ui.base.Event): void {
+                                                let selectedItem: any = event.getParameter("selectedItem");
+                                                if (!ibas.objects.isNull(selectedItem)) {
+                                                    that.fireViewEvents(that.chooseSalesQuoteItemUnitEvent, this.getBindingContext().getObject(), null, this.itemConditions(selectedItem));
+                                                }
+                                            },
+                                            criteria: [
+                                                new ibas.Condition(materials.bo.Unit.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                                            ]
                                         }).bindProperty("bindingValue", {
                                             path: "uom",
                                             type: new sap.extension.data.Alphanumeric({

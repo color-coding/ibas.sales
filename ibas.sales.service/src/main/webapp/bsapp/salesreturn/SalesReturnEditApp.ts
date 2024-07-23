@@ -254,7 +254,7 @@ namespace sales {
             }
             private customer: businesspartner.bo.ICustomer;
             /** 选择销售退货客户事件 */
-            private chooseSalesReturnCustomer(): void {
+            private chooseSalesReturnCustomer(filterConditions?: ibas.ICondition[]): void {
                 let items: bo.SalesReturnItem[] = this.editData.salesReturnItems.where(c =>
                     !ibas.strings.isEmpty(c.baseDocumentType) && c.isDeleted !== true
                 );
@@ -269,17 +269,26 @@ namespace sales {
                         onCompleted: (action) => {
                             if (action === ibas.emMessageAction.YES) {
                                 this.removeSalesReturnItem(items);
-                                this.chooseSalesReturnCustomer();
+                                this.chooseSalesReturnCustomer(filterConditions);
                             }
                         }
                     });
                     return;
                 }
+                let conditions: ibas.IList<ibas.ICondition> = businesspartner.app.conditions.customer.create();
+                // 添加输入条件
+                if (filterConditions instanceof Array && filterConditions.length > 0) {
+                    if (conditions.length > 1) {
+                        conditions.firstOrDefault().bracketOpen++;
+                        conditions.lastOrDefault().bracketClose++;
+                    }
+                    conditions.add(filterConditions);
+                }
                 let that: this = this;
                 ibas.servicesManager.runChooseService<businesspartner.bo.ICustomer>({
                     boCode: businesspartner.bo.BO_CODE_CUSTOMER,
                     chooseType: ibas.emChooseType.SINGLE,
-                    criteria: businesspartner.app.conditions.customer.create(),
+                    criteria: conditions,
                     onCompleted(selecteds: ibas.IList<businesspartner.bo.ICustomer>): void {
                         let selected: businesspartner.bo.ICustomer = selecteds.firstOrDefault();
                         that.editData.customerCode = selected.code;
@@ -403,10 +412,18 @@ namespace sales {
                 }
             }
             /** 选择销售退货物料事件 */
-            private chooseSalesReturnItemMaterial(caller: bo.SalesReturnItem): void {
+            private chooseSalesReturnItemMaterial(caller: bo.SalesReturnItem, filterConditions?: ibas.ICondition[]): void {
                 let that: this = this;
                 let condition: ibas.ICondition;
                 let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.product.create();
+                // 添加输入条件
+                if (filterConditions instanceof Array && filterConditions.length > 0) {
+                    if (conditions.length > 1) {
+                        conditions.firstOrDefault().bracketOpen++;
+                        conditions.lastOrDefault().bracketClose++;
+                    }
+                    conditions.add(filterConditions);
+                }
                 // 添加价格清单条件
                 if (ibas.numbers.valueOf(this.editData.priceList) !== 0) {
                     condition = new ibas.Condition();
@@ -496,12 +513,21 @@ namespace sales {
                     }
                 });
             }
-            private chooseSalesReturnItemWarehouse(caller: bo.SalesReturnItem): void {
+            private chooseSalesReturnItemWarehouse(caller: bo.SalesReturnItem, filterConditions?: ibas.ICondition[]): void {
+                let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.warehouse.create(this.editData.branch);
+                // 添加输入条件
+                if (filterConditions instanceof Array && filterConditions.length > 0) {
+                    if (conditions.length > 1) {
+                        conditions.firstOrDefault().bracketOpen++;
+                        conditions.lastOrDefault().bracketClose++;
+                    }
+                    conditions.add(filterConditions);
+                }
                 let that: this = this;
-                ibas.servicesManager.runChooseService<materials.bo.IWarehouse>({
-                    boCode: materials.bo.BO_CODE_WAREHOUSE,
+                ibas.servicesManager.runChooseService<materials.bo.Warehouse>({
+                    boCode: materials.bo.Warehouse.BUSINESS_OBJECT_CODE,
                     chooseType: ibas.emChooseType.SINGLE,
-                    criteria: materials.app.conditions.warehouse.create(this.editData.branch),
+                    criteria: conditions,
                     onCompleted(selecteds: ibas.IList<materials.bo.IWarehouse>): void {
                         // 获取触发的对象
                         let index: number = that.editData.salesReturnItems.indexOf(caller);
@@ -938,14 +964,23 @@ namespace sales {
                 });
 
             }
-            private chooseSalesReturnItemUnit(caller: bo.SalesReturnItem): void {
+            private chooseSalesReturnItemUnit(caller: bo.SalesReturnItem, filterConditions?: ibas.ICondition[]): void {
+                let conditions: ibas.IList<ibas.ICondition> = ibas.arrays.create(
+                    new ibas.Condition(materials.bo.Unit.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                );
+                // 添加输入条件
+                if (filterConditions instanceof Array && filterConditions.length > 0) {
+                    if (conditions.length > 1) {
+                        conditions.firstOrDefault().bracketOpen++;
+                        conditions.lastOrDefault().bracketClose++;
+                    }
+                    conditions.add(filterConditions);
+                }
                 let that: this = this;
                 ibas.servicesManager.runChooseService<materials.bo.IUnit>({
                     boCode: materials.bo.BO_CODE_UNIT,
                     chooseType: ibas.emChooseType.SINGLE,
-                    criteria: [
-                        new ibas.Condition(materials.bo.Unit.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
-                    ],
+                    criteria: conditions,
                     onCompleted(selecteds: ibas.IList<materials.bo.IUnit>): void {
                         for (let selected of selecteds) {
                             caller.uom = selected.name;
