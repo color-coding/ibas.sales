@@ -712,6 +712,9 @@ namespace sales {
                         this.proceeding(ibas.emMessageType.WARNING, builder.toString());
                         this.view.showSalesReserveInvoiceItems(this.editData.salesReserveInvoiceItems.filterDeleted());
                     }
+                } else if (items instanceof Array) {
+                    this.editData.salesReserveInvoiceItems.create();
+                    this.view.showSalesReserveInvoiceItems(this.editData.salesReserveInvoiceItems.filterDeleted());
                 } else {
                     this.chooseSalesReserveInvoiceItemMaterial(undefined);
                 }

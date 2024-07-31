@@ -330,13 +330,14 @@ namespace sales {
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_blanketagreementitem_itemdescription"),
-                                        width: "16rem",
-                                        template: new sap.extension.m.Text("", {
-                                            width: "8rem",
+                                        template: new sap.extension.m.Input("", {
                                         }).bindProperty("bindingValue", {
                                             path: "itemDescription",
-                                            type: new sap.extension.data.Alphanumeric()
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 100
+                                            })
                                         }),
+                                        width: "16rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_blanketagreementitem_quantity"),

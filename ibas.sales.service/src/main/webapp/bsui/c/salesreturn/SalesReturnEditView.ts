@@ -279,7 +279,10 @@ namespace sales {
                                                         })
                                                     }),
                                                 ]
-                                            })
+                                            }),
+                                            defaultAction(): void {
+                                                that.fireViewEvents(that.addSalesReturnItemEvent, []);
+                                            }
                                         }),
                                         new sap.m.Button("", {
                                             text: ibas.i18n.prop("shell_data_remove"),
@@ -469,12 +472,14 @@ namespace sales {
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesreturnitem_itemdescription"),
-                                        width: "16rem",
-                                        template: new sap.extension.m.Text("", {
+                                        template: new sap.extension.m.Input("", {
                                         }).bindProperty("bindingValue", {
                                             path: "itemDescription",
-                                            type: new sap.extension.data.Alphanumeric()
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 100
+                                            })
                                         }),
+                                        width: "16rem",
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesreturnitem_itemversion"),

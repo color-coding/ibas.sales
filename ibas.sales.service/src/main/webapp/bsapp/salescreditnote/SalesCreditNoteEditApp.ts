@@ -685,6 +685,9 @@ namespace sales {
                         this.proceeding(ibas.emMessageType.WARNING, builder.toString());
                         this.view.showSalesCreditNoteItems(this.editData.salesCreditNoteItems.filterDeleted());
                     }
+                } else if (items instanceof Array) {
+                    this.editData.salesCreditNoteItems.create();
+                    this.view.showSalesCreditNoteItems(this.editData.salesCreditNoteItems.filterDeleted());
                 } else {
                     this.chooseSalesCreditNoteItemMaterial(undefined);
                 }

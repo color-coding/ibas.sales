@@ -646,6 +646,9 @@ namespace sales {
                         this.proceeding(ibas.emMessageType.WARNING, builder.toString());
                         this.view.showSalesQuoteItems(this.editData.salesQuoteItems.filterDeleted());
                     }
+                } else if (items instanceof Array) {
+                    this.editData.salesQuoteItems.create();
+                    this.view.showSalesQuoteItems(this.editData.salesQuoteItems.filterDeleted());
                 } else {
                     this.chooseSalesQuoteItemMaterial(undefined);
                 }

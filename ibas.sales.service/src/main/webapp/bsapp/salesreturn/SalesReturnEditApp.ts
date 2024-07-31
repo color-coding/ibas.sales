@@ -579,6 +579,9 @@ namespace sales {
                         this.proceeding(ibas.emMessageType.WARNING, builder.toString());
                         this.view.showSalesReturnItems(this.editData.salesReturnItems.filterDeleted());
                     }
+                } else if (items instanceof Array) {
+                    this.editData.salesReturnItems.create();
+                    this.view.showSalesReturnItems(this.editData.salesReturnItems.filterDeleted());
                 } else {
                     this.chooseSalesReturnItemMaterial(undefined);
                 }

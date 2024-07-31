@@ -724,6 +724,9 @@ namespace sales {
                         this.proceeding(ibas.emMessageType.WARNING, builder.toString());
                         this.view.showSalesInvoiceItems(this.editData.salesInvoiceItems.filterDeleted());
                     }
+                } else if (items instanceof Array) {
+                    this.editData.salesInvoiceItems.create();
+                    this.view.showSalesInvoiceItems(this.editData.salesInvoiceItems.filterDeleted());
                 } else {
                     this.chooseSalesInvoiceItemMaterial(undefined);
                 }

@@ -440,6 +440,9 @@ namespace sales {
                         this.proceeding(ibas.emMessageType.WARNING, builder.toString());
                         this.view.showDownPaymentRequestItems(this.editData.downPaymentRequestItems.filterDeleted());
                     }
+                } else if (items instanceof Array) {
+                    this.editData.downPaymentRequestItems.create();
+                    this.view.showDownPaymentRequestItems(this.editData.downPaymentRequestItems.filterDeleted());
                 } else {
                     this.chooseDownPaymentRequestItemMaterial(undefined);
                 }
