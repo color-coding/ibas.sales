@@ -17,6 +17,7 @@
 /// <reference path="./bo/BlanketAgreement.ts" />
 /// <reference path="./bo/DownPaymentRequest.ts" />
 /// <reference path="./bo/SalesReserveInvoice.ts" />
+/// <reference path="./bo/SalesReturnRequest.ts" />
 /// <reference path="./DataConverter.ts" />
 /// <reference path="./BORepository.ts" />
 
@@ -36,6 +37,7 @@ namespace sales {
         boFactory.register(BlanketAgreement.BUSINESS_OBJECT_CODE, BlanketAgreement);
         boFactory.register(DownPaymentRequest.BUSINESS_OBJECT_CODE, DownPaymentRequest);
         boFactory.register(SalesReserveInvoice.BUSINESS_OBJECT_CODE, SalesReserveInvoice);
+        boFactory.register(SalesReturnRequest.BUSINESS_OBJECT_CODE, SalesReturnRequest);
 
     }
 }

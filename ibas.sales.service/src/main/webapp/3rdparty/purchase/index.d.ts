@@ -54,6 +54,8 @@ declare namespace purchase {
         const BO_CODE_DOWNPAYMNETREQUEST: string;
         /** 业务对象编码-采购预留发票 */
         const BO_CODE_PURCHASERESERVEINVOICE: string;
+        /** 业务对象编码-采购退货请求 */
+        const BO_CODE_PURCHASERETURNREQUEST: string;
         /** 运输状态 */
         enum emShippingStatus {
             /**
@@ -2834,6 +2836,254 @@ declare namespace purchase {
  */
 declare namespace purchase {
     namespace bo {
+        /** 采购退货请求 */
+        interface IPurchaseReturnRequest extends ibas.IBODocument, ibas.IBOUserFields {
+            /** 凭证编号 */
+            docEntry: number;
+            /** 单据编码 */
+            docNum: string;
+            /** 期间 */
+            period: number;
+            /** 取消 */
+            canceled: ibas.emYesNo;
+            /** 状态 */
+            status: ibas.emBOStatus;
+            /** 审批状态 */
+            approvalStatus: ibas.emApprovalStatus;
+            /** 单据状态 */
+            documentStatus: ibas.emDocumentStatus;
+            /** 对象类型 */
+            objectCode: string;
+            /** 创建日期 */
+            createDate: Date;
+            /** 创建时间 */
+            createTime: number;
+            /** 修改日期 */
+            updateDate: Date;
+            /** 修改时间 */
+            updateTime: number;
+            /** 版本 */
+            logInst: number;
+            /** 服务系列 */
+            series: number;
+            /** 数据源 */
+            dataSource: string;
+            /** 创建用户 */
+            createUserSign: number;
+            /** 修改用户 */
+            updateUserSign: number;
+            /** 创建动作标识 */
+            createActionId: string;
+            /** 更新动作标识 */
+            updateActionId: string;
+            /** 数据所有者 */
+            dataOwner: number;
+            /** 团队成员 */
+            teamMembers: string;
+            /** 数据所属组织 */
+            organization: string;
+            /** 过账日期 */
+            postingDate: Date;
+            /** 到期日 */
+            deliveryDate: Date;
+            /** 凭证日期 */
+            documentDate: Date;
+            /** 参考1 */
+            reference1: string;
+            /** 参考2 */
+            reference2: string;
+            /** 备注 */
+            remarks: string;
+            /** 已引用 */
+            referenced: ibas.emYesNo;
+            /** 已删除 */
+            deleted: ibas.emYesNo;
+            /** 供应商代码 */
+            supplierCode: string;
+            /** 供应商名称 */
+            supplierName: string;
+            /** 联系人 */
+            contactPerson: number;
+            /** 折扣 */
+            discount: number;
+            /** 折扣后总计 */
+            discountTotal: number;
+            /** 单据货币 */
+            documentCurrency: string;
+            /** 单据汇率 */
+            documentRate: number;
+            /** 单据总计 */
+            documentTotal: number;
+            /** 已付款总计 */
+            paidTotal: number;
+            /** 价格清单 */
+            priceList: number;
+            /** 付款条款 */
+            paymentCode: string;
+            /** 舍入 */
+            rounding: ibas.emYesNo;
+            /** 舍入差额 */
+            diffAmount: number;
+            /** 项目代码 */
+            project: string;
+            /** 终端客户 */
+            consumer: string;
+            /** 单据类型 */
+            orderType: string;
+            /** 合同 */
+            agreements: string;
+            /** 分支 */
+            branch: string;
+            /** 采购退货请求-行集合 */
+            purchaseReturnRequestItems: IPurchaseReturnRequestItems;
+            /** 送货地址集合 */
+            shippingAddresss: IShippingAddresss;
+            /** 基于采购订单 */
+            baseDocument(document: IPurchaseOrder): void;
+            /** 基于采购收货 */
+            baseDocument(document: IPurchaseDelivery): void;
+        }
+        /** 采购退货请求-行 集合 */
+        interface IPurchaseReturnRequestItems extends ibas.IBusinessObjects<IPurchaseReturnRequestItem> {
+            /** 创建并添加子项 */
+            create(): IPurchaseReturnRequestItem;
+        }
+        /** 采购退货请求-行 */
+        interface IPurchaseReturnRequestItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent, ibas.IBOUserFields {
+            /** 编码 */
+            docEntry: number;
+            /** 行号 */
+            lineId: number;
+            /** 显示顺序 */
+            visOrder: number;
+            /** 类型 */
+            objectCode: string;
+            /** 实例号（版本） */
+            logInst: number;
+            /** 数据源 */
+            dataSource: string;
+            /** 取消 */
+            canceled: ibas.emYesNo;
+            /** 状态 */
+            status: ibas.emBOStatus;
+            /** 单据状态 */
+            lineStatus: ibas.emDocumentStatus;
+            /** 创建日期 */
+            createDate: Date;
+            /** 创建时间 */
+            createTime: number;
+            /** 修改日期 */
+            updateDate: Date;
+            /** 修改时间 */
+            updateTime: number;
+            /** 创建用户 */
+            createUserSign: number;
+            /** 修改用户 */
+            updateUserSign: number;
+            /** 创建动作标识 */
+            createActionId: string;
+            /** 更新动作标识 */
+            updateActionId: string;
+            /** 参考1 */
+            reference1: string;
+            /** 参考2 */
+            reference2: string;
+            /** 已引用 */
+            referenced: ibas.emYesNo;
+            /** 已删除 */
+            deleted: ibas.emYesNo;
+            /** 基于类型 */
+            baseDocumentType: string;
+            /** 基于标识 */
+            baseDocumentEntry: number;
+            /** 基于行号 */
+            baseDocumentLineId: number;
+            /** 原始类型 */
+            originalDocumentType: string;
+            /** 原始标识 */
+            originalDocumentEntry: number;
+            /** 原始行号 */
+            originalDocumentLineId: number;
+            /** 物料编码 */
+            itemCode: string;
+            /** 物料/服务描述 */
+            itemDescription: string;
+            /** 物料标识 */
+            itemSign: string;
+            /** 物料版本 */
+            itemVersion: string;
+            /** 序号管理 */
+            serialManagement: ibas.emYesNo;
+            /** 批号管理 */
+            batchManagement: ibas.emYesNo;
+            /** 数量 */
+            quantity: number;
+            /** 计量单位 */
+            uom: string;
+            /** 库存单位 */
+            inventoryUOM: string;
+            /** 单位换算率 */
+            uomRate: number;
+            /** 库存数量 */
+            inventoryQuantity: number;
+            /** 仓库 */
+            warehouse: string;
+            /** 价格 */
+            price: number;
+            /** 货币 */
+            currency: string;
+            /** 汇率 */
+            rate: number;
+            /** 行总计 */
+            lineTotal: number;
+            /** 行交货日期 */
+            deliveryDate: Date;
+            /** 已清数量 */
+            closedQuantity: number;
+            /** 行折扣 */
+            discount: number;
+            /** 已清金额 */
+            closedAmount: number;
+            /** 折扣前价格 */
+            unitPrice: number;
+            /** 折扣前行总计 */
+            unitLineTotal: number;
+            /** 税定义 */
+            tax: string;
+            /** 税率 */
+            taxRate: number;
+            /** 税总额 */
+            taxTotal: number;
+            /** 税前价格 */
+            preTaxPrice: number;
+            /** 税前行总计 */
+            preTaxLineTotal: number;
+            /** 成本中心1 */
+            distributionRule1: string;
+            /** 成本中心2 */
+            distributionRule2: string;
+            /** 成本中心3 */
+            distributionRule3: string;
+            /** 成本中心4 */
+            distributionRule4: string;
+            /** 成本中心5 */
+            distributionRule5: string;
+            /** 合同 */
+            agreements: string;
+            /** 赋值产品 */
+            baseProduct(source: materials.bo.IProduct): void;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace purchase {
+    namespace bo {
         /** 业务仓库 */
         interface IBORepositoryPurchase extends ibas.IBORepositoryApplication {
             /**
@@ -2951,6 +3201,16 @@ declare namespace purchase {
              * @param saver 保存者
              */
             savePurchaseReserveInvoice(saver: ibas.ISaveCaller<bo.IPurchaseReserveInvoice>): void;
+            /**
+             * 查询 采购退货请求
+             * @param fetcher 查询者
+             */
+            fetchPurchaseReturnRequest(fetcher: ibas.IFetchCaller<bo.IPurchaseReturnRequest>): void;
+            /**
+             * 保存 采购退货请求
+             * @param saver 保存者
+             */
+            savePurchaseReturnRequest(saver: ibas.ISaveCaller<bo.IPurchaseReturnRequest>): void;
         }
     }
 }
@@ -4985,6 +5245,8 @@ declare namespace purchase {
             baseDocument(document: IPurchaseOrder): void;
             /** 基于采购收货 */
             baseDocument(document: IPurchaseDelivery): void;
+            /** 基于采购收货 */
+            baseDocument(document: IPurchaseReturnRequest): void;
         }
         /** 采购退货-行 集合 */
         class PurchaseReturnItems extends ibas.BusinessObjects<PurchaseReturnItem, PurchaseReturn> implements IPurchaseReturnItems {
@@ -9066,7 +9328,7 @@ declare namespace purchase {
             protected registerRules(): ibas.IBusinessRule[];
         }
         /** 送货地址 集合 */
-        class ShippingAddresss extends ibas.BusinessObjects<ShippingAddress, IPurchaseQuote | IPurchaseOrder | IPurchaseDelivery | IPurchaseReturn | IPurchaseInvoice | IPurchaseCreditNote | IPurchaseReserveInvoice> implements IShippingAddresss {
+        class ShippingAddresss extends ibas.BusinessObjects<ShippingAddress, IPurchaseQuote | IPurchaseOrder | IPurchaseDelivery | IPurchaseReturn | IPurchaseReturnRequest | IPurchaseInvoice | IPurchaseCreditNote | IPurchaseReserveInvoice> implements IShippingAddresss {
             /** 创建并添加子项 */
             create(): ShippingAddress;
             /** 添加子项后 子项属性赋值 */
@@ -11083,6 +11345,758 @@ declare namespace purchase {
  */
 declare namespace purchase {
     namespace bo {
+        /** 采购退货请求 */
+        class PurchaseReturnRequest extends ibas.BODocument<PurchaseReturnRequest> implements IPurchaseReturnRequest, ibas.IConvertedData {
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 映射的属性名称-凭证编号 */
+            static PROPERTY_DOCENTRY_NAME: string;
+            /** 获取-凭证编号 */
+            get docEntry(): number;
+            /** 设置-凭证编号 */
+            set docEntry(value: number);
+            /** 映射的属性名称-单据编码 */
+            static PROPERTY_DOCNUM_NAME: string;
+            /** 获取-单据编码 */
+            get docNum(): string;
+            /** 设置-单据编码 */
+            set docNum(value: string);
+            /** 映射的属性名称-期间 */
+            static PROPERTY_PERIOD_NAME: string;
+            /** 获取-期间 */
+            get period(): number;
+            /** 设置-期间 */
+            set period(value: number);
+            /** 映射的属性名称-取消 */
+            static PROPERTY_CANCELED_NAME: string;
+            /** 获取-取消 */
+            get canceled(): ibas.emYesNo;
+            /** 设置-取消 */
+            set canceled(value: ibas.emYesNo);
+            /** 映射的属性名称-状态 */
+            static PROPERTY_STATUS_NAME: string;
+            /** 获取-状态 */
+            get status(): ibas.emBOStatus;
+            /** 设置-状态 */
+            set status(value: ibas.emBOStatus);
+            /** 映射的属性名称-审批状态 */
+            static PROPERTY_APPROVALSTATUS_NAME: string;
+            /** 获取-审批状态 */
+            get approvalStatus(): ibas.emApprovalStatus;
+            /** 设置-审批状态 */
+            set approvalStatus(value: ibas.emApprovalStatus);
+            /** 映射的属性名称-单据状态 */
+            static PROPERTY_DOCUMENTSTATUS_NAME: string;
+            /** 获取-单据状态 */
+            get documentStatus(): ibas.emDocumentStatus;
+            /** 设置-单据状态 */
+            set documentStatus(value: ibas.emDocumentStatus);
+            /** 映射的属性名称-对象类型 */
+            static PROPERTY_OBJECTCODE_NAME: string;
+            /** 获取-对象类型 */
+            get objectCode(): string;
+            /** 设置-对象类型 */
+            set objectCode(value: string);
+            /** 映射的属性名称-创建日期 */
+            static PROPERTY_CREATEDATE_NAME: string;
+            /** 获取-创建日期 */
+            get createDate(): Date;
+            /** 设置-创建日期 */
+            set createDate(value: Date);
+            /** 映射的属性名称-创建时间 */
+            static PROPERTY_CREATETIME_NAME: string;
+            /** 获取-创建时间 */
+            get createTime(): number;
+            /** 设置-创建时间 */
+            set createTime(value: number);
+            /** 映射的属性名称-修改日期 */
+            static PROPERTY_UPDATEDATE_NAME: string;
+            /** 获取-修改日期 */
+            get updateDate(): Date;
+            /** 设置-修改日期 */
+            set updateDate(value: Date);
+            /** 映射的属性名称-修改时间 */
+            static PROPERTY_UPDATETIME_NAME: string;
+            /** 获取-修改时间 */
+            get updateTime(): number;
+            /** 设置-修改时间 */
+            set updateTime(value: number);
+            /** 映射的属性名称-版本 */
+            static PROPERTY_LOGINST_NAME: string;
+            /** 获取-版本 */
+            get logInst(): number;
+            /** 设置-版本 */
+            set logInst(value: number);
+            /** 映射的属性名称-服务系列 */
+            static PROPERTY_SERIES_NAME: string;
+            /** 获取-服务系列 */
+            get series(): number;
+            /** 设置-服务系列 */
+            set series(value: number);
+            /** 映射的属性名称-数据源 */
+            static PROPERTY_DATASOURCE_NAME: string;
+            /** 获取-数据源 */
+            get dataSource(): string;
+            /** 设置-数据源 */
+            set dataSource(value: string);
+            /** 映射的属性名称-创建用户 */
+            static PROPERTY_CREATEUSERSIGN_NAME: string;
+            /** 获取-创建用户 */
+            get createUserSign(): number;
+            /** 设置-创建用户 */
+            set createUserSign(value: number);
+            /** 映射的属性名称-修改用户 */
+            static PROPERTY_UPDATEUSERSIGN_NAME: string;
+            /** 获取-修改用户 */
+            get updateUserSign(): number;
+            /** 设置-修改用户 */
+            set updateUserSign(value: number);
+            /** 映射的属性名称-创建动作标识 */
+            static PROPERTY_CREATEACTIONID_NAME: string;
+            /** 获取-创建动作标识 */
+            get createActionId(): string;
+            /** 设置-创建动作标识 */
+            set createActionId(value: string);
+            /** 映射的属性名称-更新动作标识 */
+            static PROPERTY_UPDATEACTIONID_NAME: string;
+            /** 获取-更新动作标识 */
+            get updateActionId(): string;
+            /** 设置-更新动作标识 */
+            set updateActionId(value: string);
+            /** 映射的属性名称-数据所有者 */
+            static PROPERTY_DATAOWNER_NAME: string;
+            /** 获取-数据所有者 */
+            get dataOwner(): number;
+            /** 设置-数据所有者 */
+            set dataOwner(value: number);
+            /** 映射的属性名称-团队成员 */
+            static PROPERTY_TEAMMEMBERS_NAME: string;
+            /** 获取-团队成员 */
+            get teamMembers(): string;
+            /** 设置-团队成员 */
+            set teamMembers(value: string);
+            /** 映射的属性名称-数据所属组织 */
+            static PROPERTY_ORGANIZATION_NAME: string;
+            /** 获取-数据所属组织 */
+            get organization(): string;
+            /** 设置-数据所属组织 */
+            set organization(value: string);
+            /** 映射的属性名称-过账日期 */
+            static PROPERTY_POSTINGDATE_NAME: string;
+            /** 获取-过账日期 */
+            get postingDate(): Date;
+            /** 设置-过账日期 */
+            set postingDate(value: Date);
+            /** 映射的属性名称-到期日 */
+            static PROPERTY_DELIVERYDATE_NAME: string;
+            /** 获取-到期日 */
+            get deliveryDate(): Date;
+            /** 设置-到期日 */
+            set deliveryDate(value: Date);
+            /** 映射的属性名称-凭证日期 */
+            static PROPERTY_DOCUMENTDATE_NAME: string;
+            /** 获取-凭证日期 */
+            get documentDate(): Date;
+            /** 设置-凭证日期 */
+            set documentDate(value: Date);
+            /** 映射的属性名称-参考1 */
+            static PROPERTY_REFERENCE1_NAME: string;
+            /** 获取-参考1 */
+            get reference1(): string;
+            /** 设置-参考1 */
+            set reference1(value: string);
+            /** 映射的属性名称-参考2 */
+            static PROPERTY_REFERENCE2_NAME: string;
+            /** 获取-参考2 */
+            get reference2(): string;
+            /** 设置-参考2 */
+            set reference2(value: string);
+            /** 映射的属性名称-备注 */
+            static PROPERTY_REMARKS_NAME: string;
+            /** 获取-备注 */
+            get remarks(): string;
+            /** 设置-备注 */
+            set remarks(value: string);
+            /** 映射的属性名称-已引用 */
+            static PROPERTY_REFERENCED_NAME: string;
+            /** 获取-已引用 */
+            get referenced(): ibas.emYesNo;
+            /** 设置-已引用 */
+            set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已删除 */
+            static PROPERTY_DELETED_NAME: string;
+            /** 获取-已删除 */
+            get deleted(): ibas.emYesNo;
+            /** 设置-已删除 */
+            set deleted(value: ibas.emYesNo);
+            /** 映射的属性名称-供应商代码 */
+            static PROPERTY_SUPPLIERCODE_NAME: string;
+            /** 获取-供应商代码 */
+            get supplierCode(): string;
+            /** 设置-供应商代码 */
+            set supplierCode(value: string);
+            /** 映射的属性名称-供应商名称 */
+            static PROPERTY_SUPPLIERNAME_NAME: string;
+            /** 获取-供应商名称 */
+            get supplierName(): string;
+            /** 设置-供应商名称 */
+            set supplierName(value: string);
+            /** 映射的属性名称-联系人 */
+            static PROPERTY_CONTACTPERSON_NAME: string;
+            /** 获取-联系人 */
+            get contactPerson(): number;
+            /** 设置-联系人 */
+            set contactPerson(value: number);
+            /** 映射的属性名称-折扣 */
+            static PROPERTY_DISCOUNT_NAME: string;
+            /** 获取-折扣 */
+            get discount(): number;
+            /** 设置-折扣 */
+            set discount(value: number);
+            /** 映射的属性名称-折扣后总计 */
+            static PROPERTY_DISCOUNTTOTAL_NAME: string;
+            /** 获取-折扣后总计 */
+            get discountTotal(): number;
+            /** 设置-折扣后总计 */
+            set discountTotal(value: number);
+            /** 映射的属性名称-单据货币 */
+            static PROPERTY_DOCUMENTCURRENCY_NAME: string;
+            /** 获取-单据货币 */
+            get documentCurrency(): string;
+            /** 设置-单据货币 */
+            set documentCurrency(value: string);
+            /** 映射的属性名称-单据汇率 */
+            static PROPERTY_DOCUMENTRATE_NAME: string;
+            /** 获取-单据汇率 */
+            get documentRate(): number;
+            /** 设置-单据汇率 */
+            set documentRate(value: number);
+            /** 映射的属性名称-单据总计 */
+            static PROPERTY_DOCUMENTTOTAL_NAME: string;
+            /** 获取-单据总计 */
+            get documentTotal(): number;
+            /** 设置-单据总计 */
+            set documentTotal(value: number);
+            /** 映射的属性名称-已付款总计 */
+            static PROPERTY_PAIDTOTAL_NAME: string;
+            /** 获取-已付款总计 */
+            get paidTotal(): number;
+            /** 设置-已付款总计 */
+            set paidTotal(value: number);
+            /** 映射的属性名称-价格清单 */
+            static PROPERTY_PRICELIST_NAME: string;
+            /** 获取-价格清单 */
+            get priceList(): number;
+            /** 设置-价格清单 */
+            set priceList(value: number);
+            /** 映射的属性名称-付款条款 */
+            static PROPERTY_PAYMENTCODE_NAME: string;
+            /** 获取-付款条款 */
+            get paymentCode(): string;
+            /** 设置-付款条款 */
+            set paymentCode(value: string);
+            /** 映射的属性名称-舍入 */
+            static PROPERTY_ROUNDING_NAME: string;
+            /** 获取-舍入 */
+            get rounding(): ibas.emYesNo;
+            /** 设置-舍入 */
+            set rounding(value: ibas.emYesNo);
+            /** 映射的属性名称-舍入差额 */
+            static PROPERTY_DIFFAMOUNT_NAME: string;
+            /** 获取-舍入差额 */
+            get diffAmount(): number;
+            /** 设置-舍入差额 */
+            set diffAmount(value: number);
+            /** 映射的属性名称-项目代码 */
+            static PROPERTY_PROJECT_NAME: string;
+            /** 获取-项目代码 */
+            get project(): string;
+            /** 设置-项目代码 */
+            set project(value: string);
+            /** 映射的属性名称-终端客户 */
+            static PROPERTY_CONSUMER_NAME: string;
+            /** 获取-终端客户 */
+            get consumer(): string;
+            /** 设置-终端客户 */
+            set consumer(value: string);
+            /** 映射的属性名称-单据类型 */
+            static PROPERTY_ORDERTYPE_NAME: string;
+            /** 获取-单据类型 */
+            get orderType(): string;
+            /** 设置-单据类型 */
+            set orderType(value: string);
+            /** 映射的属性名称-合同 */
+            static PROPERTY_AGREEMENTS_NAME: string;
+            /** 获取-合同 */
+            get agreements(): string;
+            /** 设置-合同 */
+            set agreements(value: string);
+            /** 映射的属性名称-分支 */
+            static PROPERTY_BRANCH_NAME: string;
+            /** 获取-分支 */
+            get branch(): string;
+            /** 设置-分支 */
+            set branch(value: string);
+            /** 映射的属性名称-采购退货请求-行集合 */
+            static PROPERTY_PURCHASERETURNREQUESTITEMS_NAME: string;
+            /** 获取-采购退货请求-行集合 */
+            get purchaseReturnRequestItems(): PurchaseReturnRequestItems;
+            /** 设置-采购退货请求-行集合 */
+            set purchaseReturnRequestItems(value: PurchaseReturnRequestItems);
+            /** 映射的属性名称-送货地址集合 */
+            static PROPERTY_SHIPPINGADDRESSS_NAME: string;
+            /** 获取-送货地址集合 */
+            get shippingAddresss(): ShippingAddresss;
+            /** 设置-送货地址集合 */
+            set shippingAddresss(value: ShippingAddresss);
+            /** 初始化数据 */
+            protected init(): void;
+            /** 映射的属性名称-项目的税总计 */
+            static PROPERTY_ITEMSTAXTOTAL_NAME: string;
+            /** 获取-项目的税总计 */
+            get itemsTaxTotal(): number;
+            /** 设置-项目的税总计 */
+            set itemsTaxTotal(value: number);
+            /** 映射的属性名称-项目的行总计 */
+            static PROPERTY_ITEMSLINETOTAL_NAME: string;
+            /** 获取-项目的行总计 */
+            get itemsLineTotal(): number;
+            /** 设置-项目的行总计 */
+            set itemsLineTotal(value: number);
+            /** 映射的属性名称-项目的税前行总计 */
+            static PROPERTY_ITEMSPRETAXTOTAL_NAME: string;
+            /** 获取-项目的税前行总计 */
+            get itemsPreTaxTotal(): number;
+            /** 设置-项目的税前行总计 */
+            set itemsPreTaxTotal(value: number);
+            /** 映射的属性名称-运送费税总计 */
+            static PROPERTY_SHIPPINGSTAXTOTAL_NAME: string;
+            /** 获取-运送费税总计 */
+            get shippingsTaxTotal(): number;
+            /** 设置-运送费税总计 */
+            set shippingsTaxTotal(value: number);
+            /** 映射的属性名称-运送费用总计 */
+            static PROPERTY_SHIPPINGSEXPENSETOTAL_NAME: string;
+            /** 获取-运送费用总计 */
+            get shippingsExpenseTotal(): number;
+            /** 设置-运送费用总计 */
+            set shippingsExpenseTotal(value: number);
+            protected registerRules(): ibas.IBusinessRule[];
+            /** 重置 */
+            reset(): void;
+            /** 转换之前 */
+            beforeConvert(): void;
+            /** 数据解析后 */
+            afterParsing(): void;
+            /** 基于采购订单 */
+            baseDocument(document: IPurchaseOrder): void;
+            /** 基于采购收货 */
+            baseDocument(document: IPurchaseDelivery): void;
+        }
+        /** 采购退货请求-行 集合 */
+        class PurchaseReturnRequestItems extends ibas.BusinessObjects<PurchaseReturnRequestItem, PurchaseReturnRequest> implements IPurchaseReturnRequestItems {
+            /** 创建并添加子项 */
+            create(): PurchaseReturnRequestItem;
+            protected afterAdd(item: PurchaseReturnRequestItem): void;
+            protected onParentPropertyChanged(name: string): void;
+        }
+        /** 采购退货请求-行 */
+        class PurchaseReturnRequestItem extends ibas.BODocumentLine<PurchaseReturnRequestItem> implements IPurchaseReturnRequestItem {
+            /** 构造函数 */
+            constructor();
+            /** 映射的属性名称-编码 */
+            static PROPERTY_DOCENTRY_NAME: string;
+            /** 获取-编码 */
+            get docEntry(): number;
+            /** 设置-编码 */
+            set docEntry(value: number);
+            /** 映射的属性名称-行号 */
+            static PROPERTY_LINEID_NAME: string;
+            /** 获取-行号 */
+            get lineId(): number;
+            /** 设置-行号 */
+            set lineId(value: number);
+            /** 映射的属性名称-显示顺序 */
+            static PROPERTY_VISORDER_NAME: string;
+            /** 获取-显示顺序 */
+            get visOrder(): number;
+            /** 设置-显示顺序 */
+            set visOrder(value: number);
+            /** 映射的属性名称-类型 */
+            static PROPERTY_OBJECTCODE_NAME: string;
+            /** 获取-类型 */
+            get objectCode(): string;
+            /** 设置-类型 */
+            set objectCode(value: string);
+            /** 映射的属性名称-实例号（版本） */
+            static PROPERTY_LOGINST_NAME: string;
+            /** 获取-实例号（版本） */
+            get logInst(): number;
+            /** 设置-实例号（版本） */
+            set logInst(value: number);
+            /** 映射的属性名称-数据源 */
+            static PROPERTY_DATASOURCE_NAME: string;
+            /** 获取-数据源 */
+            get dataSource(): string;
+            /** 设置-数据源 */
+            set dataSource(value: string);
+            /** 映射的属性名称-取消 */
+            static PROPERTY_CANCELED_NAME: string;
+            /** 获取-取消 */
+            get canceled(): ibas.emYesNo;
+            /** 设置-取消 */
+            set canceled(value: ibas.emYesNo);
+            /** 映射的属性名称-状态 */
+            static PROPERTY_STATUS_NAME: string;
+            /** 获取-状态 */
+            get status(): ibas.emBOStatus;
+            /** 设置-状态 */
+            set status(value: ibas.emBOStatus);
+            /** 映射的属性名称-单据状态 */
+            static PROPERTY_LINESTATUS_NAME: string;
+            /** 获取-单据状态 */
+            get lineStatus(): ibas.emDocumentStatus;
+            /** 设置-单据状态 */
+            set lineStatus(value: ibas.emDocumentStatus);
+            /** 映射的属性名称-创建日期 */
+            static PROPERTY_CREATEDATE_NAME: string;
+            /** 获取-创建日期 */
+            get createDate(): Date;
+            /** 设置-创建日期 */
+            set createDate(value: Date);
+            /** 映射的属性名称-创建时间 */
+            static PROPERTY_CREATETIME_NAME: string;
+            /** 获取-创建时间 */
+            get createTime(): number;
+            /** 设置-创建时间 */
+            set createTime(value: number);
+            /** 映射的属性名称-修改日期 */
+            static PROPERTY_UPDATEDATE_NAME: string;
+            /** 获取-修改日期 */
+            get updateDate(): Date;
+            /** 设置-修改日期 */
+            set updateDate(value: Date);
+            /** 映射的属性名称-修改时间 */
+            static PROPERTY_UPDATETIME_NAME: string;
+            /** 获取-修改时间 */
+            get updateTime(): number;
+            /** 设置-修改时间 */
+            set updateTime(value: number);
+            /** 映射的属性名称-创建用户 */
+            static PROPERTY_CREATEUSERSIGN_NAME: string;
+            /** 获取-创建用户 */
+            get createUserSign(): number;
+            /** 设置-创建用户 */
+            set createUserSign(value: number);
+            /** 映射的属性名称-修改用户 */
+            static PROPERTY_UPDATEUSERSIGN_NAME: string;
+            /** 获取-修改用户 */
+            get updateUserSign(): number;
+            /** 设置-修改用户 */
+            set updateUserSign(value: number);
+            /** 映射的属性名称-创建动作标识 */
+            static PROPERTY_CREATEACTIONID_NAME: string;
+            /** 获取-创建动作标识 */
+            get createActionId(): string;
+            /** 设置-创建动作标识 */
+            set createActionId(value: string);
+            /** 映射的属性名称-更新动作标识 */
+            static PROPERTY_UPDATEACTIONID_NAME: string;
+            /** 获取-更新动作标识 */
+            get updateActionId(): string;
+            /** 设置-更新动作标识 */
+            set updateActionId(value: string);
+            /** 映射的属性名称-参考1 */
+            static PROPERTY_REFERENCE1_NAME: string;
+            /** 获取-参考1 */
+            get reference1(): string;
+            /** 设置-参考1 */
+            set reference1(value: string);
+            /** 映射的属性名称-参考2 */
+            static PROPERTY_REFERENCE2_NAME: string;
+            /** 获取-参考2 */
+            get reference2(): string;
+            /** 设置-参考2 */
+            set reference2(value: string);
+            /** 映射的属性名称-已引用 */
+            static PROPERTY_REFERENCED_NAME: string;
+            /** 获取-已引用 */
+            get referenced(): ibas.emYesNo;
+            /** 设置-已引用 */
+            set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已删除 */
+            static PROPERTY_DELETED_NAME: string;
+            /** 获取-已删除 */
+            get deleted(): ibas.emYesNo;
+            /** 设置-已删除 */
+            set deleted(value: ibas.emYesNo);
+            /** 映射的属性名称-基于类型 */
+            static PROPERTY_BASEDOCUMENTTYPE_NAME: string;
+            /** 获取-基于类型 */
+            get baseDocumentType(): string;
+            /** 设置-基于类型 */
+            set baseDocumentType(value: string);
+            /** 映射的属性名称-基于标识 */
+            static PROPERTY_BASEDOCUMENTENTRY_NAME: string;
+            /** 获取-基于标识 */
+            get baseDocumentEntry(): number;
+            /** 设置-基于标识 */
+            set baseDocumentEntry(value: number);
+            /** 映射的属性名称-基于行号 */
+            static PROPERTY_BASEDOCUMENTLINEID_NAME: string;
+            /** 获取-基于行号 */
+            get baseDocumentLineId(): number;
+            /** 设置-基于行号 */
+            set baseDocumentLineId(value: number);
+            /** 映射的属性名称-原始类型 */
+            static PROPERTY_ORIGINALDOCUMENTTYPE_NAME: string;
+            /** 获取-原始类型 */
+            get originalDocumentType(): string;
+            /** 设置-原始类型 */
+            set originalDocumentType(value: string);
+            /** 映射的属性名称-原始标识 */
+            static PROPERTY_ORIGINALDOCUMENTENTRY_NAME: string;
+            /** 获取-原始标识 */
+            get originalDocumentEntry(): number;
+            /** 设置-原始标识 */
+            set originalDocumentEntry(value: number);
+            /** 映射的属性名称-原始行号 */
+            static PROPERTY_ORIGINALDOCUMENTLINEID_NAME: string;
+            /** 获取-原始行号 */
+            get originalDocumentLineId(): number;
+            /** 设置-原始行号 */
+            set originalDocumentLineId(value: number);
+            /** 映射的属性名称-物料编码 */
+            static PROPERTY_ITEMCODE_NAME: string;
+            /** 获取-物料编码 */
+            get itemCode(): string;
+            /** 设置-物料编码 */
+            set itemCode(value: string);
+            /** 映射的属性名称-物料/服务描述 */
+            static PROPERTY_ITEMDESCRIPTION_NAME: string;
+            /** 获取-物料/服务描述 */
+            get itemDescription(): string;
+            /** 设置-物料/服务描述 */
+            set itemDescription(value: string);
+            /** 映射的属性名称-物料标识 */
+            static PROPERTY_ITEMSIGN_NAME: string;
+            /** 获取-物料标识 */
+            get itemSign(): string;
+            /** 设置-物料标识 */
+            set itemSign(value: string);
+            /** 映射的属性名称-物料版本 */
+            static PROPERTY_ITEMVERSION_NAME: string;
+            /** 获取-物料版本 */
+            get itemVersion(): string;
+            /** 设置-物料版本 */
+            set itemVersion(value: string);
+            /** 映射的属性名称-序号管理 */
+            static PROPERTY_SERIALMANAGEMENT_NAME: string;
+            /** 获取-序号管理 */
+            get serialManagement(): ibas.emYesNo;
+            /** 设置-序号管理 */
+            set serialManagement(value: ibas.emYesNo);
+            /** 映射的属性名称-批号管理 */
+            static PROPERTY_BATCHMANAGEMENT_NAME: string;
+            /** 获取-批号管理 */
+            get batchManagement(): ibas.emYesNo;
+            /** 设置-批号管理 */
+            set batchManagement(value: ibas.emYesNo);
+            /** 映射的属性名称-数量 */
+            static PROPERTY_QUANTITY_NAME: string;
+            /** 获取-数量 */
+            get quantity(): number;
+            /** 设置-数量 */
+            set quantity(value: number);
+            /** 映射的属性名称-计量单位 */
+            static PROPERTY_UOM_NAME: string;
+            /** 获取-计量单位 */
+            get uom(): string;
+            /** 设置-计量单位 */
+            set uom(value: string);
+            /** 映射的属性名称-库存单位 */
+            static PROPERTY_INVENTORYUOM_NAME: string;
+            /** 获取-库存单位 */
+            get inventoryUOM(): string;
+            /** 设置-库存单位 */
+            set inventoryUOM(value: string);
+            /** 映射的属性名称-单位换算率 */
+            static PROPERTY_UOMRATE_NAME: string;
+            /** 获取-单位换算率 */
+            get uomRate(): number;
+            /** 设置-单位换算率 */
+            set uomRate(value: number);
+            /** 映射的属性名称-库存数量 */
+            static PROPERTY_INVENTORYQUANTITY_NAME: string;
+            /** 获取-库存数量 */
+            get inventoryQuantity(): number;
+            /** 设置-库存数量 */
+            set inventoryQuantity(value: number);
+            /** 映射的属性名称-仓库 */
+            static PROPERTY_WAREHOUSE_NAME: string;
+            /** 获取-仓库 */
+            get warehouse(): string;
+            /** 设置-仓库 */
+            set warehouse(value: string);
+            /** 映射的属性名称-价格 */
+            static PROPERTY_PRICE_NAME: string;
+            /** 获取-价格 */
+            get price(): number;
+            /** 设置-价格 */
+            set price(value: number);
+            /** 映射的属性名称-货币 */
+            static PROPERTY_CURRENCY_NAME: string;
+            /** 获取-货币 */
+            get currency(): string;
+            /** 设置-货币 */
+            set currency(value: string);
+            /** 映射的属性名称-汇率 */
+            static PROPERTY_RATE_NAME: string;
+            /** 获取-汇率 */
+            get rate(): number;
+            /** 设置-汇率 */
+            set rate(value: number);
+            /** 映射的属性名称-行总计 */
+            static PROPERTY_LINETOTAL_NAME: string;
+            /** 获取-行总计 */
+            get lineTotal(): number;
+            /** 设置-行总计 */
+            set lineTotal(value: number);
+            /** 映射的属性名称-行交货日期 */
+            static PROPERTY_DELIVERYDATE_NAME: string;
+            /** 获取-行交货日期 */
+            get deliveryDate(): Date;
+            /** 设置-行交货日期 */
+            set deliveryDate(value: Date);
+            /** 映射的属性名称-已清数量 */
+            static PROPERTY_CLOSEDQUANTITY_NAME: string;
+            /** 获取-已清数量 */
+            get closedQuantity(): number;
+            /** 设置-已清数量 */
+            set closedQuantity(value: number);
+            /** 映射的属性名称-行折扣 */
+            static PROPERTY_DISCOUNT_NAME: string;
+            /** 获取-行折扣 */
+            get discount(): number;
+            /** 设置-行折扣 */
+            set discount(value: number);
+            /** 映射的属性名称-已清金额 */
+            static PROPERTY_CLOSEDAMOUNT_NAME: string;
+            /** 获取-已清金额 */
+            get closedAmount(): number;
+            /** 设置-已清金额 */
+            set closedAmount(value: number);
+            /** 映射的属性名称-折扣前价格 */
+            static PROPERTY_UNITPRICE_NAME: string;
+            /** 获取-折扣前价格 */
+            get unitPrice(): number;
+            /** 设置-折扣前价格 */
+            set unitPrice(value: number);
+            /** 映射的属性名称-折扣前行总计 */
+            static PROPERTY_UNITLINETOTAL_NAME: string;
+            /** 获取-折扣前行总计 */
+            get unitLineTotal(): number;
+            /** 设置-折扣前行总计 */
+            set unitLineTotal(value: number);
+            /** 映射的属性名称-税定义 */
+            static PROPERTY_TAX_NAME: string;
+            /** 获取-税定义 */
+            get tax(): string;
+            /** 设置-税定义 */
+            set tax(value: string);
+            /** 映射的属性名称-税率 */
+            static PROPERTY_TAXRATE_NAME: string;
+            /** 获取-税率 */
+            get taxRate(): number;
+            /** 设置-税率 */
+            set taxRate(value: number);
+            /** 映射的属性名称-税总额 */
+            static PROPERTY_TAXTOTAL_NAME: string;
+            /** 获取-税总额 */
+            get taxTotal(): number;
+            /** 设置-税总额 */
+            set taxTotal(value: number);
+            /** 映射的属性名称-税前价格 */
+            static PROPERTY_PRETAXPRICE_NAME: string;
+            /** 获取-税前价格 */
+            get preTaxPrice(): number;
+            /** 设置-税前价格 */
+            set preTaxPrice(value: number);
+            /** 映射的属性名称-税前行总计 */
+            static PROPERTY_PRETAXLINETOTAL_NAME: string;
+            /** 获取-税前行总计 */
+            get preTaxLineTotal(): number;
+            /** 设置-税前行总计 */
+            set preTaxLineTotal(value: number);
+            /** 映射的属性名称-成本中心1 */
+            static PROPERTY_DISTRIBUTIONRULE1_NAME: string;
+            /** 获取-成本中心1 */
+            get distributionRule1(): string;
+            /** 设置-成本中心1 */
+            set distributionRule1(value: string);
+            /** 映射的属性名称-成本中心2 */
+            static PROPERTY_DISTRIBUTIONRULE2_NAME: string;
+            /** 获取-成本中心2 */
+            get distributionRule2(): string;
+            /** 设置-成本中心2 */
+            set distributionRule2(value: string);
+            /** 映射的属性名称-成本中心3 */
+            static PROPERTY_DISTRIBUTIONRULE3_NAME: string;
+            /** 获取-成本中心3 */
+            get distributionRule3(): string;
+            /** 设置-成本中心3 */
+            set distributionRule3(value: string);
+            /** 映射的属性名称-成本中心4 */
+            static PROPERTY_DISTRIBUTIONRULE4_NAME: string;
+            /** 获取-成本中心4 */
+            get distributionRule4(): string;
+            /** 设置-成本中心4 */
+            set distributionRule4(value: string);
+            /** 映射的属性名称-成本中心5 */
+            static PROPERTY_DISTRIBUTIONRULE5_NAME: string;
+            /** 获取-成本中心5 */
+            get distributionRule5(): string;
+            /** 设置-成本中心5 */
+            set distributionRule5(value: string);
+            /** 映射的属性名称-合同 */
+            static PROPERTY_AGREEMENTS_NAME: string;
+            /** 获取-合同 */
+            get agreements(): string;
+            /** 设置-合同 */
+            set agreements(value: string);
+            /** 映射的属性名称-物料批次集合 */
+            static PROPERTY_MATERIALBATCHES_NAME: string;
+            /** 获取-物料批次集合 */
+            get materialBatches(): materials.bo.MaterialBatchItems;
+            /** 设置-物料批次集合 */
+            set materialBatches(value: materials.bo.MaterialBatchItems);
+            /** 映射的属性名称-物料序列集合 */
+            static PROPERTY_MATERIALSERIALS_NAME: string;
+            /** 获取-物料序列集合 */
+            get materialSerials(): materials.bo.MaterialSerialItems;
+            /** 设置-物料序列集合 */
+            set materialSerials(value: materials.bo.MaterialSerialItems);
+            /** 初始化数据 */
+            protected init(): void;
+            /** 赋值产品 */
+            baseProduct(source: materials.bo.IProduct): void;
+            protected registerRules(): ibas.IBusinessRule[];
+            /** 重置 */
+            reset(): void;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace purchase {
+    namespace bo {
         /** 数据转换者 */
         class DataConverter extends ibas.DataConverter4j {
             /** 创建业务对象转换者 */
@@ -11096,14 +12110,14 @@ declare namespace purchase {
          * @param target 目标
          * @param source 源
          */
-        function baseDocument(target: PurchaseOrder | PurchaseDelivery | PurchaseReturn | PurchaseCreditNote | PurchaseInvoice | DownPaymentRequest | PurchaseReserveInvoice, source: IPurchaseQuote | IPurchaseOrder | IPurchaseDelivery | IPurchaseReturn | IPurchaseCreditNote | IPurchaseInvoice | IPurchaseReserveInvoice): void;
+        function baseDocument(target: PurchaseOrder | PurchaseDelivery | PurchaseReturn | PurchaseCreditNote | PurchaseInvoice | DownPaymentRequest | PurchaseReserveInvoice | PurchaseReturnRequest, source: IPurchaseQuote | IPurchaseOrder | IPurchaseDelivery | IPurchaseReturn | IPurchaseCreditNote | IPurchaseInvoice | IPurchaseReserveInvoice | PurchaseReturnRequest): void;
         /**
          * 基于单据
          * @param target 目标
          * @param source 源
          */
-        function baseDocumentItem(target: IPurchaseOrderItem | IPurchaseDeliveryItem | IPurchaseReturnItem | IDownPaymentRequestItem | IPurchaseReserveInvoiceItem | IPurchaseInvoiceItem, source: IPurchaseQuoteItem | IPurchaseOrderItem | IPurchaseDeliveryItem | IPurchaseReserveInvoiceItem | IPurchaseInvoiceItem): void;
-        function baseProduct(target: PurchaseQuoteItem | PurchaseOrderItem | PurchaseDeliveryItem | PurchaseReturnItem | PurchaseRequestItem | PurchaseCreditNoteItem | PurchaseInvoiceItem | DownPaymentRequestItem | PurchaseReserveInvoiceItem, source: materials.bo.IProduct): void;
+        function baseDocumentItem(target: IPurchaseOrderItem | IPurchaseDeliveryItem | IPurchaseReturnItem | IDownPaymentRequestItem | IPurchaseReserveInvoiceItem | IPurchaseInvoiceItem | IPurchaseReturnRequestItem, source: IPurchaseQuoteItem | IPurchaseOrderItem | IPurchaseDeliveryItem | IPurchaseReserveInvoiceItem | IPurchaseInvoiceItem | IPurchaseReturnRequestItem): void;
+        function baseProduct(target: PurchaseQuoteItem | PurchaseOrderItem | PurchaseDeliveryItem | PurchaseReturnItem | PurchaseRequestItem | PurchaseCreditNoteItem | PurchaseInvoiceItem | DownPaymentRequestItem | PurchaseReserveInvoiceItem | PurchaseReturnRequestItem, source: materials.bo.IProduct): void;
         /** 业务规则-推导税前税后价格 */
         class BusinessRuleDeductionTaxPrice extends ibas.BusinessRuleCommon {
             /**
@@ -11367,6 +12381,16 @@ declare namespace purchase {
              * @param saver 保存者
              */
             savePurchaseReserveInvoice(saver: ibas.ISaveCaller<bo.PurchaseReserveInvoice>): void;
+            /**
+             * 查询 采购退货请求
+             * @param fetcher 查询者
+             */
+            fetchPurchaseReturnRequest(fetcher: ibas.IFetchCaller<bo.PurchaseReturnRequest>): void;
+            /**
+             * 保存 采购退货请求
+             * @param saver 保存者
+             */
+            savePurchaseReturnRequest(saver: ibas.ISaveCaller<bo.PurchaseReturnRequest>): void;
         }
     }
 }
@@ -12104,6 +13128,7 @@ declare namespace purchase {
             private choosePurchaseOrderPriceList;
             /** 更改行价格 */
             private changePurchaseOrderItemPrice;
+            private salesOrders;
             /** 选择销售订单行事件 */
             private chooseSalesOrderItem;
             /** 编辑采购订单 */
@@ -12252,6 +13277,8 @@ declare namespace purchase {
             private chooseSupplierAgreements;
             private choosePurchaseReturnItemDistributionRule;
             private choosePurchaseReturnItemMaterialVersion;
+            /** 选择采购退货项目-采购收货事件 */
+            private choosePurchaseReturnPurchaseReturnRequest;
         }
         /** 视图-采购退货 */
         interface IPurchaseReturnEditView extends ibas.IBOEditView {
@@ -12287,6 +13314,8 @@ declare namespace purchase {
             choosePurchaseReturnPurchaseOrderEvent: Function;
             /** 选择采购退货项目-采购交货事件 */
             choosePurchaseReturnPurchaseDeliveryEvent: Function;
+            /** 选择采购退货项目-采购退货申请事件 */
+            choosePurchaseReturnPurchaseReturnRequestEvent: Function;
             /** 选择供应商合同 */
             chooseSupplierAgreementsEvent: Function;
             /** 选择采购退货-行 成本中心事件 */
@@ -14498,6 +15527,283 @@ declare namespace purchase {
         }
         /** 采购预留发票连接服务映射 */
         class PurchaseReserveInvoiceLinkServiceMapping extends ibas.BOLinkServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IBOLinkServiceCaller>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace purchase {
+    namespace app {
+        /** 选择应用-采购退货请求 */
+        class PurchaseReturnRequestChooseApp extends ibas.BOChooseService<IPurchaseReturnRequestChooseView, bo.PurchaseReturnRequest> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria): void;
+            /** 新建数据 */
+            protected newData(): void;
+        }
+        /** 视图-采购退货请求 */
+        interface IPurchaseReturnRequestChooseView extends ibas.IBOChooseView {
+            /** 显示数据 */
+            showData(datas: bo.PurchaseReturnRequest[]): void;
+        }
+        /** 采购退货请求选择服务映射 */
+        class PurchaseReturnRequestChooseServiceMapping extends ibas.BOChooseServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IBOChooseServiceCaller<bo.PurchaseReturnRequest>>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace purchase {
+    namespace app {
+        /** 编辑应用-采购退货请求 */
+        class PurchaseReturnRequestEditApp extends ibas.BOEditService<IPurchaseReturnRequestEditView, bo.PurchaseReturnRequest> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 运行,覆盖原方法 */
+            run(): void;
+            run(data: bo.PurchaseReturnRequest): void;
+            /** 保存数据 */
+            protected saveData(): void;
+            /** 删除数据 */
+            protected deleteData(): void;
+            /** 新建数据，参数1：是否克隆 or 导入文件 */
+            protected createData(clone: boolean | Blob): void;
+            private choosePurchaseReturnRequestSupplier;
+            /** 选择价格清单事件 */
+            private choosePurchaseReturnRequestPriceList;
+            /** 更改行价格 */
+            private changePurchaseReturnRequestItemPrice;
+            private choosePurchaseReturnRequestItemWarehouse;
+            private choosePurchaseReturnRequestItemMaterial;
+            /** 添加采购退货请求-行事件 */
+            private addPurchaseReturnRequestItem;
+            /** 删除采购退货请求-行事件 */
+            private removePurchaseReturnRequestItem;
+            /** 选择物料批次事件 */
+            private choosePurchaseReturnRequestItemMaterialBatch;
+            /** 选择物料序列事件 */
+            private choosePurchaseReturnRequestItemMaterialSerial;
+            /** 选择采购退货请求项目-采购收货事件 */
+            private choosePurchaseReturnRequestPurchaseDelivery;
+            /** 选择联系人 */
+            private choosePurchaseReturnRequestContactPerson;
+            private editShippingAddresses;
+            protected turnToPurchaseReturn(): void;
+            private choosePurchaseReturnRequestItemUnit;
+            private chooseSupplierAgreements;
+            private choosePurchaseReturnRequestItemDistributionRule;
+            private choosePurchaseReturnRequestItemMaterialVersion;
+            /** 预留物料库存 */
+            private reserveMaterialsInventory;
+        }
+        /** 视图-采购退货请求 */
+        interface IPurchaseReturnRequestEditView extends ibas.IBOEditView {
+            /** 显示数据 */
+            showPurchaseReturnRequest(data: bo.PurchaseReturnRequest): void;
+            /** 删除数据事件 */
+            deleteDataEvent: Function;
+            /** 新建数据事件，参数1：是否克隆 */
+            createDataEvent: Function;
+            /** 添加采购退货请求-行事件 */
+            addPurchaseReturnRequestItemEvent: Function;
+            /** 删除采购退货请求-行事件 */
+            removePurchaseReturnRequestItemEvent: Function;
+            /** 选择采购退货请求供应商信息 */
+            choosePurchaseReturnRequestSupplierEvent: Function;
+            /** 选择采购退货请求联系人信息 */
+            choosePurchaseReturnRequestContactPersonEvent: Function;
+            /** 选择采购退货请求价格清单信息 */
+            choosePurchaseReturnRequestPriceListEvent: Function;
+            /** 选择采购退货请求-行物料主数据 */
+            choosePurchaseReturnRequestItemMaterialEvent: Function;
+            /** 选择采购退货请求-行 仓库 */
+            choosePurchaseReturnRequestItemWarehouseEvent: Function;
+            /** 选择采购退货请求-行 单位 */
+            choosePurchaseReturnRequestItemUnitEvent: Function;
+            /** 选择采购退货请求-行 物料序列事件 */
+            choosePurchaseReturnRequestItemMaterialSerialEvent: Function;
+            /** 选择采购退货请求-行 物料批次事件 */
+            choosePurchaseReturnRequestItemMaterialBatchEvent: Function;
+            /** 显示数据 */
+            showPurchaseReturnRequestItems(datas: bo.PurchaseReturnRequestItem[]): void;
+            /** 选择采购退货请求项目-采购交货事件 */
+            choosePurchaseReturnRequestPurchaseDeliveryEvent: Function;
+            /** 选择供应商合同 */
+            chooseSupplierAgreementsEvent: Function;
+            /** 选择采购退货请求-行 成本中心事件 */
+            choosePurchaseReturnRequestItemDistributionRuleEvent: Function;
+            /** 选择采购退货请求-行 物料版本 */
+            choosePurchaseReturnRequestItemMaterialVersionEvent: Function;
+            /** 编辑地址事件 */
+            editShippingAddressesEvent: Function;
+            /** 转为采购贷项事件 */
+            turnToPurchaseReturnEvent: Function;
+            /** 预留物料库存 */
+            reserveMaterialsInventoryEvent: Function;
+            /** 默认仓库 */
+            defaultWarehouse: string;
+        }
+        /** 采购退货请求编辑服务映射 */
+        class PurchaseReturnRequestEditServiceMapping extends ibas.BOEditServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IBOEditServiceCaller<bo.PurchaseReturnRequest>>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace purchase {
+    namespace app {
+        class PurchaseReturnRequestFunc extends ibas.ModuleFunction {
+            /** 功能标识 */
+            static FUNCTION_ID: string;
+            /** 功能名称 */
+            static FUNCTION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 默认功能 */
+            default(): ibas.IApplication<ibas.IView>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace purchase {
+    namespace app {
+        /** 列表应用-采购退货请求 */
+        class PurchaseReturnRequestListApp extends ibas.BOListApplication<IPurchaseReturnRequestListView, bo.PurchaseReturnRequest> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria): void;
+            /** 新建数据 */
+            protected newData(): void;
+            /** 查看数据，参数：目标数据 */
+            protected viewData(data: bo.PurchaseReturnRequest): void;
+            /** 编辑数据，参数：目标数据 */
+            protected editData(data: bo.PurchaseReturnRequest): void;
+            /** 删除数据，参数：目标数据集合 */
+            protected deleteData(data: bo.PurchaseReturnRequest | bo.PurchaseReturnRequest[]): void;
+        }
+        /** 视图-采购退货请求 */
+        interface IPurchaseReturnRequestListView extends ibas.IBOListView {
+            /** 编辑数据事件，参数：编辑对象 */
+            editDataEvent: Function;
+            /** 删除数据事件，参数：删除对象集合 */
+            deleteDataEvent: Function;
+            /** 显示数据 */
+            showData(datas: bo.PurchaseReturnRequest[]): void;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace purchase {
+    namespace app {
+        /** 查看应用-采购退货请求 */
+        class PurchaseReturnRequestViewApp extends ibas.BOViewService<IPurchaseReturnRequestViewView, bo.PurchaseReturnRequest> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 业务对象编码 */
+            static BUSINESS_OBJECT_CODE: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            /** 编辑数据，参数：目标数据 */
+            protected editData(): void;
+            /** 运行,覆盖原方法 */
+            run(): void;
+            run(data: bo.PurchaseReturnRequest): void;
+            /** 查询数据 */
+            protected fetchData(criteria: ibas.ICriteria | string): void;
+        }
+        /** 视图-采购退货请求 */
+        interface IPurchaseReturnRequestViewView extends ibas.IBOViewView {
+            showPurchaseReturnRequest(data: bo.PurchaseReturnRequest): void;
+            showPurchaseReturnRequestItems(data: bo.PurchaseReturnRequestItem[]): void;
+            showShippingAddresses(datas: bo.ShippingAddress[]): void;
+        }
+        /** 采购退货请求连接服务映射 */
+        class PurchaseReturnRequestLinkServiceMapping extends ibas.BOLinkServiceMapping {
             /** 构造函数 */
             constructor();
             /** 创建服务实例 */

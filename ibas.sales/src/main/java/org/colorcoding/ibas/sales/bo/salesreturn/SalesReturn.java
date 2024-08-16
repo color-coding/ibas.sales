@@ -2036,7 +2036,8 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 							if (line.getLineStatus() == emDocumentStatus.PLANNED) {
 								continue;
 							}
-							if (SalesDeliveryCode.equals(line.getBaseDocumentType())) {
+							if (SalesDeliveryCode.equals(line.getBaseDocumentType())
+									|| SalesDeliveryCode.equals(line.getOriginalDocumentType())) {
 								/** 基于交货 **/
 								// 已装载货物科目
 								jeContent = new SalesReturnDeliveryMaterialsCost(line, line.getInventoryQuantity());

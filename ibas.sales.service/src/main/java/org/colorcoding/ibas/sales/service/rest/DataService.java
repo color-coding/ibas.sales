@@ -21,6 +21,7 @@ import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.bo.salesquote.SalesQuote;
 import org.colorcoding.ibas.sales.bo.salesreserveinvoice.SalesReserveInvoice;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
+import org.colorcoding.ibas.sales.bo.salesreturnrequest.SalesReturnRequest;
 import org.colorcoding.ibas.sales.repository.BORepositorySales;
 
 /**
@@ -357,6 +358,37 @@ public class DataService extends BORepositorySales {
 	public OperationResult<SalesReserveInvoice> saveSalesReserveInvoice(SalesReserveInvoice bo,
 			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
 		return super.saveSalesReserveInvoice(bo, MyConfiguration.optToken(authorization, token));
+	}
+	// --------------------------------------------------------------------------------------------//
+
+	/**
+	 * 查询-销售退货请求
+	 * @param criteria 查询
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("fetchSalesReturnRequest")
+	public OperationResult<SalesReturnRequest> fetchSalesReturnRequest(Criteria criteria,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.fetchSalesReturnRequest(criteria, MyConfiguration.optToken(authorization, token));
+	}
+
+	/**
+	 * 保存-销售退货请求
+	 * @param bo 对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("saveSalesReturnRequest")
+	public OperationResult<SalesReturnRequest> saveSalesReturnRequest(SalesReturnRequest bo,
+			@HeaderParam("authorization") String authorization, @QueryParam("token") String token) {
+		return super.saveSalesReturnRequest(bo, MyConfiguration.optToken(authorization, token));
 	}
 
 	// --------------------------------------------------------------------------------------------//

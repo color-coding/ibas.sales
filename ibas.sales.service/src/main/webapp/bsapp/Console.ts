@@ -17,6 +17,7 @@
 /// <reference path="./blanketagreement/index.ts" />
 /// <reference path="./downpaymentrequest/index.ts" />
 /// <reference path="./salesreserveinvoice/index.ts" />
+/// <reference path="./salesreturnrequest/index.ts" />
 /// <reference path="./others/index.ts" />
 namespace sales {
     export namespace app {
@@ -45,6 +46,7 @@ namespace sales {
                 this.register(new SalesQuoteFunc());
                 this.register(new SalesOrderFunc());
                 this.register(new SalesDeliveryFunc());
+                this.register(new SalesReturnRequestFunc());
                 this.register(new SalesReturnFunc());
                 this.register(new SalesInvoiceFunc());
                 this.register(new SalesReserveInvoiceFunc());
@@ -63,6 +65,9 @@ namespace sales {
                 this.register(new SalesReturnChooseServiceMapping());
                 this.register(new SalesReturnLinkServiceMapping());
                 this.register(new SalesReturnEditServiceMapping());
+                this.register(new SalesReturnRequestChooseServiceMapping());
+                this.register(new SalesReturnRequestLinkServiceMapping());
+                this.register(new SalesReturnRequestEditServiceMapping());
                 this.register(new SalesInvoiceChooseServiceMapping());
                 this.register(new SalesInvoiceLinkServiceMapping());
                 this.register(new SalesInvoiceEditServiceMapping());

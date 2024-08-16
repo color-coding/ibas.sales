@@ -13,6 +13,7 @@ import org.colorcoding.ibas.sales.bo.salesorder.ISalesOrder;
 import org.colorcoding.ibas.sales.bo.salesquote.ISalesQuote;
 import org.colorcoding.ibas.sales.bo.salesreserveinvoice.ISalesReserveInvoice;
 import org.colorcoding.ibas.sales.bo.salesreturn.ISalesReturn;
+import org.colorcoding.ibas.sales.bo.salesreturnrequest.ISalesReturnRequest;
 
 /**
  * Sales仓库应用
@@ -189,6 +190,20 @@ public interface IBORepositorySalesApp extends IBORepositoryApplication {
 	 */
 	IOperationResult<ISalesReserveInvoice> saveSalesReserveInvoice(ISalesReserveInvoice bo);
 
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-销售退货请求
+	 * @param criteria 查询
+	 * @return 操作结果
+	 */
+	IOperationResult<ISalesReturnRequest> fetchSalesReturnRequest(ICriteria criteria);
+
+	/**
+	 * 保存-销售退货请求
+	 * @param bo 对象实例
+	 * @return 操作结果
+	 */
+	IOperationResult<ISalesReturnRequest> saveSalesReturnRequest(ISalesReturnRequest bo);
 	// --------------------------------------------------------------------------------------------//
 
 }

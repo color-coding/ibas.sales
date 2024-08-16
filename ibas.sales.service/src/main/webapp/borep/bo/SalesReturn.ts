@@ -703,6 +703,8 @@ namespace sales {
             baseDocument(document: ISalesOrder): void;
             /** 基于销售交货 */
             baseDocument(document: ISalesDelivery): void;
+            /** 基于销售退货申请 */
+            baseDocument(document: ISalesReturnRequest): void;
             /** 基于单据 */
             baseDocument(): void {
                 // 基于销售订单
@@ -765,6 +767,64 @@ namespace sales {
                     bo.baseDocument(this, document);
                     // 复制行项目
                     for (let item of document.salesDeliveryItems) {
+                        if (item.canceled === ibas.emYesNo.YES) {
+                            continue;
+                        }
+                        if (item.lineStatus === ibas.emDocumentStatus.PLANNED) {
+                            continue;
+                        }
+                        if (this.salesReturnItems.firstOrDefault(
+                            c => c.baseDocumentType === item.objectCode
+                                && c.baseDocumentEntry === item.docEntry
+                                && c.baseDocumentLineId === item.lineId) !== null) {
+                            continue;
+                        }
+                        // 计算未发票数量
+                        let openQty: number = item.quantity - item.closedQuantity;
+                        if (openQty <= 0) {
+                            continue;
+                        }
+                        let myItem: SalesReturnItem = this.salesReturnItems.create();
+                        bo.baseDocumentItem(myItem, item);
+                        myItem.quantity = openQty;
+                        // 复制批次
+                        for (let batch of item.materialBatches) {
+                            let myBatch: materials.bo.IMaterialBatchItem = myItem.materialBatches.create();
+                            myBatch.batchCode = batch.batchCode;
+                            myBatch.quantity = openQty * (item.uomRate > 0 ? item.uomRate : 1);
+                            if (myItem.materialBatches.total() >= openQty) {
+                                break;
+                            }
+                        }
+                        // 复制序列
+                        for (let serial of item.materialSerials) {
+                            let mySerial: materials.bo.IMaterialSerialItem = myItem.materialSerials.create();
+                            mySerial.serialCode = serial.serialCode;
+                            if (myItem.materialSerials.length >= openQty) {
+                                break;
+                            }
+                        }
+                    }
+                    // 复制地址
+                    for (let address of document.shippingAddresss) {
+                        // 不复制重名的
+                        if (this.shippingAddresss.firstOrDefault(c => c.name === address.name) !== null) {
+                            continue;
+                        }
+                        let myAddress: IShippingAddress = address.clone();
+                        this.shippingAddresss.add(<ShippingAddress>myAddress);
+                    }
+                }
+                // 基于销售退货申请
+                if (ibas.objects.instanceOf(arguments[0], SalesReturnRequest)) {
+                    let document: SalesReturnRequest = arguments[0];
+                    if (!ibas.strings.equals(this.customerCode, document.customerCode)) {
+                        return;
+                    }
+                    // 复制头信息
+                    bo.baseDocument(this, document);
+                    // 复制行项目
+                    for (let item of document.salesReturnRequestItems) {
                         if (item.canceled === ibas.emYesNo.YES) {
                             continue;
                         }

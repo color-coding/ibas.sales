@@ -83,6 +83,16 @@ namespace sales {
                     } else if (property === bo.SalesReturnItem.PROPERTY_SERIALMANAGEMENT_NAME) {
                         return ibas.enums.toString(ibas.emYesNo, value);
                     }
+                } else if (boName === bo.SalesReturnRequest.name) {
+                    if (property === bo.SalesReturnRequest.PROPERTY_ROUNDING_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.SalesReturnRequestItem.name) {
+                    if (property === bo.SalesReturnRequestItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    } else if (property === bo.SalesReturnRequestItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                        return ibas.enums.toString(ibas.emYesNo, value);
+                    }
                 } else if (boName === bo.SalesInvoice.name) {
                     if (property === bo.SalesInvoice.PROPERTY_ROUNDING_NAME) {
                         return ibas.enums.toString(ibas.emYesNo, value);
@@ -187,6 +197,16 @@ namespace sales {
                     } else if (property === bo.SalesReturnItem.PROPERTY_SERIALMANAGEMENT_NAME) {
                         return ibas.enums.valueOf(ibas.emYesNo, value);
                     }
+                } else if (boName === bo.SalesReturnRequest.name) {
+                    if (property === bo.SalesReturnRequest.PROPERTY_ROUNDING_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    }
+                } else if (boName === bo.SalesReturnRequestItem.name) {
+                    if (property === bo.SalesReturnRequestItem.PROPERTY_BATCHMANAGEMENT_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    } else if (property === bo.SalesReturnRequestItem.PROPERTY_SERIALMANAGEMENT_NAME) {
+                        return ibas.enums.valueOf(ibas.emYesNo, value);
+                    }
                 } else if (boName === bo.SalesInvoice.name) {
                     if (property === bo.SalesInvoice.PROPERTY_ROUNDING_NAME) {
                         return ibas.enums.valueOf(ibas.emYesNo, value);
@@ -248,8 +268,8 @@ namespace sales {
          * @param source 源
          */
         export function baseDocument(
-            target: SalesOrder | SalesDelivery | SalesReturn | SalesCreditNote | SalesInvoice | DownPaymentRequest | SalesReserveInvoice,
-            source: ISalesQuote | ISalesOrder | ISalesDelivery | ISalesReturn | ISalesInvoice | ISalesReserveInvoice
+            target: SalesOrder | SalesDelivery | SalesReturn | SalesCreditNote | SalesInvoice | DownPaymentRequest | SalesReserveInvoice | SalesReturnRequest,
+            source: ISalesQuote | ISalesOrder | ISalesDelivery | ISalesReturn | ISalesInvoice | ISalesReserveInvoice | SalesReturnRequest
         ): void {
             // 复制头信息
             target.contactPerson = source.contactPerson;
@@ -289,8 +309,8 @@ namespace sales {
          * @param source 源
          */
         export function baseDocumentItem(
-            target: ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem | ISalesCreditNoteItem | ISalesInvoiceItem | IDownPaymentRequestItem | ISalesReserveInvoiceItem,
-            source: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem | ISalesReserveInvoiceItem
+            target: ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem | ISalesCreditNoteItem | ISalesInvoiceItem | IDownPaymentRequestItem | ISalesReserveInvoiceItem | SalesReturnRequestItem,
+            source: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem | ISalesReserveInvoiceItem | SalesReturnRequestItem
         ): void {
             target.baseDocumentType = source.objectCode;
             target.baseDocumentEntry = source.docEntry;
@@ -329,6 +349,9 @@ namespace sales {
             target.deliveryDate = source.deliveryDate;
             target.reference1 = source.reference1;
             target.reference2 = source.reference2;
+            if (target instanceof SalesReturnItem && source instanceof SalesReturnRequestItem) {
+                target.returnCost = source.returnCost;
+            }
             // 复制自定义字段
             for (let item of source.userFields.forEach()) {
                 let myItem: ibas.IUserField = target.userFields.get(item.name);
@@ -346,7 +369,7 @@ namespace sales {
         }
         export function baseProduct(
             target: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem | ISalesInvoiceItem
-                | ISalesCreditNoteItem | IDownPaymentRequestItem | ISalesReserveInvoiceItem,
+                | ISalesCreditNoteItem | IDownPaymentRequestItem | ISalesReserveInvoiceItem | SalesReturnRequestItem,
             source: materials.bo.IProduct
         ): void {
             target.itemCode = source.code;

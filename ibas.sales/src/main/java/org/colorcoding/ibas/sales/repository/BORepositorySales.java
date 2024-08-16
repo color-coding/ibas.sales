@@ -24,6 +24,8 @@ import org.colorcoding.ibas.sales.bo.salesreserveinvoice.ISalesReserveInvoice;
 import org.colorcoding.ibas.sales.bo.salesreserveinvoice.SalesReserveInvoice;
 import org.colorcoding.ibas.sales.bo.salesreturn.ISalesReturn;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
+import org.colorcoding.ibas.sales.bo.salesreturnrequest.ISalesReturnRequest;
+import org.colorcoding.ibas.sales.bo.salesreturnrequest.SalesReturnRequest;
 
 /**
  * Sales仓库
@@ -465,6 +467,45 @@ public class BORepositorySales extends BORepositoryServiceApplication
 				this.saveSalesReserveInvoice((SalesReserveInvoice) bo, this.getUserToken()));
 	}
 
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-销售退货请求
+	 * @param criteria 查询
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	public OperationResult<SalesReturnRequest> fetchSalesReturnRequest(ICriteria criteria, String token) {
+		return super.fetch(criteria, token, SalesReturnRequest.class);
+	}
+
+	/**
+	 * 查询-销售退货请求（提前设置用户口令）
+	 * @param criteria 查询
+	 * @return 操作结果
+	 */
+	public IOperationResult<ISalesReturnRequest> fetchSalesReturnRequest(ICriteria criteria) {
+		return new OperationResult<ISalesReturnRequest>(this.fetchSalesReturnRequest(criteria, this.getUserToken()));
+	}
+
+	/**
+	 * 保存-销售退货请求
+	 * @param bo 对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	public OperationResult<SalesReturnRequest> saveSalesReturnRequest(SalesReturnRequest bo, String token) {
+		return super.save(bo, token);
+	}
+
+	/**
+	 * 保存-销售退货请求（提前设置用户口令）
+	 * @param bo 对象实例
+	 * @return 操作结果
+	 */
+	public IOperationResult<ISalesReturnRequest> saveSalesReturnRequest(ISalesReturnRequest bo) {
+		return new OperationResult<ISalesReturnRequest>(
+				this.saveSalesReturnRequest((SalesReturnRequest) bo, this.getUserToken()));
+	}
 	// --------------------------------------------------------------------------------------------//
 
 }

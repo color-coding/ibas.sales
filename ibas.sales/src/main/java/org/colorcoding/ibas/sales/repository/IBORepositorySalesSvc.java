@@ -13,6 +13,7 @@ import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.bo.salesquote.SalesQuote;
 import org.colorcoding.ibas.sales.bo.salesreserveinvoice.SalesReserveInvoice;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
+import org.colorcoding.ibas.sales.bo.salesreturnrequest.SalesReturnRequest;
 
 /**
  * Sales仓库服务
@@ -208,6 +209,23 @@ public interface IBORepositorySalesSvc extends IBORepositorySmartService {
 	 * @return 操作结果
 	 */
 	OperationResult<SalesReserveInvoice> saveSalesReserveInvoice(SalesReserveInvoice bo, String token);
+
+	// --------------------------------------------------------------------------------------------//
+	/**
+	 * 查询-销售退货请求
+	 * @param criteria 查询
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	OperationResult<SalesReturnRequest> fetchSalesReturnRequest(ICriteria criteria, String token);
+
+	/**
+	 * 保存-销售退货请求
+	 * @param bo 对象实例
+	 * @param token 口令
+	 * @return 操作结果
+	 */
+	OperationResult<SalesReturnRequest> saveSalesReturnRequest(SalesReturnRequest bo, String token);
 
 	// --------------------------------------------------------------------------------------------//
 

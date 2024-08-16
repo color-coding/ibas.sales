@@ -240,6 +240,20 @@ namespace sales {
             saveSalesReserveInvoice(saver: ibas.ISaveCaller<bo.SalesReserveInvoice>): void {
                 super.save(bo.SalesReserveInvoice.name, saver);
             }
+            /**
+             * 查询 销售退货请求
+             * @param fetcher 查询者
+             */
+            fetchSalesReturnRequest(fetcher: ibas.IFetchCaller<bo.SalesReturnRequest>): void {
+                super.fetch(bo.SalesReturnRequest.name, fetcher);
+            }
+            /**
+             * 保存 销售退货请求
+             * @param saver 保存者
+             */
+            saveSalesReturnRequest(saver: ibas.ISaveCaller<bo.SalesReturnRequest>): void {
+                super.save(bo.SalesReturnRequest.name, saver);
+            }
 
         }
     }
