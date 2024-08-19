@@ -337,6 +337,7 @@ namespace sales {
                 metadata: {
                     properties: {
                         rate: { type: "float" },
+                        taxCategory: { type: "int", defalultValue: accounting.bo.emTaxGroupCategory.OUTPUT },
                     },
                     events: {
                     },
@@ -344,7 +345,10 @@ namespace sales {
                 renderer: {
                 },
                 /** 重构设置 */
-                applySettings(this: TaxGroupSelect): TaxGroupSelect {
+                applySettings(this: TaxGroupSelect, mSettings: any): TaxGroupSelect {
+                    if (!(mSettings?.taxCategory > 0)) {
+                        mSettings.taxCategory = accounting.bo.emTaxGroupCategory.OUTPUT;
+                    }
                     sap.extension.m.Select.prototype.applySettings.apply(this, arguments);
                     this.attachChange(undefined, function (event: sap.ui.base.Event): void {
                         let source: any = sap.ui.getCore().byId(event.getParameter("id"));
@@ -381,7 +385,7 @@ namespace sales {
                  */
                 loadItems(this: TaxGroupSelect): TaxGroupSelect {
                     this.destroyItems();
-                    accounting.taxrate.gain(accounting.bo.emTaxGroupCategory.OUTPUT, (results) => {
+                    accounting.taxrate.gain(this.getTaxCategory(), (results) => {
                         this.addItem({
                             code: "",
                             name: ibas.i18n.prop("openui5_please_select_data"),

@@ -465,10 +465,21 @@ namespace sales {
             }
         }
 
+        /**
+         * 对象集合，开放父项
+         */
+        abstract class BusinessObjects<T extends ibas.IBusinessObject, P extends ibas.IBusinessObject> extends ibas.BusinessObjects<T, P> {
 
+            get parent(): P {
+                return super.parent;
+            }
+            set parent(value: P) {
+                super.parent = value;
+            }
+        }
         /** 送货地址 集合 */
         export class ShippingAddresss
-            extends ibas.BusinessObjects<ShippingAddress, ISalesQuote | ISalesOrder | ISalesDelivery | ISalesReturn | ISalesReturnRequest
+            extends BusinessObjects<ShippingAddress, ISalesQuote | ISalesOrder | ISalesDelivery | ISalesReturn | ISalesReturnRequest
             | ISalesInvoice | ISalesCreditNote | ISalesReserveInvoice>
             implements IShippingAddresss {
 

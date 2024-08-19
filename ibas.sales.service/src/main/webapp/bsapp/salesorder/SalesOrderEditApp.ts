@@ -296,6 +296,32 @@ namespace sales {
                         that.customer = selected;
                         // 客户改变，清除旧地址
                         that.editData.shippingAddresss.clear();
+                        if (selected.shipAddress > 0) {
+                            let criteria: ibas.ICriteria = new ibas.Criteria();
+                            let condition: ibas.ICondition = criteria.conditions.create();
+                            condition.alias = businesspartner.bo.Address.PROPERTY_OBJECTKEY_NAME;
+                            condition.value = selected.shipAddress.toString();
+                            condition = criteria.conditions.create();
+                            condition.alias = businesspartner.bo.Address.PROPERTY_OWNERTYPE_NAME;
+                            condition.value = businesspartner.bo.emBusinessPartnerType.CUSTOMER.toString();
+                            condition = criteria.conditions.create();
+                            condition.alias = businesspartner.bo.Address.PROPERTY_BUSINESSPARTNER_NAME;
+                            condition.value = selected.code;
+                            condition = criteria.conditions.create();
+                            condition.alias = businesspartner.bo.Address.PROPERTY_ACTIVATED_NAME;
+                            condition.value = ibas.emYesNo.YES.toString();
+                            let boRepository: businesspartner.bo.BORepositoryBusinessPartner = new businesspartner.bo.BORepositoryBusinessPartner();
+                            boRepository.fetchAddress({
+                                criteria: criteria,
+                                onCompleted(opRslt: ibas.IOperationResult<businesspartner.bo.Address>): void {
+                                    for (let item of opRslt.resultObjects) {
+                                        let shipAddress: bo.ShippingAddress = new bo.ShippingAddress();
+                                        shipAddress.baseAddress(item);
+                                        that.editData.shippingAddresss.add(shipAddress);
+                                    }
+                                }
+                            });
+                        }
                         that.changeSalesOrderItemPrice(that.editData.priceList);
                     }
                 });
