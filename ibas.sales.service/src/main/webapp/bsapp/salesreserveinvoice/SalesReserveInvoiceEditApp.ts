@@ -311,12 +311,12 @@ namespace sales {
                 });
             }
             /** 更改行价格 */
-            private changeSalesReserveInvoiceItemPrice(priceList: number | ibas.Criteria, items?: bo.SalesReserveInvoiceItem[]): void {
+            private changeSalesReserveInvoiceItemPrice(priceList: number | ibas.ICriteria, items?: bo.SalesReserveInvoiceItem[]): void {
                 if (ibas.objects.isNull(items)) {
                     items = this.editData.salesReserveInvoiceItems.filterDeleted();
                 }
                 if (typeof priceList === "number" && ibas.numbers.valueOf(priceList) !== 0) {
-                    let criteria: ibas.Criteria = new ibas.Criteria();
+                    let criteria: ibas.ICriteria = materials.app.conditions.materialprice.create(this.editData.documentDate);
                     let condition: ibas.ICondition = criteria.conditions.create();
                     condition.alias = materials.app.conditions.materialprice.CONDITION_ALIAS_PRICELIST;
                     condition.value = priceList.toString();
@@ -403,7 +403,7 @@ namespace sales {
             private chooseSalesReserveInvoiceItemMaterial(caller: bo.SalesReserveInvoiceItem, filterConditions?: ibas.ICondition[]): void {
                 let that: this = this;
                 let condition: ibas.ICondition;
-                let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.product.create();
+                let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.product.create(this.editData.documentDate);
                 // 添加输入条件
                 if (filterConditions instanceof Array && filterConditions.length > 0) {
                     if (conditions.length > 1) {

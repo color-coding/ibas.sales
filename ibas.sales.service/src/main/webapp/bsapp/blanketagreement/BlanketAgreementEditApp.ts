@@ -316,7 +316,7 @@ namespace sales {
             private chooseBlanketAgreementItemMaterial(caller: bo.BlanketAgreementItem, filterConditions?: ibas.ICondition[]): void {
                 let that: this = this;
                 let condition: ibas.ICondition;
-                let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.product.create();
+                let conditions: ibas.IList<ibas.ICondition> = materials.app.conditions.product.create(this.editData.documentDate);
                 // 添加输入条件
                 if (filterConditions instanceof Array && filterConditions.length > 0) {
                     if (conditions.length > 1) {
