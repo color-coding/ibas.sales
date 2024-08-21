@@ -493,7 +493,7 @@ namespace sales {
                     return;
                 }
                 if (ibas.strings.equalsIgnoreCase(this.preTax, context.trigger)
-                    || ibas.strings.equalsIgnoreCase(this.taxRate, context.trigger)) {
+                    || (!config.isPriceAnchoringAfterTax() && ibas.strings.equalsIgnoreCase(this.taxRate, context.trigger))) {
                     if (taxRate === 0) {
                         context.outputValues.set(this.afterTax, preTax);
                     } else {
@@ -863,8 +863,11 @@ namespace sales {
                     if (!ibas.numbers.isApproximated(rTotal, total, DECIMAL_PLACES_SUM)) {
                         context.outputValues.set(this.total, ibas.numbers.round(rTotal, DECIMAL_PLACES_SUM));
                     }
-                } else if (ibas.strings.equalsIgnoreCase(this.price, context.trigger) || ibas.strings.equalsIgnoreCase(this.quantity, context.trigger)
-                    || ibas.strings.equalsIgnoreCase(this.taxRate, context.trigger)) {
+                } else if (ibas.strings.equalsIgnoreCase(this.price, context.trigger)
+                    || ibas.strings.equalsIgnoreCase(this.quantity, context.trigger)
+                    // 锚定税后价格时，改变税率
+                    || (config.isPriceAnchoringAfterTax() && ibas.strings.equalsIgnoreCase(this.taxRate, context.trigger))
+                ) {
                     let rTotal: number = price * quantity;
                     let rPreTotal: number = rTotal / (1 + taxRate);
                     let rTaxTotal: number = rTotal - rPreTotal;
@@ -877,6 +880,14 @@ namespace sales {
                     if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM, Math.pow(10, DECIMAL_PLACES_SUM))) {
                         // 税精度降低
                         context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, DECIMAL_PLACES_SUM));
+                    }
+                } else if (ibas.strings.equalsIgnoreCase(this.taxRate, context.trigger)
+                    // 锚定税前价格时，改变税率
+                    || (!config.isPriceAnchoringAfterTax() && ibas.strings.equalsIgnoreCase(this.taxRate, context.trigger))
+                ) {
+                    let rPrice: number = ibas.numbers.round((preTotal * (1 + taxRate)) / quantity, DECIMAL_PLACES_PRICE);
+                    if (!ibas.numbers.isApproximated(rPrice, price)) {
+                        context.outputValues.set(this.price, rPrice);
                     }
                 } else if (ibas.strings.equalsIgnoreCase(this.preTotal, context.trigger)) {
                     let rTaxTotal: number = preTotal * taxRate;
