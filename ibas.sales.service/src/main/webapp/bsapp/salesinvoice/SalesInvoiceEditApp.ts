@@ -308,7 +308,9 @@ namespace sales {
                     onCompleted(selecteds: ibas.IList<materials.bo.IMaterialPriceList>): void {
                         let selected: materials.bo.IMaterialPriceList = selecteds.firstOrDefault();
                         that.editData.priceList = selected.objectKey;
-                        that.editData.documentCurrency = selected.currency;
+                        if (ibas.strings.isEmpty(that.editData.documentCurrency)) {
+                            that.editData.documentCurrency = selected.currency;
+                        }
                         that.changeSalesInvoiceItemPrice(that.editData.priceList);
                     }
                 });
@@ -323,6 +325,12 @@ namespace sales {
                     let condition: ibas.ICondition = criteria.conditions.create();
                     condition.alias = materials.app.conditions.materialprice.CONDITION_ALIAS_PRICELIST;
                     condition.value = priceList.toString();
+                    if (!ibas.strings.isEmpty(this.editData.documentCurrency)) {
+                        condition = criteria.conditions.create();
+                        condition.alias = materials.app.conditions.materialprice.CONDITION_ALIAS_CURRENCY;
+                        condition.value = this.editData.documentCurrency;
+                    }
+                    let count: number = criteria.conditions.length;
                     for (let item of items) {
                         if (!ibas.strings.isEmpty(item.parentLineSign)) {
                             continue;
@@ -331,7 +339,7 @@ namespace sales {
                         condition.alias = materials.app.conditions.materialprice.CONDITION_ALIAS_ITEMCODE;
                         condition.value = item.itemCode;
                         condition.bracketOpen = 1;
-                        if (criteria.conditions.length > 2) {
+                        if (criteria.conditions.length > count + 1) {
                             condition.relationship = ibas.emConditionRelationship.OR;
                         }
                         condition = criteria.conditions.create();
@@ -339,11 +347,11 @@ namespace sales {
                         condition.value = item.uom;
                         condition.bracketClose = 1;
                     }
-                    if (criteria.conditions.length < 2) {
+                    if (criteria.conditions.length < count + 1) {
                         return;
                     }
-                    if (criteria.conditions.length > 2) {
-                        criteria.conditions[2].bracketOpen += 1;
+                    if (criteria.conditions.length > count + 1) {
+                        criteria.conditions[count].bracketOpen += 1;
                         criteria.conditions[criteria.conditions.length - 1].bracketClose += 1;
                     }
                     if (config.get(config.CONFIG_ITEM_FORCE_UPDATE_PRICE_FOR_PRICE_LIST_CHANGED, true) === true) {
@@ -423,6 +431,13 @@ namespace sales {
                     condition.operation = ibas.emConditionOperation.EQUAL;
                     condition.relationship = ibas.emConditionRelationship.AND;
                     conditions.add(condition);
+                    if (!ibas.strings.isEmpty(this.editData.documentCurrency)) {
+                        condition = new ibas.Condition();
+                        condition.alias = materials.app.conditions.product.CONDITION_ALIAS_CURRENCY;
+                        condition.value = this.editData.documentCurrency;
+                        condition.operation = ibas.emConditionOperation.EQUAL;
+                        conditions.add(condition);
+                    }
                     // 增加业务伙伴条件
                     if (materials.config.isEnableMaterialSpecialPrices() && !ibas.strings.isEmpty(this.editData.customerCode)) {
                         condition = new ibas.Condition();
