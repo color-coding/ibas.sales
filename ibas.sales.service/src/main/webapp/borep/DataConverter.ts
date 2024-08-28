@@ -330,6 +330,9 @@ namespace sales {
             target.itemVersion = source.itemVersion;
             target.batchManagement = source.batchManagement;
             target.serialManagement = source.serialManagement;
+            target.uom = source.uom;
+            target.inventoryUOM = source.inventoryUOM;
+            target.uomRate = source.uomRate;
             target.unitPrice = source.unitPrice;
             target.discount = source.discount;
             target.tax = source.tax;
@@ -337,9 +340,6 @@ namespace sales {
             target.price = source.price;
             target.currency = source.currency;
             target.quantity = source.quantity;
-            target.uom = source.uom;
-            target.inventoryUOM = source.inventoryUOM;
-            target.uomRate = source.uomRate;
             if (!(source.closedQuantity > 0)) {
                 target.preTaxLineTotal = source.preTaxLineTotal;
                 target.taxTotal = source.taxTotal;
