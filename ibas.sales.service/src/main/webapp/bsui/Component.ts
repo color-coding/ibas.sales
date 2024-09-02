@@ -366,12 +366,13 @@ namespace sales {
                     sap.extension.m.Select.prototype.setBindingValue.apply(this, arguments);
                     let select: any = this.getSelectedItem();
                     if (select instanceof sales.ui.component.TaxGroupItem) {
-                        if (ibas.numbers.valueOf(this.getRate()) !== select.getRate()
-                            && value !== undefined && !ibas.strings.isEmpty(select.getKey())) {
-                            setTimeout(() => {
-                                this.setRate(select.getRate());
-                            }, 50);
-                        }
+                        setTimeout(() => {
+                            if (this.getBindingValue() === select.getKey()) {
+                                if (ibas.numbers.valueOf(this.getRate()) !== select.getRate()) {
+                                    this.setRate(select.getRate());
+                                }
+                            }
+                        }, 50);
                     }
                     return this;
                 },

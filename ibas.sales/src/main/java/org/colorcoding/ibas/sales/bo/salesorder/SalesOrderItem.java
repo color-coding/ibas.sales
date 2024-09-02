@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
+import org.colorcoding.ibas.accounting.logic.ITaxGroupCheckContract;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBOTagCanceled;
 import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
@@ -2577,7 +2578,24 @@ public class SalesOrderItem extends BusinessObject<SalesOrderItem>
 
 	@Override
 	public IBusinessLogicContract[] getContracts() {
-		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>(6);
+		ArrayList<IBusinessLogicContract> contracts = new ArrayList<>(9);
+		// 税及税率检查
+		contracts.add(new ITaxGroupCheckContract() {
+			@Override
+			public String getIdentifiers() {
+				return SalesOrderItem.this.getIdentifiers();
+			}
+
+			@Override
+			public String getTax() {
+				return SalesOrderItem.this.getTax();
+			}
+
+			@Override
+			public BigDecimal getTaxRate() {
+				return SalesOrderItem.this.getTaxRate();
+			}
+		});
 		// 物料及仓库检查
 		contracts.add(new IMaterialWarehouseCheckContract() {
 
