@@ -74,6 +74,7 @@ public class SalesReturnItems extends BusinessObjects<ISalesReturnItem, ISalesRe
 			if (item.isNew() && DataConvert.isNullOrEmpty(item.getBaseDocumentType())) {
 				item.setRate(this.getParent().getDocumentRate());
 				item.setCurrency(this.getParent().getDocumentCurrency());
+				item.setDeliveryDate(this.getParent().getDeliveryDate());
 			}
 		}
 	}

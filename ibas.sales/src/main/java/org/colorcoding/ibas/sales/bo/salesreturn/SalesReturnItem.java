@@ -43,6 +43,7 @@ import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCheckContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.materials.rules.BusinessRuleDeductionPriceQtyTotal;
 import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
 import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionPriceTaxTotal;
@@ -2482,30 +2483,38 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 
 	@Override
 	public BigDecimal getInventoryPrice() {
+		// 有退货成本，则使用
 		if (this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
 			return this.getReturnCost();
 		}
-		if (MyConfiguration.isInventoryUnitLinePrice()) {
-			return this.getPreTaxPrice();
+		BigDecimal price = this.getPreTaxPrice();
+		if (!MyConfiguration.isInventoryUnitLinePrice()) {
+			price = Decimal.divide(this.getPreTaxPrice(), this.getUOMRate());
 		}
-		return Decimal.divide(this.getPreTaxPrice(), this.getUOMRate());
+		// 基于交货的退货，则使用交货成本
+		if (MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE).equals(this.getBaseDocumentType())
+				&& this.getBaseDocumentEntry() > 0 && this.getBaseDocumentLineId() > 0) {
+			return price.negate();
+		} else {
+			return price;
+		}
 	}
 
 	@Override
 	public String getInventoryCurrency() {
-		if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+		if (this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
 			return org.colorcoding.ibas.accounting.MyConfiguration
 					.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY);
 		}
-		return SalesReturnItem.this.getCurrency();
+		return this.getCurrency();
 	}
 
 	@Override
 	public BigDecimal getInventoryRate() {
-		if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
+		if (this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
 			return Decimal.ONE;
 		}
-		return SalesReturnItem.this.getRate();
+		return this.getRate();
 	}
 
 	/**
@@ -2764,30 +2773,17 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 
 			@Override
 			public BigDecimal getPrice() {
-				if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
-					return SalesReturnItem.this.getReturnCost();
-				}
-				if (MyConfiguration.isInventoryUnitLinePrice()) {
-					return SalesReturnItem.this.getPreTaxPrice();
-				}
-				return Decimal.divide(SalesReturnItem.this.getPreTaxPrice(), SalesReturnItem.this.getUOMRate());
+				return SalesReturnItem.this.getInventoryPrice();
 			}
 
 			@Override
 			public String getCurrency() {
-				if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
-					return org.colorcoding.ibas.accounting.MyConfiguration
-							.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY);
-				}
-				return SalesReturnItem.this.getCurrency();
+				return SalesReturnItem.this.getInventoryCurrency();
 			}
 
 			@Override
 			public BigDecimal getRate() {
-				if (SalesReturnItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
-					return Decimal.ONE;
-				}
-				return SalesReturnItem.this.getRate();
+				return SalesReturnItem.this.getInventoryRate();
 			}
 
 			@Override

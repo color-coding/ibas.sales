@@ -75,6 +75,7 @@ public class SalesDeliveryItems extends BusinessObjects<ISalesDeliveryItem, ISal
 			if (item.isNew() && DataConvert.isNullOrEmpty(item.getBaseDocumentType())) {
 				item.setRate(this.getParent().getDocumentRate());
 				item.setCurrency(this.getParent().getDocumentCurrency());
+				item.setDeliveryDate(this.getParent().getDeliveryDate());
 			}
 		}
 	}

@@ -1064,7 +1064,7 @@ namespace sales {
                                                 press: function (): void {
                                                     that.fireViewEvents(that.turnToSalesDeliveryEvent);
                                                 },
-                                                visible: shell.app.privileges.canRun({
+                                                visible: true ? false : shell.app.privileges.canRun({
                                                     id: sales.app.SalesDeliveryFunc.FUNCTION_ID,
                                                     name: sales.app.SalesDeliveryFunc.FUNCTION_NAME,
                                                 })

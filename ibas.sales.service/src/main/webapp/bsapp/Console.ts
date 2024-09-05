@@ -80,13 +80,14 @@ namespace sales {
                 this.register(new BlanketAgreementChooseServiceMapping());
                 this.register(new BlanketAgreementLinkServiceMapping());
                 this.register(new BlanketAgreementEditServiceMapping());
-                this.register(new MaterialOrderedReservationTargetSalesOrderServiceMapping());
-                this.register(new SalesOrderPackingServiceMapping());
                 this.register(new DownPaymentRequestChooseServiceMapping());
                 this.register(new DownPaymentRequestLinkServiceMapping());
                 this.register(new DownPaymentRequestEditServiceMapping());
                 this.register(new SalesReserveInvoiceChooseServiceMapping());
                 this.register(new SalesReserveInvoiceLinkServiceMapping());
+                this.register(new SalesReserveInvoiceEditServiceMapping());
+                this.register(new MaterialOrderedReservationTargetSalesOrderServiceMapping());
+                this.register(new SalesOrderPackingServiceMapping());
                 // 注册常驻应用
                 // 收付款服务
                 // this.register(new SalesReturnPaymentServiceMapping()); 没这种情况

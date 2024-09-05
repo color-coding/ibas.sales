@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.accounting.data.IProjectData;
 import org.colorcoding.ibas.accounting.logic.IBranchCheckContract;
+import org.colorcoding.ibas.accounting.logic.IJECPropertyValueGetter;
 import org.colorcoding.ibas.accounting.logic.IJournalEntryCreationContract;
 import org.colorcoding.ibas.accounting.logic.JournalEntryContent;
 import org.colorcoding.ibas.accounting.logic.JournalEntryContent.Category;
@@ -68,7 +69,7 @@ import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 @BusinessObjectUnit(code = SalesReserveInvoice.BUSINESS_OBJECT_CODE)
 public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> implements ISalesReserveInvoice,
 		IDataOwnership, IApprovalData, IPeriodData, IProjectData, IBOTagDeleted, IBOTagCanceled, IBusinessLogicsHost,
-		IBOSeriesKey, IBOUserFields, IDocumentPaidTotalOperator, IDocumentCloseAmountOperator {
+		IBOSeriesKey, IBOUserFields, IDocumentPaidTotalOperator, IDocumentCloseAmountOperator, IJECPropertyValueGetter {
 
 	/**
 	 * 序列化版本标记
@@ -2095,6 +2096,28 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 				}
 
 		};
+	}
+
+	@Override
+	public Object getValue(String property) {
+		switch (property) {
+		case Ledgers.CONDITION_PROPERTY_OBJECTCODE:
+			return this.getObjectCode();
+		case Ledgers.CONDITION_PROPERTY_DATAOWNER:
+			return this.getDataOwner();
+		case Ledgers.CONDITION_PROPERTY_ORGANIZATION:
+			return this.getOrganization();
+		case Ledgers.CONDITION_PROPERTY_ORDERTYPE:
+			return this.getOrderType();
+		case Ledgers.CONDITION_PROPERTY_PROJECT:
+			return this.getProject();
+		case Ledgers.CONDITION_PROPERTY_BRANCH:
+			return this.getBranch();
+		case Ledgers.CONDITION_PROPERTY_CUSTOMER:
+			return this.getCustomerCode();
+		default:
+			return null;
+		}
 	}
 
 	@Override

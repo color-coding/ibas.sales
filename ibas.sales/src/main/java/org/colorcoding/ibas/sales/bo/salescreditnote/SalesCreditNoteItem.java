@@ -44,6 +44,7 @@ import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCheckContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.materials.rules.BusinessRuleDeductionPriceQtyTotal;
 import org.colorcoding.ibas.sales.MyConfiguration;
+import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
 import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.bo.salesreturn.SalesReturn;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscount;
@@ -2484,13 +2485,21 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 
 	@Override
 	public BigDecimal getInventoryPrice() {
+		// 有退货成本，则使用
 		if (this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
 			return this.getReturnCost();
 		}
-		if (MyConfiguration.isInventoryUnitLinePrice()) {
-			return this.getPreTaxPrice();
+		BigDecimal price = this.getPreTaxPrice();
+		if (!MyConfiguration.isInventoryUnitLinePrice()) {
+			price = Decimal.divide(this.getPreTaxPrice(), this.getUOMRate());
 		}
-		return Decimal.divide(this.getPreTaxPrice(), this.getUOMRate());
+		// 基于交货的退货，则使用交货成本
+		if (MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE).equals(this.getBaseDocumentType())
+				&& this.getBaseDocumentEntry() > 0 && this.getBaseDocumentLineId() > 0) {
+			return price.negate();
+		} else {
+			return price;
+		}
 	}
 
 	@Override
@@ -2499,7 +2508,7 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 			return org.colorcoding.ibas.accounting.MyConfiguration
 					.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY);
 		}
-		return SalesCreditNoteItem.this.getCurrency();
+		return this.getCurrency();
 	}
 
 	@Override
@@ -2871,31 +2880,17 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 
 				@Override
 				public BigDecimal getPrice() {
-					if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
-						return SalesCreditNoteItem.this.getReturnCost();
-					}
-					if (MyConfiguration.isInventoryUnitLinePrice()) {
-						return SalesCreditNoteItem.this.getPreTaxPrice();
-					}
-					return Decimal.divide(SalesCreditNoteItem.this.getPreTaxPrice(),
-							SalesCreditNoteItem.this.getUOMRate());
+					return SalesCreditNoteItem.this.getInventoryPrice();
 				}
 
 				@Override
 				public String getCurrency() {
-					if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
-						return org.colorcoding.ibas.accounting.MyConfiguration.getConfigValue(
-								org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY);
-					}
-					return SalesCreditNoteItem.this.getCurrency();
+					return SalesCreditNoteItem.this.getInventoryCurrency();
 				}
 
 				@Override
 				public BigDecimal getRate() {
-					if (SalesCreditNoteItem.this.getReturnCost().compareTo(Decimal.ZERO) > 0) {
-						return Decimal.ONE;
-					}
-					return SalesCreditNoteItem.this.getRate();
+					return SalesCreditNoteItem.this.getInventoryRate();
 				}
 
 				@Override
