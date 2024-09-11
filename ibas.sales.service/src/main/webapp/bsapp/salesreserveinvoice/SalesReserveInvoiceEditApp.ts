@@ -703,7 +703,7 @@ namespace sales {
                 });
             }
             /** 添加销售预留发票-行事件 */
-            private addSalesReserveInvoiceItem(items: bo.SalesReserveInvoiceItem[]): void {
+            private addSalesReserveInvoiceItem(items: bo.SalesReserveInvoiceItem[] | number): void {
                 if (items instanceof Array && items.length > 0) {
                     // 检查项目是否允许复制
                     for (let item of items) {
@@ -731,8 +731,10 @@ namespace sales {
                         this.proceeding(ibas.emMessageType.WARNING, builder.toString());
                         this.view.showSalesReserveInvoiceItems(this.editData.salesReserveInvoiceItems.filterDeleted());
                     }
-                } else if (items instanceof Array) {
-                    this.editData.salesReserveInvoiceItems.create();
+                } else if (typeof items === "number" && items > 0) {
+                    for (let i: number = 0; i < items; i++) {
+                        this.editData.salesReserveInvoiceItems.create();
+                    }
                     this.view.showSalesReserveInvoiceItems(this.editData.salesReserveInvoiceItems.filterDeleted());
                 } else {
                     this.chooseSalesReserveInvoiceItemMaterial(undefined);

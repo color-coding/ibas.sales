@@ -711,7 +711,7 @@ namespace sales {
                 });
             }
             /** 添加销售订单-行事件 */
-            private addSalesOrderItem(items: bo.SalesOrderItem[]): void {
+            private addSalesOrderItem(items: bo.SalesOrderItem[] | number): void {
                 if (items instanceof Array && items.length > 0) {
                     // 检查项目是否允许复制
                     for (let item of items) {
@@ -739,8 +739,10 @@ namespace sales {
                         this.proceeding(ibas.emMessageType.WARNING, builder.toString());
                         this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
                     }
-                } else if (items instanceof Array) {
-                    this.editData.salesOrderItems.create();
+                } else if (typeof items === "number" && items > 0) {
+                    for (let i: number = 0; i < items; i++) {
+                        this.editData.salesOrderItems.create();
+                    }
                     this.view.showSalesOrderItems(this.editData.salesOrderItems.filterDeleted());
                 } else {
                     this.chooseSalesOrderItemMaterial(undefined);

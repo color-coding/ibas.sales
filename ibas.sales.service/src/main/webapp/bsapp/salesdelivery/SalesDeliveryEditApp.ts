@@ -713,7 +713,7 @@ namespace sales {
                 });
             }
             /** 添加销售交货-行事件 */
-            private addSalesDeliveryItem(items: bo.SalesDeliveryItem[]): void {
+            private addSalesDeliveryItem(items: bo.SalesDeliveryItem[] | number): void {
                 if (items instanceof Array && items.length > 0) {
                     // 检查项目是否允许复制
                     for (let item of items) {
@@ -741,8 +741,10 @@ namespace sales {
                         this.proceeding(ibas.emMessageType.WARNING, builder.toString());
                         this.view.showSalesDeliveryItems(this.editData.salesDeliveryItems.filterDeleted());
                     }
-                } else if (items instanceof Array) {
-                    this.editData.salesDeliveryItems.create();
+                } else if (typeof items === "number" && items > 0) {
+                    for (let i: number = 0; i < items; i++) {
+                        this.editData.salesDeliveryItems.create();
+                    }
                     this.view.showSalesDeliveryItems(this.editData.salesDeliveryItems.filterDeleted());
                 } else {
                     this.chooseSalesDeliveryItemMaterial(undefined);

@@ -676,7 +676,7 @@ namespace sales {
                 });
             }
             /** 添加销售贷项-行事件 */
-            private addSalesCreditNoteItem(items: bo.SalesCreditNoteItem[]): void {
+            private addSalesCreditNoteItem(items: bo.SalesCreditNoteItem[] | number): void {
                 if (items instanceof Array && items.length > 0) {
                     // 检查项目是否允许复制
                     for (let item of items) {
@@ -704,8 +704,10 @@ namespace sales {
                         this.proceeding(ibas.emMessageType.WARNING, builder.toString());
                         this.view.showSalesCreditNoteItems(this.editData.salesCreditNoteItems.filterDeleted());
                     }
-                } else if (items instanceof Array) {
-                    this.editData.salesCreditNoteItems.create();
+                } else if (typeof items === "number" && items > 0) {
+                    for (let i: number = 0; i < items; i++) {
+                        this.editData.salesCreditNoteItems.create();
+                    }
                     this.view.showSalesCreditNoteItems(this.editData.salesCreditNoteItems.filterDeleted());
                 } else {
                     this.chooseSalesCreditNoteItemMaterial(undefined);

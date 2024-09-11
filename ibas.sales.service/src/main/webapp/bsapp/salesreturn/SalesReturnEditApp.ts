@@ -570,7 +570,7 @@ namespace sales {
                 });
             }
             /** 添加销售退货-行事件 */
-            private addSalesReturnItem(items: bo.SalesReturnItem[]): void {
+            private addSalesReturnItem(items: bo.SalesReturnItem[] | number): void {
                 if (items instanceof Array && items.length > 0) {
                     // 检查项目是否允许复制
                     for (let item of items) {
@@ -598,8 +598,10 @@ namespace sales {
                         this.proceeding(ibas.emMessageType.WARNING, builder.toString());
                         this.view.showSalesReturnItems(this.editData.salesReturnItems.filterDeleted());
                     }
-                } else if (items instanceof Array) {
-                    this.editData.salesReturnItems.create();
+                } else if (typeof items === "number" && items > 0) {
+                    for (let i: number = 0; i < items; i++) {
+                        this.editData.salesReturnItems.create();
+                    }
                     this.view.showSalesReturnItems(this.editData.salesReturnItems.filterDeleted());
                 } else {
                     this.chooseSalesReturnItemMaterial(undefined);

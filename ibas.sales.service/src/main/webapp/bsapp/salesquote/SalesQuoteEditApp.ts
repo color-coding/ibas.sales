@@ -639,7 +639,7 @@ namespace sales {
                 });
             }
             /** 添加销售报价-行事件 */
-            private addSalesQuoteItem(items: bo.SalesQuoteItem[]): void {
+            private addSalesQuoteItem(items: bo.SalesQuoteItem[] | number): void {
                 if (items instanceof Array && items.length > 0) {
                     // 检查项目是否允许复制
                     for (let item of items) {
@@ -665,8 +665,10 @@ namespace sales {
                         this.proceeding(ibas.emMessageType.WARNING, builder.toString());
                         this.view.showSalesQuoteItems(this.editData.salesQuoteItems.filterDeleted());
                     }
-                } else if (items instanceof Array) {
-                    this.editData.salesQuoteItems.create();
+                } else if (typeof items === "number" && items > 0) {
+                    for (let i: number = 0; i < items; i++) {
+                        this.editData.salesQuoteItems.create();
+                    }
                     this.view.showSalesQuoteItems(this.editData.salesQuoteItems.filterDeleted());
                 } else {
                     this.chooseSalesQuoteItemMaterial(undefined);

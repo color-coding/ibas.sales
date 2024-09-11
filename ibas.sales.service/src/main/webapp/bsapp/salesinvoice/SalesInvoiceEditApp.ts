@@ -715,7 +715,7 @@ namespace sales {
                 });
             }
             /** 添加销售发票-行事件 */
-            private addSalesInvoiceItem(items: bo.SalesInvoiceItem[]): void {
+            private addSalesInvoiceItem(items: bo.SalesInvoiceItem[] | number): void {
                 if (items instanceof Array && items.length > 0) {
                     // 检查项目是否允许复制
                     for (let item of items) {
@@ -743,8 +743,10 @@ namespace sales {
                         this.proceeding(ibas.emMessageType.WARNING, builder.toString());
                         this.view.showSalesInvoiceItems(this.editData.salesInvoiceItems.filterDeleted());
                     }
-                } else if (items instanceof Array) {
-                    this.editData.salesInvoiceItems.create();
+                } else if (typeof items === "number" && items > 0) {
+                    for (let i: number = 0; i < items; i++) {
+                        this.editData.salesInvoiceItems.create();
+                    }
                     this.view.showSalesInvoiceItems(this.editData.salesInvoiceItems.filterDeleted());
                 } else {
                     this.chooseSalesInvoiceItemMaterial(undefined);
