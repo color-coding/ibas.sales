@@ -28,6 +28,8 @@ namespace sales {
                 chooseBlanketAgreementItemUnitEvent: Function;
                 /** 选择客户合同 */
                 chooseCustomerAgreementsEvent: Function;
+                /** 测量物料 */
+                measuringMaterialsEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;

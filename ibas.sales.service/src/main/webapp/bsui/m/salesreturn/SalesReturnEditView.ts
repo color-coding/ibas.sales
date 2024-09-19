@@ -50,6 +50,8 @@ namespace sales {
                 editShippingAddressesEvent: Function;
                 /** 转为销售贷项事件 */
                 turnToSalesCreditNoteEvent: Function;
+                /** 测量物料 */
+                measuringMaterialsEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */

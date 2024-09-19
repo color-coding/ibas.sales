@@ -42,6 +42,8 @@ namespace sales {
                 chooseCustomerAgreementsEvent: Function;
                 /** 预收款申请收款事件 */
                 receiptDownPaymentRequestEvent: Function;
+                /** 测量物料 */
+                measuringMaterialsEvent: Function;
                 /** 默认仓库 */
                 defaultWarehouse: string;
                 /** 默认税组 */

@@ -46,6 +46,8 @@ namespace sales {
                 chooseCustomerAgreementsEvent: Function;
                 /** 编辑地址事件 */
                 editShippingAddressesEvent: Function;
+                /** 测量物料 */
+                measuringMaterialsEvent: Function;
                 defaultWarehouse: string;
                 /** 绘制视图 */
                 draw(): any {

@@ -44,6 +44,7 @@ namespace sales {
                 this.view.showSalesQuoteItemExtraEvent = this.showSalesQuoteItemExtra;
                 this.view.turnToSalesOrderEvent = this.turnToSalesOrder;
                 this.view.reserveMaterialsInventoryEvent = this.reserveMaterialsInventory;
+                this.view.measuringMaterialsEvent = this.measuringMaterials;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -1326,6 +1327,26 @@ namespace sales {
                     proxy: new materials.app.MaterialInventoryReservationServiceProxy(contract)
                 });
             }
+            protected measuringMaterials(): void {
+                let lines: ibas.ArrayList<materials.app.IMaterialMeasurementContractLine> = new ibas.ArrayList<materials.app.IMaterialMeasurementContractLine>();
+                for (let item of this.editData.salesQuoteItems) {
+                    lines.add({
+                        lineId: item.lineId,
+                        itemCode: item.itemCode,
+                        itemDescription: item.itemDescription,
+                        quantity: item.quantity,
+                        uom: item.uom,
+                    });
+                }
+                ibas.servicesManager.runApplicationService<materials.app.IMaterialMeasurementContract>({
+                    proxy: new materials.app.MaterialMeasurementServiceProxy({
+                        mode: "SALES",
+                        documentType: this.editData.objectCode,
+                        documentEntry: this.editData.docEntry,
+                        lines: lines,
+                    })
+                });
+            }
         }
         /** 视图-销售报价 */
         export interface ISalesQuoteEditView extends ibas.IBOEditView {
@@ -1367,6 +1388,8 @@ namespace sales {
             turnToSalesOrderEvent: Function;
             /** 预留物料库存 */
             reserveMaterialsInventoryEvent: Function;
+            /** 测量物料 */
+            measuringMaterialsEvent: Function;
             /** 默认税组 */
             defaultTaxGroup: string;
         }

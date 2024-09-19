@@ -45,6 +45,7 @@ namespace sales {
                 this.view.chooseSalesCreditNoteSalesInvoiceEvent = this.chooseSalesCreditNoteSalesInvoice;
                 this.view.chooseCustomerAgreementsEvent = this.chooseCustomerAgreements;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
+                this.view.measuringMaterialsEvent = this.measuringMaterials;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -1216,6 +1217,26 @@ namespace sales {
                     }
                 });
             }
+            protected measuringMaterials(): void {
+                let lines: ibas.ArrayList<materials.app.IMaterialMeasurementContractLine> = new ibas.ArrayList<materials.app.IMaterialMeasurementContractLine>();
+                for (let item of this.editData.salesCreditNoteItems) {
+                    lines.add({
+                        lineId: item.lineId,
+                        itemCode: item.itemCode,
+                        itemDescription: item.itemDescription,
+                        quantity: item.quantity,
+                        uom: item.uom,
+                    });
+                }
+                ibas.servicesManager.runApplicationService<materials.app.IMaterialMeasurementContract>({
+                    proxy: new materials.app.MaterialMeasurementServiceProxy({
+                        mode: "SALES",
+                        documentType: this.editData.objectCode,
+                        documentEntry: this.editData.docEntry,
+                        lines: lines,
+                    })
+                });
+            }
         }
         /** 视图-销售贷项 */
         export interface ISalesCreditNoteEditView extends ibas.IBOEditView {
@@ -1259,6 +1280,8 @@ namespace sales {
             chooseCustomerAgreementsEvent: Function;
             /** 编辑地址事件 */
             editShippingAddressesEvent: Function;
+            /** 测量物料 */
+            measuringMaterialsEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
         }

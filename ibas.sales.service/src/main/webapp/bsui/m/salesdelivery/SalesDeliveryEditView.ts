@@ -54,6 +54,8 @@ namespace sales {
                 turnToSalesReturnEvent: Function;
                 /** 转为销售发票事件 */
                 turnToSalesInvoiceEvent: Function;
+                /** 测量物料 */
+                measuringMaterialsEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */

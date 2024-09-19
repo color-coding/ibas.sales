@@ -12533,6 +12533,7 @@ declare namespace purchase {
             /** 选择采购收货-采购预留发票 */
             private choosePurchaseDeliveryPurchaseReserveInvoice;
             private choosePurchaseDeliveryItemMaterialVersion;
+            protected measuringMaterials(): void;
         }
         /** 视图-采购收货 */
         interface IPurchaseDeliveryEditView extends ibas.IBOEditView {
@@ -12584,6 +12585,8 @@ declare namespace purchase {
             turnToPurchaseInvoiceEvent: Function;
             /** 转为销售交货 */
             turnToSalesDeliveryEvent: Function;
+            /** 测量物料 */
+            measuringMaterialsEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */
@@ -12834,6 +12837,7 @@ declare namespace purchase {
             private chooseSupplierAgreements;
             private choosePurchaseOrderItemDistributionRule;
             private choosePurchaseOrderItemMaterialVersion;
+            protected measuringMaterials(): void;
         }
         /** 视图-采购订单 */
         interface IPurchaseOrderEditView extends ibas.IBOEditView {
@@ -12893,6 +12897,8 @@ declare namespace purchase {
             turnToDownPaymentRequestEvent: Function;
             /** 预留物料订购 */
             reserveMaterialsOrderedEvent: Function;
+            /** 测量物料 */
+            measuringMaterialsEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */
@@ -13294,6 +13300,7 @@ declare namespace purchase {
             private choosePurchaseReturnItemMaterialVersion;
             /** 选择采购退货项目-采购收货事件 */
             private choosePurchaseReturnPurchaseReturnRequest;
+            protected measuringMaterials(): void;
         }
         /** 视图-采购退货 */
         interface IPurchaseReturnEditView extends ibas.IBOEditView {
@@ -13341,6 +13348,8 @@ declare namespace purchase {
             editShippingAddressesEvent: Function;
             /** 转为采购贷项事件 */
             turnToPurchaseCreditNoteEvent: Function;
+            /** 测量物料 */
+            measuringMaterialsEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
         }
@@ -13570,6 +13579,7 @@ declare namespace purchase {
             private chooseSupplierAgreements;
             private choosePurchaseQuoteItemDistributionRule;
             private choosePurchaseQuoteItemMaterialVersion;
+            protected measuringMaterials(): void;
         }
         /** 视图-采购报价 */
         interface IPurchaseQuoteEditView extends ibas.IBOEditView {
@@ -13611,6 +13621,8 @@ declare namespace purchase {
             choosePurchaseQuotePurchaseRequestEvent: Function;
             /** 转为采购订单事件 */
             turnToPurchaseOrderEvent: Function;
+            /** 测量物料 */
+            measuringMaterialsEvent: Function;
             /** 默认税组 */
             defaultTaxGroup: string;
         }
@@ -14002,6 +14014,7 @@ declare namespace purchase {
             private doneItems;
             private purchaseRequestTo;
             private choosePurchaseRequestItemMaterialVersion;
+            protected measuringMaterials(): void;
         }
         /** 视图-采购申请 */
         interface IPurchaseRequestEditView extends ibas.IBOEditView {
@@ -14037,6 +14050,8 @@ declare namespace purchase {
             showPurchaseRequestTos(datas: ibas.IServiceAgent[]): void;
             /** 采购申请转换事件 */
             purchaseRequestToEvent: Function;
+            /** 测量物料 */
+            measuringMaterialsEvent: Function;
         }
         /** 采购申请编辑服务映射 */
         class PurchaseRequestEditServiceMapping extends ibas.BOEditServiceMapping {
@@ -14234,6 +14249,7 @@ declare namespace purchase {
             protected removePurchaseInvoiceDownPayment(items: bo.PurchaseInvoiceDownPayment[]): void;
             /** 添加销售发票-预收款事件 */
             protected choosePurchaseInvoiceDownPayment(): void;
+            protected measuringMaterials(): void;
         }
         /** 视图-采购发票 */
         interface IPurchaseInvoiceEditView extends ibas.IBOEditView {
@@ -14289,6 +14305,8 @@ declare namespace purchase {
             removePurchaseInvoiceDownPaymentEvent: Function;
             /** 显示数据-采购发票-预付款 */
             showPurchaseInvoiceDownPayments(datas: bo.PurchaseInvoiceDownPayment[]): void;
+            /** 测量物料 */
+            measuringMaterialsEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */
@@ -14525,6 +14543,7 @@ declare namespace purchase {
             private chooseSupplierAgreements;
             private choosePurchaseCreditNoteItemDistributionRule;
             private choosePurchaseCreditNoteItemMaterialVersion;
+            protected measuringMaterials(): void;
         }
         /** 视图-采购贷项 */
         interface IPurchaseCreditNoteEditView extends ibas.IBOEditView {
@@ -14568,6 +14587,8 @@ declare namespace purchase {
             chooseSupplierAgreementsEvent: Function;
             /** 编辑地址事件 */
             editShippingAddressesEvent: Function;
+            /** 测量物料 */
+            measuringMaterialsEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
         }
@@ -14960,6 +14981,7 @@ declare namespace purchase {
             private chooseBlanketAgreementItemMaterial;
             private chooseBlanketAgreementItemUnit;
             private chooseSupplierAgreements;
+            protected measuringMaterials(): void;
         }
         /** 视图-一揽子协议 */
         interface IBlanketAgreementEditView extends ibas.IBOEditView {
@@ -14985,6 +15007,8 @@ declare namespace purchase {
             chooseBlanketAgreementItemUnitEvent: Function;
             /** 选择供应商合同 */
             chooseSupplierAgreementsEvent: Function;
+            /** 测量物料 */
+            measuringMaterialsEvent: Function;
             /** 默认税组 */
             defaultTaxGroup: string;
         }
@@ -15214,6 +15238,7 @@ declare namespace purchase {
             private chooseDownPaymentRequestItemDistributionRule;
             private chooseDownPaymentRequestItemMaterialVersion;
             private paymentDownPaymentRequest;
+            protected measuringMaterials(): void;
         }
         /** 视图-预付款申请 */
         interface IDownPaymentRequestEditView extends ibas.IBOEditView {
@@ -15253,6 +15278,8 @@ declare namespace purchase {
             chooseDownPaymentRequestItemMaterialVersionEvent: Function;
             /** 预收款申请付款事件 */
             paymentDownPaymentRequestEvent: Function;
+            /** 测量物料 */
+            measuringMaterialsEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */
@@ -15379,6 +15406,7 @@ declare namespace purchase {
             private chooseSupplierAgreements;
             private choosePurchaseReserveInvoiceItemDistributionRule;
             private choosePurchaseReserveInvoiceItemMaterialVersion;
+            protected measuringMaterials(): void;
         }
         /** 视图-采购预留发票 */
         interface IPurchaseReserveInvoiceEditView extends ibas.IBOEditView {
@@ -15426,6 +15454,8 @@ declare namespace purchase {
             turnToPurchaseCreditNoteEvent: Function;
             /** 转为采购交货事件 */
             turnToPurchaseDeliveryEvent: Function;
+            /** 测量物料 */
+            measuringMaterialsEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */
@@ -15660,6 +15690,7 @@ declare namespace purchase {
             private choosePurchaseReturnRequestItemMaterialVersion;
             /** 预留物料库存 */
             private reserveMaterialsInventory;
+            protected measuringMaterials(): void;
         }
         /** 视图-采购退货请求 */
         interface IPurchaseReturnRequestEditView extends ibas.IBOEditView {
@@ -15705,6 +15736,8 @@ declare namespace purchase {
             turnToPurchaseReturnEvent: Function;
             /** 预留物料库存 */
             reserveMaterialsInventoryEvent: Function;
+            /** 测量物料 */
+            measuringMaterialsEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
         }

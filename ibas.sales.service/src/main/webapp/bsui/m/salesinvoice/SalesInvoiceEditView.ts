@@ -56,6 +56,8 @@ namespace sales {
                 addSalesInvoiceDownPaymentEvent: Function;
                 /** 删除销售发票-预收款事件 */
                 removeSalesInvoiceDownPaymentEvent: Function;
+                /** 测量物料 */
+                measuringMaterialsEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */

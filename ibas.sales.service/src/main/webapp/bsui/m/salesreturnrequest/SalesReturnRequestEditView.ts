@@ -48,6 +48,8 @@ namespace sales {
                 editShippingAddressesEvent: Function;
                 /** 转为销售退货事件 */
                 turnToSalesReturnEvent: Function;
+                /** 测量物料 */
+                measuringMaterialsEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */

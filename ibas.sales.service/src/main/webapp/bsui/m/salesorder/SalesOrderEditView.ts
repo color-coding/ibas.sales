@@ -62,6 +62,8 @@ namespace sales {
                 turnToDownPaymentRequestEvent: Function;
                 /** 预留物料库存 */
                 reserveMaterialsInventoryEvent: Function;
+                /** 测量物料 */
+                measuringMaterialsEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */
