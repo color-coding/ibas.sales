@@ -26,6 +26,8 @@ namespace sales {
                 chooseDownPaymentRequestItemMaterialEvent: Function;
                 /** 选择预收款申请-行 物料版本 */
                 chooseDownPaymentRequestItemMaterialVersionEvent: Function;
+                /** 选择一业务伙伴目录事件 */
+                chooseDownPaymentRequestItemMaterialCatalogEvent: Function;
                 /** 选择预收款申请-行 成本中心事件 */
                 chooseDownPaymentRequestItemDistributionRuleEvent: Function;
                 /** 选择预收款申请-行 仓库 */

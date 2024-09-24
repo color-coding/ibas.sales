@@ -36,6 +36,8 @@ namespace sales {
                 chooseSalesReserveInvoiceItemMaterialBatchEvent: Function;
                 /** 选择销售预留发票-行 物料版本 */
                 chooseSalesReserveInvoiceItemMaterialVersionEvent: Function;
+                /** 选择一业务伙伴目录事件 */
+                chooseSalesReserveInvoiceItemMaterialCatalogEvent: Function;
                 /** 选择销售预留发票-行成本中心事件 */
                 chooseSalesReserveInvoiceItemDistributionRuleEvent: Function;
                 /** 选择销售预留发票项目-销售订单事件 */

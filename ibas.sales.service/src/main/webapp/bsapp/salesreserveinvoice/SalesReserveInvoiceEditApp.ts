@@ -39,6 +39,7 @@ namespace sales {
                 this.view.chooseSalesReserveInvoiceItemMaterialSerialEvent = this.chooseSalesReserveInvoiceLineMaterialSerial;
                 this.view.chooseSalesReserveInvoiceItemMaterialVersionEvent = this.chooseSalesReserveInvoiceItemMaterialVersion;
                 this.view.chooseSalesReserveInvoiceItemDistributionRuleEvent = this.chooseSalesReserveInvoiceItemDistributionRule;
+                this.view.chooseSalesReserveInvoiceItemMaterialCatalogEvent = this.chooseSalesReserveInvoiceItemMaterialCatalog;
                 this.view.chooseSalesReserveInvoiceItemWarehouseEvent = this.chooseSalesReserveInvoiceItemWarehouse;
                 this.view.chooseSalesReserveInvoiceItemUnitEvent = this.chooseSalesReserveInvoiceItemUnit;
                 this.view.chooseSalesReserveInvoiceSalesOrderEvent = this.chooseSalesReserveInvoiceSalesOrder;
@@ -1488,6 +1489,63 @@ namespace sales {
                     })
                 });
             }
+            protected chooseSalesReserveInvoiceItemMaterialCatalog(caller: bo.SalesReserveInvoiceItem, filterConditions?: ibas.ICondition[]): void {
+                if (ibas.strings.isEmpty(this.editData.customerCode)) {
+                    this.messages(
+                        ibas.emMessageType.WARNING, ibas.i18n.prop("sales_please_choose_supplier_first")
+                    ); return;
+                }
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = materials.bo.BusinessPartnerMaterialCatalog.PROPERTY_BUSINESSPARTNERTYPE_NAME;
+                condition.value = businesspartner.bo.emBusinessPartnerType.CUSTOMER.toString();
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.BusinessPartnerMaterialCatalog.PROPERTY_BUSINESSPARTNERCODE_NAME;
+                condition.value = this.editData.customerCode;
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.BusinessPartnerMaterialCatalog.PROPERTY_ITEMCODE_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                condition.value = "";
+                condition.bracketOpen = 1;
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.BusinessPartnerMaterialCatalog.PROPERTY_ITEMCODE_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_NULL;
+                condition.bracketClose = 1;
+                // 添加输入条件
+                if (filterConditions instanceof Array && filterConditions.length > 0) {
+                    if (criteria.conditions.length > 1) {
+                        criteria.conditions.firstOrDefault().bracketOpen++;
+                        criteria.conditions.lastOrDefault().bracketClose++;
+                    }
+                    criteria.conditions.add(filterConditions);
+                }
+                // 调用选择服务
+                ibas.servicesManager.runChooseService<materials.bo.BusinessPartnerMaterialCatalog>({
+                    criteria: criteria,
+                    chooseType: ibas.emChooseType.MULTIPLE,
+                    boCode: materials.bo.BusinessPartnerMaterialCatalog.BUSINESS_OBJECT_CODE,
+                    onCompleted: (selecteds) => {
+                        let count: number = this.editData.salesReserveInvoiceItems.length;
+                        for (let selected of selecteds) {
+                            if (ibas.strings.isEmpty(selected.itemCode)) {
+                                continue;
+                            }
+                            if (ibas.objects.isNull(caller)) {
+                                caller = this.editData.salesReserveInvoiceItems.create();
+                            }
+                            caller.catalogCode = selected.catalogCode;
+                            condition = new ibas.Condition();
+                            condition.alias = materials.bo.Material.PROPERTY_CODE_NAME;
+                            condition.value = selected.itemCode;
+                            this.chooseSalesReserveInvoiceItemMaterial(caller, [condition]);
+                            caller = null;
+                        }
+                        if (this.editData.salesReserveInvoiceItems.length > count) {
+                            this.view.showSalesReserveInvoiceItems(this.editData.salesReserveInvoiceItems.filterDeleted());
+                        }
+                    }
+                });
+            }
         }
         /** 视图-销售预留发票 */
         export interface ISalesReserveInvoiceEditView extends ibas.IBOEditView {
@@ -1521,6 +1579,8 @@ namespace sales {
             chooseSalesReserveInvoiceItemMaterialSerialEvent: Function;
             /** 选择销售预留发票-行 物料版本 */
             chooseSalesReserveInvoiceItemMaterialVersionEvent: Function;
+            /** 选择一业务伙伴目录事件 */
+            chooseSalesReserveInvoiceItemMaterialCatalogEvent: Function;
             /** 选择销售预留发票-销售订单事件 */
             chooseSalesReserveInvoiceSalesOrderEvent: Function;
             /** 选择销售预留发票-一揽子协议事件 */

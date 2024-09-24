@@ -15,8 +15,8 @@ import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialReceiptPa
  * 销售退货-行 接口
  * 
  */
-public interface ISalesReturnItem
-		extends IBODocumentLine, IMaterialBatchReceiptParent, IMaterialSerialReceiptParent, IDocumentClosingQuantityItem {
+public interface ISalesReturnItem extends IBODocumentLine, IMaterialBatchReceiptParent, IMaterialSerialReceiptParent,
+		IDocumentClosingQuantityItem {
 
 	/**
 	 * 获取-编码
@@ -437,6 +437,20 @@ public interface ISalesReturnItem
 	 * @param value 值
 	 */
 	void setItemSign(String value);
+
+	/**
+	* 获取-目录编码
+	* 
+	* @return 值
+	*/
+	String getCatalogCode();
+
+	/**
+	* 设置-目录编码
+	* 
+	* @param value 值
+	*/
+	void setCatalogCode(String value);
 
 	/**
 	 * 获取-产品版本

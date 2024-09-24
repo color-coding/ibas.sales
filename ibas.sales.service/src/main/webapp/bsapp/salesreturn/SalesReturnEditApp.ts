@@ -41,6 +41,7 @@ namespace sales {
                 this.view.chooseSalesReturnItemMaterialSerialEvent = this.createSalesReturnLineMaterialSerial;
                 this.view.chooseSalesReturnItemMaterialVersionEvent = this.chooseSalesReturnItemMaterialVersion;
                 this.view.chooseSalesReturnItemDistributionRuleEvent = this.chooseSalesReturnItemDistributionRule;
+                this.view.chooseSalesReturnItemMaterialCatalogEvent = this.chooseSalesReturnItemMaterialCatalog;
                 this.view.chooseSalesReturnSalesOrderEvent = this.chooseSalesReturnSalesOrder;
                 this.view.chooseSalesReturnSalesDeliveryEvent = this.chooseSalesReturnSalesDelivery;
                 this.view.chooseCustomerAgreementsEvent = this.chooseCustomerAgreements;
@@ -1168,6 +1169,63 @@ namespace sales {
                     })
                 });
             }
+            protected chooseSalesReturnItemMaterialCatalog(caller: bo.SalesReturnItem, filterConditions?: ibas.ICondition[]): void {
+                if (ibas.strings.isEmpty(this.editData.customerCode)) {
+                    this.messages(
+                        ibas.emMessageType.WARNING, ibas.i18n.prop("sales_please_choose_supplier_first")
+                    ); return;
+                }
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = materials.bo.BusinessPartnerMaterialCatalog.PROPERTY_BUSINESSPARTNERTYPE_NAME;
+                condition.value = businesspartner.bo.emBusinessPartnerType.CUSTOMER.toString();
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.BusinessPartnerMaterialCatalog.PROPERTY_BUSINESSPARTNERCODE_NAME;
+                condition.value = this.editData.customerCode;
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.BusinessPartnerMaterialCatalog.PROPERTY_ITEMCODE_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                condition.value = "";
+                condition.bracketOpen = 1;
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.BusinessPartnerMaterialCatalog.PROPERTY_ITEMCODE_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_NULL;
+                condition.bracketClose = 1;
+                // 添加输入条件
+                if (filterConditions instanceof Array && filterConditions.length > 0) {
+                    if (criteria.conditions.length > 1) {
+                        criteria.conditions.firstOrDefault().bracketOpen++;
+                        criteria.conditions.lastOrDefault().bracketClose++;
+                    }
+                    criteria.conditions.add(filterConditions);
+                }
+                // 调用选择服务
+                ibas.servicesManager.runChooseService<materials.bo.BusinessPartnerMaterialCatalog>({
+                    criteria: criteria,
+                    chooseType: ibas.emChooseType.MULTIPLE,
+                    boCode: materials.bo.BusinessPartnerMaterialCatalog.BUSINESS_OBJECT_CODE,
+                    onCompleted: (selecteds) => {
+                        let count: number = this.editData.salesReturnItems.length;
+                        for (let selected of selecteds) {
+                            if (ibas.strings.isEmpty(selected.itemCode)) {
+                                continue;
+                            }
+                            if (ibas.objects.isNull(caller)) {
+                                caller = this.editData.salesReturnItems.create();
+                            }
+                            caller.catalogCode = selected.catalogCode;
+                            condition = new ibas.Condition();
+                            condition.alias = materials.bo.Material.PROPERTY_CODE_NAME;
+                            condition.value = selected.itemCode;
+                            this.chooseSalesReturnItemMaterial(caller, [condition]);
+                            caller = null;
+                        }
+                        if (this.editData.salesReturnItems.length > count) {
+                            this.view.showSalesReturnItems(this.editData.salesReturnItems.filterDeleted());
+                        }
+                    }
+                });
+            }
         }
         /** 视图-销售退货 */
         export interface ISalesReturnEditView extends ibas.IBOEditView {
@@ -1201,6 +1259,8 @@ namespace sales {
             chooseSalesReturnItemMaterialSerialEvent: Function;
             /** 选择销售退货-行 物料版本 */
             chooseSalesReturnItemMaterialVersionEvent: Function;
+            /** 选择一业务伙伴目录事件 */
+            chooseSalesReturnItemMaterialCatalogEvent: Function;
             /** 选择销售退货-行 成本中心事件 */
             chooseSalesReturnItemDistributionRuleEvent: Function;
             /** 选择销售退货项目-销售订单事件 */

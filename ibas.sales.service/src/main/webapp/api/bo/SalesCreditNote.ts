@@ -185,6 +185,8 @@ namespace sales {
             itemDescription: string;
             /** 产品标识 */
             itemSign: string;
+            /** 目录编码 */
+            catalogCode: string;
             /** 产品版本 */
             itemVersion: string;
             /** 序号管理 */

@@ -290,6 +290,8 @@ declare namespace purchase {
             itemDescription: string;
             /** 物料标识 */
             itemSign: string;
+            /** 目录编码 */
+            catalogCode: string;
             /** 物料版本 */
             itemVersion: string;
             /** 序号管理 */
@@ -534,6 +536,8 @@ declare namespace purchase {
             itemDescription: string;
             /** 物料标识 */
             itemSign: string;
+            /** 目录编码 */
+            catalogCode: string;
             /** 物料版本 */
             itemVersion: string;
             /** 序号管理 */
@@ -840,6 +844,8 @@ declare namespace purchase {
             itemDescription: string;
             /** 物料标识 */
             itemSign: string;
+            /** 目录编码 */
+            catalogCode: string;
             /** 物料版本 */
             itemVersion: string;
             /** 序号管理 */
@@ -1082,6 +1088,8 @@ declare namespace purchase {
             itemDescription: string;
             /** 物料标识 */
             itemSign: string;
+            /** 目录编码 */
+            catalogCode: string;
             /** 物料版本 */
             itemVersion: string;
             /** 序号管理 */
@@ -1380,6 +1388,8 @@ declare namespace purchase {
             itemDescription: string;
             /** 物料标识 */
             itemSign: string;
+            /** 目录编码 */
+            catalogCode: string;
             /** 物料版本 */
             itemVersion: string;
             /** 序号管理 */
@@ -1681,6 +1691,8 @@ declare namespace purchase {
             itemDescription: string;
             /** 产品标识 */
             itemSign: string;
+            /** 目录编码 */
+            catalogCode: string;
             /** 物料版本 */
             itemVersion: string;
             /** 序号管理 */
@@ -1996,6 +2008,8 @@ declare namespace purchase {
             itemDescription: string;
             /** 产品标识 */
             itemSign: string;
+            /** 目录编码 */
+            catalogCode: string;
             /** 物料版本 */
             itemVersion: string;
             /** 序号管理 */
@@ -2311,6 +2325,8 @@ declare namespace purchase {
             itemDescription: string;
             /** 产品标识 */
             itemSign: string;
+            /** 目录编码 */
+            catalogCode: string;
             /** 数量 */
             quantity: number;
             /** 单位 */
@@ -2521,6 +2537,8 @@ declare namespace purchase {
             itemDescription: string;
             /** 物料标识 */
             itemSign: string;
+            /** 目录编码 */
+            catalogCode: string;
             /** 物料版本 */
             itemVersion: string;
             /** 序号管理 */
@@ -2767,6 +2785,8 @@ declare namespace purchase {
             itemDescription: string;
             /** 产品标识 */
             itemSign: string;
+            /** 目录编码 */
+            catalogCode: string;
             /** 物料版本 */
             itemVersion: string;
             /** 序号管理 */
@@ -3015,6 +3035,8 @@ declare namespace purchase {
             itemDescription: string;
             /** 物料标识 */
             itemSign: string;
+            /** 目录编码 */
+            catalogCode: string;
             /** 物料版本 */
             itemVersion: string;
             /** 序号管理 */
@@ -3776,6 +3798,12 @@ declare namespace purchase {
             get itemSign(): string;
             /** 设置-物料标识 */
             set itemSign(value: string);
+            /** 映射的属性名称-目录编码 */
+            static PROPERTY_CATALOGCODE_NAME: string;
+            /** 获取-目录编码 */
+            get catalogCode(): string;
+            /** 设置-目录编码 */
+            set catalogCode(value: string);
             /** 映射的属性名称-物料版本 */
             static PROPERTY_ITEMVERSION_NAME: string;
             /** 获取-物料版本 */
@@ -4528,6 +4556,12 @@ declare namespace purchase {
             get itemSign(): string;
             /** 设置-物料标识 */
             set itemSign(value: string);
+            /** 映射的属性名称-目录编码 */
+            static PROPERTY_CATALOGCODE_NAME: string;
+            /** 获取-目录编码 */
+            get catalogCode(): string;
+            /** 设置-目录编码 */
+            set catalogCode(value: string);
             /** 映射的属性名称-物料版本 */
             static PROPERTY_ITEMVERSION_NAME: string;
             /** 获取-物料版本 */
@@ -5444,6 +5478,12 @@ declare namespace purchase {
             get itemSign(): string;
             /** 设置-物料标识 */
             set itemSign(value: string);
+            /** 映射的属性名称-目录编码 */
+            static PROPERTY_CATALOGCODE_NAME: string;
+            /** 获取-目录编码 */
+            get catalogCode(): string;
+            /** 设置-目录编码 */
+            set catalogCode(value: string);
             /** 映射的属性名称-物料版本 */
             static PROPERTY_ITEMVERSION_NAME: string;
             /** 获取-物料版本 */
@@ -6176,6 +6216,12 @@ declare namespace purchase {
             get itemSign(): string;
             /** 设置-物料标识 */
             set itemSign(value: string);
+            /** 映射的属性名称-目录编码 */
+            static PROPERTY_CATALOGCODE_NAME: string;
+            /** 获取-目录编码 */
+            get catalogCode(): string;
+            /** 设置-目录编码 */
+            set catalogCode(value: string);
             /** 映射的属性名称-物料版本 */
             static PROPERTY_ITEMVERSION_NAME: string;
             /** 获取-物料版本 */
@@ -7050,6 +7096,12 @@ declare namespace purchase {
             get itemSign(): string;
             /** 设置-物料标识 */
             set itemSign(value: string);
+            /** 映射的属性名称-目录编码 */
+            static PROPERTY_CATALOGCODE_NAME: string;
+            /** 获取-目录编码 */
+            get catalogCode(): string;
+            /** 设置-目录编码 */
+            set catalogCode(value: string);
             /** 映射的属性名称-物料版本 */
             static PROPERTY_ITEMVERSION_NAME: string;
             /** 获取-物料版本 */
@@ -7943,6 +7995,12 @@ declare namespace purchase {
             get itemSign(): string;
             /** 设置-产品标识 */
             set itemSign(value: string);
+            /** 映射的属性名称-目录编码 */
+            static PROPERTY_CATALOGCODE_NAME: string;
+            /** 获取-目录编码 */
+            get catalogCode(): string;
+            /** 设置-目录编码 */
+            set catalogCode(value: string);
             /** 映射的属性名称-物料版本 */
             static PROPERTY_ITEMVERSION_NAME: string;
             /** 获取-物料版本 */
@@ -8889,6 +8947,12 @@ declare namespace purchase {
             get itemSign(): string;
             /** 设置-产品标识 */
             set itemSign(value: string);
+            /** 映射的属性名称-目录编码 */
+            static PROPERTY_CATALOGCODE_NAME: string;
+            /** 获取-目录编码 */
+            get catalogCode(): string;
+            /** 设置-目录编码 */
+            set catalogCode(value: string);
             /** 映射的属性名称-物料版本 */
             static PROPERTY_ITEMVERSION_NAME: string;
             /** 获取-物料版本 */
@@ -9796,6 +9860,12 @@ declare namespace purchase {
             get itemSign(): string;
             /** 设置-产品标识 */
             set itemSign(value: string);
+            /** 映射的属性名称-目录编码 */
+            static PROPERTY_CATALOGCODE_NAME: string;
+            /** 获取-目录编码 */
+            get catalogCode(): string;
+            /** 设置-目录编码 */
+            set catalogCode(value: string);
             /** 映射的属性名称-数量 */
             static PROPERTY_QUANTITY_NAME: string;
             /** 获取-数量 */
@@ -10412,6 +10482,12 @@ declare namespace purchase {
             get itemSign(): string;
             /** 设置-物料标识 */
             set itemSign(value: string);
+            /** 映射的属性名称-目录编码 */
+            static PROPERTY_CATALOGCODE_NAME: string;
+            /** 获取-目录编码 */
+            get catalogCode(): string;
+            /** 设置-目录编码 */
+            set catalogCode(value: string);
             /** 映射的属性名称-物料版本 */
             static PROPERTY_ITEMVERSION_NAME: string;
             /** 获取-物料版本 */
@@ -11149,6 +11225,12 @@ declare namespace purchase {
             get itemSign(): string;
             /** 设置-产品标识 */
             set itemSign(value: string);
+            /** 映射的属性名称-目录编码 */
+            static PROPERTY_CATALOGCODE_NAME: string;
+            /** 获取-目录编码 */
+            get catalogCode(): string;
+            /** 设置-目录编码 */
+            set catalogCode(value: string);
             /** 映射的属性名称-物料版本 */
             static PROPERTY_ITEMVERSION_NAME: string;
             /** 获取-物料版本 */
@@ -11901,6 +11983,12 @@ declare namespace purchase {
             get itemSign(): string;
             /** 设置-物料标识 */
             set itemSign(value: string);
+            /** 映射的属性名称-目录编码 */
+            static PROPERTY_CATALOGCODE_NAME: string;
+            /** 获取-目录编码 */
+            get catalogCode(): string;
+            /** 设置-目录编码 */
+            set catalogCode(value: string);
             /** 映射的属性名称-物料版本 */
             static PROPERTY_ITEMVERSION_NAME: string;
             /** 获取-物料版本 */
@@ -12534,6 +12622,7 @@ declare namespace purchase {
             private choosePurchaseDeliveryPurchaseReserveInvoice;
             private choosePurchaseDeliveryItemMaterialVersion;
             protected measuringMaterials(): void;
+            protected choosePurchaseDeliveryItemMaterialCatalog(caller: bo.PurchaseDeliveryItem, filterConditions?: ibas.ICondition[]): void;
         }
         /** 视图-采购收货 */
         interface IPurchaseDeliveryEditView extends ibas.IBOEditView {
@@ -12575,6 +12664,8 @@ declare namespace purchase {
             choosePurchaseDeliveryItemDistributionRuleEvent: Function;
             /** 选择采购收货-行 物料版本 */
             choosePurchaseDeliveryItemMaterialVersionEvent: Function;
+            /** 选择一业务伙伴目录事件 */
+            choosePurchaseDeliveryItemMaterialCatalogEvent: Function;
             /** 选择供应商合同 */
             chooseSupplierAgreementsEvent: Function;
             /** 编辑地址事件 */
@@ -12838,6 +12929,7 @@ declare namespace purchase {
             private choosePurchaseOrderItemDistributionRule;
             private choosePurchaseOrderItemMaterialVersion;
             protected measuringMaterials(): void;
+            protected choosePurchaseOrderItemMaterialCatalog(caller: bo.PurchaseOrderItem, filterConditions?: ibas.ICondition[]): void;
         }
         /** 视图-采购订单 */
         interface IPurchaseOrderEditView extends ibas.IBOEditView {
@@ -12881,6 +12973,8 @@ declare namespace purchase {
             choosePurchaseOrderItemDistributionRuleEvent: Function;
             /** 选择采购订单-行 物料版本 */
             choosePurchaseOrderItemMaterialVersionEvent: Function;
+            /** 选择一业务伙伴目录事件 */
+            choosePurchaseOrderItemMaterialCatalogEvent: Function;
             /** 选择供应商合同 */
             chooseSupplierAgreementsEvent: Function;
             /** 编辑地址事件 */
@@ -13301,6 +13395,7 @@ declare namespace purchase {
             /** 选择采购退货项目-采购收货事件 */
             private choosePurchaseReturnPurchaseReturnRequest;
             protected measuringMaterials(): void;
+            protected choosePurchaseReturnItemMaterialCatalog(caller: bo.PurchaseReturnItem, filterConditions?: ibas.ICondition[]): void;
         }
         /** 视图-采购退货 */
         interface IPurchaseReturnEditView extends ibas.IBOEditView {
@@ -13344,6 +13439,8 @@ declare namespace purchase {
             choosePurchaseReturnItemDistributionRuleEvent: Function;
             /** 选择采购退货-行 物料版本 */
             choosePurchaseReturnItemMaterialVersionEvent: Function;
+            /** 选择一业务伙伴目录事件 */
+            choosePurchaseReturnItemMaterialCatalogEvent: Function;
             /** 编辑地址事件 */
             editShippingAddressesEvent: Function;
             /** 转为采购贷项事件 */
@@ -13580,6 +13677,7 @@ declare namespace purchase {
             private choosePurchaseQuoteItemDistributionRule;
             private choosePurchaseQuoteItemMaterialVersion;
             protected measuringMaterials(): void;
+            protected choosePurchaseQuoteItemMaterialCatalog(caller: bo.PurchaseQuoteItem, filterConditions?: ibas.ICondition[]): void;
         }
         /** 视图-采购报价 */
         interface IPurchaseQuoteEditView extends ibas.IBOEditView {
@@ -13611,6 +13709,8 @@ declare namespace purchase {
             choosePurchaseQuoteItemDistributionRuleEvent: Function;
             /** 选择采购报价-行 物料版本 */
             choosePurchaseQuoteItemMaterialVersionEvent: Function;
+            /** 选择一业务伙伴目录事件 */
+            choosePurchaseQuoteItemMaterialCatalogEvent: Function;
             /** 选择供应商合同 */
             chooseSupplierAgreementsEvent: Function;
             /** 显示采购报价额外信息事件 */
@@ -14250,6 +14350,7 @@ declare namespace purchase {
             /** 添加销售发票-预收款事件 */
             protected choosePurchaseInvoiceDownPayment(): void;
             protected measuringMaterials(): void;
+            protected choosePurchaseInvoiceItemMaterialCatalog(caller: bo.PurchaseInvoiceItem, filterConditions?: ibas.ICondition[]): void;
         }
         /** 视图-采购发票 */
         interface IPurchaseInvoiceEditView extends ibas.IBOEditView {
@@ -14291,6 +14392,8 @@ declare namespace purchase {
             choosePurchaseInvoiceItemDistributionRuleEvent: Function;
             /** 选择采购发票-行 物料版本 */
             choosePurchaseInvoiceItemMaterialVersionEvent: Function;
+            /** 选择一业务伙伴目录事件 */
+            choosePurchaseInvoiceItemMaterialCatalogEvent: Function;
             /** 选择供应商合同 */
             chooseSupplierAgreementsEvent: Function;
             /** 采购发票收款事件 */
@@ -14544,6 +14647,7 @@ declare namespace purchase {
             private choosePurchaseCreditNoteItemDistributionRule;
             private choosePurchaseCreditNoteItemMaterialVersion;
             protected measuringMaterials(): void;
+            protected choosePurchaseCreditNoteItemMaterialCatalog(caller: bo.PurchaseCreditNoteItem, filterConditions?: ibas.ICondition[]): void;
         }
         /** 视图-采购贷项 */
         interface IPurchaseCreditNoteEditView extends ibas.IBOEditView {
@@ -14583,6 +14687,8 @@ declare namespace purchase {
             choosePurchaseCreditNoteItemDistributionRuleEvent: Function;
             /** 选择采购贷项-行 物料版本 */
             choosePurchaseCreditNoteItemMaterialVersionEvent: Function;
+            /** 选择一业务伙伴目录事件 */
+            choosePurchaseCreditNoteItemMaterialCatalogEvent: Function;
             /** 选择供应商合同 */
             chooseSupplierAgreementsEvent: Function;
             /** 编辑地址事件 */
@@ -14982,6 +15088,7 @@ declare namespace purchase {
             private chooseBlanketAgreementItemUnit;
             private chooseSupplierAgreements;
             protected measuringMaterials(): void;
+            protected chooseBlanketAgreementItemMaterialCatalog(caller: bo.BlanketAgreementItem, filterConditions?: ibas.ICondition[]): void;
         }
         /** 视图-一揽子协议 */
         interface IBlanketAgreementEditView extends ibas.IBOEditView {
@@ -15007,6 +15114,8 @@ declare namespace purchase {
             chooseBlanketAgreementItemUnitEvent: Function;
             /** 选择供应商合同 */
             chooseSupplierAgreementsEvent: Function;
+            /** 选择一业务伙伴目录事件 */
+            chooseBlanketAgreementItemMaterialCatalogEvent: Function;
             /** 测量物料 */
             measuringMaterialsEvent: Function;
             /** 默认税组 */
@@ -15239,6 +15348,7 @@ declare namespace purchase {
             private chooseDownPaymentRequestItemMaterialVersion;
             private paymentDownPaymentRequest;
             protected measuringMaterials(): void;
+            protected chooseDownPaymentRequestItemMaterialCatalog(caller: bo.DownPaymentRequestItem, filterConditions?: ibas.ICondition[]): void;
         }
         /** 视图-预付款申请 */
         interface IDownPaymentRequestEditView extends ibas.IBOEditView {
@@ -15276,6 +15386,8 @@ declare namespace purchase {
             chooseDownPaymentRequestItemDistributionRuleEvent: Function;
             /** 选择预付款申请-行 物料版本 */
             chooseDownPaymentRequestItemMaterialVersionEvent: Function;
+            /** 选择一业务伙伴目录事件 */
+            chooseDownPaymentRequestItemMaterialCatalogEvent: Function;
             /** 预收款申请付款事件 */
             paymentDownPaymentRequestEvent: Function;
             /** 测量物料 */
@@ -15407,6 +15519,7 @@ declare namespace purchase {
             private choosePurchaseReserveInvoiceItemDistributionRule;
             private choosePurchaseReserveInvoiceItemMaterialVersion;
             protected measuringMaterials(): void;
+            protected choosePurchaseReserveInvoiceItemMaterialCatalog(caller: bo.PurchaseReserveInvoiceItem, filterConditions?: ibas.ICondition[]): void;
         }
         /** 视图-采购预留发票 */
         interface IPurchaseReserveInvoiceEditView extends ibas.IBOEditView {
@@ -15444,6 +15557,8 @@ declare namespace purchase {
             choosePurchaseReserveInvoiceItemDistributionRuleEvent: Function;
             /** 选择采购预留发票-行 物料版本 */
             choosePurchaseReserveInvoiceItemMaterialVersionEvent: Function;
+            /** 选择一业务伙伴目录事件 */
+            choosePurchaseReserveInvoiceItemMaterialCatalogEvent: Function;
             /** 选择供应商合同 */
             chooseSupplierAgreementsEvent: Function;
             /** 采购预留发票收款事件 */
@@ -15691,6 +15806,7 @@ declare namespace purchase {
             /** 预留物料库存 */
             private reserveMaterialsInventory;
             protected measuringMaterials(): void;
+            protected choosePurchaseReturnRequestItemMaterialCatalog(caller: bo.PurchaseReturnRequestItem, filterConditions?: ibas.ICondition[]): void;
         }
         /** 视图-采购退货请求 */
         interface IPurchaseReturnRequestEditView extends ibas.IBOEditView {
@@ -15730,6 +15846,8 @@ declare namespace purchase {
             choosePurchaseReturnRequestItemDistributionRuleEvent: Function;
             /** 选择采购退货请求-行 物料版本 */
             choosePurchaseReturnRequestItemMaterialVersionEvent: Function;
+            /** 选择一业务伙伴目录事件 */
+            choosePurchaseReturnRequestItemMaterialCatalogEvent: Function;
             /** 编辑地址事件 */
             editShippingAddressesEvent: Function;
             /** 转为采购贷项事件 */

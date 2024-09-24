@@ -34,6 +34,7 @@ namespace sales {
                 this.view.chooseBlanketAgreementContactPersonEvent = this.chooseBlanketAgreementContactPerson;
                 this.view.chooseBlanketAgreementCustomerEvent = this.chooseBlanketAgreementCustomer;
                 this.view.chooseBlanketAgreementItemMaterialEvent = this.chooseBlanketAgreementItemMaterial;
+                this.view.chooseBlanketAgreementItemMaterialCatalogEvent = this.chooseBlanketAgreementItemMaterialCatalog;
                 this.view.chooseBlanketAgreementItemUnitEvent = this.chooseBlanketAgreementItemUnit;
                 this.view.chooseCustomerAgreementsEvent = this.chooseCustomerAgreements;
                 this.view.measuringMaterialsEvent = this.measuringMaterials;
@@ -488,6 +489,63 @@ namespace sales {
                     })
                 });
             }
+            protected chooseBlanketAgreementItemMaterialCatalog(caller: bo.BlanketAgreementItem, filterConditions?: ibas.ICondition[]): void {
+                if (ibas.strings.isEmpty(this.editData.customerCode)) {
+                    this.messages(
+                        ibas.emMessageType.WARNING, ibas.i18n.prop("sales_please_choose_supplier_first")
+                    ); return;
+                }
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = materials.bo.BusinessPartnerMaterialCatalog.PROPERTY_BUSINESSPARTNERTYPE_NAME;
+                condition.value = businesspartner.bo.emBusinessPartnerType.CUSTOMER.toString();
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.BusinessPartnerMaterialCatalog.PROPERTY_BUSINESSPARTNERCODE_NAME;
+                condition.value = this.editData.customerCode;
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.BusinessPartnerMaterialCatalog.PROPERTY_ITEMCODE_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                condition.value = "";
+                condition.bracketOpen = 1;
+                condition = criteria.conditions.create();
+                condition.alias = materials.bo.BusinessPartnerMaterialCatalog.PROPERTY_ITEMCODE_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_NULL;
+                condition.bracketClose = 1;
+                // 添加输入条件
+                if (filterConditions instanceof Array && filterConditions.length > 0) {
+                    if (criteria.conditions.length > 1) {
+                        criteria.conditions.firstOrDefault().bracketOpen++;
+                        criteria.conditions.lastOrDefault().bracketClose++;
+                    }
+                    criteria.conditions.add(filterConditions);
+                }
+                // 调用选择服务
+                ibas.servicesManager.runChooseService<materials.bo.BusinessPartnerMaterialCatalog>({
+                    criteria: criteria,
+                    chooseType: ibas.emChooseType.MULTIPLE,
+                    boCode: materials.bo.BusinessPartnerMaterialCatalog.BUSINESS_OBJECT_CODE,
+                    onCompleted: (selecteds) => {
+                        let count: number = this.editData.blanketAgreementItems.length;
+                        for (let selected of selecteds) {
+                            if (ibas.strings.isEmpty(selected.itemCode)) {
+                                continue;
+                            }
+                            if (ibas.objects.isNull(caller)) {
+                                caller = this.editData.blanketAgreementItems.create();
+                            }
+                            caller.catalogCode = selected.catalogCode;
+                            condition = new ibas.Condition();
+                            condition.alias = materials.bo.Material.PROPERTY_CODE_NAME;
+                            condition.value = selected.itemCode;
+                            this.chooseBlanketAgreementItemMaterial(caller, [condition]);
+                            caller = null;
+                        }
+                        if (this.editData.blanketAgreementItems.length > count) {
+                            this.view.showBlanketAgreementItems(this.editData.blanketAgreementItems.filterDeleted());
+                        }
+                    }
+                });
+            }
         }
         /** 视图-一揽子协议 */
         export interface IBlanketAgreementEditView extends ibas.IBOEditView {
@@ -511,6 +569,8 @@ namespace sales {
             chooseBlanketAgreementItemMaterialEvent: Function;
             /** 选择一揽子协议行单位事件 */
             chooseBlanketAgreementItemUnitEvent: Function;
+            /** 选择一业务伙伴目录事件 */
+            chooseBlanketAgreementItemMaterialCatalogEvent: Function;
             /** 选择客户合同 */
             chooseCustomerAgreementsEvent: Function;
             /** 测量物料 */
