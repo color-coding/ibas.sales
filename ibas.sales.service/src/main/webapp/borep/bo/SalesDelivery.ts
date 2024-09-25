@@ -544,6 +544,28 @@ namespace sales {
                 this.setProperty(SalesDelivery.PROPERTY_BRANCH_NAME, value);
             }
 
+            /** 映射的属性名称-毛利价格清单 */
+            static PROPERTY_GROSSBASE_NAME: string = "GrossBase";
+            /** 获取-毛利价格清单 */
+            get grossBase(): number {
+                return this.getProperty<number>(SalesDelivery.PROPERTY_GROSSBASE_NAME);
+            }
+            /** 设置-毛利价格清单 */
+            set grossBase(value: number) {
+                this.setProperty(SalesDelivery.PROPERTY_GROSSBASE_NAME, value);
+            }
+
+            /** 映射的属性名称-毛利 */
+            static PROPERTY_GROSSPROFIT_NAME: string = "GrossProfit";
+            /** 获取-毛利 */
+            get grossProfit(): number {
+                return this.getProperty<number>(SalesDelivery.PROPERTY_GROSSPROFIT_NAME);
+            }
+            /** 设置-毛利 */
+            set grossProfit(value: number) {
+                this.setProperty(SalesDelivery.PROPERTY_GROSSPROFIT_NAME, value);
+            }
+
             /** 映射的属性名称-销售交货-行集合 */
             static PROPERTY_SALESDELIVERYITEMS_NAME: string = "SalesDeliveryItems";
             /** 获取-销售交货-行集合 */
@@ -1677,6 +1699,28 @@ namespace sales {
             /** 设置-合同 */
             set agreements(value: string) {
                 this.setProperty(SalesDeliveryItem.PROPERTY_AGREEMENTS_NAME, value);
+            }
+
+            /** 映射的属性名称-毛利基础 */
+            static PROPERTY_GROSSBASE_NAME: string = "GrossBase";
+            /** 获取-毛利基础 */
+            get grossBase(): number {
+                return this.getProperty<number>(SalesDeliveryItem.PROPERTY_GROSSBASE_NAME);
+            }
+            /** 设置-毛利基础 */
+            set grossBase(value: number) {
+                this.setProperty(SalesDeliveryItem.PROPERTY_GROSSBASE_NAME, value);
+            }
+
+            /** 映射的属性名称-毛利价格 */
+            static PROPERTY_GROSSPRICE_NAME: string = "GrossPrice";
+            /** 获取-毛利价格 */
+            get grossPrice(): number {
+                return this.getProperty<number>(SalesDeliveryItem.PROPERTY_GROSSPRICE_NAME);
+            }
+            /** 设置-毛利价格 */
+            set grossPrice(value: number) {
+                this.setProperty(SalesDeliveryItem.PROPERTY_GROSSPRICE_NAME, value);
             }
 
             /** 映射的属性名称-物料批次集合 */

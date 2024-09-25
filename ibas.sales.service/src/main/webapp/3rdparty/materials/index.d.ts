@@ -546,6 +546,43 @@ declare namespace materials {
         /** 物料测量服务代理 */
         class MaterialMeasurementServiceProxy extends ibas.ServiceProxy<IMaterialMeasurementContract> {
         }
+        /** 物料毛利润服务契约 */
+        interface IMaterialGrossProfitContract extends ibas.IServiceContract {
+            /** 单据类型 */
+            documentType: string;
+            /** 单据编号 */
+            documentEntry: number;
+            /** 单据货币 */
+            documentCurrency: string;
+            /** 单据日期 */
+            documentDate: Date;
+            /** 毛利价格清单 */
+            getGrossProfitList(): number;
+            setGrossProfitList(value: number): void;
+            /** 毛利 */
+            getGrossProfit(): number;
+            setGrossProfit(value: number): void;
+            /** 行项目 */
+            lines: IMaterialGrossProfitContractLine[];
+        }
+        interface IMaterialGrossProfitContractLine {
+            lineId: number;
+            itemCode: string;
+            itemDescription: string;
+            quantity: number;
+            uom: string;
+            price: number;
+            currency: string;
+            /** 毛利价格来源 */
+            getGrossProfitSource(): number;
+            setGrossProfitSource(value: number): void;
+            /** 毛利价格 */
+            getGrossProfitPrice(): number;
+            setGrossProfitPrice(value: number): void;
+        }
+        /** 物料毛利润服务代理 */
+        class MaterialGrossProfitServiceProxy extends ibas.ServiceProxy<IMaterialGrossProfitContract> {
+        }
         /** 查询条件 */
         namespace conditions {
             namespace material {
@@ -7963,6 +8000,8 @@ declare namespace materials {
 declare namespace materials {
     namespace bo {
         class MaterialPriceList extends ibas.BOSimple<MaterialPriceList> implements IMaterialPriceList {
+            /** 价格清单：成本价格 */
+            static PRICE_LIST_COST_PRICE: number;
             /** 业务对象编码 */
             static BUSINESS_OBJECT_CODE: string;
             /** 构造函数 */
@@ -15981,7 +16020,7 @@ declare namespace materials {
              */
             calculateWeight(): void;
         }
-        /** 选择应用-物料 */
+        /** 物料测量服务 */
         class MaterialMeasurementService extends ibas.ServiceApplication<IMaterialMeasurementView, IMaterialMeasurementContract> {
             /** 应用标识 */
             static APPLICATION_ID: string;
@@ -16009,6 +16048,100 @@ declare namespace materials {
         }
         /**  物料测量服务映射 */
         class MaterialMeasurementServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace materials {
+    namespace app {
+        class MaterialGrossProfit extends ibas.Bindable {
+            constructor(original: IMaterialGrossProfitContract);
+            get isDirty(): boolean;
+            set isDirty(value: boolean);
+            get original(): IMaterialGrossProfitContract;
+            set original(value: IMaterialGrossProfitContract);
+            get documentType(): string;
+            set documentType(value: string);
+            get documentEntry(): number;
+            set documentEntry(value: number);
+            get documentDate(): Date;
+            set documentDate(value: Date);
+            get grossProfitList(): number;
+            set grossProfitList(value: number);
+            get grossProfit(): number;
+            set grossProfit(value: number);
+            get grossProfitRate(): number;
+            get lines(): ibas.IList<MaterialGrossProfitLine>;
+            /** 应用修改 */
+            apply(): void;
+            calculate(slient?: boolean): void;
+        }
+        class MaterialGrossProfitLine extends ibas.Bindable {
+            constructor(original: IMaterialGrossProfitContractLine);
+            get original(): IMaterialGrossProfitContractLine;
+            set original(value: IMaterialGrossProfitContractLine);
+            get lineId(): number;
+            set lineId(value: number);
+            get itemCode(): string;
+            set itemCode(value: string);
+            get itemDescription(): string;
+            set itemDescription(value: string);
+            get quantity(): number;
+            set quantity(value: number);
+            get uom(): string;
+            set uom(value: string);
+            get price(): number;
+            set price(value: number);
+            get currency(): string;
+            set currency(value: string);
+            get grossProfitSource(): number;
+            set grossProfitSource(value: number);
+            get grossProfitPrice(): number;
+            set grossProfitPrice(value: number);
+            get grossProfit(): number;
+            get grossProfitRate(): number;
+            calculate(slient?: boolean): void;
+        }
+        /** 物料毛利润服务 */
+        class MaterialGrossProfitService extends ibas.ServiceApplication<IMaterialGrossProfitView, IMaterialGrossProfitContract> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            private grossProfitData;
+            protected runService(contract: IMaterialGrossProfitContract): void;
+            protected apply(): void;
+            protected changePriceList(priceList: number, caller?: MaterialGrossProfit | MaterialGrossProfitLine): void;
+        }
+        /** 视图-物料毛利润 */
+        interface IMaterialGrossProfitView extends ibas.IView {
+            /** 显示数据 */
+            showData(data: MaterialGrossProfit): void;
+            /** 显示数据行 */
+            showDataLines(datas: MaterialGrossProfitLine[]): void;
+            /** 改变价格清单事件 */
+            changePriceListEvent: Function;
+            /** 应用改变事件 */
+            applyEvent: Function;
+        }
+        /**  物料毛利润服务映射 */
+        class MaterialGrossProfitServiceMapping extends ibas.ServiceMapping {
             /** 构造函数 */
             constructor();
             /** 创建服务实例 */

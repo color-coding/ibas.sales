@@ -2413,6 +2413,68 @@ public class SalesReserveInvoiceItem extends BusinessObject<SalesReserveInvoiceI
 	}
 
 	/**
+	* 属性名称-毛利基础
+	*/
+	private static final String PROPERTY_GROSSBASE_NAME = "GrossBase";
+
+	/**
+	* 毛利基础 属性
+	*/
+	@DbField(name = "GrossBase", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<Integer> PROPERTY_GROSSBASE = registerProperty(PROPERTY_GROSSBASE_NAME,
+			Integer.class, MY_CLASS);
+
+	/**
+	* 获取-毛利基础
+	* 
+	* @return 值
+	*/
+	@XmlElement(name = PROPERTY_GROSSBASE_NAME)
+	public final Integer getGrossBase() {
+		return this.getProperty(PROPERTY_GROSSBASE);
+	}
+
+	/**
+	* 设置-毛利基础
+	* 
+	* @param value 值
+	*/
+	public final void setGrossBase(Integer value) {
+		this.setProperty(PROPERTY_GROSSBASE, value);
+	}
+
+	/**
+	* 属性名称-毛利价格
+	*/
+	private static final String PROPERTY_GROSSPRICE_NAME = "GrossPrice";
+
+	/**
+	* 毛利价格 属性
+	*/
+	@DbField(name = "GrossPrice", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<BigDecimal> PROPERTY_GROSSPRICE = registerProperty(PROPERTY_GROSSPRICE_NAME,
+			BigDecimal.class, MY_CLASS);
+
+	/**
+	* 获取-毛利价格
+	* 
+	* @return 值
+	*/
+	@XmlElement(name = PROPERTY_GROSSPRICE_NAME)
+	public final BigDecimal getGrossPrice() {
+		return this.getProperty(PROPERTY_GROSSPRICE);
+	}
+
+	/**
+	* 设置-毛利价格
+	* 
+	* @param value 值
+	*/
+	public final void setGrossPrice(BigDecimal value) {
+		this.setProperty(PROPERTY_GROSSPRICE, value);
+	}
+
+	/**
 	 * 属性名称-物料批次
 	 */
 	private static final String PROPERTY_MATERIALBATCHES_NAME = "MaterialBatches";

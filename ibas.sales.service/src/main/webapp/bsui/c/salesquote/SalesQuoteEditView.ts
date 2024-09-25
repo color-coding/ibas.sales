@@ -50,6 +50,8 @@ namespace sales {
                 reserveMaterialsInventoryEvent: Function;
                 /** 测量物料 */
                 measuringMaterialsEvent: Function;
+                /** 计算毛利润 */
+                calculateGrossProfitEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
@@ -1096,6 +1098,17 @@ namespace sales {
                                                 visible: shell.app.privileges.canRun({
                                                     id: materials.app.MaterialMeasurementService.APPLICATION_ID,
                                                     name: materials.app.MaterialMeasurementService.APPLICATION_NAME,
+                                                })
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("sales_calculate_gross_profit"),
+                                                icon: "sap-icon://simulate",
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.calculateGrossProfitEvent);
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: materials.app.MaterialGrossProfitService.APPLICATION_ID,
+                                                    name: materials.app.MaterialGrossProfitService.APPLICATION_NAME,
                                                 })
                                             }),
                                         ],

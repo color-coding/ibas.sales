@@ -105,6 +105,10 @@ namespace sales {
             agreements: string;
             /** 分支 */
             branch: string;
+            /** 毛利价格清单 */
+            grossBase: number;
+            /** 毛利 */
+            grossProfit: number;
             /** 销售预留发票-行集合 */
             salesReserveInvoiceItems: ISalesReserveInvoiceItems;
             /** 送货地址集合 */
@@ -251,6 +255,10 @@ namespace sales {
             distributionRule5: string;
             /** 合同 */
             agreements: string;
+            /** 毛利基础 */
+            grossBase: number;
+            /** 毛利价格 */
+            grossPrice: number;
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;
         }

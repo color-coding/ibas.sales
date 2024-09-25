@@ -153,6 +153,10 @@ namespace sales {
 
             /** 分支 */
             branch: string;
+            /** 毛利价格清单 */
+            grossBase: number;
+            /** 毛利 */
+            grossProfit: number;
 
             /** 销售交货-行集合 */
             salesDeliveryItems: ISalesDeliveryItems;
@@ -365,6 +369,10 @@ namespace sales {
 
             /** 合同 */
             agreements: string;
+            /** 毛利基础 */
+            grossBase: number;
+            /** 毛利价格 */
+            grossPrice: number;
 
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;

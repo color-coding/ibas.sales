@@ -48,6 +48,8 @@
     <Property Name="OrderType" Description="单据类型" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OrderType"/>
     <Property Name="Agreements" Description="合同/协议" DataType="Alphanumeric" DataSubType="Default" EditSize="110" Mapped="Agreements"/>
     <Property Name="Branch" Description="分支" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="Branch"/>
+    <Property Name="GrossBase" Description="毛利价格清单" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="GrossBase"/>
+    <Property Name="GrossProfit" Description="毛利" DataType="Decimal" DataSubType="Sum" EditSize="8" Mapped="GrossProfit"/>
   </Model>
   <Model Name="DownPaymentRequestItem" Description="预收款申请-行" ModelType="DocumentLine" Mapped="${Company}_SL_DPO1">
     <Property Name="DocEntry" Description="凭证编号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="DocEntry" PrimaryKey="Yes"/>
@@ -111,6 +113,8 @@
     <Property Name="DistributionRule4" Description="成本中心4" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OcrCode4"/>
     <Property Name="DistributionRule5" Description="成本中心5" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="OcrCode5"/>
     <Property Name="Agreements" Description="合同/协议" DataType="Alphanumeric" DataSubType="Default" EditSize="110" Mapped="Agreements"/>
+    <Property Name="GrossBase" Description="毛利基础" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="GrossBase"/>
+    <Property Name="GrossPrice" Description="毛利价格" DataType="Decimal" DataSubType="Price" EditSize="8" Mapped="GrossPrice"/>
   </Model>
   <BusinessObject MappedModel="DownPaymentRequest" ShortName="${Company}_SL_PAYREQUEST">
     <RelatedBO Relation="OneToMany" MappedModel="DownPaymentRequestItem"/>

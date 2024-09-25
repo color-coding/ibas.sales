@@ -111,5 +111,6 @@
     "sales_order_status_change_to": "Order [{0}], status changed to [{1}]",
     "sales_document_inventoryquantity": "Whs Qty/Total Qty",
     "sales_please_choose_supplier_first": "Please choose supplier first",
+    "sales_calculate_gross_profit": "Calculate Gross Profit",
     "sales_closing_delimiter": "----End----"
 }

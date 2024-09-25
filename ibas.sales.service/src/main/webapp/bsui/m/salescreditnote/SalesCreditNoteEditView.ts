@@ -50,6 +50,8 @@ namespace sales {
                 editShippingAddressesEvent: Function;
                 /** 测量物料 */
                 measuringMaterialsEvent: Function;
+                /** 计算毛利润 */
+                calculateGrossProfitEvent: Function;
                 defaultWarehouse: string;
                 /** 绘制视图 */
                 draw(): any {

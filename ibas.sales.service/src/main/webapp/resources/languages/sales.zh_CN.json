@@ -113,5 +113,6 @@
   "sales_multiple_order_status_change_to": "共[{0}]个订单，状态将修改为[{1}]，是否继续？",
   "sales_order_status_change_to": "订单[{0}]，状态修改为[{1}]",
   "sales_please_choose_supplier_first": "请先选择客户",
+  "sales_calculate_gross_profit": "计算毛利润",
   "sales_closing_delimiter": "----结束----"
 }

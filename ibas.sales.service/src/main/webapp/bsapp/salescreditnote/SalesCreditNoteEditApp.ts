@@ -47,6 +47,7 @@ namespace sales {
                 this.view.chooseCustomerAgreementsEvent = this.chooseCustomerAgreements;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
                 this.view.measuringMaterialsEvent = this.measuringMaterials;
+                this.view.calculateGrossProfitEvent = this.calculateGrossProfit;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -1295,6 +1296,60 @@ namespace sales {
                     }
                 });
             }
+            protected calculateGrossProfit(): void {
+                let lines: ibas.ArrayList<materials.app.IMaterialGrossProfitContractLine>
+                    = new ibas.ArrayList<materials.app.IMaterialGrossProfitContractLine>();
+                for (let item of this.editData.salesCreditNoteItems) {
+                    if (item.isDeleted === true) {
+                        continue;
+                    }
+                    if (!ibas.strings.isEmpty(item.parentLineSign)) {
+                        continue;
+                    }
+                    lines.add({
+                        lineId: item.lineId,
+                        itemCode: item.itemCode,
+                        itemDescription: item.itemDescription,
+                        quantity: item.quantity,
+                        uom: item.uom,
+                        price: item.preTaxPrice,
+                        currency: item.currency,
+                        getGrossProfitPrice(): number {
+                            return item.grossPrice;
+                        },
+                        setGrossProfitPrice(value: number): void {
+                            item.grossPrice = value;
+                        },
+                        getGrossProfitSource(): number {
+                            return item.grossBase;
+                        },
+                        setGrossProfitSource(value: number): void {
+                            item.grossBase = value;
+                        }
+                    });
+                }
+                ibas.servicesManager.runApplicationService<materials.app.IMaterialGrossProfitContract>({
+                    proxy: new materials.app.MaterialGrossProfitServiceProxy({
+                        documentType: this.editData.objectCode,
+                        documentEntry: this.editData.docEntry,
+                        documentCurrency: this.editData.documentCurrency,
+                        documentDate: this.editData.documentDate,
+                        getGrossProfitList: () => {
+                            return this.editData.grossBase;
+                        },
+                        setGrossProfitList: (value) => {
+                            this.editData.grossBase = value;
+                        },
+                        getGrossProfit: () => {
+                            return this.editData.grossProfit;
+                        },
+                        setGrossProfit: (value) => {
+                            this.editData.grossProfit = value;
+                        },
+                        lines: lines,
+                    })
+                });
+            }
         }
         /** 视图-销售贷项 */
         export interface ISalesCreditNoteEditView extends ibas.IBOEditView {
@@ -1342,6 +1397,8 @@ namespace sales {
             editShippingAddressesEvent: Function;
             /** 测量物料 */
             measuringMaterialsEvent: Function;
+            /** 计算毛利润 */
+            calculateGrossProfitEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
         }

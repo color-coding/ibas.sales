@@ -42,6 +42,8 @@ namespace sales {
                 chooseSalesReturnRequestItemDistributionRuleEvent: Function;
                 /** 选择销售退货请求项目-销售交货事件 */
                 chooseSalesReturnRequestSalesDeliveryEvent: Function;
+                /** 选择销售退货请求项目-销售发票事件 */
+                chooseSalesReturnRequestSalesInvoiceEvent: Function;
                 /** 选择客户合同 */
                 chooseCustomerAgreementsEvent: Function;
                 /** 收款销售退货请求 */
@@ -52,6 +54,8 @@ namespace sales {
                 turnToSalesReturnEvent: Function;
                 /** 测量物料 */
                 measuringMaterialsEvent: Function;
+                /** 计算毛利润 */
+                calculateGrossProfitEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */
@@ -116,6 +120,16 @@ namespace sales {
                                                 visible: shell.app.privileges.canRun({
                                                     id: app.SalesDeliveryChooseApp.APPLICATION_ID,
                                                     name: app.SalesDeliveryChooseApp.APPLICATION_NAME,
+                                                })
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("bo_salesinvoice"),
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.chooseSalesReturnRequestSalesInvoiceEvent);
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: app.SalesInvoiceChooseApp.APPLICATION_ID,
+                                                    name: app.SalesInvoiceChooseApp.APPLICATION_NAME,
                                                 })
                                             }),
                                         ]

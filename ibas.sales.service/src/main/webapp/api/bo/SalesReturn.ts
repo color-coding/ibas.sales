@@ -153,6 +153,10 @@ namespace sales {
 
             /** 分支 */
             branch: string;
+            /** 毛利价格清单 */
+            grossBase: number;
+            /** 毛利 */
+            grossProfit: number;
 
             /** 销售退货-行集合 */
             salesReturnItems: ISalesReturnItems;
@@ -368,6 +372,10 @@ namespace sales {
 
             /** 退货成本（本币） */
             returnCost: number;
+            /** 毛利基础 */
+            grossBase: number;
+            /** 毛利价格 */
+            grossPrice: number;
 
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;

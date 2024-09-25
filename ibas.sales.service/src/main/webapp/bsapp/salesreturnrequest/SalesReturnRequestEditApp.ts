@@ -43,10 +43,12 @@ namespace sales {
                 this.view.chooseSalesReturnRequestItemDistributionRuleEvent = this.chooseSalesReturnRequestItemDistributionRule;
                 this.view.chooseSalesReturnRequestItemMaterialCatalogEvent = this.chooseSalesReturnRequestItemMaterialCatalog;
                 this.view.chooseSalesReturnRequestSalesDeliveryEvent = this.chooseSalesReturnRequestSalesDelivery;
+                this.view.chooseSalesReturnRequestSalesInvoiceEvent = this.chooseSalesReturnRequestSalesInvoice;
                 this.view.chooseCustomerAgreementsEvent = this.chooseCustomerAgreements;
                 this.view.editShippingAddressesEvent = this.editShippingAddresses;
                 this.view.turnToSalesReturnEvent = this.turnToSalesReturn;
                 this.view.measuringMaterialsEvent = this.measuringMaterials;
+                this.view.calculateGrossProfitEvent = this.calculateGrossProfit;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -794,6 +796,117 @@ namespace sales {
                     }
                 });
             }
+            /** 选择销售退货请求项目-销售发票事件 */
+            private chooseSalesReturnRequestSalesInvoice(): void {
+                if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("bo_salesdelivery_customercode")
+                    ));
+                    return;
+                }
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                let condition: ibas.ICondition = criteria.conditions.create();
+                // 未取消的
+                condition.alias = bo.SalesInvoice.PROPERTY_CANCELED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 未删除的
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesInvoice.PROPERTY_DELETED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 非计划的
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesInvoice.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                condition.value = ibas.emDocumentStatus.PLANNED.toString();
+                // 审批通过的或未进审批
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesInvoice.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.APPROVED.toString();
+                condition.bracketOpen = 1;
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesInvoice.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.UNAFFECTED.toString();
+                condition.relationship = ibas.emConditionRelationship.OR;
+                condition.bracketClose = 1;
+                // 是否指定分支
+                if (!ibas.strings.isEmpty(this.editData.branch)) {
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesInvoice.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = this.editData.branch;
+                } else {
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesInvoice.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = "";
+                    condition.bracketOpen = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = bo.SalesInvoice.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.IS_NULL;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition.bracketClose = 1;
+                }
+                // 当前客户的
+                condition = criteria.conditions.create();
+                condition.alias = bo.SalesInvoice.PROPERTY_CUSTOMERCODE_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = this.editData.customerCode;
+                // 指定了合同/协议
+                if (!ibas.strings.isEmpty(this.editData.agreements)) {
+                    let index: number = criteria.conditions.length;
+                    for (let item of this.editData.agreements.split(ibas.DATA_SEPARATOR)) {
+                        if (ibas.strings.isEmpty(item)) {
+                            continue;
+                        }
+                        condition = criteria.conditions.create();
+                        condition.alias = bo.SalesInvoice.PROPERTY_AGREEMENTS_NAME;
+                        condition.operation = ibas.emConditionOperation.CONTAIN;
+                        condition.value = item;
+                        if (criteria.conditions.length > (index + 1)) {
+                            condition.relationship = ibas.emConditionRelationship.OR;
+                        }
+                    }
+                    if (criteria.conditions.length > (index + 2)) {
+                        criteria.conditions[index].bracketOpen += 1;
+                        criteria.conditions[criteria.conditions.length - 1].bracketClose += 1;
+                    }
+                }
+                // 子项查询
+                let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
+                cCriteria.propertyPath = bo.SalesInvoice.PROPERTY_SALESINVOICEITEMS_NAME;
+                cCriteria.onlyHasChilds = true;
+                cCriteria.noChilds = false;
+                // 未取消的
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesInvoiceItem.PROPERTY_CANCELED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 数量大于已清数量
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesInvoiceItem.PROPERTY_QUANTITY_NAME;
+                condition.operation = ibas.emConditionOperation.GRATER_THAN;
+                condition.comparedAlias = bo.SalesInvoiceItem.PROPERTY_CLOSEDQUANTITY_NAME;
+                // 调用选择服务
+                let that: this = this;
+                ibas.servicesManager.runChooseService<bo.SalesInvoice>({
+                    boCode: bo.SalesInvoice.BUSINESS_OBJECT_CODE,
+                    chooseType: ibas.emChooseType.MULTIPLE,
+                    criteria: criteria,
+                    onCompleted(selecteds: ibas.IList<bo.SalesInvoice>): void {
+                        for (let selected of selecteds) {
+                            if (!ibas.strings.equals(that.editData.customerCode, selected.customerCode)) {
+                                continue;
+                            }
+                            that.editData.baseDocument(selected);
+                        }
+                        that.view.showSalesReturnRequestItems(that.editData.salesReturnRequestItems.filterDeleted());
+                    }
+                });
+            }
             /** 选择联系人 */
             private chooseSalesReturnRequestContactPerson(): void {
                 if (ibas.objects.isNull(this.editData) || ibas.strings.isEmpty(this.editData.customerCode)) {
@@ -1120,6 +1233,60 @@ namespace sales {
                     }
                 });
             }
+            protected calculateGrossProfit(): void {
+                let lines: ibas.ArrayList<materials.app.IMaterialGrossProfitContractLine>
+                    = new ibas.ArrayList<materials.app.IMaterialGrossProfitContractLine>();
+                for (let item of this.editData.salesReturnRequestItems) {
+                    if (item.isDeleted === true) {
+                        continue;
+                    }
+                    if (!ibas.strings.isEmpty(item.parentLineSign)) {
+                        continue;
+                    }
+                    lines.add({
+                        lineId: item.lineId,
+                        itemCode: item.itemCode,
+                        itemDescription: item.itemDescription,
+                        quantity: item.quantity,
+                        uom: item.uom,
+                        price: item.preTaxPrice,
+                        currency: item.currency,
+                        getGrossProfitPrice(): number {
+                            return item.grossPrice;
+                        },
+                        setGrossProfitPrice(value: number): void {
+                            item.grossPrice = value;
+                        },
+                        getGrossProfitSource(): number {
+                            return item.grossBase;
+                        },
+                        setGrossProfitSource(value: number): void {
+                            item.grossBase = value;
+                        }
+                    });
+                }
+                ibas.servicesManager.runApplicationService<materials.app.IMaterialGrossProfitContract>({
+                    proxy: new materials.app.MaterialGrossProfitServiceProxy({
+                        documentType: this.editData.objectCode,
+                        documentEntry: this.editData.docEntry,
+                        documentCurrency: this.editData.documentCurrency,
+                        documentDate: this.editData.documentDate,
+                        getGrossProfitList: () => {
+                            return this.editData.grossBase;
+                        },
+                        setGrossProfitList: (value) => {
+                            this.editData.grossBase = value;
+                        },
+                        getGrossProfit: () => {
+                            return this.editData.grossProfit;
+                        },
+                        setGrossProfit: (value) => {
+                            this.editData.grossProfit = value;
+                        },
+                        lines: lines,
+                    })
+                });
+            }
         }
         /** 视图-销售退货请求 */
         export interface ISalesReturnRequestEditView extends ibas.IBOEditView {
@@ -1159,6 +1326,8 @@ namespace sales {
             chooseSalesReturnRequestItemDistributionRuleEvent: Function;
             /** 选择销售退货请求项目-销售交货事件 */
             chooseSalesReturnRequestSalesDeliveryEvent: Function;
+            /** 选择销售退货请求项目-销售发票事件 */
+            chooseSalesReturnRequestSalesInvoiceEvent: Function;
             /** 选择客户合同 */
             chooseCustomerAgreementsEvent: Function;
             /** 编辑地址事件 */
@@ -1167,6 +1336,8 @@ namespace sales {
             turnToSalesReturnEvent: Function;
             /** 测量物料 */
             measuringMaterialsEvent: Function;
+            /** 计算毛利润 */
+            calculateGrossProfitEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
         }

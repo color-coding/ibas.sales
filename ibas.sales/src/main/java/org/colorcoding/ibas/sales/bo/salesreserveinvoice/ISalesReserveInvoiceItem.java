@@ -1186,4 +1186,33 @@ public interface ISalesReserveInvoiceItem
 	 * @param value 值
 	 */
 	void setAgreements(String value);
+
+	/**
+	* 获取-毛利基础
+	* 
+	* @return 值
+	*/
+	Integer getGrossBase();
+
+	/**
+	* 设置-毛利基础
+	* 
+	* @param value 值
+	*/
+	void setGrossBase(Integer value);
+
+	/**
+	* 获取-毛利价格
+	* 
+	* @return 值
+	*/
+	BigDecimal getGrossPrice();
+
+	/**
+	* 设置-毛利价格
+	* 
+	* @param value 值
+	*/
+	void setGrossPrice(BigDecimal value);
+
 }

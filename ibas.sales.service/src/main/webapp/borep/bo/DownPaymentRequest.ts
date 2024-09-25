@@ -521,6 +521,27 @@ namespace sales {
                 this.setProperty(DownPaymentRequest.PROPERTY_BRANCH_NAME, value);
             }
 
+            /** 映射的属性名称-毛利价格清单 */
+            static PROPERTY_GROSSBASE_NAME: string = "GrossBase";
+            /** 获取-毛利价格清单 */
+            get grossBase(): number {
+                return this.getProperty<number>(DownPaymentRequest.PROPERTY_GROSSBASE_NAME);
+            }
+            /** 设置-毛利价格清单 */
+            set grossBase(value: number) {
+                this.setProperty(DownPaymentRequest.PROPERTY_GROSSBASE_NAME, value);
+            }
+
+            /** 映射的属性名称-毛利 */
+            static PROPERTY_GROSSPROFIT_NAME: string = "GrossProfit";
+            /** 获取-毛利 */
+            get grossProfit(): number {
+                return this.getProperty<number>(DownPaymentRequest.PROPERTY_GROSSPROFIT_NAME);
+            }
+            /** 设置-毛利 */
+            set grossProfit(value: number) {
+                this.setProperty(DownPaymentRequest.PROPERTY_GROSSPROFIT_NAME, value);
+            }
 
             /** 映射的属性名称-预收款申请-行集合 */
             static PROPERTY_DOWNPAYMNETREQUESTITEMS_NAME: string = "DownPaymentRequestItems";
@@ -1450,6 +1471,27 @@ namespace sales {
                 this.setProperty(DownPaymentRequestItem.PROPERTY_AGREEMENTS_NAME, value);
             }
 
+            /** 映射的属性名称-毛利基础 */
+            static PROPERTY_GROSSBASE_NAME: string = "GrossBase";
+            /** 获取-毛利基础 */
+            get grossBase(): number {
+                return this.getProperty<number>(DownPaymentRequestItem.PROPERTY_GROSSBASE_NAME);
+            }
+            /** 设置-毛利基础 */
+            set grossBase(value: number) {
+                this.setProperty(DownPaymentRequestItem.PROPERTY_GROSSBASE_NAME, value);
+            }
+
+            /** 映射的属性名称-毛利价格 */
+            static PROPERTY_GROSSPRICE_NAME: string = "GrossPrice";
+            /** 获取-毛利价格 */
+            get grossPrice(): number {
+                return this.getProperty<number>(DownPaymentRequestItem.PROPERTY_GROSSPRICE_NAME);
+            }
+            /** 设置-毛利价格 */
+            set grossPrice(value: number) {
+                this.setProperty(DownPaymentRequestItem.PROPERTY_GROSSPRICE_NAME, value);
+            }
 
             /** 初始化数据 */
             protected init(): void {

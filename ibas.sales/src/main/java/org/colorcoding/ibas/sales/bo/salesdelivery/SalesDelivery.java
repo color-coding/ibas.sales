@@ -1748,6 +1748,68 @@ public class SalesDelivery extends BusinessObject<SalesDelivery> implements ISal
 	}
 
 	/**
+	* 属性名称-毛利价格清单
+	*/
+	private static final String PROPERTY_GROSSBASE_NAME = "GrossBase";
+
+	/**
+	* 毛利价格清单 属性
+	*/
+	@DbField(name = "GrossBase", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<Integer> PROPERTY_GROSSBASE = registerProperty(PROPERTY_GROSSBASE_NAME,
+			Integer.class, MY_CLASS);
+
+	/**
+	* 获取-毛利价格清单
+	* 
+	* @return 值
+	*/
+	@XmlElement(name = PROPERTY_GROSSBASE_NAME)
+	public final Integer getGrossBase() {
+		return this.getProperty(PROPERTY_GROSSBASE);
+	}
+
+	/**
+	* 设置-毛利价格清单
+	* 
+	* @param value 值
+	*/
+	public final void setGrossBase(Integer value) {
+		this.setProperty(PROPERTY_GROSSBASE, value);
+	}
+
+	/**
+	* 属性名称-毛利
+	*/
+	private static final String PROPERTY_GROSSPROFIT_NAME = "GrossProfit";
+
+	/**
+	* 毛利 属性
+	*/
+	@DbField(name = "GrossProfit", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<BigDecimal> PROPERTY_GROSSPROFIT = registerProperty(PROPERTY_GROSSPROFIT_NAME,
+			BigDecimal.class, MY_CLASS);
+
+	/**
+	* 获取-毛利
+	* 
+	* @return 值
+	*/
+	@XmlElement(name = PROPERTY_GROSSPROFIT_NAME)
+	public final BigDecimal getGrossProfit() {
+		return this.getProperty(PROPERTY_GROSSPROFIT);
+	}
+
+	/**
+	* 设置-毛利
+	* 
+	* @param value 值
+	*/
+	public final void setGrossProfit(BigDecimal value) {
+		this.setProperty(PROPERTY_GROSSPROFIT, value);
+	}
+
+	/**
 	 * 属性名称-销售交货-行
 	 */
 	private static final String PROPERTY_SALESDELIVERYITEMS_NAME = "SalesDeliveryItems";
@@ -1928,6 +1990,7 @@ public class SalesDelivery extends BusinessObject<SalesDelivery> implements ISal
 	public void reset() {
 		super.reset();
 		this.setPaidTotal(Decimal.ZERO);
+		this.setGrossProfit(Decimal.ZERO);
 		this.setDocumentStatus(emDocumentStatus.RELEASED);
 		this.getSalesDeliveryItems().forEach(c -> c.setLineStatus(emDocumentStatus.RELEASED));
 	}

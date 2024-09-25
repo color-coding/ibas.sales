@@ -153,6 +153,10 @@ namespace sales {
 
             /** 分支 */
             branch: string;
+            /** 毛利价格清单 */
+            grossBase: number;
+            /** 毛利 */
+            grossProfit: number;
 
             /** 销售订单-行集合 */
             salesOrderItems: ISalesOrderItems;
@@ -366,6 +370,10 @@ namespace sales {
 
             /** 已订购数量 */
             orderedQuantity: number;
+            /** 毛利基础 */
+            grossBase: number;
+            /** 毛利价格 */
+            grossPrice: number;
 
             /** 销售订单-行-额外信息集合 */
             salesOrderItemExtras: ISalesOrderItemExtras;

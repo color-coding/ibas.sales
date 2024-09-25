@@ -156,6 +156,10 @@ namespace sales {
 
             /** 分支 */
             branch: string;
+            /** 毛利价格清单 */
+            grossBase: number;
+            /** 毛利 */
+            grossProfit: number;
 
             /** 销售报价-行集合 */
             salesQuoteItems: ISalesQuoteItems;
@@ -359,6 +363,10 @@ namespace sales {
 
             /** 合同 */
             agreements: string;
+            /** 毛利基础 */
+            grossBase: number;
+            /** 毛利价格 */
+            grossPrice: number;
 
             /** 销售报价-行-额外信息集合 */
             salesQuoteItemExtras: ISalesQuoteItemExtras;

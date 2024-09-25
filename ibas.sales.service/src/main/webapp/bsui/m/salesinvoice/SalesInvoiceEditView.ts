@@ -60,6 +60,8 @@ namespace sales {
                 removeSalesInvoiceDownPaymentEvent: Function;
                 /** 测量物料 */
                 measuringMaterialsEvent: Function;
+                /** 计算毛利润 */
+                calculateGrossProfitEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */

@@ -1185,6 +1185,34 @@ public interface ISalesQuoteItem extends IBODocumentLine, IDocumentClosingQuanti
 	void setAgreements(String value);
 
 	/**
+	* 获取-毛利基础
+	* 
+	* @return 值
+	*/
+	Integer getGrossBase();
+
+	/**
+	* 设置-毛利基础
+	* 
+	* @param value 值
+	*/
+	void setGrossBase(Integer value);
+
+	/**
+	* 获取-毛利价格
+	* 
+	* @return 值
+	*/
+	BigDecimal getGrossPrice();
+
+	/**
+	* 设置-毛利价格
+	* 
+	* @param value 值
+	*/
+	void setGrossPrice(BigDecimal value);
+
+	/**
 	 * 获取-销售报价-行-额外信息集合
 	 * 
 	 * @return 值

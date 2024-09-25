@@ -526,22 +526,44 @@ namespace sales {
             static PROPERTY_AGREEMENTS_NAME: string = "Agreements";
             /** 获取-合同 */
             get agreements(): string {
-                return this.getProperty<string>(SalesCreditNote.PROPERTY_AGREEMENTS_NAME);
+                return this.getProperty<string>(SalesReturnRequest.PROPERTY_AGREEMENTS_NAME);
             }
             /** 设置-合同 */
             set agreements(value: string) {
-                this.setProperty(SalesCreditNote.PROPERTY_AGREEMENTS_NAME, value);
+                this.setProperty(SalesReturnRequest.PROPERTY_AGREEMENTS_NAME, value);
             }
 
             /** 映射的属性名称-分支 */
             static PROPERTY_BRANCH_NAME: string = "Branch";
             /** 获取-分支 */
             get branch(): string {
-                return this.getProperty<string>(SalesCreditNote.PROPERTY_BRANCH_NAME);
+                return this.getProperty<string>(SalesReturnRequest.PROPERTY_BRANCH_NAME);
             }
             /** 设置-分支 */
             set branch(value: string) {
-                this.setProperty(SalesCreditNote.PROPERTY_BRANCH_NAME, value);
+                this.setProperty(SalesReturnRequest.PROPERTY_BRANCH_NAME, value);
+            }
+
+            /** 映射的属性名称-毛利价格清单 */
+            static PROPERTY_GROSSBASE_NAME: string = "GrossBase";
+            /** 获取-毛利价格清单 */
+            get grossBase(): number {
+                return this.getProperty<number>(SalesReturnRequest.PROPERTY_GROSSBASE_NAME);
+            }
+            /** 设置-毛利价格清单 */
+            set grossBase(value: number) {
+                this.setProperty(SalesReturnRequest.PROPERTY_GROSSBASE_NAME, value);
+            }
+
+            /** 映射的属性名称-毛利 */
+            static PROPERTY_GROSSPROFIT_NAME: string = "GrossProfit";
+            /** 获取-毛利 */
+            get grossProfit(): number {
+                return this.getProperty<number>(SalesReturnRequest.PROPERTY_GROSSPROFIT_NAME);
+            }
+            /** 设置-毛利 */
+            set grossProfit(value: number) {
+                this.setProperty(SalesReturnRequest.PROPERTY_GROSSPROFIT_NAME, value);
             }
 
             /** 映射的属性名称-销售退货请求-行集合 */
@@ -703,6 +725,8 @@ namespace sales {
             baseDocument(document: ISalesOrder): void;
             /** 基于销售交货 */
             baseDocument(document: ISalesDelivery): void;
+            /** 基于销售交货 */
+            baseDocument(document: ISalesInvoice): void;
             /** 基于单据 */
             baseDocument(): void {
                 // 基于销售订单
@@ -765,6 +789,81 @@ namespace sales {
                     bo.baseDocument(this, document);
                     // 复制行项目
                     for (let item of document.salesDeliveryItems) {
+                        if (item.canceled === ibas.emYesNo.YES) {
+                            continue;
+                        }
+                        if (item.lineStatus === ibas.emDocumentStatus.PLANNED) {
+                            continue;
+                        }
+                        if (this.salesReturnRequestItems.firstOrDefault(
+                            c => c.baseDocumentType === item.objectCode
+                                && c.baseDocumentEntry === item.docEntry
+                                && c.baseDocumentLineId === item.lineId) !== null) {
+                            continue;
+                        }
+                        // 计算未发票数量
+                        let openQty: number = item.quantity - item.closedQuantity;
+                        if (openQty <= 0) {
+                            continue;
+                        }
+                        let myItem: SalesReturnRequestItem = this.salesReturnRequestItems.create();
+                        bo.baseDocumentItem(myItem, item);
+                        myItem.quantity = openQty;
+                        // 复制批次
+                        openQty = myItem.quantity * (item.uomRate > 0 ? item.uomRate : 1);
+                        let closeQty: number = item.closedQuantity * (item.uomRate > 0 ? item.uomRate : 1);
+                        for (let batch of item.materialBatches) {
+                            closeQty -= batch.quantity;
+                            if (closeQty >= 0 || openQty <= 0) {
+                                continue;
+                            }
+                            let myBatch: materials.bo.IMaterialBatchItem = myItem.materialBatches.create();
+                            myBatch.batchCode = batch.batchCode;
+                            myBatch.quantity = batch.quantity;
+                            if (myBatch.quantity > openQty) {
+                                myBatch.quantity = openQty;
+                            }
+                            openQty -= myBatch.quantity;
+                            if (openQty <= 0) {
+                                break;
+                            }
+                        }
+                        // 复制序列
+                        openQty = myItem.quantity * (item.uomRate > 0 ? item.uomRate : 1);
+                        closeQty = item.closedQuantity * (item.uomRate > 0 ? item.uomRate : 1);
+                        for (let serial of item.materialSerials) {
+                            closeQty -= 1;
+                            if (closeQty >= 0 || openQty <= 0) {
+                                continue;
+                            }
+                            let mySerial: materials.bo.IMaterialSerialItem = myItem.materialSerials.create();
+                            mySerial.serialCode = serial.serialCode;
+                            openQty -= 1;
+                            if (openQty <= 0) {
+                                break;
+                            }
+                        }
+                    }
+                    // 复制地址
+                    for (let address of document.shippingAddresss) {
+                        // 不复制重名的
+                        if (this.shippingAddresss.firstOrDefault(c => c.name === address.name) !== null) {
+                            continue;
+                        }
+                        let myAddress: IShippingAddress = address.clone();
+                        this.shippingAddresss.add(<ShippingAddress>myAddress);
+                    }
+                }
+                // 基于销售发票
+                if (ibas.objects.instanceOf(arguments[0], SalesInvoice)) {
+                    let document: SalesInvoice = arguments[0];
+                    if (!ibas.strings.equals(this.customerCode, document.customerCode)) {
+                        return;
+                    }
+                    // 复制头信息
+                    bo.baseDocument(this, document);
+                    // 复制行项目
+                    for (let item of document.salesInvoiceItems) {
                         if (item.canceled === ibas.emYesNo.YES) {
                             continue;
                         }
@@ -1654,6 +1753,28 @@ namespace sales {
             /** 设置-退货成本（本币） */
             set returnCost(value: number) {
                 this.setProperty(SalesReturnRequestItem.PROPERTY_RETURNCOST_NAME, value);
+            }
+
+            /** 映射的属性名称-毛利基础 */
+            static PROPERTY_GROSSBASE_NAME: string = "GrossBase";
+            /** 获取-毛利基础 */
+            get grossBase(): number {
+                return this.getProperty<number>(SalesReturnRequestItem.PROPERTY_GROSSBASE_NAME);
+            }
+            /** 设置-毛利基础 */
+            set grossBase(value: number) {
+                this.setProperty(SalesReturnRequestItem.PROPERTY_GROSSBASE_NAME, value);
+            }
+
+            /** 映射的属性名称-毛利价格 */
+            static PROPERTY_GROSSPRICE_NAME: string = "GrossPrice";
+            /** 获取-毛利价格 */
+            get grossPrice(): number {
+                return this.getProperty<number>(SalesReturnRequestItem.PROPERTY_GROSSPRICE_NAME);
+            }
+            /** 设置-毛利价格 */
+            set grossPrice(value: number) {
+                this.setProperty(SalesReturnRequestItem.PROPERTY_GROSSPRICE_NAME, value);
             }
 
             /** 映射的属性名称-物料批次集合 */
