@@ -97,6 +97,16 @@ namespace sales {
                 this.register(new SalesInvoiceReceiptServiceMapping());
                 this.register(new DownPaymentRequestReceiptServiceMapping());
                 this.register(new SalesReserveInvoiceReceiptServiceMapping());
+                // 单据价格查询服务
+                this.register(new SalesQuoteMaterialPriceServiceMapping());
+                this.register(new SalesOrderMaterialPriceServiceMapping());
+                this.register(new SalesDeliveryMaterialPriceServiceMapping());
+                this.register(new SalesInvoiceMaterialPriceServiceMapping());
+                this.register(new SalesReserveInvoiceMaterialPriceServiceMapping());
+                this.register(new DownPaymentRequestMaterialPriceServiceMapping());
+                this.register(new SalesReturnRequestMaterialPriceServiceMapping());
+                this.register(new SalesReturnMaterialPriceServiceMapping());
+                this.register(new SalesCreditNoteMaterialPriceServiceMapping());
                 // 权限元素
                 this.register(ELEMENT_SALES_ORDER_EXTRA);
                 this.register(ELEMENT_SALES_QUOTE_EXTRA);

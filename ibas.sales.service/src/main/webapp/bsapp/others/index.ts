@@ -8,3 +8,4 @@
 /// <reference path="./PaymentService.ts" />
 /// <reference path="./ReceiptService.ts" />
 /// <reference path="./SalesOrderPackingApp.ts" />
+/// <reference path="./MaterialPricesService.ts" />

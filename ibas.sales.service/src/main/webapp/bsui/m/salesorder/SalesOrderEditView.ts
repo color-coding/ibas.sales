@@ -64,8 +64,10 @@ namespace sales {
                 turnToDownPaymentRequestEvent: Function;
                 /** 预留物料库存 */
                 reserveMaterialsInventoryEvent: Function;
-                /** 测量物料 */
+                /** 测量物料事件 */
                 measuringMaterialsEvent: Function;
+                /** 查看物料历史价格事件 */
+                viewHistoricalPricesEvent: Function;
                 /** 计算毛利润 */
                 calculateGrossProfitEvent: Function;
                 defaultWarehouse: string;

@@ -52,8 +52,10 @@ namespace sales {
                 editShippingAddressesEvent: Function;
                 /** 转为销售退货事件 */
                 turnToSalesReturnEvent: Function;
-                /** 测量物料 */
+                /** 测量物料事件 */
                 measuringMaterialsEvent: Function;
+                /** 查看物料历史价格事件 */
+                viewHistoricalPricesEvent: Function;
                 /** 计算毛利润 */
                 calculateGrossProfitEvent: Function;
                 defaultWarehouse: string;

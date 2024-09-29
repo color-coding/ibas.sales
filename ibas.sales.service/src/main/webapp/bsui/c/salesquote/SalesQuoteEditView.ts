@@ -48,8 +48,10 @@ namespace sales {
                 turnToSalesOrderEvent: Function;
                 /** 预留物料库存 */
                 reserveMaterialsInventoryEvent: Function;
-                /** 测量物料 */
+                /** 测量物料事件 */
                 measuringMaterialsEvent: Function;
+                /** 查看物料历史价格事件 */
+                viewHistoricalPricesEvent: Function;
                 /** 计算毛利润 */
                 calculateGrossProfitEvent: Function;
                 /** 绘制视图 */
@@ -449,7 +451,7 @@ namespace sales {
                                                 condition.value = businesspartner.bo.emBusinessPartnerType.CUSTOMER.toString();
                                                 condition = criteria.conditions.create();
                                                 condition.alias = materials.bo.BusinessPartnerMaterialCatalog.PROPERTY_BUSINESSPARTNERCODE_NAME;
-                                                condition.value = (<any>formTop.getContent()[2]).getValue();
+                                                condition.value = (<any>formTop.getContent()[2]).getItems()[0].getValue();
                                                 return criteria;
                                             },
                                             valuePaste: function (this: sap.extension.m.Input, event: sap.ui.base.Event): void {
@@ -680,7 +682,12 @@ namespace sales {
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesquoteitem_price"),
                                         template: new sap.extension.m.Input("", {
-
+                                            showValueHelp: true,
+                                            valueHelpOnly: false,
+                                            valueHelpIconSrc: "sap-icon://time-overtime",
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.viewHistoricalPricesEvent, this.getBindingContext().getObject());
+                                            },
                                         }).bindProperty("bindingValue", {
                                             path: "price",
                                             type: new sap.extension.data.Price()
@@ -712,6 +719,21 @@ namespace sales {
                                             path: "taxRate",
                                             type: new sap.extension.data.Rate()
                                         }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salesquoteitem_pretaxprice"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpOnly: false,
+                                            valueHelpIconSrc: "sap-icon://time-overtime",
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.viewHistoricalPricesEvent, this.getBindingContext().getObject());
+                                            },
+                                        }).bindProperty("bindingValue", {
+                                            path: "preTaxPrice",
+                                            type: new sap.extension.data.Price()
+                                        }),
+                                        visible: false,
                                     }),
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesquoteitem_reference1"),

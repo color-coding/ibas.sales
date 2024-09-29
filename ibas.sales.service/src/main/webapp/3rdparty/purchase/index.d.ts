@@ -12623,6 +12623,7 @@ declare namespace purchase {
             private choosePurchaseDeliveryItemMaterialVersion;
             protected measuringMaterials(): void;
             protected choosePurchaseDeliveryItemMaterialCatalog(caller: bo.PurchaseDeliveryItem, filterConditions?: ibas.ICondition[]): void;
+            protected viewHistoricalPrices(caller: bo.PurchaseDeliveryItem): void;
         }
         /** 视图-采购收货 */
         interface IPurchaseDeliveryEditView extends ibas.IBOEditView {
@@ -12676,8 +12677,10 @@ declare namespace purchase {
             turnToPurchaseInvoiceEvent: Function;
             /** 转为销售交货 */
             turnToSalesDeliveryEvent: Function;
-            /** 测量物料 */
+            /** 测量物料事件 */
             measuringMaterialsEvent: Function;
+            /** 查看物料历史价格事件 */
+            viewHistoricalPricesEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */
@@ -12930,6 +12933,7 @@ declare namespace purchase {
             private choosePurchaseOrderItemMaterialVersion;
             protected measuringMaterials(): void;
             protected choosePurchaseOrderItemMaterialCatalog(caller: bo.PurchaseOrderItem, filterConditions?: ibas.ICondition[]): void;
+            protected viewHistoricalPrices(caller: bo.PurchaseOrderItem): void;
         }
         /** 视图-采购订单 */
         interface IPurchaseOrderEditView extends ibas.IBOEditView {
@@ -12991,8 +12995,10 @@ declare namespace purchase {
             turnToDownPaymentRequestEvent: Function;
             /** 预留物料订购 */
             reserveMaterialsOrderedEvent: Function;
-            /** 测量物料 */
+            /** 测量物料事件 */
             measuringMaterialsEvent: Function;
+            /** 查看物料历史价格事件 */
+            viewHistoricalPricesEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */
@@ -13396,6 +13402,7 @@ declare namespace purchase {
             private choosePurchaseReturnPurchaseReturnRequest;
             protected measuringMaterials(): void;
             protected choosePurchaseReturnItemMaterialCatalog(caller: bo.PurchaseReturnItem, filterConditions?: ibas.ICondition[]): void;
+            protected viewHistoricalPrices(caller: bo.PurchaseReturnItem): void;
         }
         /** 视图-采购退货 */
         interface IPurchaseReturnEditView extends ibas.IBOEditView {
@@ -13445,8 +13452,10 @@ declare namespace purchase {
             editShippingAddressesEvent: Function;
             /** 转为采购贷项事件 */
             turnToPurchaseCreditNoteEvent: Function;
-            /** 测量物料 */
+            /** 测量物料事件 */
             measuringMaterialsEvent: Function;
+            /** 查看物料历史价格事件 */
+            viewHistoricalPricesEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
         }
@@ -13678,6 +13687,7 @@ declare namespace purchase {
             private choosePurchaseQuoteItemMaterialVersion;
             protected measuringMaterials(): void;
             protected choosePurchaseQuoteItemMaterialCatalog(caller: bo.PurchaseQuoteItem, filterConditions?: ibas.ICondition[]): void;
+            protected viewHistoricalPrices(caller: bo.PurchaseQuoteItem): void;
         }
         /** 视图-采购报价 */
         interface IPurchaseQuoteEditView extends ibas.IBOEditView {
@@ -13721,8 +13731,10 @@ declare namespace purchase {
             choosePurchaseQuotePurchaseRequestEvent: Function;
             /** 转为采购订单事件 */
             turnToPurchaseOrderEvent: Function;
-            /** 测量物料 */
+            /** 测量物料事件 */
             measuringMaterialsEvent: Function;
+            /** 查看物料历史价格事件 */
+            viewHistoricalPricesEvent: Function;
             /** 默认税组 */
             defaultTaxGroup: string;
         }
@@ -14115,6 +14127,7 @@ declare namespace purchase {
             private purchaseRequestTo;
             private choosePurchaseRequestItemMaterialVersion;
             protected measuringMaterials(): void;
+            protected viewHistoricalPrices(caller: bo.PurchaseRequestItem): void;
         }
         /** 视图-采购申请 */
         interface IPurchaseRequestEditView extends ibas.IBOEditView {
@@ -14150,8 +14163,10 @@ declare namespace purchase {
             showPurchaseRequestTos(datas: ibas.IServiceAgent[]): void;
             /** 采购申请转换事件 */
             purchaseRequestToEvent: Function;
-            /** 测量物料 */
+            /** 测量物料事件 */
             measuringMaterialsEvent: Function;
+            /** 查看物料历史价格事件 */
+            viewHistoricalPricesEvent: Function;
         }
         /** 采购申请编辑服务映射 */
         class PurchaseRequestEditServiceMapping extends ibas.BOEditServiceMapping {
@@ -14351,6 +14366,7 @@ declare namespace purchase {
             protected choosePurchaseInvoiceDownPayment(): void;
             protected measuringMaterials(): void;
             protected choosePurchaseInvoiceItemMaterialCatalog(caller: bo.PurchaseInvoiceItem, filterConditions?: ibas.ICondition[]): void;
+            protected viewHistoricalPrices(caller: bo.PurchaseInvoiceItem): void;
         }
         /** 视图-采购发票 */
         interface IPurchaseInvoiceEditView extends ibas.IBOEditView {
@@ -14408,8 +14424,10 @@ declare namespace purchase {
             removePurchaseInvoiceDownPaymentEvent: Function;
             /** 显示数据-采购发票-预付款 */
             showPurchaseInvoiceDownPayments(datas: bo.PurchaseInvoiceDownPayment[]): void;
-            /** 测量物料 */
+            /** 测量物料事件 */
             measuringMaterialsEvent: Function;
+            /** 查看物料历史价格事件 */
+            viewHistoricalPricesEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */
@@ -14648,6 +14666,7 @@ declare namespace purchase {
             private choosePurchaseCreditNoteItemMaterialVersion;
             protected measuringMaterials(): void;
             protected choosePurchaseCreditNoteItemMaterialCatalog(caller: bo.PurchaseCreditNoteItem, filterConditions?: ibas.ICondition[]): void;
+            protected viewHistoricalPrices(caller: bo.PurchaseCreditNoteItem): void;
         }
         /** 视图-采购贷项 */
         interface IPurchaseCreditNoteEditView extends ibas.IBOEditView {
@@ -14693,8 +14712,10 @@ declare namespace purchase {
             chooseSupplierAgreementsEvent: Function;
             /** 编辑地址事件 */
             editShippingAddressesEvent: Function;
-            /** 测量物料 */
+            /** 测量物料事件 */
             measuringMaterialsEvent: Function;
+            /** 查看物料历史价格事件 */
+            viewHistoricalPricesEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
         }
@@ -15349,6 +15370,7 @@ declare namespace purchase {
             private paymentDownPaymentRequest;
             protected measuringMaterials(): void;
             protected chooseDownPaymentRequestItemMaterialCatalog(caller: bo.DownPaymentRequestItem, filterConditions?: ibas.ICondition[]): void;
+            protected viewHistoricalPrices(caller: bo.DownPaymentRequestItem): void;
         }
         /** 视图-预付款申请 */
         interface IDownPaymentRequestEditView extends ibas.IBOEditView {
@@ -15390,8 +15412,10 @@ declare namespace purchase {
             chooseDownPaymentRequestItemMaterialCatalogEvent: Function;
             /** 预收款申请付款事件 */
             paymentDownPaymentRequestEvent: Function;
-            /** 测量物料 */
+            /** 测量物料事件 */
             measuringMaterialsEvent: Function;
+            /** 查看物料历史价格事件 */
+            viewHistoricalPricesEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */
@@ -15520,6 +15544,7 @@ declare namespace purchase {
             private choosePurchaseReserveInvoiceItemMaterialVersion;
             protected measuringMaterials(): void;
             protected choosePurchaseReserveInvoiceItemMaterialCatalog(caller: bo.PurchaseReserveInvoiceItem, filterConditions?: ibas.ICondition[]): void;
+            protected viewHistoricalPrices(caller: bo.PurchaseReserveInvoiceItem): void;
         }
         /** 视图-采购预留发票 */
         interface IPurchaseReserveInvoiceEditView extends ibas.IBOEditView {
@@ -15569,8 +15594,10 @@ declare namespace purchase {
             turnToPurchaseCreditNoteEvent: Function;
             /** 转为采购交货事件 */
             turnToPurchaseDeliveryEvent: Function;
-            /** 测量物料 */
+            /** 测量物料事件 */
             measuringMaterialsEvent: Function;
+            /** 查看物料历史价格事件 */
+            viewHistoricalPricesEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */
@@ -15807,6 +15834,7 @@ declare namespace purchase {
             private reserveMaterialsInventory;
             protected measuringMaterials(): void;
             protected choosePurchaseReturnRequestItemMaterialCatalog(caller: bo.PurchaseReturnRequestItem, filterConditions?: ibas.ICondition[]): void;
+            protected viewHistoricalPrices(caller: bo.PurchaseReturnRequestItem): void;
         }
         /** 视图-采购退货请求 */
         interface IPurchaseReturnRequestEditView extends ibas.IBOEditView {
@@ -15854,8 +15882,10 @@ declare namespace purchase {
             turnToPurchaseReturnEvent: Function;
             /** 预留物料库存 */
             reserveMaterialsInventoryEvent: Function;
-            /** 测量物料 */
+            /** 测量物料事件 */
             measuringMaterialsEvent: Function;
+            /** 查看物料历史价格事件 */
+            viewHistoricalPricesEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
         }
@@ -16149,6 +16179,227 @@ declare namespace purchase {
         }
         /** 单据收款-采购贷项 */
         class PurchaseCreditNoteReceiptServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract>;
+        }
+    }
+}
+/**
+ * @license
+ * Copyright Color-Coding Studio. All Rights Reserved.
+ *
+ * Use of this source code is governed by an Apache License, Version 2.0
+ * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
+ */
+declare namespace purchase {
+    namespace app {
+        /** 单据价格-销售订单 */
+        class PurchaseOrderMaterialPriceService extends ibas.ServiceWithResultApplication<ibas.IView, materials.app.IDocumentMaterialPriceContract, materials.app.IDocumentMaterialPriceData[]> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            protected runService(contract: materials.app.IDocumentMaterialPriceContract): void;
+        }
+        /** 单据价格-销售订单 */
+        class PurchaseOrderMaterialPriceServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract>;
+        }
+        /** 单据价格-预收款申请 */
+        class DownPaymentRequestMaterialPriceService extends ibas.ServiceWithResultApplication<ibas.IView, materials.app.IDocumentMaterialPriceContract, materials.app.IDocumentMaterialPriceData[]> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            protected runService(contract: materials.app.IDocumentMaterialPriceContract): void;
+        }
+        /** 单据价格-预收款申请 */
+        class DownPaymentRequestMaterialPriceServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract>;
+        }
+        /** 单据价格-销售贷项 */
+        class PurchaseCreditNoteMaterialPriceService extends ibas.ServiceWithResultApplication<ibas.IView, materials.app.IDocumentMaterialPriceContract, materials.app.IDocumentMaterialPriceData[]> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            protected runService(contract: materials.app.IDocumentMaterialPriceContract): void;
+        }
+        /** 单据价格-销售退货请求 */
+        class PurchaseCreditNoteMaterialPriceServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract>;
+        }
+        /** 单据价格-销售交货 */
+        class PurchaseDeliveryMaterialPriceService extends ibas.ServiceWithResultApplication<ibas.IView, materials.app.IDocumentMaterialPriceContract, materials.app.IDocumentMaterialPriceData[]> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            protected runService(contract: materials.app.IDocumentMaterialPriceContract): void;
+        }
+        /** 单据价格-销售交货 */
+        class PurchaseDeliveryMaterialPriceServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract>;
+        }
+        /** 单据价格-销售发票 */
+        class PurchaseInvoiceMaterialPriceService extends ibas.ServiceWithResultApplication<ibas.IView, materials.app.IDocumentMaterialPriceContract, materials.app.IDocumentMaterialPriceData[]> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            protected runService(contract: materials.app.IDocumentMaterialPriceContract): void;
+        }
+        /** 单据价格-销售发票 */
+        class PurchaseInvoiceMaterialPriceServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract>;
+        }
+        /** 单据价格-销售报价 */
+        class PurchaseQuoteMaterialPriceService extends ibas.ServiceWithResultApplication<ibas.IView, materials.app.IDocumentMaterialPriceContract, materials.app.IDocumentMaterialPriceData[]> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            protected runService(contract: materials.app.IDocumentMaterialPriceContract): void;
+        }
+        /** 单据价格-销售报价 */
+        class PurchaseQuoteMaterialPriceServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract>;
+        }
+        /** 单据价格-销售预留发票 */
+        class PurchaseReserveInvoiceMaterialPriceService extends ibas.ServiceWithResultApplication<ibas.IView, materials.app.IDocumentMaterialPriceContract, materials.app.IDocumentMaterialPriceData[]> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            protected runService(contract: materials.app.IDocumentMaterialPriceContract): void;
+        }
+        /** 单据价格-销售预留发票 */
+        class PurchaseReserveInvoiceMaterialPriceServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract>;
+        }
+        /** 单据价格-销售退货 */
+        class PurchaseReturnMaterialPriceService extends ibas.ServiceWithResultApplication<ibas.IView, materials.app.IDocumentMaterialPriceContract, materials.app.IDocumentMaterialPriceData[]> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            protected runService(contract: materials.app.IDocumentMaterialPriceContract): void;
+        }
+        /** 单据价格-销售退货 */
+        class PurchaseReturnMaterialPriceServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract>;
+        }
+        /** 单据价格-销售退货请求 */
+        class PurchaseReturnRequestMaterialPriceService extends ibas.ServiceWithResultApplication<ibas.IView, materials.app.IDocumentMaterialPriceContract, materials.app.IDocumentMaterialPriceData[]> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            protected runService(contract: materials.app.IDocumentMaterialPriceContract): void;
+        }
+        /** 单据价格-销售退货请求 */
+        class PurchaseReturnRequestMaterialPriceServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor();
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract>;
+        }
+        /** 单据价格-采购申请 */
+        class PurchaseRequestMaterialPriceService extends ibas.ServiceWithResultApplication<ibas.IView, materials.app.IDocumentMaterialPriceContract, materials.app.IDocumentMaterialPriceData[]> {
+            /** 应用标识 */
+            static APPLICATION_ID: string;
+            /** 应用名称 */
+            static APPLICATION_NAME: string;
+            /** 构造函数 */
+            constructor();
+            /** 注册视图 */
+            protected registerView(): void;
+            /** 视图显示后 */
+            protected viewShowed(): void;
+            protected runService(contract: materials.app.IDocumentMaterialPriceContract): void;
+        }
+        /** 单据价格-采购申请 */
+        class PurchaseRequestMaterialPriceServiceMapping extends ibas.ServiceMapping {
             /** 构造函数 */
             constructor();
             /** 创建服务实例 */

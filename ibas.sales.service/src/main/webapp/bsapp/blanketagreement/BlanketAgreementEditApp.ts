@@ -492,7 +492,7 @@ namespace sales {
             protected chooseBlanketAgreementItemMaterialCatalog(caller: bo.BlanketAgreementItem, filterConditions?: ibas.ICondition[]): void {
                 if (ibas.strings.isEmpty(this.editData.customerCode)) {
                     this.messages(
-                        ibas.emMessageType.WARNING, ibas.i18n.prop("sales_please_choose_supplier_first")
+                        ibas.emMessageType.WARNING, ibas.i18n.prop("sales_please_choose_customer_first")
                     ); return;
                 }
                 let criteria: ibas.ICriteria = new ibas.Criteria();

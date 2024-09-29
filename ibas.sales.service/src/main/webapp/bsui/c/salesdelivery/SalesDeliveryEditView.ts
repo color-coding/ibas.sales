@@ -58,8 +58,10 @@ namespace sales {
                 receiptSalesDeliveryEvent: Function;
                 /** 编辑地址事件 */
                 editShippingAddressesEvent: Function;
-                /** 测量物料 */
+                /** 测量物料事件 */
                 measuringMaterialsEvent: Function;
+                /** 查看物料历史价格事件 */
+                viewHistoricalPricesEvent: Function;
                 /** 计算毛利润 */
                 calculateGrossProfitEvent: Function;
                 /** 绘制视图 */
@@ -751,7 +753,12 @@ namespace sales {
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesdeliveryitem_price"),
                                         template: new sap.extension.m.Input("", {
-
+                                            showValueHelp: true,
+                                            valueHelpOnly: false,
+                                            valueHelpIconSrc: "sap-icon://time-overtime",
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.viewHistoricalPricesEvent, this.getBindingContext().getObject());
+                                            },
                                         }).bindProperty("bindingValue", {
                                             path: "price",
                                             type: new sap.extension.data.Price()
@@ -782,6 +789,20 @@ namespace sales {
                                         }).bindProperty("rate", {
                                             path: "taxRate",
                                             type: new sap.extension.data.Rate()
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salesdeliveryitem_pretaxprice"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpOnly: false,
+                                            valueHelpIconSrc: "sap-icon://time-overtime",
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.viewHistoricalPricesEvent, this.getBindingContext().getObject());
+                                            },
+                                        }).bindProperty("bindingValue", {
+                                            path: "preTaxPrice",
+                                            type: new sap.extension.data.Price()
                                         }),
                                     }),
                                     new sap.extension.table.DataColumn("", {

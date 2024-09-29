@@ -90,6 +90,7 @@
   "sales_copy_data_continue": "复制{0}，是否继续？",
   "sales_copy_to": "复制到",
   "sales_copy_from": "复制从",
+  "sales_material_price": "物料价格 - {0}",
   "sales_used_reserved_materials_inventory": "已应用单据预留库存，未预留项数量被设置为0",
   "sales_unrecognized_extra_information": "不能识别的信息[{0}]",
   "sales_loading_product_suit": "正在加载产品[{0}]的套装，请稍后",
@@ -112,7 +113,8 @@
   "sales_documents_only_associated": "仅关联单据",
   "sales_multiple_order_status_change_to": "共[{0}]个订单，状态将修改为[{1}]，是否继续？",
   "sales_order_status_change_to": "订单[{0}]，状态修改为[{1}]",
-  "sales_please_choose_supplier_first": "请先选择客户",
+  "sales_please_choose_customer_first": "请先选择客户",
+  "sales_please_choose_material_first": "请先选择物料",
   "sales_calculate_gross_profit": "计算毛利润",
   "sales_closing_delimiter": "----结束----"
 }

@@ -58,8 +58,10 @@ namespace sales {
                 addSalesInvoiceDownPaymentEvent: Function;
                 /** 删除销售发票-预收款事件 */
                 removeSalesInvoiceDownPaymentEvent: Function;
-                /** 测量物料 */
+                /** 测量物料事件 */
                 measuringMaterialsEvent: Function;
+                /** 查看物料历史价格事件 */
+                viewHistoricalPricesEvent: Function;
                 /** 计算毛利润 */
                 calculateGrossProfitEvent: Function;
                 defaultWarehouse: string;

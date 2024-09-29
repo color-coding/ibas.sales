@@ -45,6 +45,7 @@ namespace sales {
                 this.view.chooseCustomerAgreementsEvent = this.chooseCustomerAgreements;
                 this.view.receiptDownPaymentRequestEvent = this.receiptDownPaymentRequest;
                 this.view.measuringMaterialsEvent = this.measuringMaterials;
+                this.view.viewHistoricalPricesEvent = this.viewHistoricalPrices;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -1138,7 +1139,7 @@ namespace sales {
             protected chooseDownPaymentRequestItemMaterialCatalog(caller: bo.DownPaymentRequestItem, filterConditions?: ibas.ICondition[]): void {
                 if (ibas.strings.isEmpty(this.editData.customerCode)) {
                     this.messages(
-                        ibas.emMessageType.WARNING, ibas.i18n.prop("sales_please_choose_supplier_first")
+                        ibas.emMessageType.WARNING, ibas.i18n.prop("sales_please_choose_customer_first")
                     ); return;
                 }
                 let criteria: ibas.ICriteria = new ibas.Criteria();
@@ -1192,6 +1193,42 @@ namespace sales {
                     }
                 });
             }
+            protected viewHistoricalPrices(caller: bo.DownPaymentRequestItem): void {
+                if (ibas.objects.isNull(caller)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("shell_data_view")
+                    )); return;
+                }
+                if (ibas.strings.isEmpty(caller.itemCode)) {
+                    this.messages(
+                        ibas.emMessageType.WARNING, ibas.i18n.prop("sales_please_choose_material_first")
+                    ); return;
+                }
+                if (ibas.strings.isEmpty(this.editData.customerCode)) {
+                    this.messages(
+                        ibas.emMessageType.WARNING, ibas.i18n.prop("sales_please_choose_customer_first")
+                    ); return;
+                }
+                ibas.servicesManager.runApplicationService<materials.app.IMaterialHistoricalPricesContract>({
+                    proxy: new materials.app.MaterialHistoricalPricesServiceProxy({
+                        businessPartnerType: businesspartner.bo.emBusinessPartnerType.CUSTOMER,
+                        businessPartnerCode: this.editData.customerCode,
+                        businessPartnerName: this.editData.customerName,
+                        documentType: this.editData.objectCode,
+                        documentEntry: this.editData.docEntry,
+                        documentLineId: caller.lineId,
+                        documentDate: this.editData.documentDate,
+                        itemCode: caller.itemCode,
+                        itemDescription: caller.itemDescription,
+                        quantity: caller.quantity,
+                        uom: caller.uom,
+                        applyPrice: (price, currency) => {
+                            caller.preTaxPrice = price;
+                            caller.currency = currency;
+                        }
+                    })
+                });
+            }
         }
         /** 视图-预收款申请 */
         export interface IDownPaymentRequestEditView extends ibas.IBOEditView {
@@ -1233,8 +1270,10 @@ namespace sales {
             chooseCustomerAgreementsEvent: Function;
             /** 预收款申请收款事件 */
             receiptDownPaymentRequestEvent: Function;
-            /** 测量物料 */
+            /** 测量物料事件 */
             measuringMaterialsEvent: Function;
+            /** 查看物料历史价格事件 */
+            viewHistoricalPricesEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */
