@@ -2415,6 +2415,12 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 	}
 
 	@Override
+	public boolean isSmartDocumentStatus() {
+		// 付款后的状态改变
+		return true;
+	}
+
+	@Override
 	public Iterator<IDocumentClosingQuantityItem> getQuantityItems() {
 		return new Iterator<IDocumentClosingQuantityItem>() {
 			int index = -1;

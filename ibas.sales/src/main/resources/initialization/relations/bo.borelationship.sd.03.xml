@@ -4,6 +4,6 @@
 	<Code>${Company}_SL_SALESDELIVERY</Code>
 	<Relation>DOCUMENT_BASED</Relation>
 	<AssociatedProperty>SalesDeliveryItems</AssociatedProperty>
-	<Target>${Company}_SL_PURCHDELIVERY</Target>
+	<Target>${Company}_SL_SALESRSVINVOICE</Target>
 	<Description>基于单据</Description>
 </ns2:BORelationship>
