@@ -33,6 +33,7 @@ import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
 import org.colorcoding.ibas.bobas.period.IPeriodData;
+import org.colorcoding.ibas.bobas.rule.BusinessRuleException;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleDocumentStatus;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
@@ -2089,6 +2090,13 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 				}
 
 		};
+	}
+
+	@Override
+	public void check() throws BusinessRuleException {
+		IDocumentPaidTotalOperator.super.check();
+		IDocumentCloseAmountOperator.super.check();
+		IDocumentCloseQuantityOperator.super.check();
 	}
 
 	@Override

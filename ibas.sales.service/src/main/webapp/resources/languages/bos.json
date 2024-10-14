@@ -1375,7 +1375,7 @@
         "bo_salesreserveinvoice_closing_delimiter": "---- End ----"
     },
     {
-        "bo_salesreturnrequest": "Sales Return",
+        "bo_salesreturnrequest": "Sales Return Request",
         "bo_salesreturnrequest_docentry": "Document Entry",
         "bo_salesreturnrequest_docnum": "Document Number",
         "bo_salesreturnrequest_period": "Period",
