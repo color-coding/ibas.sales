@@ -20,6 +20,8 @@ namespace sales {
                 deleteDataEvent: Function;
                 /** 预留物料库存 */
                 reserveMaterialsInventoryEvent: Function;
+                /** 改变订单状态 */
+                changeDocumentStatusEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;

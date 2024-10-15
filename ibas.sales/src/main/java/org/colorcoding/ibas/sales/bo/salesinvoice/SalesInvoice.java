@@ -50,7 +50,9 @@ import org.colorcoding.ibas.bobas.rule.common.BusinessRuleSumElements;
 import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
 import org.colorcoding.ibas.businesspartner.logic.IDocumentReconciliationContent;
 import org.colorcoding.ibas.businesspartner.logic.IDocumentReconciliationContract;
+import org.colorcoding.ibas.document.IDocumentCloseAmountOperator;
 import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
+import org.colorcoding.ibas.document.IDocumentClosingAmountItem;
 import org.colorcoding.ibas.document.IDocumentClosingQuantityItem;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
@@ -75,9 +77,10 @@ import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 @XmlType(name = SalesInvoice.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = SalesInvoice.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BusinessObjectUnit(code = SalesInvoice.BUSINESS_OBJECT_CODE)
-public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISalesInvoice, IDataOwnership, IApprovalData,
-		IPeriodData, IProjectData, IBOTagDeleted, IBOTagCanceled, IBusinessLogicsHost, IBOSeriesKey, IBOUserFields,
-		IDocumentPaidTotalOperator, IDocumentCloseQuantityOperator, IJECPropertyValueGetter {
+public class SalesInvoice extends BusinessObject<SalesInvoice>
+		implements ISalesInvoice, IDataOwnership, IApprovalData, IPeriodData, IProjectData, IBOTagDeleted,
+		IBOTagCanceled, IBusinessLogicsHost, IBOSeriesKey, IBOUserFields, IDocumentPaidTotalOperator,
+		IDocumentCloseQuantityOperator, IDocumentCloseAmountOperator, IJECPropertyValueGetter {
 
 	/**
 	 * 序列化版本标记
@@ -2434,6 +2437,31 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 
 			@Override
 			public IDocumentClosingQuantityItem next() {
+				this.index += 1;
+				return SalesInvoice.this.getSalesInvoiceItems().get(this.index);
+			}
+
+			@Override
+			public boolean hasNext() {
+				if (SalesInvoice.this.getSalesInvoiceItems().isEmpty()) {
+					return false;
+				}
+				int nIndex = this.index + 1;
+				if (nIndex >= SalesInvoice.this.getSalesInvoiceItems().size()) {
+					return false;
+				}
+				return true;
+			}
+		};
+	}
+
+	@Override
+	public Iterator<IDocumentClosingAmountItem> getAmountItems() {
+		return new Iterator<IDocumentClosingAmountItem>() {
+			int index = -1;
+
+			@Override
+			public IDocumentClosingAmountItem next() {
 				this.index += 1;
 				return SalesInvoice.this.getSalesInvoiceItems().get(this.index);
 			}

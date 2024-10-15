@@ -2639,6 +2639,11 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 	ISalesInvoice parent;
 
 	@Override
+	public BigDecimal getAmount() {
+		return this.getLineTotal();
+	}
+
+	@Override
 	public DateTime getPostingDate() {
 		return this.parent.getPostingDate();
 	}
@@ -2740,7 +2745,7 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 
 			@Override
 			public BigDecimal getAmount() {
-				return SalesInvoiceItem.this.getPreTaxLineTotal();
+				return SalesInvoiceItem.this.getLineTotal();
 			}
 
 			@Override

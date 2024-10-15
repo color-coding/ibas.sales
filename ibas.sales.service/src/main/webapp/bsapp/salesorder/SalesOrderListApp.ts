@@ -30,6 +30,7 @@ namespace sales {
                 this.view.editDataEvent = this.editData;
                 this.view.deleteDataEvent = this.deleteData;
                 this.view.reserveMaterialsInventoryEvent = this.reserveMaterialsInventory;
+                this.view.changeDocumentStatusEvent = this.changeDocumentStatus;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -217,6 +218,84 @@ namespace sales {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_fetched_none"));
                 }
             }
+            private changeDocumentStatus(status: ibas.emDocumentStatus, datas: bo.SalesOrder[]): void {
+                if (!(datas?.length > 0)) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("shell_batch")
+                    )); return;
+                }
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                for (let item of datas) {
+                    let condition: ibas.ICondition = criteria.conditions.create();
+                    condition.alias = bo.SalesOrder.PROPERTY_DOCENTRY_NAME;
+                    condition.value = item.docEntry.toString();
+                    if (criteria.conditions.length > 0) {
+                        condition.relationship = ibas.emConditionRelationship.OR;
+                    }
+                }
+                this.busy(true);
+                let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
+                boRepository.fetchSalesOrder({
+                    criteria: criteria,
+                    onCompleted: (opRslt) => {
+                        try {
+                            if (opRslt.resultCode !== 0) {
+                                throw new Error(opRslt.message);
+                            }
+                            this.messages({
+                                type: ibas.emMessageType.QUESTION,
+                                title: ibas.i18n.prop(this.name),
+                                message: ibas.i18n.prop("sales_multiple_order_status_change_to", opRslt.resultObjects.length, ibas.enums.describe(ibas.emDocumentStatus, status)),
+                                actions: [ibas.emMessageAction.YES, ibas.emMessageAction.NO],
+                                onCompleted: (action) => {
+                                    if (action !== ibas.emMessageAction.YES) {
+                                        this.busy(false);
+                                        return;
+                                    }
+                                    ibas.queues.execute(opRslt.resultObjects,
+                                        (data, next) => {
+                                            data.documentStatus = status;
+                                            if (data.isDirty === true) {
+                                                boRepository.saveSalesOrder({
+                                                    beSaved: data,
+                                                    onCompleted: (opRslt) => {
+                                                        if (opRslt.resultCode !== 0) {
+                                                            next(new Error(opRslt.message));
+                                                        } else {
+                                                            this.proceeding(ibas.emMessageType.SUCCESS,
+                                                                ibas.i18n.prop("sales_order_status_change_to",
+                                                                    data.docEntry, ibas.enums.describe(ibas.emDocumentStatus, data.documentStatus)
+                                                                )
+                                                            );
+                                                            let oData: bo.SalesOrder = datas.find(c => !ibas.objects.isNull(c) && c.docEntry === data.docEntry);
+                                                            if (!ibas.objects.isNull(oData)) {
+                                                                oData.documentStatus = data.documentStatus;
+                                                            }
+                                                            next();
+                                                        }
+                                                    }
+                                                });
+                                            } else {
+                                                next();
+                                            }
+                                        },
+                                        (error) => {
+                                            this.busy(false);
+                                            if (error instanceof Error) {
+                                                this.messages(error);
+                                            } else {
+                                                this.messages(ibas.emMessageType.SUCCESS, ibas.i18n.prop("shell_sucessful"));
+                                            }
+                                        }
+                                    );
+                                }
+                            });
+                        } catch (error) {
+                            this.messages(error);
+                        }
+                    }
+                });
+            }
         }
         /** 视图-销售订单 */
         export interface ISalesOrderListView extends ibas.IBOListView {
@@ -228,6 +307,8 @@ namespace sales {
             showData(datas: bo.SalesOrder[]): void;
             /** 预留物料库存 */
             reserveMaterialsInventoryEvent: Function;
+            /** 改变订单状态 */
+            changeDocumentStatusEvent: Function;
         }
     }
 }

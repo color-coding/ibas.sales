@@ -746,8 +746,19 @@ namespace sales {
                                 && c.baseDocumentLineId === item.lineId) !== null) {
                             continue;
                         }
+                        // 计算未清金额 = 总计 - 完成金额
+                        let openAmount: number = item.lineTotal - item.closedAmount;
+                        if (openAmount <= 0) {
+                            continue;
+                        }
                         let myItem: SalesCreditNoteItem = this.salesCreditNoteItems.create();
                         bo.baseDocumentItem(myItem, item);
+                        // 计算数量
+                        if (config.isInventoryUnitLinePrice()) {
+                            myItem.inventoryQuantity = ibas.numbers.round(openAmount / myItem.price);
+                        } else {
+                            myItem.quantity = ibas.numbers.round(openAmount / myItem.price);
+                        }
                         // 复制批次
                         for (let batch of item.materialBatches) {
                             let myBatch: materials.bo.IMaterialBatchItem = myItem.materialBatches.create();
@@ -811,7 +822,7 @@ namespace sales {
                         this.shippingAddresss.add(<ShippingAddress>myAddress);
                     }
                 }
-                // 基于销售发票
+                // 基于销售预留发票
                 if (ibas.objects.instanceOf(arguments[0], SalesReserveInvoice)) {
                     let document: SalesReserveInvoice = arguments[0];
                     if (!ibas.strings.equals(this.customerCode, document.customerCode)) {
@@ -833,8 +844,19 @@ namespace sales {
                                 && c.baseDocumentLineId === item.lineId) !== null) {
                             continue;
                         }
+                        // 计算未清金额 = 总计 - 完成金额
+                        let openAmount: number = item.lineTotal - item.closedAmount;
+                        if (openAmount <= 0) {
+                            continue;
+                        }
                         let myItem: SalesCreditNoteItem = this.salesCreditNoteItems.create();
                         bo.baseDocumentItem(myItem, item);
+                        // 计算数量
+                        if (config.isInventoryUnitLinePrice()) {
+                            myItem.inventoryQuantity = ibas.numbers.round(openAmount / myItem.price);
+                        } else {
+                            myItem.quantity = ibas.numbers.round(openAmount / myItem.price);
+                        }
                         // 复制批次
                         for (let batch of item.materialBatches) {
                             let myBatch: materials.bo.IMaterialBatchItem = myItem.materialBatches.create();

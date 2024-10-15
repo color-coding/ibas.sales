@@ -7,6 +7,7 @@ import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.document.IDocumentClosingAmountItem;
 import org.colorcoding.ibas.document.IDocumentClosingQuantityItem;
 import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchReceiptParent;
 import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialReceiptParent;
@@ -16,7 +17,7 @@ import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialReceiptPa
  * 
  */
 public interface ISalesCreditNoteItem extends IBODocumentLine, IMaterialBatchReceiptParent,
-		IMaterialSerialReceiptParent, IDocumentClosingQuantityItem {
+		IMaterialSerialReceiptParent, IDocumentClosingQuantityItem, IDocumentClosingAmountItem {
 
 	/**
 	 * 获取-编码

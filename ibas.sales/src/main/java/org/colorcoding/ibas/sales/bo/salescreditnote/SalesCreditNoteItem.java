@@ -2691,6 +2691,11 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 	ISalesCreditNote parent;
 
 	@Override
+	public BigDecimal getAmount() {
+		return this.getLineTotal();
+	}
+
+	@Override
 	public DateTime getPostingDate() {
 		return this.parent.getPostingDate();
 	}
@@ -2827,7 +2832,7 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 
 			@Override
 			public BigDecimal getAmount() {
-				return SalesCreditNoteItem.this.getPreTaxLineTotal();
+				return SalesCreditNoteItem.this.getLineTotal();
 			}
 
 			@Override
