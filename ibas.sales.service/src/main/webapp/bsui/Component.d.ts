@@ -35,9 +35,9 @@ declare namespace sales {
                 /** 设置-左数量 */
                 setLeftQuantity(value: number): InventoryQuantityText;
                 /** 获取-右数量 */
-                getLeftQuantity(): number;
+                getRightQuantity(): number;
                 /** 设置-右数量 */
-                setLeftQuantity(value: number): InventoryQuantityText;
+                setRightQuantity(value: number): InventoryQuantityText;
                 /** 触发库存内容变化事件 */
                 protected fireInventoryChange(param: { itemCode: string, warehouse: string }): void;
                 /** 更新文本内容 */
