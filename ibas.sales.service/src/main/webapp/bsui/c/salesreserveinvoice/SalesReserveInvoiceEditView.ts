@@ -789,6 +789,21 @@ namespace sales {
                                         visible: false,
                                     }),
                                     new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_salesreserveinvoiceitem_unitprice"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpOnly: false,
+                                            valueHelpIconSrc: "sap-icon://time-overtime",
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.viewHistoricalPricesEvent, this.getBindingContext().getObject());
+                                            },
+                                        }).bindProperty("bindingValue", {
+                                            path: "unitPrice",
+                                            type: new sap.extension.data.Price()
+                                        }),
+                                        visible: false,
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesreserveinvoiceitem_reference1"),
                                         template: new sap.extension.m.Input("", {
                                         }).bindProperty("bindingValue", {
