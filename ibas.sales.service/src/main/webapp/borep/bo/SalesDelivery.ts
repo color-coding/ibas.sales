@@ -739,6 +739,9 @@ namespace sales {
                         if (item.canceled === ibas.emYesNo.YES) {
                             continue;
                         }
+                        if (item.deleted === ibas.emYesNo.YES) {
+                            continue;
+                        }
                         if (item.lineStatus !== ibas.emDocumentStatus.RELEASED) {
                             continue;
                         }
@@ -811,6 +814,9 @@ namespace sales {
                     // 复制行项目
                     for (let item of document.salesReserveInvoiceItems) {
                         if (item.canceled === ibas.emYesNo.YES) {
+                            continue;
+                        }
+                        if (item.deleted === ibas.emYesNo.YES) {
                             continue;
                         }
                         if (item.lineStatus !== ibas.emDocumentStatus.RELEASED) {

@@ -742,6 +742,9 @@ namespace sales {
                         if (item.canceled === ibas.emYesNo.YES) {
                             continue;
                         }
+                        if (item.deleted === ibas.emYesNo.YES) {
+                            continue;
+                        }
                         if (item.lineStatus === ibas.emDocumentStatus.PLANNED) {
                             continue;
                         }
@@ -790,6 +793,9 @@ namespace sales {
                     // 复制行项目
                     for (let item of document.salesDeliveryItems) {
                         if (item.canceled === ibas.emYesNo.YES) {
+                            continue;
+                        }
+                        if (item.deleted === ibas.emYesNo.YES) {
                             continue;
                         }
                         if (item.lineStatus === ibas.emDocumentStatus.PLANNED) {
@@ -865,6 +871,9 @@ namespace sales {
                     // 复制行项目
                     for (let item of document.salesReturnRequestItems) {
                         if (item.canceled === ibas.emYesNo.YES) {
+                            continue;
+                        }
+                        if (item.deleted === ibas.emYesNo.YES) {
                             continue;
                         }
                         if (item.lineStatus === ibas.emDocumentStatus.PLANNED) {

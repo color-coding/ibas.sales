@@ -602,6 +602,9 @@ namespace sales {
                         if (item.canceled === ibas.emYesNo.YES) {
                             continue;
                         }
+                        if (item.deleted === ibas.emYesNo.YES) {
+                            continue;
+                        }
                         if (item.lineStatus !== ibas.emDocumentStatus.RELEASED) {
                             continue;
                         }

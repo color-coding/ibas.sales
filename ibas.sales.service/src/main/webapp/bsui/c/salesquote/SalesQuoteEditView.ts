@@ -54,6 +54,8 @@ namespace sales {
                 viewHistoricalPricesEvent: Function;
                 /** 计算毛利润 */
                 calculateGrossProfitEvent: Function;
+                /** 选择付款条款事件 */
+                choosePaymentTermEvent: Function;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
@@ -1004,7 +1006,7 @@ namespace sales {
                                 ]
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_paymentcode") }),
-                            new sap.extension.m.SelectionInput("", {
+                            new sap.extension.m.RepositoryInput("", {
                                 showValueHelp: true,
                                 repository: businesspartner.bo.BORepositoryBusinessPartner,
                                 dataInfo: {
@@ -1012,9 +1014,9 @@ namespace sales {
                                     key: businesspartner.bo.PaymentTerm.PROPERTY_CODE_NAME,
                                     text: businesspartner.bo.PaymentTerm.PROPERTY_NAME_NAME,
                                 },
-                                criteria: [
-                                    new ibas.Condition(businesspartner.bo.PaymentTerm.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES.toString())
-                                ]
+                                valueHelpRequest(): void {
+                                    that.fireViewEvents(that.choosePaymentTermEvent);
+                                }
                             }).bindProperty("bindingValue", {
                                 path: "paymentCode",
                                 type: new sap.extension.data.Alphanumeric({

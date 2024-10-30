@@ -64,6 +64,8 @@ namespace sales {
                 viewHistoricalPricesEvent: Function;
                 /** 计算毛利润 */
                 calculateGrossProfitEvent: Function;
+                /** 选择付款条款事件 */
+                choosePaymentTermEvent: Function;
                 defaultWarehouse: string;
                 defaultTaxGroup: string;
                 /** 绘制视图 */

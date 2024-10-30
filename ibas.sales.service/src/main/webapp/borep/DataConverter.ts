@@ -440,7 +440,7 @@ namespace sales {
                 subTargetItem.lineSign = ibas.uuids.random();
                 subTargetItem.parentLineSign = targetItem.lineSign;
                 // 计算单位数量
-                subTargetItem.basisQuantity = ibas.numbers.round(sItem.quantity / source.unitQuantity);
+                subTargetItem.basisQuantity = source.unitQuantity === 0 ? 0 : ibas.numbers.round(sItem.quantity / source.unitQuantity);
                 // 基本信息赋值
                 baseProduct(subTargetItem, sItem.extend);
                 // 使用组件定义价格
@@ -886,7 +886,7 @@ namespace sales {
                     // 锚定税前价格时，改变税率
                     || (!config.isPriceAnchoringAfterTax() && ibas.strings.equalsIgnoreCase(this.taxRate, context.trigger))
                 ) {
-                    let rPrice: number = ibas.numbers.round((preTotal * (1 + taxRate)) / quantity, DECIMAL_PLACES_PRICE);
+                    let rPrice: number = quantity === 0 ? 0 : ibas.numbers.round((preTotal * (1 + taxRate)) / quantity, DECIMAL_PLACES_PRICE);
                     if (!ibas.numbers.isApproximated(rPrice, price)) {
                         context.outputValues.set(this.price, rPrice);
                     }
