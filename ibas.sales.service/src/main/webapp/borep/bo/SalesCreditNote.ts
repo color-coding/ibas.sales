@@ -564,6 +564,16 @@ namespace sales {
             set grossProfit(value: number) {
                 this.setProperty(SalesCreditNote.PROPERTY_GROSSPROFIT_NAME, value);
             }
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string = "InverseDiscount";
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number {
+                return this.getProperty<number>(SalesCreditNote.PROPERTY_INVERSEDISCOUNT_NAME);
+            }
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number) {
+                this.setProperty(SalesCreditNote.PROPERTY_INVERSEDISCOUNT_NAME, value);
+            }
 
             /** 映射的属性名称-销售贷项-行集合 */
             static PROPERTY_SALESCREDITNOTEITEMS_NAME: string = "SalesCreditNoteItems";
@@ -700,6 +710,10 @@ namespace sales {
                     // 单据总计 = 折扣后总计（含税）+ 运输-总计（含税）
                     new BusinessRuleDeductionDocumentTotal(SalesCreditNote.PROPERTY_DOCUMENTTOTAL_NAME,
                         SalesCreditNote.PROPERTY_DISCOUNTTOTAL_NAME, SalesCreditNote.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME),
+                    // 计算正反折扣
+                    new BusinessRuleNegativeDiscount(
+                        SalesCreditNote.PROPERTY_DISCOUNT_NAME, SalesCreditNote.PROPERTY_INVERSEDISCOUNT_NAME
+                    ),
                 ];
             }
             /** 重置 */
@@ -1753,6 +1767,17 @@ namespace sales {
                 this.setProperty(SalesCreditNoteItem.PROPERTY_GROSSPRICE_NAME, value);
             }
 
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string = "InverseDiscount";
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number {
+                return this.getProperty<number>(SalesCreditNoteItem.PROPERTY_INVERSEDISCOUNT_NAME);
+            }
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number) {
+                this.setProperty(SalesCreditNoteItem.PROPERTY_INVERSEDISCOUNT_NAME, value);
+            }
+
             /** 映射的属性名称-物料批次集合 */
             static PROPERTY_MATERIALBATCHES_NAME: string = "MaterialBatches";
             /** 获取-物料批次集合 */
@@ -1814,6 +1839,10 @@ namespace sales {
                     // 计算折扣后总计 = 折扣前总计 * 折扣
                     new BusinessRuleDeductionDiscount(
                         SalesCreditNoteItem.PROPERTY_DISCOUNT_NAME, SalesCreditNoteItem.PROPERTY_UNITLINETOTAL_NAME, SalesCreditNoteItem.PROPERTY_PRETAXLINETOTAL_NAME
+                    ),
+                    // 计算正反折扣
+                    new BusinessRuleNegativeDiscount(
+                        SalesCreditNoteItem.PROPERTY_DISCOUNT_NAME, SalesCreditNoteItem.PROPERTY_INVERSEDISCOUNT_NAME
                     ),
                 ];
             }

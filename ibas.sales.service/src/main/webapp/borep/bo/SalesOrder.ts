@@ -564,6 +564,17 @@ namespace sales {
             set grossProfit(value: number) {
                 this.setProperty(SalesOrder.PROPERTY_GROSSPROFIT_NAME, value);
             }
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string = "InverseDiscount";
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number {
+                return this.getProperty<number>(SalesOrder.PROPERTY_INVERSEDISCOUNT_NAME);
+            }
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number) {
+                this.setProperty(SalesOrder.PROPERTY_INVERSEDISCOUNT_NAME, value);
+            }
+
 
             /** 映射的属性名称-销售订单-行集合 */
             static PROPERTY_SALESORDERITEMS_NAME: string = "SalesOrderItems";
@@ -752,6 +763,10 @@ namespace sales {
                     // 单据总计 = 折扣后总计（含税）+ 运输-总计（含税）
                     new BusinessRuleDeductionDocumentTotal(SalesOrder.PROPERTY_DOCUMENTTOTAL_NAME,
                         SalesOrder.PROPERTY_DISCOUNTTOTAL_NAME, SalesOrder.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME),
+                    // 计算正反折扣
+                    new BusinessRuleNegativeDiscount(
+                        SalesOrder.PROPERTY_DISCOUNT_NAME, SalesOrder.PROPERTY_INVERSEDISCOUNT_NAME
+                    ),
                 ];
             }
             /** 重置 */
@@ -1619,6 +1634,16 @@ namespace sales {
             set grossPrice(value: number) {
                 this.setProperty(SalesOrderItem.PROPERTY_GROSSPRICE_NAME, value);
             }
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string = "InverseDiscount";
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number {
+                return this.getProperty<number>(SalesOrderItem.PROPERTY_INVERSEDISCOUNT_NAME);
+            }
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number) {
+                this.setProperty(SalesOrderItem.PROPERTY_INVERSEDISCOUNT_NAME, value);
+            }
 
             /** 映射的属性名称-销售订单-行-额外信息集合 */
             static PROPERTY_SALESORDERITEMEXTRAS_NAME: string = "SalesOrderItemExtras";
@@ -1694,6 +1719,10 @@ namespace sales {
                     // 计算折扣后总计 = 折扣前总计 * 折扣
                     new BusinessRuleDeductionDiscount(
                         SalesOrderItem.PROPERTY_DISCOUNT_NAME, SalesOrderItem.PROPERTY_UNITLINETOTAL_NAME, SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME
+                    ),
+                    // 计算正反折扣
+                    new BusinessRuleNegativeDiscount(
+                        SalesOrderItem.PROPERTY_DISCOUNT_NAME, SalesOrderItem.PROPERTY_INVERSEDISCOUNT_NAME
                     ),
                 ];
             }

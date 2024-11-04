@@ -109,6 +109,8 @@ namespace sales {
             grossBase: number;
             /** 毛利 */
             grossProfit: number;
+            /** 反向折扣 */
+            inverseDiscount: number;
             /** 销售贷项-行集合 */
             salesCreditNoteItems: ISalesCreditNoteItems;
             /** 送货地址集合 */
@@ -263,6 +265,8 @@ namespace sales {
             grossBase: number;
             /** 毛利价格 */
             grossPrice: number;
+            /** 反向行折扣 */
+            inverseDiscount: number;
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;
         }

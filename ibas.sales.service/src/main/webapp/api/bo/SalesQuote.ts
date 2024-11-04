@@ -160,6 +160,8 @@ namespace sales {
             grossBase: number;
             /** 毛利 */
             grossProfit: number;
+            /** 反向折扣 */
+            inverseDiscount: number;
 
             /** 销售报价-行集合 */
             salesQuoteItems: ISalesQuoteItems;
@@ -367,6 +369,8 @@ namespace sales {
             grossBase: number;
             /** 毛利价格 */
             grossPrice: number;
+            /** 反向行折扣 */
+            inverseDiscount: number;
 
             /** 销售报价-行-额外信息集合 */
             salesQuoteItemExtras: ISalesQuoteItemExtras;

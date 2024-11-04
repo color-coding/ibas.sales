@@ -1083,7 +1083,7 @@ namespace sales {
                             new sap.extension.m.Input("", {
                                 editable: true,
                             }).bindProperty("bindingValue", {
-                                path: "discount",
+                                path: config.isInverseDiscount() ? "inverseDiscount" : "discount",
                                 type: new data.Percentage(),
                             }),
                             new sap.extension.m.Input("", {

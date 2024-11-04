@@ -816,32 +816,46 @@ public interface ISalesReserveInvoice extends IBODocument, IShippingAddressParen
 	void setBranch(String value);
 
 	/**
-	* 获取-毛利价格清单
-	* 
-	* @return 值
-	*/
+	 * 获取-毛利价格清单
+	 * 
+	 * @return 值
+	 */
 	Integer getGrossBase();
 
 	/**
-	* 设置-毛利价格清单
-	* 
-	* @param value 值
-	*/
+	 * 设置-毛利价格清单
+	 * 
+	 * @param value 值
+	 */
 	void setGrossBase(Integer value);
 
 	/**
-	* 获取-毛利
-	* 
-	* @return 值
-	*/
+	 * 获取-毛利
+	 * 
+	 * @return 值
+	 */
 	BigDecimal getGrossProfit();
 
 	/**
-	* 设置-毛利
-	* 
-	* @param value 值
-	*/
+	 * 设置-毛利
+	 * 
+	 * @param value 值
+	 */
 	void setGrossProfit(BigDecimal value);
+
+	/**
+	 * 获取-反向折扣
+	 * 
+	 * @return 值
+	 */
+	BigDecimal getInverseDiscount();
+
+	/**
+	 * 设置-反向折扣
+	 * 
+	 * @param value 值
+	 */
+	void setInverseDiscount(BigDecimal value);
 
 	/**
 	 * 获取-销售预留发票-行集合

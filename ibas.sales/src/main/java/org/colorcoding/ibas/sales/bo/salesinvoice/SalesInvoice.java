@@ -68,6 +68,7 @@ import org.colorcoding.ibas.sales.logic.journalentry.SalesInvoiceDeliveryMateria
 import org.colorcoding.ibas.sales.logic.journalentry.SalesInvoiceDownPaymentAmount;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
+import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionInverseDiscount;
 
 /**
  * 获取-销售发票
@@ -1758,65 +1759,96 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 	}
 
 	/**
-	* 属性名称-毛利价格清单
-	*/
+	 * 属性名称-毛利价格清单
+	 */
 	private static final String PROPERTY_GROSSBASE_NAME = "GrossBase";
 
 	/**
-	* 毛利价格清单 属性
-	*/
+	 * 毛利价格清单 属性
+	 */
 	@DbField(name = "GrossBase", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_GROSSBASE = registerProperty(PROPERTY_GROSSBASE_NAME,
 			Integer.class, MY_CLASS);
 
 	/**
-	* 获取-毛利价格清单
-	* 
-	* @return 值
-	*/
+	 * 获取-毛利价格清单
+	 * 
+	 * @return 值
+	 */
 	@XmlElement(name = PROPERTY_GROSSBASE_NAME)
 	public final Integer getGrossBase() {
 		return this.getProperty(PROPERTY_GROSSBASE);
 	}
 
 	/**
-	* 设置-毛利价格清单
-	* 
-	* @param value 值
-	*/
+	 * 设置-毛利价格清单
+	 * 
+	 * @param value 值
+	 */
 	public final void setGrossBase(Integer value) {
 		this.setProperty(PROPERTY_GROSSBASE, value);
 	}
 
 	/**
-	* 属性名称-毛利
-	*/
+	 * 属性名称-毛利
+	 */
 	private static final String PROPERTY_GROSSPROFIT_NAME = "GrossProfit";
 
 	/**
-	* 毛利 属性
-	*/
+	 * 毛利 属性
+	 */
 	@DbField(name = "GrossProfit", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<BigDecimal> PROPERTY_GROSSPROFIT = registerProperty(PROPERTY_GROSSPROFIT_NAME,
 			BigDecimal.class, MY_CLASS);
 
 	/**
-	* 获取-毛利
-	* 
-	* @return 值
-	*/
+	 * 获取-毛利
+	 * 
+	 * @return 值
+	 */
 	@XmlElement(name = PROPERTY_GROSSPROFIT_NAME)
 	public final BigDecimal getGrossProfit() {
 		return this.getProperty(PROPERTY_GROSSPROFIT);
 	}
 
 	/**
-	* 设置-毛利
-	* 
-	* @param value 值
-	*/
+	 * 设置-毛利
+	 * 
+	 * @param value 值
+	 */
 	public final void setGrossProfit(BigDecimal value) {
 		this.setProperty(PROPERTY_GROSSPROFIT, value);
+	}
+
+	/**
+	 * 属性名称-反向折扣
+	 */
+	private static final String PROPERTY_INVERSEDISCOUNT_NAME = "InverseDiscount";
+
+	/**
+	 * 反向折扣 属性
+	 */
+	@DbField(name = "InDiscPrcnt", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<BigDecimal> PROPERTY_INVERSEDISCOUNT = registerProperty(
+			PROPERTY_INVERSEDISCOUNT_NAME, BigDecimal.class, MY_CLASS);
+
+	/**
+	 * 获取-反向折扣
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_INVERSEDISCOUNT_NAME)
+	public final BigDecimal getInverseDiscount() {
+		return this.getProperty(PROPERTY_INVERSEDISCOUNT);
+	}
+
+	/**
+	 * 设置-反向折扣
+	 * 
+	 * @param value 值
+	 */
+	public final void setInverseDiscount(BigDecimal value) {
+		this.setProperty(PROPERTY_INVERSEDISCOUNT, value);
 	}
 
 	/**
@@ -2055,6 +2087,8 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 				// 单据总计 = 折扣后总计（含税）+ 运输-总计（含税）
 				new BusinessRuleDeductionDocumentTotal(PROPERTY_DOCUMENTTOTAL, PROPERTY_DISCOUNTTOTAL,
 						PROPERTY_SHIPPINGSEXPENSETOTAL),
+				// 反向折扣 = 1 - 折扣
+				new BusinessRuleDeductionInverseDiscount(PROPERTY_DISCOUNT, PROPERTY_INVERSEDISCOUNT),
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DISCOUNTTOTAL), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DOCUMENTTOTAL), // 不能低于0
 				new BusinessRuleMaxProperty<BigDecimal>(PROPERTY_DOCUMENTTOTAL, PROPERTY_DOWNPAYMENTTOTAL), // 不能预付款不能大过单据总计

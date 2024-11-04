@@ -565,6 +565,16 @@ namespace sales {
             set grossProfit(value: number) {
                 this.setProperty(SalesInvoice.PROPERTY_GROSSPROFIT_NAME, value);
             }
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string = "InverseDiscount";
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number {
+                return this.getProperty<number>(SalesInvoice.PROPERTY_INVERSEDISCOUNT_NAME);
+            }
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number) {
+                this.setProperty(SalesInvoice.PROPERTY_INVERSEDISCOUNT_NAME, value);
+            }
 
 
             /** 映射的属性名称-销售发票-行集合 */
@@ -727,6 +737,10 @@ namespace sales {
                     // 单据总计 = 折扣后总计（含税）+ 运输-总计（含税）
                     new BusinessRuleDeductionDocumentTotal(SalesInvoice.PROPERTY_DOCUMENTTOTAL_NAME,
                         SalesInvoice.PROPERTY_DISCOUNTTOTAL_NAME, SalesInvoice.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME),
+                    // 计算正反折扣
+                    new BusinessRuleNegativeDiscount(
+                        SalesInvoice.PROPERTY_DISCOUNT_NAME, SalesInvoice.PROPERTY_INVERSEDISCOUNT_NAME
+                    ),
                 ];
             }
             /** 重置 */
@@ -1737,6 +1751,16 @@ namespace sales {
                 this.setProperty(SalesInvoiceItem.PROPERTY_GROSSPRICE_NAME, value);
             }
 
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string = "InverseDiscount";
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number {
+                return this.getProperty<number>(SalesInvoiceItem.PROPERTY_INVERSEDISCOUNT_NAME);
+            }
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number) {
+                this.setProperty(SalesInvoiceItem.PROPERTY_INVERSEDISCOUNT_NAME, value);
+            }
             /** 映射的属性名称-物料批次集合 */
             static PROPERTY_MATERIALBATCHES_NAME: string = "MaterialBatches";
             /** 获取-物料批次集合 */
@@ -1799,6 +1823,10 @@ namespace sales {
                     // 计算折扣后总计 = 折扣前总计 * 折扣
                     new BusinessRuleDeductionDiscount(
                         SalesInvoiceItem.PROPERTY_DISCOUNT_NAME, SalesInvoiceItem.PROPERTY_UNITLINETOTAL_NAME, SalesInvoiceItem.PROPERTY_PRETAXLINETOTAL_NAME
+                    ),
+                    // 计算正反折扣
+                    new BusinessRuleNegativeDiscount(
+                        SalesInvoiceItem.PROPERTY_DISCOUNT_NAME, SalesInvoiceItem.PROPERTY_INVERSEDISCOUNT_NAME
                     ),
                 ];
             }
