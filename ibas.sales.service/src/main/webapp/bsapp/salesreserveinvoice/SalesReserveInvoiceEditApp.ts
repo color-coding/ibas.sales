@@ -962,6 +962,27 @@ namespace sales {
                             if (!ibas.strings.equals(that.editData.customerCode, selected.customerCode)) {
                                 continue;
                             }
+                            if (!ibas.strings.isEmpty(selected.paymentCode) && that.editData.paymentCode !== selected.paymentCode) {
+                                that.messages({
+                                    type: ibas.emMessageType.QUESTION,
+                                    title: ibas.i18n.prop(that.name),
+                                    message: ibas.i18n.prop("sales_change_item_paymentcode_continue"),
+                                    actions: [ibas.emMessageAction.YES, ibas.emMessageAction.NO],
+                                    onCompleted(action: ibas.emMessageAction): void {
+                                        if (action === ibas.emMessageAction.YES) {
+                                            that.editData.paymentCode = selected.paymentCode;
+                                            let criteria: ibas.ICriteria = new ibas.Criteria();
+                                            let condition: ibas.ICondition = criteria.conditions.create();
+                                            condition.alias = businesspartner.bo.PaymentTerm.PROPERTY_CODE_NAME;
+                                            condition.value = that.editData.paymentCode;
+                                            condition = criteria.conditions.create();
+                                            condition.alias = businesspartner.bo.PaymentTerm.PROPERTY_ACTIVATED_NAME;
+                                            condition.value = ibas.emYesNo.YES.toString();
+                                            that.choosePaymentTerm(criteria);
+                                        }
+                                    }
+                                });
+                            }
                             that.editData.baseDocument(selected);
                         }
                         that.view.showSalesReserveInvoiceItems(that.editData.salesReserveInvoiceItems.filterDeleted());

@@ -79,17 +79,6 @@ namespace sales {
                         }
                     });
                 }
-                // 计算到期日
-                if (this.editData.isNew === true && !ibas.strings.isEmpty(this.editData.paymentCode)) {
-                    let criteria: ibas.ICriteria = new ibas.Criteria();
-                    let condition: ibas.ICondition = criteria.conditions.create();
-                    condition.alias = businesspartner.bo.PaymentTerm.PROPERTY_CODE_NAME;
-                    condition.value = this.editData.paymentCode;
-                    condition = criteria.conditions.create();
-                    condition.alias = businesspartner.bo.PaymentTerm.PROPERTY_ACTIVATED_NAME;
-                    condition.value = ibas.emYesNo.YES.toString();
-                    this.choosePaymentTerm(criteria);
-                }
             }
             /** 运行,覆盖原方法 */
             run(): void;
@@ -291,17 +280,6 @@ namespace sales {
                             that.editData.documentCurrency = selected.currency;
                             that.editData.paymentCode = selected.paymentCode;
                             that.view.defaultTaxGroup = selected.taxGroup;
-                            // 计算到期日
-                            if (!ibas.strings.isEmpty(that.editData.paymentCode)) {
-                                let criteria: ibas.ICriteria = new ibas.Criteria();
-                                let condition: ibas.ICondition = criteria.conditions.create();
-                                condition.alias = businesspartner.bo.PaymentTerm.PROPERTY_CODE_NAME;
-                                condition.value = that.editData.paymentCode;
-                                condition = criteria.conditions.create();
-                                condition.alias = businesspartner.bo.PaymentTerm.PROPERTY_ACTIVATED_NAME;
-                                condition.value = ibas.emYesNo.YES.toString();
-                                that.choosePaymentTerm(criteria);
-                            }
                             that.customer = selected;
                             that.changeSalesQuoteItemPrice(that.editData.priceList);
                         }
@@ -1533,13 +1511,6 @@ namespace sales {
                         onCompleted: (selecteds) => {
                             for (let selected of selecteds) {
                                 this.editData.paymentCode = selected.code;
-                                if (selected.dueDateBaseOn === businesspartner.bo.emDueDateBaseOn.DOCUMENT_DATE) {
-                                    this.editData.deliveryDate = selected.calculateTermDate(this.editData.documentDate);
-                                } else if (selected.dueDateBaseOn === businesspartner.bo.emDueDateBaseOn.POSTING_DATE) {
-                                    this.editData.deliveryDate = selected.calculateTermDate(this.editData.postingDate);
-                                } else if (selected.dueDateBaseOn === businesspartner.bo.emDueDateBaseOn.SYSTEM_DATE) {
-                                    this.editData.deliveryDate = selected.calculateTermDate(ibas.dates.today());
-                                }
                             }
                         }
                     });

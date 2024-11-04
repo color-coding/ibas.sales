@@ -99,6 +99,7 @@
     "sales_remove_base_items_continue": "This action will remove based line items, continue?",
     "sales_change_item_warehouse_continue": "Change warehouse for document line to [{0}]?",
     "sales_change_item_price_continue": "Price list updated, change document line price?",
+    "sales_change_item_paymentcode_continue": "Use document based payment terms?",
     "sales_change_lead_to_customer_continue": "Automatically switch to corresponding customer?",
     "sales_not_found_lead's_customer": "Customer not found for [{0} - {1}], please create and retry",
     "sales_not_found_salesorder": "Sales order [{0}] not found",

@@ -286,7 +286,6 @@ namespace sales {
             target.branch = source.branch;
             if (!(target instanceof DownPaymentRequest)) {
                 target.priceList = source.priceList;
-                target.paymentCode = source.paymentCode;
             }
             // 复制自定义字段
             for (let item of source.userFields.forEach()) {
@@ -615,7 +614,7 @@ namespace sales {
                     } else {
                         let result: number = total / preTotal;
                         // 差异小于近似位，则忽略
-                        if (ibas.numbers.isApproximated(discount, result, DECIMAL_PLACES_PERCENTAGE, 10)) {
+                        if (ibas.numbers.isApproximated(discount, result, DECIMAL_PLACES_PERCENTAGE)) {
                             return;
                         }
                         context.outputValues.set(this.discount, ibas.numbers.round(result, DECIMAL_PLACES_PERCENTAGE + 2));
@@ -780,7 +779,7 @@ namespace sales {
                         // 非折扣触发，算折扣
                         let result: number = afterDiscount / preDiscount;
                         // 差异小于近似位，则忽略
-                        if (ibas.numbers.isApproximated(discount, result, DECIMAL_PLACES_PERCENTAGE, 10)) {
+                        if (ibas.numbers.isApproximated(discount, result, DECIMAL_PLACES_PERCENTAGE)) {
                             return;
                         }
                         context.outputValues.set(this.discount, ibas.numbers.round(result, DECIMAL_PLACES_PERCENTAGE + 2));
@@ -854,7 +853,7 @@ namespace sales {
                     if (!ibas.numbers.isApproximated(rPreTotal, preTotal, DECIMAL_PLACES_SUM)) {
                         context.outputValues.set(this.preTotal, ibas.numbers.round(rPreTotal, DECIMAL_PLACES_SUM));
                     }
-                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM, Math.pow(10, DECIMAL_PLACES_SUM))) {
+                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM)) {
                         // 税精度降低
                         context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, DECIMAL_PLACES_SUM));
                     }
@@ -878,7 +877,7 @@ namespace sales {
                     if (!ibas.numbers.isApproximated(rPreTotal, preTotal, DECIMAL_PLACES_SUM)) {
                         context.outputValues.set(this.preTotal, ibas.numbers.round(rPreTotal, DECIMAL_PLACES_SUM));
                     }
-                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM, Math.pow(10, DECIMAL_PLACES_SUM))) {
+                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM)) {
                         // 税精度降低
                         context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, DECIMAL_PLACES_SUM));
                     }
@@ -894,7 +893,7 @@ namespace sales {
                     let rTaxTotal: number = preTotal * taxRate;
                     let rTotal: number = preTotal + rTaxTotal;
                     // 差异小于近似位，则忽略
-                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM, Math.pow(10, DECIMAL_PLACES_SUM))) {
+                    if (!ibas.numbers.isApproximated(rTaxTotal, taxTotal, DECIMAL_PLACES_SUM)) {
                         // 税精度降低
                         context.outputValues.set(this.taxTotal, ibas.numbers.round(rTaxTotal, DECIMAL_PLACES_SUM));
                     }

@@ -42,6 +42,8 @@ namespace sales {
                 chooseDownPaymentRequestBlanketAgreementEvent: Function;
                 /** 选择预收款申请-销售交货事件 */
                 chooseDownPaymentRequestSalesDeliveryEvent: Function;
+                /** 选择付款条款事件 */
+                choosePaymentTermEvent: Function;
                 /** 选择客户合同 */
                 chooseCustomerAgreementsEvent: Function;
                 /** 预收款申请收款事件 */
