@@ -1994,9 +1994,13 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 				// 计算行-总计（含税）
 				new BusinessRuleSumElements(PROPERTY_ITEMSLINETOTAL, PROPERTY_SALESRESERVEINVOICEITEMS,
 						SalesReserveInvoiceItem.PROPERTY_LINETOTAL, new Predicate<SalesReserveInvoiceItem>() {
-							// 过滤，产品套件子项的价格
 							@Override
 							public boolean test(SalesReserveInvoiceItem t) {
+								// 过滤，标记删除
+								if (t.getDeleted() == emYesNo.YES) {
+									return false;
+								}
+								// 过滤，产品套件子项的价格
 								if (t.getParentLineSign() != null && !t.getParentLineSign().isEmpty()) {
 									return false;
 								}

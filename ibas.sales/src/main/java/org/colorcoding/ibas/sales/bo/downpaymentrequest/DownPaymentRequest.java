@@ -2,6 +2,7 @@ package org.colorcoding.ibas.sales.bo.downpaymentrequest;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.function.Predicate;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -1542,63 +1543,63 @@ public class DownPaymentRequest extends BusinessObject<DownPaymentRequest> imple
 	}
 
 	/**
-	* 属性名称-毛利价格清单
-	*/
+	 * 属性名称-毛利价格清单
+	 */
 	private static final String PROPERTY_GROSSBASE_NAME = "GrossBase";
 
 	/**
-	* 毛利价格清单 属性
-	*/
+	 * 毛利价格清单 属性
+	 */
 	@DbField(name = "GrossBase", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_GROSSBASE = registerProperty(PROPERTY_GROSSBASE_NAME,
 			Integer.class, MY_CLASS);
 
 	/**
-	* 获取-毛利价格清单
-	* 
-	* @return 值
-	*/
+	 * 获取-毛利价格清单
+	 * 
+	 * @return 值
+	 */
 	@XmlElement(name = PROPERTY_GROSSBASE_NAME)
 	public final Integer getGrossBase() {
 		return this.getProperty(PROPERTY_GROSSBASE);
 	}
 
 	/**
-	* 设置-毛利价格清单
-	* 
-	* @param value 值
-	*/
+	 * 设置-毛利价格清单
+	 * 
+	 * @param value 值
+	 */
 	public final void setGrossBase(Integer value) {
 		this.setProperty(PROPERTY_GROSSBASE, value);
 	}
 
 	/**
-	* 属性名称-毛利
-	*/
+	 * 属性名称-毛利
+	 */
 	private static final String PROPERTY_GROSSPROFIT_NAME = "GrossProfit";
 
 	/**
-	* 毛利 属性
-	*/
+	 * 毛利 属性
+	 */
 	@DbField(name = "GrossProfit", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<BigDecimal> PROPERTY_GROSSPROFIT = registerProperty(PROPERTY_GROSSPROFIT_NAME,
 			BigDecimal.class, MY_CLASS);
 
 	/**
-	* 获取-毛利
-	* 
-	* @return 值
-	*/
+	 * 获取-毛利
+	 * 
+	 * @return 值
+	 */
 	@XmlElement(name = PROPERTY_GROSSPROFIT_NAME)
 	public final BigDecimal getGrossProfit() {
 		return this.getProperty(PROPERTY_GROSSPROFIT);
 	}
 
 	/**
-	* 设置-毛利
-	* 
-	* @param value 值
-	*/
+	 * 设置-毛利
+	 * 
+	 * @param value 值
+	 */
 	public final void setGrossProfit(BigDecimal value) {
 		this.setProperty(PROPERTY_GROSSPROFIT, value);
 	}
@@ -1722,7 +1723,16 @@ public class DownPaymentRequest extends BusinessObject<DownPaymentRequest> imple
 						DownPaymentRequestItem.PROPERTY_LINESTATUS), // 使用集合元素状态
 				// 计算行-总计（含税）
 				new BusinessRuleSumElements(PROPERTY_ITEMSLINETOTAL, PROPERTY_DOWNPAYMENTREQUESTITEMS,
-						DownPaymentRequestItem.PROPERTY_LINETOTAL),
+						DownPaymentRequestItem.PROPERTY_LINETOTAL, new Predicate<DownPaymentRequestItem>() {
+							@Override
+							public boolean test(DownPaymentRequestItem t) {
+								// 过滤，标记删除
+								if (t.getDeleted() == emYesNo.YES) {
+									return false;
+								}
+								return true;
+							}
+						}),
 				// 折扣后总计 = 项目-行总计 * 折扣
 				new BusinessRuleDeductionDiscountTotal(PROPERTY_DISCOUNTTOTAL, PROPERTY_ITEMSLINETOTAL,
 						PROPERTY_DISCOUNT),

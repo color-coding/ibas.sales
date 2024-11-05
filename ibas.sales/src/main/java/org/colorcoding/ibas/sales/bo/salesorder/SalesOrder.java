@@ -1988,9 +1988,13 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 				// 计算行-总计（含税）
 				new BusinessRuleSumElements(PROPERTY_ITEMSLINETOTAL, PROPERTY_SALESORDERITEMS,
 						SalesOrderItem.PROPERTY_LINETOTAL, new Predicate<SalesOrderItem>() {
-							// 过滤，产品套件子项的价格
 							@Override
 							public boolean test(SalesOrderItem t) {
+								// 过滤，标记删除
+								if (t.getDeleted() == emYesNo.YES) {
+									return false;
+								}
+								// 过滤，产品套件子项的价格
 								if (t.getParentLineSign() != null && !t.getParentLineSign().isEmpty()) {
 									return false;
 								}

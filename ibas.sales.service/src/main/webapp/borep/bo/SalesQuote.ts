@@ -650,33 +650,48 @@ namespace sales {
                     // 计算行-总计（含税）
                     new ibas.BusinessRuleSumElements(
                         SalesQuote.PROPERTY_ITEMSLINETOTAL_NAME, SalesQuote.PROPERTY_SALESQUOTEITEMS_NAME, SalesQuoteItem.PROPERTY_LINETOTAL_NAME,
-                        // 不计产品套装子项的金额
                         (data: SalesQuoteItem): boolean => {
+                            // 不计标记删除项
+                            if (data.deleted === ibas.emYesNo.YES) {
+                                return false;
+                            }
+                            // 不计产品套装子项的金额
                             if (!ibas.strings.isEmpty(data.parentLineSign)) {
                                 return false;
                             }
                             return true;
-                        }),
+                        }
+                    ),
                     // 计算行-税总计
                     new ibas.BusinessRuleSumElements(
                         SalesQuote.PROPERTY_ITEMSTAXTOTAL_NAME, SalesQuote.PROPERTY_SALESQUOTEITEMS_NAME, SalesQuoteItem.PROPERTY_TAXTOTAL_NAME,
-                        // 不计产品套装子项的金额
                         (data: SalesQuoteItem): boolean => {
+                            // 不计标记删除项
+                            if (data.deleted === ibas.emYesNo.YES) {
+                                return false;
+                            }
+                            // 不计产品套装子项的金额
                             if (!ibas.strings.isEmpty(data.parentLineSign)) {
                                 return false;
                             }
                             return true;
-                        }),
+                        }
+                    ),
                     // 计算行-税前总计
                     new ibas.BusinessRuleSumElements(
                         SalesQuote.PROPERTY_ITEMSPRETAXTOTAL_NAME, SalesQuote.PROPERTY_SALESQUOTEITEMS_NAME, SalesQuoteItem.PROPERTY_PRETAXLINETOTAL_NAME,
-                        // 不计产品套装子项的金额
                         (data: SalesQuoteItem): boolean => {
+                            // 不计标记删除项
+                            if (data.deleted === ibas.emYesNo.YES) {
+                                return false;
+                            }
+                            // 不计产品套装子项的金额
                             if (!ibas.strings.isEmpty(data.parentLineSign)) {
                                 return false;
                             }
                             return true;
-                        }),
+                        }
+                    ),
                     // 折扣后总计（含税） = 行-总计（含税）* 折扣
                     new BusinessRuleDeductionDiscountTotal(
                         SalesQuote.PROPERTY_DISCOUNTTOTAL_NAME, SalesQuote.PROPERTY_ITEMSLINETOTAL_NAME, SalesQuote.PROPERTY_DISCOUNT_NAME
@@ -746,6 +761,11 @@ namespace sales {
                             }
                         }
                     }
+                }
+                // 标记删除触发集合行变化
+                if (ibas.strings.equalsIgnoreCase(name, SalesQuoteItem.PROPERTY_DELETED_NAME)
+                    || ibas.strings.equalsIgnoreCase(name, SalesQuoteItem.PROPERTY_CANCELED_NAME)) {
+                    this.firePropertyChanged("length");
                 }
             }
             protected afterAdd(item: SalesQuoteItem): void {

@@ -726,6 +726,9 @@ namespace sales {
                         SalesOrder.PROPERTY_ITEMSLINETOTAL_NAME, SalesOrder.PROPERTY_SALESORDERITEMS_NAME, SalesOrderItem.PROPERTY_LINETOTAL_NAME,
                         // 不计产品套装子项的金额
                         (data: SalesOrderItem): boolean => {
+                            if (data.deleted === ibas.emYesNo.YES) {
+                                return false;
+                            }
                             if (!ibas.strings.isEmpty(data.parentLineSign)) {
                                 return false;
                             }
@@ -736,6 +739,9 @@ namespace sales {
                         SalesOrder.PROPERTY_ITEMSTAXTOTAL_NAME, SalesOrder.PROPERTY_SALESORDERITEMS_NAME, SalesOrderItem.PROPERTY_TAXTOTAL_NAME,
                         // 不计产品套装子项的金额
                         (data: SalesOrderItem): boolean => {
+                            if (data.deleted === ibas.emYesNo.YES) {
+                                return false;
+                            }
                             if (!ibas.strings.isEmpty(data.parentLineSign)) {
                                 return false;
                             }
@@ -746,6 +752,9 @@ namespace sales {
                         SalesOrder.PROPERTY_ITEMSPRETAXTOTAL_NAME, SalesOrder.PROPERTY_SALESORDERITEMS_NAME, SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME,
                         // 不计产品套装子项的金额
                         (data: SalesOrderItem): boolean => {
+                            if (data.deleted === ibas.emYesNo.YES) {
+                                return false;
+                            }
                             if (!ibas.strings.isEmpty(data.parentLineSign)) {
                                 return false;
                             }
@@ -827,6 +836,11 @@ namespace sales {
                             }
                         }
                     }
+                }
+                // 标记删除触发集合行变化
+                if (ibas.strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_DELETED_NAME)
+                    || ibas.strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_CANCELED_NAME)) {
+                    this.firePropertyChanged("length");
                 }
             }
             protected afterAdd(item: SalesOrderItem): void {

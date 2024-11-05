@@ -1995,9 +1995,13 @@ public class SalesDelivery extends BusinessObject<SalesDelivery> implements ISal
 				// 计算行-总计（含税）
 				new BusinessRuleSumElements(PROPERTY_ITEMSLINETOTAL, PROPERTY_SALESDELIVERYITEMS,
 						SalesDeliveryItem.PROPERTY_LINETOTAL, new Predicate<SalesDeliveryItem>() {
-							// 过滤，产品套件子项的价格
 							@Override
 							public boolean test(SalesDeliveryItem t) {
+								// 过滤，标记删除
+								if (t.getDeleted() == emYesNo.YES) {
+									return false;
+								}
+								// 过滤，产品套件子项的价格
 								if (t.getParentLineSign() != null && !t.getParentLineSign().isEmpty()) {
 									return false;
 								}
