@@ -673,7 +673,7 @@ namespace sales {
                         SalesReserveInvoice.PROPERTY_ITEMSLINETOTAL_NAME, SalesReserveInvoice.PROPERTY_SALESRESERVEINVOICEITEMS_NAME, SalesReserveInvoiceItem.PROPERTY_LINETOTAL_NAME,
                         (data: SalesReserveInvoiceItem): boolean => {
                             // 不计标记删除项
-                            if (data.deleted === ibas.emYesNo.YES) {
+                            if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
                                 return false;
                             }
                             // 不计产品套装子项的金额
@@ -688,7 +688,7 @@ namespace sales {
                         SalesReserveInvoice.PROPERTY_ITEMSTAXTOTAL_NAME, SalesReserveInvoice.PROPERTY_SALESRESERVEINVOICEITEMS_NAME, SalesReserveInvoiceItem.PROPERTY_TAXTOTAL_NAME,
                         (data: SalesReserveInvoiceItem): boolean => {
                             // 不计标记删除项
-                            if (data.deleted === ibas.emYesNo.YES) {
+                            if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
                                 return false;
                             }
                             // 不计产品套装子项的金额
@@ -703,7 +703,7 @@ namespace sales {
                         SalesReserveInvoice.PROPERTY_ITEMSPRETAXTOTAL_NAME, SalesReserveInvoice.PROPERTY_SALESRESERVEINVOICEITEMS_NAME, SalesReserveInvoiceItem.PROPERTY_PRETAXLINETOTAL_NAME,
                         (data: SalesReserveInvoiceItem): boolean => {
                             // 不计标记删除项
-                            if (data.deleted === ibas.emYesNo.YES) {
+                            if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
                                 return false;
                             }
                             // 不计产品套装子项的金额

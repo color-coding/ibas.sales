@@ -673,7 +673,7 @@ namespace sales {
                         SalesReturnRequest.PROPERTY_ITEMSLINETOTAL_NAME, SalesReturnRequest.PROPERTY_SALESRETURNREQUESTITEMS_NAME, SalesReturnRequestItem.PROPERTY_LINETOTAL_NAME,
                         (data: SalesReturnRequestItem): boolean => {
                             // 不计标记删除项
-                            if (data.deleted === ibas.emYesNo.YES) {
+                            if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
                                 return false;
                             }
                             // 不计产品套装子项的金额
@@ -688,7 +688,7 @@ namespace sales {
                         SalesReturnRequest.PROPERTY_ITEMSTAXTOTAL_NAME, SalesReturnRequest.PROPERTY_SALESRETURNREQUESTITEMS_NAME, SalesReturnRequestItem.PROPERTY_TAXTOTAL_NAME,
                         (data: SalesReturnRequestItem): boolean => {
                             // 不计标记删除项
-                            if (data.deleted === ibas.emYesNo.YES) {
+                            if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
                                 return false;
                             }
                             // 不计产品套装子项的金额
@@ -703,7 +703,7 @@ namespace sales {
                         SalesReturnRequest.PROPERTY_ITEMSPRETAXTOTAL_NAME, SalesReturnRequest.PROPERTY_SALESRETURNREQUESTITEMS_NAME, SalesReturnRequestItem.PROPERTY_PRETAXLINETOTAL_NAME,
                         (data: SalesReturnRequestItem): boolean => {
                             // 不计标记删除项
-                            if (data.deleted === ibas.emYesNo.YES) {
+                            if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
                                 return false;
                             }
                             // 不计产品套装子项的金额

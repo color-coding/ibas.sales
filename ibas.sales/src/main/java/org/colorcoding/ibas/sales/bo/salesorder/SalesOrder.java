@@ -1991,7 +1991,9 @@ public class SalesOrder extends BusinessObject<SalesOrder> implements ISalesOrde
 							@Override
 							public boolean test(SalesOrderItem t) {
 								// 过滤，标记删除
-								if (t.getDeleted() == emYesNo.YES) {
+								if (!MyConfiguration.getConfigValue(
+										MyConfiguration.CONFIG_ITEM_DOCUMENT_STATISTICS_TAG_DELETED_LINE, true)
+										&& t.getDeleted() == emYesNo.YES) {
 									return false;
 								}
 								// 过滤，产品套件子项的价格

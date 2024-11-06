@@ -1997,7 +1997,9 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 							@Override
 							public boolean test(SalesReturnItem t) {
 								// 过滤，标记删除
-								if (t.getDeleted() == emYesNo.YES) {
+								if (!MyConfiguration.getConfigValue(
+										MyConfiguration.CONFIG_ITEM_DOCUMENT_STATISTICS_TAG_DELETED_LINE, true)
+										&& t.getDeleted() == emYesNo.YES) {
 									return false;
 								}
 								// 过滤，产品套件子项的价格

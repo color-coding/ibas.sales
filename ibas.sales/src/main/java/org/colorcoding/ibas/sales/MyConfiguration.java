@@ -79,4 +79,6 @@ public class MyConfiguration extends org.colorcoding.ibas.initialfantasy.MyConfi
 	 */
 	public final static String CONFIG_ITEM_ENABLE_RESTORE_RESERVATION_STATUS = "enableRestoreReservationStatus";
 
+	/** 配置项目-单据统计标记删除行 */
+	public final static String CONFIG_ITEM_DOCUMENT_STATISTICS_TAG_DELETED_LINE = "documentStatisticsTagDeletedLine";
 }

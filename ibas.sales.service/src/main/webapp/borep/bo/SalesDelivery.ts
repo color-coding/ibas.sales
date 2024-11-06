@@ -673,7 +673,7 @@ namespace sales {
                         SalesDelivery.PROPERTY_ITEMSLINETOTAL_NAME, SalesDelivery.PROPERTY_SALESDELIVERYITEMS_NAME, SalesDeliveryItem.PROPERTY_LINETOTAL_NAME,
                         (data: SalesDeliveryItem): boolean => {
                             // 不计标记删除项
-                            if (data.deleted === ibas.emYesNo.YES) {
+                            if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
                                 return false;
                             }
                             // 不计产品套装子项的金额
@@ -688,7 +688,7 @@ namespace sales {
                         SalesDelivery.PROPERTY_ITEMSTAXTOTAL_NAME, SalesDelivery.PROPERTY_SALESDELIVERYITEMS_NAME, SalesDeliveryItem.PROPERTY_TAXTOTAL_NAME,
                         (data: SalesDeliveryItem): boolean => {
                             // 不计标记删除项
-                            if (data.deleted === ibas.emYesNo.YES) {
+                            if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
                                 return false;
                             }
                             // 不计产品套装子项的金额
@@ -703,7 +703,7 @@ namespace sales {
                         SalesDelivery.PROPERTY_ITEMSPRETAXTOTAL_NAME, SalesDelivery.PROPERTY_SALESDELIVERYITEMS_NAME, SalesDeliveryItem.PROPERTY_PRETAXLINETOTAL_NAME,
                         (data: SalesDeliveryItem): boolean => {
                             // 不计标记删除项
-                            if (data.deleted === ibas.emYesNo.YES) {
+                            if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
                                 return false;
                             }
                             // 不计产品套装子项的金额

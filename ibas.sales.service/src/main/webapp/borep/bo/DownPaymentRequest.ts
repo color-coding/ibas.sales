@@ -618,7 +618,7 @@ namespace sales {
                         DownPaymentRequest.PROPERTY_ITEMSLINETOTAL_NAME, DownPaymentRequest.PROPERTY_DOWNPAYMNETREQUESTITEMS_NAME, DownPaymentRequestItem.PROPERTY_LINETOTAL_NAME,
                         (data: DownPaymentRequestItem): boolean => {
                             // 不计标记删除项
-                            if (data.deleted === ibas.emYesNo.YES) {
+                            if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
                                 return false;
                             }
                             return true;
@@ -629,7 +629,7 @@ namespace sales {
                         DownPaymentRequest.PROPERTY_ITEMSTAXTOTAL_NAME, DownPaymentRequest.PROPERTY_DOWNPAYMNETREQUESTITEMS_NAME, DownPaymentRequestItem.PROPERTY_TAXTOTAL_NAME,
                         (data: DownPaymentRequestItem): boolean => {
                             // 不计标记删除项
-                            if (data.deleted === ibas.emYesNo.YES) {
+                            if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
                                 return false;
                             }
                             return true;
@@ -640,7 +640,7 @@ namespace sales {
                         DownPaymentRequest.PROPERTY_ITEMSPRETAXTOTAL_NAME, DownPaymentRequest.PROPERTY_DOWNPAYMNETREQUESTITEMS_NAME, DownPaymentRequestItem.PROPERTY_PRETAXLINETOTAL_NAME,
                         (data: DownPaymentRequestItem): boolean => {
                             // 不计标记删除项
-                            if (data.deleted === ibas.emYesNo.YES) {
+                            if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
                                 return false;
                             }
                             return true;
