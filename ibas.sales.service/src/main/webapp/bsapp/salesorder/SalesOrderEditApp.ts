@@ -1145,6 +1145,9 @@ namespace sales {
                             target.customerCode = this.editData.customerCode;
                             target.customerName = this.editData.customerName;
                             target.baseDocument(this.editData);
+                            // 整单基于，则赋折扣、总计
+                            target.discount = this.editData.discount;
+                            target.documentTotal = this.editData.documentTotal;
                             // 使用预留库存
                             materials.app.useReservedMaterialsInventory({
                                 targetType: this.editData.objectCode,
@@ -1234,7 +1237,6 @@ namespace sales {
                                     app.run(target);
                                 }
                             });
-
                         } catch (error) {
                             this.messages(error);
                         }
@@ -1272,6 +1274,9 @@ namespace sales {
                             target.customerCode = this.editData.customerCode;
                             target.customerName = this.editData.customerName;
                             target.baseDocument(this.editData);
+                            // 整单基于，则赋折扣、总计
+                            target.discount = this.editData.discount;
+                            target.documentTotal = this.editData.documentTotal;
 
                             let app: SalesReturnEditApp = new SalesReturnEditApp();
                             app.navigation = this.navigation;
@@ -1316,6 +1321,9 @@ namespace sales {
                             target.customerName = this.editData.customerName;
                             target.baseDocument(this.editData);
                             target.paymentCode = this.editData.paymentCode;
+                            // 整单基于，则赋折扣、总计
+                            target.discount = this.editData.discount;
+                            target.documentTotal = this.editData.documentTotal;
                             // 预付款查询
                             let condition: ibas.ICondition;
                             let criteria: ibas.ICriteria = new ibas.Criteria();
@@ -1467,6 +1475,9 @@ namespace sales {
                             target.customerName = this.editData.customerName;
                             target.baseDocument(this.editData);
                             target.paymentCode = this.editData.paymentCode;
+                            // 整单基于，则赋折扣、总计
+                            target.discount = this.editData.discount;
+                            target.documentTotal = this.editData.documentTotal;
 
                             let app: SalesReserveInvoiceEditApp = new SalesReserveInvoiceEditApp();
                             app.navigation = this.navigation;
@@ -1511,6 +1522,9 @@ namespace sales {
                             target.customerName = this.editData.customerName;
                             target.baseDocument(this.editData);
                             target.paymentCode = this.editData.paymentCode;
+                            // 整单基于，则赋折扣、总计
+                            target.discount = this.editData.discount;
+                            target.documentTotal = this.editData.documentTotal;
 
                             let app: DownPaymentRequestEditApp = new DownPaymentRequestEditApp();
                             app.navigation = this.navigation;

@@ -892,6 +892,9 @@ namespace sales {
                                                             target.baseDocument(that.editData);
                                                             target.customerCode = customer.code;
                                                             target.customerName = customer.name;
+                                                            // 整单基于，则赋折扣、总计
+                                                            target.discount = this.editData.discount;
+                                                            target.documentTotal = this.editData.documentTotal;
                                                             that.turnToSalesOrder(target);
                                                         } catch (error) {
                                                             that.messages(error);
@@ -903,6 +906,9 @@ namespace sales {
                                                 target.customerCode = that.editData.customerCode;
                                                 target.customerName = that.editData.customerName;
                                                 target.baseDocument(that.editData);
+                                                // 整单基于，则赋折扣、总计
+                                                target.discount = this.editData.discount;
+                                                target.documentTotal = this.editData.documentTotal;
                                                 that.turnToSalesOrder(target);
                                             }
                                         }
@@ -912,6 +918,9 @@ namespace sales {
                                     target.customerCode = this.editData.customerCode;
                                     target.customerName = this.editData.customerName;
                                     target.baseDocument(this.editData);
+                                    // 整单基于，则赋折扣、总计
+                                    target.discount = this.editData.discount;
+                                    target.documentTotal = this.editData.documentTotal;
                                     this.turnToSalesOrder(target);
                                 }
                             }

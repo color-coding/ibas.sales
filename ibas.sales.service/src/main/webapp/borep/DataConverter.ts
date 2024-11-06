@@ -308,7 +308,7 @@ namespace sales {
          * @param source 源
          */
         export function baseDocumentItem(
-            target: ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem | ISalesCreditNoteItem | ISalesInvoiceItem | IDownPaymentRequestItem | ISalesReserveInvoiceItem | SalesReturnRequestItem,
+            target: SalesOrderItem | SalesDeliveryItem | SalesReturnItem | SalesCreditNoteItem | SalesInvoiceItem | DownPaymentRequestItem | SalesReserveInvoiceItem | SalesReturnRequestItem | SalesCreditNoteItem,
             source: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem | ISalesReserveInvoiceItem | SalesReturnRequestItem
         ): void {
             target.baseDocumentType = source.objectCode;
