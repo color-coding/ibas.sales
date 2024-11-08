@@ -893,8 +893,11 @@ namespace sales {
                                                             target.customerCode = customer.code;
                                                             target.customerName = customer.name;
                                                             // 整单基于，则赋折扣、总计
-                                                            target.discount = this.editData.discount;
-                                                            target.documentTotal = this.editData.documentTotal;
+                                                            if (target.itemsLineTotal === this.editData.itemsLineTotal
+                                                                && target.shippingsExpenseTotal === this.editData.shippingsExpenseTotal) {
+                                                                target.discount = this.editData.discount;
+                                                                target.documentTotal = this.editData.documentTotal;
+                                                            }
                                                             that.turnToSalesOrder(target);
                                                         } catch (error) {
                                                             that.messages(error);
@@ -907,8 +910,11 @@ namespace sales {
                                                 target.customerName = that.editData.customerName;
                                                 target.baseDocument(that.editData);
                                                 // 整单基于，则赋折扣、总计
-                                                target.discount = this.editData.discount;
-                                                target.documentTotal = this.editData.documentTotal;
+                                                if (target.itemsLineTotal === this.editData.itemsLineTotal
+                                                    && target.shippingsExpenseTotal === this.editData.shippingsExpenseTotal) {
+                                                    target.discount = this.editData.discount;
+                                                    target.documentTotal = this.editData.documentTotal;
+                                                }
                                                 that.turnToSalesOrder(target);
                                             }
                                         }
@@ -920,8 +926,10 @@ namespace sales {
                                     target.baseDocument(this.editData);
                                     target.paymentCode = this.editData.paymentCode;
                                     // 整单基于，则赋折扣、总计
-                                    target.discount = this.editData.discount;
-                                    target.documentTotal = this.editData.documentTotal;
+                                    if (target.itemsLineTotal === this.editData.itemsLineTotal) {
+                                        target.discount = this.editData.discount;
+                                        target.documentTotal = this.editData.documentTotal;
+                                    }
                                     this.turnToSalesOrder(target);
                                 }
                             }

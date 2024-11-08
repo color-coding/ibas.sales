@@ -609,6 +609,7 @@ namespace sales {
                 this.deliveryDate = ibas.dates.today();
                 this.rounding = ibas.emYesNo.YES;
                 this.discount = 1;
+                this.inverseDiscount = 0;
                 this.customerType = businesspartner.bo.emBusinessPartnerType.CUSTOMER;
             }
 
@@ -1591,6 +1592,7 @@ namespace sales {
                 this.salesQuoteItemExtras = new SalesQuoteItemExtras(this);
                 this.currency = accounting.config.currency("LOCAL");
                 this.discount = 1;
+                this.inverseDiscount = 0;
                 this.taxRate = 0;
             }
             /** 赋值产品 */
