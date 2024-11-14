@@ -1117,6 +1117,8 @@ namespace sales {
                                 target.discount = this.editData.discount;
                                 target.documentTotal = this.editData.documentTotal;
                             }
+                            // 设置单据类型
+                            bo.baseDocument_OrderType(target, this.editData);
 
                             let app: SalesReturnEditApp = new SalesReturnEditApp();
                             app.navigation = this.navigation;
@@ -1167,6 +1169,8 @@ namespace sales {
                                 target.discount = this.editData.discount;
                                 target.documentTotal = this.editData.documentTotal;
                             }
+                            // 设置单据类型
+                            bo.baseDocument_OrderType(target, this.editData);
 
                             let app: SalesInvoiceEditApp = new SalesInvoiceEditApp();
                             app.navigation = this.navigation;

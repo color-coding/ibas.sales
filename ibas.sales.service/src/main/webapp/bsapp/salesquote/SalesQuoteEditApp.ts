@@ -915,6 +915,9 @@ namespace sales {
                                                     target.discount = this.editData.discount;
                                                     target.documentTotal = this.editData.documentTotal;
                                                 }
+                                                // 设置单据类型
+                                                bo.baseDocument_OrderType(target, this.editData);
+
                                                 that.turnToSalesOrder(target);
                                             }
                                         }
@@ -930,6 +933,9 @@ namespace sales {
                                         target.discount = this.editData.discount;
                                         target.documentTotal = this.editData.documentTotal;
                                     }
+                                    // 设置单据类型
+                                    bo.baseDocument_OrderType(target, this.editData);
+
                                     this.turnToSalesOrder(target);
                                 }
                             }

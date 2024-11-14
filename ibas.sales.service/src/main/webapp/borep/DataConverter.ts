@@ -450,6 +450,44 @@ namespace sales {
             }
             return items;
         }
+        /**
+         * 设置单据类型
+         *     先判断目标单据是否有相同可选值
+         * @param target 目标单据
+         * @param source 源单据
+         */
+        export function baseDocument_OrderType(
+            target: SalesOrder | SalesDelivery | SalesReturn | SalesCreditNote | SalesInvoice | DownPaymentRequest | SalesReserveInvoice | SalesReturnRequest,
+            source: ISalesQuote | ISalesOrder | ISalesDelivery | ISalesReturn | ISalesInvoice | ISalesReserveInvoice | SalesReturnRequest
+        ): void {
+            let boReposiorty: shell.bo.IBORepositoryShell = ibas.boFactory.create(shell.bo.BO_REPOSITORY_SHELL);
+            boReposiorty.fetchBizObjectInfo({
+                user: ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_CODE),
+                boCode: target.objectCode,
+                onCompleted: (opRslt) => {
+                    for (let item of opRslt.resultObjects) {
+                        if (item.code !== target.objectCode) {
+                            continue;
+                        }
+                        if (item.name !== ibas.objects.nameOf(target)) {
+                            continue;
+                        }
+                        for (let ptyItem of item.properties) {
+                            if (ptyItem.name !== "OrderType") {
+                                continue;
+                            }
+                            for (let valItem of ptyItem.values) {
+                                if (valItem.value === source.orderType) {
+                                    target.orderType = source.orderType;
+                                    return;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            });
+        }
 
         const DECIMAL_PLACES_SUM: number = ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_SUM);
         const DECIMAL_PLACES_PRICE: number = ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES_PRICE);

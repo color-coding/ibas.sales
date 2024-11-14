@@ -1152,6 +1152,9 @@ namespace sales {
                                 target.discount = this.editData.discount;
                                 target.documentTotal = this.editData.documentTotal;
                             }
+                            // 设置单据类型
+                            bo.baseDocument_OrderType(target, this.editData);
+
                             // 使用预留库存
                             materials.app.useReservedMaterialsInventory({
                                 targetType: this.editData.objectCode,
@@ -1284,6 +1287,8 @@ namespace sales {
                                 target.discount = this.editData.discount;
                                 target.documentTotal = this.editData.documentTotal;
                             }
+                            // 设置单据类型
+                            bo.baseDocument_OrderType(target, this.editData);
 
                             let app: SalesReturnEditApp = new SalesReturnEditApp();
                             app.navigation = this.navigation;
@@ -1334,6 +1339,9 @@ namespace sales {
                                 target.discount = this.editData.discount;
                                 target.documentTotal = this.editData.documentTotal;
                             }
+                            // 设置单据类型
+                            bo.baseDocument_OrderType(target, this.editData);
+
                             // 预付款查询
                             let condition: ibas.ICondition;
                             let criteria: ibas.ICriteria = new ibas.Criteria();
@@ -1491,6 +1499,8 @@ namespace sales {
                                 target.discount = this.editData.discount;
                                 target.documentTotal = this.editData.documentTotal;
                             }
+                            // 设置单据类型
+                            bo.baseDocument_OrderType(target, this.editData);
 
                             let app: SalesReserveInvoiceEditApp = new SalesReserveInvoiceEditApp();
                             app.navigation = this.navigation;
@@ -1540,6 +1550,8 @@ namespace sales {
                                 target.discount = this.editData.discount;
                                 target.documentTotal = this.editData.documentTotal;
                             }
+                            // 设置单据类型
+                            bo.baseDocument_OrderType(target, this.editData);
 
                             let app: DownPaymentRequestEditApp = new DownPaymentRequestEditApp();
                             app.navigation = this.navigation;
