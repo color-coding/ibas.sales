@@ -1831,6 +1831,39 @@ namespace sales {
             set inverseDiscount(value: number) {
                 this.setProperty(SalesReturnRequestItem.PROPERTY_INVERSEDISCOUNT_NAME, value);
             }
+            /** 映射的属性名称-价格（本币） */
+            static PROPERTY_PRICELC_NAME: string = "PriceLC";
+            /** 获取-价格（本币） */
+            get priceLC(): number {
+                return this.getProperty<number>(SalesReturnRequestItem.PROPERTY_PRICELC_NAME);
+            }
+            /** 设置-价格（本币） */
+            set priceLC(value: number) {
+                this.setProperty(SalesReturnRequestItem.PROPERTY_PRICELC_NAME, value);
+            }
+
+            /** 映射的属性名称-折扣前价格（本币） */
+            static PROPERTY_UNITPRICELC_NAME: string = "UnitPriceLC";
+            /** 获取-折扣前价格（本币） */
+            get unitPriceLC(): number {
+                return this.getProperty<number>(SalesReturnRequestItem.PROPERTY_UNITPRICELC_NAME);
+            }
+            /** 设置-折扣前价格（本币） */
+            set unitPriceLC(value: number) {
+                this.setProperty(SalesReturnRequestItem.PROPERTY_UNITPRICELC_NAME, value);
+            }
+
+            /** 映射的属性名称-税前价格（本币） */
+            static PROPERTY_PRETAXPRICELC_NAME: string = "PreTaxPriceLC";
+            /** 获取-税前价格（本币） */
+            get preTaxPriceLC(): number {
+                return this.getProperty<number>(SalesReturnRequestItem.PROPERTY_PRETAXPRICELC_NAME);
+            }
+            /** 设置-税前价格（本币） */
+            set preTaxPriceLC(value: number) {
+                this.setProperty(SalesReturnRequestItem.PROPERTY_PRETAXPRICELC_NAME, value);
+            }
+
 
             /** 映射的属性名称-物料批次集合 */
             static PROPERTY_MATERIALBATCHES_NAME: string = "MaterialBatches";
@@ -1875,6 +1908,16 @@ namespace sales {
 
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
+                    // 计算本币价格
+                    new BusinessRuleDeductionCurrencyAmount(
+                        SalesReturnRequestItem.PROPERTY_UNITPRICELC_NAME, SalesReturnRequestItem.PROPERTY_UNITPRICE_NAME, SalesReturnRequestItem.PROPERTY_RATE_NAME
+                    ),
+                    new BusinessRuleDeductionCurrencyAmount(
+                        SalesReturnRequestItem.PROPERTY_PRETAXPRICELC_NAME, SalesReturnRequestItem.PROPERTY_PRETAXPRICE_NAME, SalesReturnRequestItem.PROPERTY_RATE_NAME
+                    ),
+                    new BusinessRuleDeductionCurrencyAmount(
+                        SalesReturnRequestItem.PROPERTY_PRICELC_NAME, SalesReturnRequestItem.PROPERTY_PRICE_NAME, SalesReturnRequestItem.PROPERTY_RATE_NAME
+                    ),
                     // 计算库存数量 = 数量 * 换算率
                     new BusinessRuleCalculateInventoryQuantity(
                         SalesReturnRequestItem.PROPERTY_INVENTORYQUANTITY_NAME, SalesReturnRequestItem.PROPERTY_QUANTITY_NAME, SalesReturnRequestItem.PROPERTY_UOMRATE_NAME),

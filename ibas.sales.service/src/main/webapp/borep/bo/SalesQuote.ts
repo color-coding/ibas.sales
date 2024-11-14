@@ -1575,6 +1575,38 @@ namespace sales {
             set inverseDiscount(value: number) {
                 this.setProperty(SalesQuoteItem.PROPERTY_INVERSEDISCOUNT_NAME, value);
             }
+            /** 映射的属性名称-价格（本币） */
+            static PROPERTY_PRICELC_NAME: string = "PriceLC";
+            /** 获取-价格（本币） */
+            get priceLC(): number {
+                return this.getProperty<number>(SalesQuoteItem.PROPERTY_PRICELC_NAME);
+            }
+            /** 设置-价格（本币） */
+            set priceLC(value: number) {
+                this.setProperty(SalesQuoteItem.PROPERTY_PRICELC_NAME, value);
+            }
+
+            /** 映射的属性名称-折扣前价格（本币） */
+            static PROPERTY_UNITPRICELC_NAME: string = "UnitPriceLC";
+            /** 获取-折扣前价格（本币） */
+            get unitPriceLC(): number {
+                return this.getProperty<number>(SalesQuoteItem.PROPERTY_UNITPRICELC_NAME);
+            }
+            /** 设置-折扣前价格（本币） */
+            set unitPriceLC(value: number) {
+                this.setProperty(SalesQuoteItem.PROPERTY_UNITPRICELC_NAME, value);
+            }
+
+            /** 映射的属性名称-税前价格（本币） */
+            static PROPERTY_PRETAXPRICELC_NAME: string = "PreTaxPriceLC";
+            /** 获取-税前价格（本币） */
+            get preTaxPriceLC(): number {
+                return this.getProperty<number>(SalesQuoteItem.PROPERTY_PRETAXPRICELC_NAME);
+            }
+            /** 设置-税前价格（本币） */
+            set preTaxPriceLC(value: number) {
+                this.setProperty(SalesQuoteItem.PROPERTY_PRETAXPRICELC_NAME, value);
+            }
 
             /** 映射的属性名称-销售报价-行-额外信息集合 */
             static PROPERTY_SALESQUOTEITEMEXTRAS_NAME: string = "SalesQuoteItemExtras";
@@ -1605,6 +1637,16 @@ namespace sales {
 
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
+                    // 计算本币价格
+                    new BusinessRuleDeductionCurrencyAmount(
+                        SalesQuoteItem.PROPERTY_UNITPRICELC_NAME, SalesQuoteItem.PROPERTY_UNITPRICE_NAME, SalesQuoteItem.PROPERTY_RATE_NAME
+                    ),
+                    new BusinessRuleDeductionCurrencyAmount(
+                        SalesQuoteItem.PROPERTY_PRETAXPRICELC_NAME, SalesQuoteItem.PROPERTY_PRETAXPRICE_NAME, SalesQuoteItem.PROPERTY_RATE_NAME
+                    ),
+                    new BusinessRuleDeductionCurrencyAmount(
+                        SalesQuoteItem.PROPERTY_PRICELC_NAME, SalesQuoteItem.PROPERTY_PRICE_NAME, SalesQuoteItem.PROPERTY_RATE_NAME
+                    ),
                     // 计算库存数量 = 数量 * 换算率
                     new BusinessRuleCalculateInventoryQuantity(
                         SalesQuoteItem.PROPERTY_INVENTORYQUANTITY_NAME, SalesQuoteItem.PROPERTY_QUANTITY_NAME, SalesQuoteItem.PROPERTY_UOMRATE_NAME),

@@ -185,6 +185,9 @@
         "bo_salesdeliveryitem_agreements": "Contracts/Agreements",
         "bo_salesdeliveryitem_grossbase": "Gross Base",
         "bo_salesdeliveryitem_grossprice": "Gross Price",
+        "bo_salesdeliveryitem_pricelc": "Price (LC)",
+        "bo_salesdeliveryitem_unitpricelc": "Price Before Discount (LC)",
+        "bo_salesdeliveryitem_pretaxpricelc": "Pretax Price (LC)",
         "bo_salesdelivery_closing_delimiter": "----End----"
     },
     {
@@ -317,6 +320,9 @@
         "bo_salesorderitem_orderedquantity": "Ordered Quantity (Inventory Unit)",
         "bo_salesorderitem_grossbase": "Gross Base",
         "bo_salesorderitem_grossprice": "Gross Price",
+        "bo_salesorderitem_pricelc": "Price (LC)",
+        "bo_salesorderitem_unitpricelc": "Price Before Discount (LC)",
+        "bo_salesorderitem_pretaxpricelc": "Pretax Price (LC)",
         "bo_salesorderitem_salesorderitemextras": "Sales Order - Item - Extras Collection",
         "bo_salesorderitemextra": "Sales Order - Item - Extra",
         "bo_salesorderitemextra_docentry": "Document Entry",
@@ -475,6 +481,9 @@
         "bo_salesreturnitem_returncost": "Return Cost (Local Currency)",
         "bo_salesreturnitem_grossbase": "Gross Base",
         "bo_salesreturnitem_grossprice": "Gross Price",
+        "bo_salesreturnitem_pricelc": "Price (LC)",
+        "bo_salesreturnitem_unitpricelc": "Price Before Discount (LC)",
+        "bo_salesreturnitem_pretaxpricelc": "Pretax Price (LC)",
         "bo_salesreturn_closing_delimiter": "---- End ----"
     },
     {
@@ -607,6 +616,9 @@
         "bo_salesquoteitem_agreements": "Agreements",
         "bo_salesquoteitem_grossbase": "Gross Base",
         "bo_salesquoteitem_grossprice": "Gross Price",
+        "bo_salesquoteitem_pricelc": "Price (LC)",
+        "bo_salesquoteitem_unitpricelc": "Price Before Discount (LC)",
+        "bo_salesquoteitem_pretaxpricelc": "Pretax Price (LC)",
         "bo_salesquoteitem_salesquoteitemextras": "Sales Quote Item Extras",
         "bo_salesquoteitemextra": "Sales Quote Item Extra",
         "bo_salesquoteitemextra_docentry": "Document Entry",
@@ -765,6 +777,9 @@
         "bo_salesinvoiceitem_agreements": "Contracts/Agreements",
         "bo_salesinvoiceitem_grossbase": "Gross Base",
         "bo_salesinvoiceitem_grossprice": "Gross Price",
+        "bo_salesinvoiceitem_pricelc": "Price (LC)",
+        "bo_salesinvoiceitem_unitpricelc": "Price Before Discount (LC)",
+        "bo_salesinvoiceitem_pretaxpricelc": "Pretax Price (LC)",
         "bo_salesinvoiceitem_salesinvoiceitemextras": "Sales Invoice Line - Extra Information Collection",
         "bo_salesinvoiceitemextra": "Sales Invoice Line - Extra Information",
         "bo_salesinvoiceitemextra_docentry": "Document Number",
@@ -958,6 +973,9 @@
         "bo_salescreditnoteitem_returncost": "Return Cost (Local Currency)",
         "bo_salescreditnoteitem_grossbase": "Gross Base",
         "bo_salescreditnoteitem_grossprice": "Gross Price",
+        "bo_salescreditnoteitem_pricelc": "Price (LC)",
+        "bo_salescreditnoteitem_unitpricelc": "Price Before Discount (LC)",
+        "bo_salescreditnoteitem_pretaxpricelc": "Pretax Price (LC)",
         "bo_salescreditnoteitem_salescreditnoteitemextras": "Sales Credit Note Item - Extra Information Collection",
         "bo_salescreditnoteitemextra": "Sales Credit Note Item - Extra Information",
         "bo_salescreditnoteitemextra_docentry": "Document Entry",
@@ -1249,6 +1267,9 @@
         "bo_downpaymentrequestitem_agreements": "Agreements",
         "bo_downpaymentrequestitem_grossbase": "Gross Base",
         "bo_downpaymentrequestitem_grossprice": "Gross Price",
+        "bo_downpaymentrequestitem_pricelc": "Price (LC)",
+        "bo_downpaymentrequestitem_unitpricelc": "Price Before Discount (LC)",
+        "bo_downpaymentrequestitem_pretaxpricelc": "Pretax Price (LC)",
         "bo_downpaymentrequest_closing_delimiter": "---- End ----"
     },
     {
@@ -1380,6 +1401,9 @@
         "bo_salesreserveinvoiceitem_agreements": "Agreements",
         "bo_salesreserveinvoiceitem_grossbase": "Gross Base",
         "bo_salesreserveinvoiceitem_grossprice": "Gross Price",
+        "bo_salesreserveinvoiceitem_pricelc": "Price (LC)",
+        "bo_salesreserveinvoiceitem_unitpricelc": "Price Before Discount (LC)",
+        "bo_salesreserveinvoiceitem_pretaxpricelc": "Pretax Price (LC)",
         "bo_salesreserveinvoice_closing_delimiter": "---- End ----"
     },
     {
@@ -1512,6 +1536,9 @@
         "bo_salesreturnrequestitem_returncost": "Return Cost (Local Currency)",
         "bo_salesreturnrequestitem_grossbase": "Gross Base",
         "bo_salesreturnrequestitem_grossprice": "Gross Price",
+        "bo_salesreturnrequestitem_pricelc": "Price (LC)",
+        "bo_salesreturnrequestitem_unitpricelc": "Price Before Discount (LC)",
+        "bo_salesreturnrequestitem_pretaxpricelc": "Pretax Price (LC)",
         "bo_salesreturnrequest_closing_delimiter": "---- End ----"
     },
     {

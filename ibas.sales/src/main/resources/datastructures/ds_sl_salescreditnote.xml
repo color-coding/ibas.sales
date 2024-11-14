@@ -123,6 +123,9 @@
     <Property Name="GrossBase" Description="毛利基础" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="GrossBase"/>
     <Property Name="GrossPrice" Description="毛利价格" DataType="Decimal" DataSubType="Price" EditSize="8" Mapped="GrossPrice"/>
     <Property Name="InverseDiscount" Description="反向行折扣" DataType="Decimal" DataSubType="Percentage" EditSize="8" Mapped="InDiscPrcnt"/>
+    <Property Name="PriceLC" Description="价格（本币）" DataType="Decimal" DataSubType="Price" EditSize="8" Mapped="PriceLC"/>
+    <Property Name="UnitPriceLC" Description="折扣前价格（本币）" DataType="Decimal" DataSubType="Price" EditSize="8" Mapped="UnitPriceLC"/>
+    <Property Name="PreTaxPriceLC" Description="税前价格（本币）" DataType="Decimal" DataSubType="Price" EditSize="8" Mapped="PreTaxPriceLC"/>
   </Model>
   <BusinessObject MappedModel="SalesCreditNote" ShortName="${Company}_SL_SALESCREDIT">
     <RelatedBO Relation="OneToMany" MappedModel="SalesCreditNoteItem"/>

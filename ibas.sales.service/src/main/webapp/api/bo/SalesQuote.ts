@@ -371,6 +371,12 @@ namespace sales {
             grossPrice: number;
             /** 反向行折扣 */
             inverseDiscount: number;
+            /** 价格（本币） */
+            priceLC: number;
+            /** 折扣前价格（本币） */
+            unitPriceLC: number;
+            /** 税前价格（本币） */
+            preTaxPriceLC: number;
 
             /** 销售报价-行-额外信息集合 */
             salesQuoteItemExtras: ISalesQuoteItemExtras;

@@ -1245,6 +1245,48 @@ public interface ISalesOrderItem extends IBODocumentLine, IMaterialBatchItemPare
 	void setInverseDiscount(BigDecimal value);
 
 	/**
+	* 获取-价格（本币）
+	* 
+	* @return 值
+	*/
+	BigDecimal getPriceLC();
+
+	/**
+	* 设置-价格（本币）
+	* 
+	* @param value 值
+	*/
+	void setPriceLC(BigDecimal value);
+
+	/**
+	* 获取-折扣前价格（本币）
+	* 
+	* @return 值
+	*/
+	BigDecimal getUnitPriceLC();
+
+	/**
+	* 设置-折扣前价格（本币）
+	* 
+	* @param value 值
+	*/
+	void setUnitPriceLC(BigDecimal value);
+
+	/**
+	* 获取-税前价格（本币）
+	* 
+	* @return 值
+	*/
+	BigDecimal getPreTaxPriceLC();
+
+	/**
+	* 设置-税前价格（本币）
+	* 
+	* @param value 值
+	*/
+	void setPreTaxPriceLC(BigDecimal value);
+
+	/**
 	 * 获取-销售订单-行-额外信息集合
 	 * 
 	 * @return 值

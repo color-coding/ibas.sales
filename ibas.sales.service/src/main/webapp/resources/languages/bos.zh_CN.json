@@ -186,6 +186,9 @@
         "bo_salesdeliveryitem_agreements": "合同/协议",
         "bo_salesdeliveryitem_grossbase": "毛利基础",
         "bo_salesdeliveryitem_grossprice": "毛利价格",
+        "bo_salesdeliveryitem_pricelc": "价格（本币）",
+        "bo_salesdeliveryitem_unitpricelc": "折扣前价格（本币）",
+        "bo_salesdeliveryitem_pretaxpricelc": "税前价格（本币）",
         "bo_salesdelivery_closing_delimiter": "----结束----"
     },
     {
@@ -319,6 +322,9 @@
         "bo_salesorderitem_grossbase": "毛利基础",
         "bo_salesorderitem_grossprice": "毛利价格",
         "bo_salesorderitem_orderedquantity": "已订购数量（库存单位）",
+        "bo_salesorderitem_pricelc": "价格（本币）",
+        "bo_salesorderitem_unitpricelc": "折扣前价格（本币）",
+        "bo_salesorderitem_pretaxpricelc": "税前价格（本币）",
         "bo_salesorderitem_salesorderitemextras": "销售订单-行-额外信息集合",
         "bo_salesorderitemextra": "销售订单-行-额外信息",
         "bo_salesorderitemextra_docentry": "凭证编号",
@@ -478,6 +484,9 @@
         "bo_salesreturnitem_returncost": "退货成本（本币）",
         "bo_salesreturnitem_grossbase": "毛利基础",
         "bo_salesreturnitem_grossprice": "毛利价格",
+        "bo_salesreturnitem_pricelc": "价格（本币）",
+        "bo_salesreturnitem_unitpricelc": "折扣前价格（本币）",
+        "bo_salesreturnitem_pretaxpricelc": "税前价格（本币）",
         "bo_salesreturn_closing_delimiter": "----结束----"
     },
     {
@@ -611,6 +620,9 @@
         "bo_salesquoteitem_agreements": "合同/协议",
         "bo_salesquoteitem_grossbase": "毛利基础",
         "bo_salesquoteitem_grossprice": "毛利价格",
+        "bo_salesquoteitem_pricelc": "价格（本币）",
+        "bo_salesquoteitem_unitpricelc": "折扣前价格（本币）",
+        "bo_salesquoteitem_pretaxpricelc": "税前价格（本币）",
         "bo_salesquoteitem_salesquoteitemextras": "销售报价-行-额外信息集合",
         "bo_salesquoteitemextra": "销售报价-行-额外信息",
         "bo_salesquoteitemextra_docentry": "凭证编号",
@@ -770,6 +782,9 @@
         "bo_salesinvoiceitem_agreements": "合同/协议",
         "bo_salesinvoiceitem_grossbase": "毛利基础",
         "bo_salesinvoiceitem_grossprice": "毛利价格",
+        "bo_salesinvoiceitem_pricelc": "价格（本币）",
+        "bo_salesinvoiceitem_unitpricelc": "折扣前价格（本币）",
+        "bo_salesinvoiceitem_pretaxpricelc": "税前价格（本币）",
         "bo_salesinvoiceitem_salesinvoiceitemextras": "销售发票-行-额外信息集合",
         "bo_salesinvoiceitemextra": "销售发票-行-额外信息",
         "bo_salesinvoiceitemextra_docentry": "凭证编号",
@@ -964,6 +979,9 @@
         "bo_salescreditnoteitem_returncost": "退货成本（本币）",
         "bo_salescreditnoteitem_grossbase": "毛利基础",
         "bo_salescreditnoteitem_grossprice": "毛利价格",
+        "bo_salescreditnoteitem_pricelc": "价格（本币）",
+        "bo_salescreditnoteitem_unitpricelc": "折扣前价格（本币）",
+        "bo_salescreditnoteitem_pretaxpricelc": "税前价格（本币）",
         "bo_salescreditnoteitem_salescreditnoteitemextras": "销售贷项-行-额外信息集合",
         "bo_salescreditnoteitemextra": "销售贷项-行-额外信息",
         "bo_salescreditnoteitemextra_docentry": "凭证编号",
@@ -1256,6 +1274,9 @@
         "bo_downpaymentrequestitem_agreements": "合同/协议",
         "bo_downpaymentrequestitem_grossbase": "毛利基础",
         "bo_downpaymentrequestitem_grossprice": "毛利价格",
+        "bo_downpaymentrequestitem_pricelc": "价格（本币）",
+        "bo_downpaymentrequestitem_unitpricelc": "折扣前价格（本币）",
+        "bo_downpaymentrequestitem_pretaxpricelc": "税前价格（本币）",
         "bo_downpaymentrequest_closing_delimiter": "----结束----"
     },
     {
@@ -1388,6 +1409,9 @@
         "bo_salesreserveinvoiceitem_agreements": "合同/协议",
         "bo_salesreserveinvoiceitem_grossbase": "毛利基础",
         "bo_salesreserveinvoiceitem_grossprice": "毛利价格",
+        "bo_salesreserveinvoiceitem_pricelc": "价格（本币）",
+        "bo_salesreserveinvoiceitem_unitpricelc": "折扣前价格（本币）",
+        "bo_salesreserveinvoiceitem_pretaxpricelc": "税前价格（本币）",
         "bo_salesreserveinvoice_closing_delimiter": "----结束----"
     },
     {
@@ -1521,6 +1545,9 @@
         "bo_salesreturnrequestitem_returncost": "退货成本（本币）",
         "bo_salesreturnrequestitem_grossbase": "毛利基础",
         "bo_salesreturnrequestitem_grossprice": "毛利价格",
+        "bo_salesreturnrequestitem_pricelc": "价格（本币）",
+        "bo_salesreturnrequestitem_unitpricelc": "折扣前价格（本币）",
+        "bo_salesreturnrequestitem_pretaxpricelc": "税前价格（本币）",
         "bo_salesreturnrequest_closing_delimiter": "----结束----"
     },
     {
