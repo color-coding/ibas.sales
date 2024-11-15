@@ -86,6 +86,7 @@
     "sales_business_rule_deduction_discount": "Deduction Discount",
     "sales_business_rule_deduction_line_total": "Deduction Line Total",
     "sales_business_rule_deduction_inverse_discount": "Deduction Inverse Discount",
+    "sales_business_rule_deduction_currency_amount": "Deduction Currency Amount",
     "sales_delete_continue": "{0}[{1}] will be permanently deleted. Continue?",
     "sales_create_continue": "Create {0}, continue?",
     "sales_copy_data_continue": "Copy {0}, continue?",

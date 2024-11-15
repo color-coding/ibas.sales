@@ -86,6 +86,7 @@
   "sales_business_rule_deduction_discount": "推导折扣",
   "sales_business_rule_deduction_line_total": "推导行总计",
   "sales_business_rule_deduction_inverse_discount": "推导反折扣",
+  "sales_business_rule_deduction_currency_amount": "推导货币金额",
   "sales_delete_continue": "{0}[{1}]将被彻底删除，是否继续？",
   "sales_create_continue": "新建{0}，是否继续？",
   "sales_copy_data_continue": "复制{0}，是否继续？",

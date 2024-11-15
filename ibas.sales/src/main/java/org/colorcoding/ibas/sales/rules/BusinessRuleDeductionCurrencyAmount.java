@@ -5,19 +5,22 @@ import java.math.BigDecimal;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.i18n.I18N;
-import org.colorcoding.ibas.bobas.logic.BusinessLogicException;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleCommon;
 
 public class BusinessRuleDeductionCurrencyAmount extends BusinessRuleCommon {
+
+	private final static BigDecimal PRICE_DIFF = new BigDecimal("0.01");
+
 	protected BusinessRuleDeductionCurrencyAmount() {
 		this.setName(I18N.prop("msg_sl_business_rule_deduction_currency_amount"));
 	}
 
 	/**
 	 * 构造
+	 * 
 	 * @param amountLC 本币金额
-	 * @param amount 金额
-	 * @param rate 汇率
+	 * @param amount   金额
+	 * @param rate     汇率
 	 */
 	public BusinessRuleDeductionCurrencyAmount(IPropertyInfo<BigDecimal> amountLC, IPropertyInfo<BigDecimal> amount,
 			IPropertyInfo<BigDecimal> rate) {
@@ -30,6 +33,7 @@ public class BusinessRuleDeductionCurrencyAmount extends BusinessRuleCommon {
 		this.getInputProperties().add(this.getAmount());
 		this.getInputProperties().add(this.getRate());
 		// 要输出的参数
+		this.getAffectedProperties().add(this.getRate());
 		this.getAffectedProperties().add(this.getAmountLC());
 		this.getAffectedProperties().add(this.getAmount());
 	}
@@ -79,28 +83,29 @@ public class BusinessRuleDeductionCurrencyAmount extends BusinessRuleCommon {
 			rate = Decimal.ZERO;
 		}
 		if (Decimal.isZero(rate)) {
-			throw new BusinessLogicException(I18N.prop("msg_ac_data_not_set_currency_rate", context.getSource()));
+			// 未设置汇率则为1
+			rate = Decimal.ONE;
 		}
 		if (Decimal.isZero(amount) && !Decimal.isZero(amountLC)) {
 			// 输入了本币
 			BigDecimal result = Decimal.divide(amountLC, rate);
 			if (amount.scale() > 0) {
-				result.setScale(amount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+				result = result.setScale(amount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 			} else if (amountLC.scale() > 0) {
-				result.setScale(amountLC.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+				result = result.setScale(amountLC.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 			}
-			if (amount.compareTo(result) != 0) {
+			if (amount.subtract(result).abs().compareTo(PRICE_DIFF) > 0) {
 				context.getOutputValues().put(this.getAmount(), result);
 			}
 		} else {
 			// 输入了交易币
 			BigDecimal result = Decimal.multiply(amount, rate);
 			if (amountLC.scale() > 0) {
-				result.setScale(amountLC.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+				result = result.setScale(amountLC.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 			} else if (amount.scale() > 0) {
-				result.setScale(amount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+				result = result.setScale(amount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 			}
-			if (amountLC.compareTo(result) != 0) {
+			if (amountLC.subtract(result).abs().compareTo(PRICE_DIFF) > 0) {
 				context.getOutputValues().put(this.getAmountLC(), result);
 			}
 		}
