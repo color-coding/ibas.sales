@@ -88,7 +88,7 @@ public class BusinessRuleDeductionCurrencyAmount extends BusinessRuleCommon {
 		}
 		if (Decimal.isZero(amount) && !Decimal.isZero(amountLC)) {
 			// 输入了本币
-			BigDecimal result = Decimal.divide(amountLC, rate);
+			BigDecimal result = Decimal.multiply(amountLC, rate);
 			if (amount.scale() > 0) {
 				result = result.setScale(amount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 			} else if (amountLC.scale() > 0) {
@@ -99,7 +99,7 @@ public class BusinessRuleDeductionCurrencyAmount extends BusinessRuleCommon {
 			}
 		} else {
 			// 输入了交易币
-			BigDecimal result = Decimal.multiply(amount, rate);
+			BigDecimal result = Decimal.divide(amount, rate);
 			if (amountLC.scale() > 0) {
 				result = result.setScale(amountLC.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 			} else if (amount.scale() > 0) {
