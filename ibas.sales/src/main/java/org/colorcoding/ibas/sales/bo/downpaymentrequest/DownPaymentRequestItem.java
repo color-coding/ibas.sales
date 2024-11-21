@@ -1001,32 +1001,32 @@ public class DownPaymentRequestItem extends BusinessObject<DownPaymentRequestIte
 	}
 
 	/**
-	* 属性名称-目录编码
-	*/
+	 * 属性名称-目录编码
+	 */
 	private static final String PROPERTY_CATALOGCODE_NAME = "CatalogCode";
 
 	/**
-	* 目录编码 属性
-	*/
+	 * 目录编码 属性
+	 */
 	@DbField(name = "CatalogCode", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_CATALOGCODE = registerProperty(PROPERTY_CATALOGCODE_NAME,
 			String.class, MY_CLASS);
 
 	/**
-	* 获取-目录编码
-	* 
-	* @return 值
-	*/
+	 * 获取-目录编码
+	 * 
+	 * @return 值
+	 */
 	@XmlElement(name = PROPERTY_CATALOGCODE_NAME)
 	public final String getCatalogCode() {
 		return this.getProperty(PROPERTY_CATALOGCODE);
 	}
 
 	/**
-	* 设置-目录编码
-	* 
-	* @param value 值
-	*/
+	 * 设置-目录编码
+	 * 
+	 * @param value 值
+	 */
 	public final void setCatalogCode(String value) {
 		this.setProperty(PROPERTY_CATALOGCODE, value);
 	}
@@ -1962,156 +1962,156 @@ public class DownPaymentRequestItem extends BusinessObject<DownPaymentRequestIte
 	}
 
 	/**
-	* 属性名称-毛利基础
-	*/
+	 * 属性名称-毛利基础
+	 */
 	private static final String PROPERTY_GROSSBASE_NAME = "GrossBase";
 
 	/**
-	* 毛利基础 属性
-	*/
+	 * 毛利基础 属性
+	 */
 	@DbField(name = "GrossBase", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_GROSSBASE = registerProperty(PROPERTY_GROSSBASE_NAME,
 			Integer.class, MY_CLASS);
 
 	/**
-	* 获取-毛利基础
-	* 
-	* @return 值
-	*/
+	 * 获取-毛利基础
+	 * 
+	 * @return 值
+	 */
 	@XmlElement(name = PROPERTY_GROSSBASE_NAME)
 	public final Integer getGrossBase() {
 		return this.getProperty(PROPERTY_GROSSBASE);
 	}
 
 	/**
-	* 设置-毛利基础
-	* 
-	* @param value 值
-	*/
+	 * 设置-毛利基础
+	 * 
+	 * @param value 值
+	 */
 	public final void setGrossBase(Integer value) {
 		this.setProperty(PROPERTY_GROSSBASE, value);
 	}
 
 	/**
-	* 属性名称-毛利价格
-	*/
+	 * 属性名称-毛利价格
+	 */
 	private static final String PROPERTY_GROSSPRICE_NAME = "GrossPrice";
 
 	/**
-	* 毛利价格 属性
-	*/
+	 * 毛利价格 属性
+	 */
 	@DbField(name = "GrossPrice", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<BigDecimal> PROPERTY_GROSSPRICE = registerProperty(PROPERTY_GROSSPRICE_NAME,
 			BigDecimal.class, MY_CLASS);
 
 	/**
-	* 获取-毛利价格
-	* 
-	* @return 值
-	*/
+	 * 获取-毛利价格
+	 * 
+	 * @return 值
+	 */
 	@XmlElement(name = PROPERTY_GROSSPRICE_NAME)
 	public final BigDecimal getGrossPrice() {
 		return this.getProperty(PROPERTY_GROSSPRICE);
 	}
 
 	/**
-	* 设置-毛利价格
-	* 
-	* @param value 值
-	*/
+	 * 设置-毛利价格
+	 * 
+	 * @param value 值
+	 */
 	public final void setGrossPrice(BigDecimal value) {
 		this.setProperty(PROPERTY_GROSSPRICE, value);
 	}
 
 	/**
-	* 属性名称-价格（本币）
-	*/
+	 * 属性名称-价格（本币）
+	 */
 	private static final String PROPERTY_PRICELC_NAME = "PriceLC";
 
 	/**
-	* 价格（本币） 属性
-	*/
+	 * 价格（本币） 属性
+	 */
 	@DbField(name = "PriceLC", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<BigDecimal> PROPERTY_PRICELC = registerProperty(PROPERTY_PRICELC_NAME,
 			BigDecimal.class, MY_CLASS);
 
 	/**
-	* 获取-价格（本币）
-	* 
-	* @return 值
-	*/
+	 * 获取-价格（本币）
+	 * 
+	 * @return 值
+	 */
 	@XmlElement(name = PROPERTY_PRICELC_NAME)
 	public final BigDecimal getPriceLC() {
 		return this.getProperty(PROPERTY_PRICELC);
 	}
 
 	/**
-	* 设置-价格（本币）
-	* 
-	* @param value 值
-	*/
+	 * 设置-价格（本币）
+	 * 
+	 * @param value 值
+	 */
 	public final void setPriceLC(BigDecimal value) {
 		this.setProperty(PROPERTY_PRICELC, value);
 	}
 
 	/**
-	* 属性名称-折扣前价格（本币）
-	*/
+	 * 属性名称-折扣前价格（本币）
+	 */
 	private static final String PROPERTY_UNITPRICELC_NAME = "UnitPriceLC";
 
 	/**
-	* 折扣前价格（本币） 属性
-	*/
+	 * 折扣前价格（本币） 属性
+	 */
 	@DbField(name = "UnitPriceLC", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<BigDecimal> PROPERTY_UNITPRICELC = registerProperty(PROPERTY_UNITPRICELC_NAME,
 			BigDecimal.class, MY_CLASS);
 
 	/**
-	* 获取-折扣前价格（本币）
-	* 
-	* @return 值
-	*/
+	 * 获取-折扣前价格（本币）
+	 * 
+	 * @return 值
+	 */
 	@XmlElement(name = PROPERTY_UNITPRICELC_NAME)
 	public final BigDecimal getUnitPriceLC() {
 		return this.getProperty(PROPERTY_UNITPRICELC);
 	}
 
 	/**
-	* 设置-折扣前价格（本币）
-	* 
-	* @param value 值
-	*/
+	 * 设置-折扣前价格（本币）
+	 * 
+	 * @param value 值
+	 */
 	public final void setUnitPriceLC(BigDecimal value) {
 		this.setProperty(PROPERTY_UNITPRICELC, value);
 	}
 
 	/**
-	* 属性名称-税前价格（本币）
-	*/
+	 * 属性名称-税前价格（本币）
+	 */
 	private static final String PROPERTY_PRETAXPRICELC_NAME = "PreTaxPriceLC";
 
 	/**
-	* 税前价格（本币） 属性
-	*/
+	 * 税前价格（本币） 属性
+	 */
 	@DbField(name = "PreTaxPriceLC", type = DbFieldType.DECIMAL, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<BigDecimal> PROPERTY_PRETAXPRICELC = registerProperty(PROPERTY_PRETAXPRICELC_NAME,
 			BigDecimal.class, MY_CLASS);
 
 	/**
-	* 获取-税前价格（本币）
-	* 
-	* @return 值
-	*/
+	 * 获取-税前价格（本币）
+	 * 
+	 * @return 值
+	 */
 	@XmlElement(name = PROPERTY_PRETAXPRICELC_NAME)
 	public final BigDecimal getPreTaxPriceLC() {
 		return this.getProperty(PROPERTY_PRETAXPRICELC);
 	}
 
 	/**
-	* 设置-税前价格（本币）
-	* 
-	* @param value 值
-	*/
+	 * 设置-税前价格（本币）
+	 * 
+	 * @param value 值
+	 */
 	public final void setPreTaxPriceLC(BigDecimal value) {
 		this.setProperty(PROPERTY_PRETAXPRICELC, value);
 	}
@@ -2165,6 +2165,10 @@ public class DownPaymentRequestItem extends BusinessObject<DownPaymentRequestIte
 				// 计算折扣前总计 = 数量 * 折扣前价格
 				new BusinessRuleDeductionPriceQtyTotal(PROPERTY_UNITLINETOTAL, PROPERTY_UNITPRICE,
 						MyConfiguration.isInventoryUnitLinePrice() ? PROPERTY_INVENTORYQUANTITY : PROPERTY_QUANTITY),
+				// 计算本币价格
+				new BusinessRuleDeductionCurrencyAmount(PROPERTY_UNITPRICELC, PROPERTY_UNITPRICE, PROPERTY_RATE),
+				new BusinessRuleDeductionCurrencyAmount(PROPERTY_PRETAXPRICELC, PROPERTY_PRETAXPRICE, PROPERTY_RATE),
+				new BusinessRuleDeductionCurrencyAmount(PROPERTY_PRICELC, PROPERTY_PRICE, PROPERTY_RATE),
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_INVENTORYQUANTITY), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_LINETOTAL), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_PRETAXLINETOTAL), // 不能低于0

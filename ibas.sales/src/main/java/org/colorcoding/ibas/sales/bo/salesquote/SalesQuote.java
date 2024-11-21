@@ -1901,6 +1901,9 @@ public class SalesQuote extends BusinessObject<SalesQuote> implements ISalesQuot
 		this.setDocumentStatus(emDocumentStatus.RELEASED);
 		this.setDiscount(Decimal.ONE);
 		this.setCustomerType(emBusinessPartnerType.CUSTOMER);
+		this.setDocumentCurrency(org.colorcoding.ibas.accounting.MyConfiguration
+				.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY));
+		this.setDocumentRate(Decimal.ONE);
 	}
 
 	/**
