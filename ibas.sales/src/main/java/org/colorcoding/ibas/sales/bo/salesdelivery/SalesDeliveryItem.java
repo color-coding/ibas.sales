@@ -14,6 +14,7 @@ import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBOTagCanceled;
 import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
 import org.colorcoding.ibas.bobas.bo.IBOUserFields;
+import org.colorcoding.ibas.bobas.core.IBORepository;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.Decimal;
@@ -2982,14 +2983,14 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 				new IDocumentQuantityClosingContract() {
 
 					@Override
-					public boolean checkDataStatus() {
+					public boolean checkDataStatus(IBORepository repository) {
 						if (MyConfiguration.applyVariables(SalesOrder.BUSINESS_OBJECT_CODE)
 								.equals(SalesDeliveryItem.this.getBaseDocumentType())
 								|| MyConfiguration.applyVariables(SalesReserveInvoice.BUSINESS_OBJECT_CODE)
 										.equals(SalesDeliveryItem.this.getBaseDocumentType())) {
 							return true;
 						}
-						return IDocumentQuantityClosingContract.super.checkDataStatus();
+						return IDocumentQuantityClosingContract.super.checkDataStatus(repository);
 					}
 
 					@Override

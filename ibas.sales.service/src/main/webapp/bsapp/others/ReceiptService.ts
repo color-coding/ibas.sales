@@ -735,7 +735,7 @@ namespace sales {
                 // 调用选择服务
                 let that: this = this;
                 ibas.servicesManager.runChooseService<sales.bo.ISalesReserveInvoice>({
-                    boCode: sales.bo.BO_CODE_SALESINVOICE,
+                    boCode: sales.bo.BO_CODE_SALESRESERVEINVOICE,
                     chooseType: ibas.emChooseType.MULTIPLE,
                     criteria: criteria,
                     onCompleted(selecteds: ibas.IList<sales.bo.ISalesReserveInvoice>): void {

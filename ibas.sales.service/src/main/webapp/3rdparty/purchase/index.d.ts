@@ -25,6 +25,10 @@ declare namespace purchase {
         const CONFIG_ITEM_PRICE_CALCULATION_ANCHORING_METHOD: string;
         /** 配置项目-单据行显示库存 */
         const CONFIG_ITEM_DOCUMENT_LINE_DISPLAY_INVENTORY: string;
+        /** 配置项目-折扣呈现方式 */
+        const CONFIG_ITEM_DISCOUNT_PRESENTATION_METHOD: string;
+        /** 配置项目-单据统计标记删除行 */
+        const CONFIG_ITEM_DOCUMENT_STATISTICS_TAG_DELETED_LINE: string;
         /**
          * 获取此模块配置
          * @param key 配置项
@@ -33,6 +37,8 @@ declare namespace purchase {
         function get<T>(key: string, defalut?: T): T;
         function isInventoryUnitLinePrice(): boolean;
         function isPriceAnchoringAfterTax(): boolean;
+        function isInverseDiscount(): boolean;
+        function isStatisticsTagDeleted(): boolean;
     }
     namespace bo {
         /** 业务仓库名称 */
@@ -214,6 +220,8 @@ declare namespace purchase {
             agreements: string;
             /** 分支 */
             branch: string;
+            /** 反向折扣 */
+            inverseDiscount: number;
             /** 采购收货-行集合 */
             purchaseDeliveryItems: IPurchaseDeliveryItems;
             /** 送货地址集合 */
@@ -352,6 +360,14 @@ declare namespace purchase {
             distributionRule5: string;
             /** 合同 */
             agreements: string;
+            /** 反向行折扣 */
+            inverseDiscount: number;
+            /** 价格（本币） */
+            priceLC: number;
+            /** 折扣前价格（本币） */
+            unitPriceLC: number;
+            /** 税前价格（本币） */
+            preTaxPriceLC: number;
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;
         }
@@ -464,6 +480,8 @@ declare namespace purchase {
             agreements: string;
             /** 分支 */
             branch: string;
+            /** 反向折扣 */
+            inverseDiscount: number;
             /** 采购订单-行集合 */
             purchaseOrderItems: IPurchaseOrderItems;
             /** 送货地址集合 */
@@ -598,6 +616,14 @@ declare namespace purchase {
             distributionRule5: string;
             /** 合同 */
             agreements: string;
+            /** 反向行折扣 */
+            inverseDiscount: number;
+            /** 价格（本币） */
+            priceLC: number;
+            /** 折扣前价格（本币） */
+            unitPriceLC: number;
+            /** 税前价格（本币） */
+            preTaxPriceLC: number;
             /** 采购订单-行-额外信息集合 */
             purchaseOrderItemExtras: IPurchaseOrderItemExtras;
             /** 赋值产品 */
@@ -768,6 +794,8 @@ declare namespace purchase {
             agreements: string;
             /** 分支 */
             branch: string;
+            /** 反向折扣 */
+            inverseDiscount: number;
             /** 采购退货-行集合 */
             purchaseReturnItems: IPurchaseReturnItems;
             /** 送货地址集合 */
@@ -906,6 +934,14 @@ declare namespace purchase {
             distributionRule5: string;
             /** 合同 */
             agreements: string;
+            /** 反向行折扣 */
+            inverseDiscount: number;
+            /** 价格（本币） */
+            priceLC: number;
+            /** 折扣前价格（本币） */
+            unitPriceLC: number;
+            /** 税前价格（本币） */
+            preTaxPriceLC: number;
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;
         }
@@ -1018,6 +1054,8 @@ declare namespace purchase {
             agreements: string;
             /** 分支 */
             branch: string;
+            /** 反向折扣 */
+            inverseDiscount: number;
             /** 采购报价-行集合 */
             purchaseQuoteItems: IPurchaseQuoteItems;
         }
@@ -1150,6 +1188,14 @@ declare namespace purchase {
             distributionRule5: string;
             /** 合同 */
             agreements: string;
+            /** 反向行折扣 */
+            inverseDiscount: number;
+            /** 价格（本币） */
+            priceLC: number;
+            /** 折扣前价格（本币） */
+            unitPriceLC: number;
+            /** 税前价格（本币） */
+            preTaxPriceLC: number;
             /** 采购报价-行-额外信息集合 */
             purchaseQuoteItemExtras: IPurchaseQuoteItemExtras;
             /** 赋值产品 */
@@ -1442,6 +1488,10 @@ declare namespace purchase {
             distributionRule5: string;
             /** 合同 */
             agreements: string;
+            /** 价格（本币） */
+            priceLC: number;
+            /** 税前价格（本币） */
+            preTaxPriceLC: number;
             /** 采购申请-行-额外信息集合 */
             purchaseRequestItemExtras: IPurchaseRequestItemExtras;
         }
@@ -1610,6 +1660,8 @@ declare namespace purchase {
             agreements: string;
             /** 分支 */
             branch: string;
+            /** 反向折扣 */
+            inverseDiscount: number;
             /** 采购发票-行集合 */
             purchaseInvoiceItems: IPurchaseInvoiceItems;
             /** 送货地址集合 */
@@ -1753,6 +1805,14 @@ declare namespace purchase {
             distributionRule5: string;
             /** 合同 */
             agreements: string;
+            /** 反向行折扣 */
+            inverseDiscount: number;
+            /** 价格（本币） */
+            priceLC: number;
+            /** 折扣前价格（本币） */
+            unitPriceLC: number;
+            /** 税前价格（本币） */
+            preTaxPriceLC: number;
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;
         }
@@ -1932,6 +1992,8 @@ declare namespace purchase {
             agreements: string;
             /** 分支 */
             branch: string;
+            /** 反向折扣 */
+            inverseDiscount: number;
             /** 采购贷项-行集合 */
             purchaseCreditNoteItems: IPurchaseCreditNoteItems;
             /** 送货地址集合 */
@@ -2070,6 +2132,14 @@ declare namespace purchase {
             distributionRule5: string;
             /** 合同 */
             agreements: string;
+            /** 反向行折扣 */
+            inverseDiscount: number;
+            /** 价格（本币） */
+            priceLC: number;
+            /** 折扣前价格（本币） */
+            unitPriceLC: number;
+            /** 税前价格（本币） */
+            preTaxPriceLC: number;
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;
         }
@@ -2449,6 +2519,8 @@ declare namespace purchase {
             documentTotal: number;
             /** 已付款总计 */
             paidTotal: number;
+            /** 付款条款 */
+            paymentCode: string;
             /** 舍入 */
             rounding: ibas.emYesNo;
             /** 舍入差额 */
@@ -2599,6 +2671,12 @@ declare namespace purchase {
             distributionRule5: string;
             /** 合同/协议 */
             agreements: string;
+            /** 价格（本币） */
+            priceLC: number;
+            /** 折扣前价格（本币） */
+            unitPriceLC: number;
+            /** 税前价格（本币） */
+            preTaxPriceLC: number;
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;
         }
@@ -2711,6 +2789,8 @@ declare namespace purchase {
             agreements: string;
             /** 分支 */
             branch: string;
+            /** 反向折扣 */
+            inverseDiscount: number;
             /** 采购预留发票-行集合 */
             purchaseReserveInvoiceItems: IPurchaseReserveInvoiceItems;
             /** 送货地址集合 */
@@ -2847,6 +2927,14 @@ declare namespace purchase {
             distributionRule5: string;
             /** 合同 */
             agreements: string;
+            /** 反向行折扣 */
+            inverseDiscount: number;
+            /** 价格（本币） */
+            priceLC: number;
+            /** 折扣前价格（本币） */
+            unitPriceLC: number;
+            /** 税前价格（本币） */
+            preTaxPriceLC: number;
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;
         }
@@ -2959,6 +3047,8 @@ declare namespace purchase {
             agreements: string;
             /** 分支 */
             branch: string;
+            /** 反向折扣 */
+            inverseDiscount: number;
             /** 采购退货请求-行集合 */
             purchaseReturnRequestItems: IPurchaseReturnRequestItems;
             /** 送货地址集合 */
@@ -3097,6 +3187,14 @@ declare namespace purchase {
             distributionRule5: string;
             /** 合同 */
             agreements: string;
+            /** 反向行折扣 */
+            inverseDiscount: number;
+            /** 价格（本币） */
+            priceLC: number;
+            /** 折扣前价格（本币） */
+            unitPriceLC: number;
+            /** 税前价格（本币） */
+            preTaxPriceLC: number;
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;
         }
@@ -3551,6 +3649,12 @@ declare namespace purchase {
             get branch(): string;
             /** 设置-分支 */
             set branch(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
             /** 映射的属性名称-采购收货-行集合 */
             static PROPERTY_PURCHASEDELIVERYITEMS_NAME: string;
             /** 获取-采购收货-行集合 */
@@ -3613,6 +3717,8 @@ declare namespace purchase {
             create(): PurchaseDeliveryItem;
             protected afterAdd(item: PurchaseDeliveryItem): void;
             protected onParentPropertyChanged(name: string): void;
+            /** 子项属性改变时 */
+            protected onItemPropertyChanged(item: PurchaseDeliveryItem, name: string): void;
         }
         /** 采购收货-行 */
         class PurchaseDeliveryItem extends ibas.BODocumentLine<PurchaseDeliveryItem> implements IPurchaseDeliveryItem {
@@ -3984,6 +4090,30 @@ declare namespace purchase {
             get agreements(): string;
             /** 设置-合同 */
             set agreements(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
+            /** 映射的属性名称-价格（本币） */
+            static PROPERTY_PRICELC_NAME: string;
+            /** 获取-价格（本币） */
+            get priceLC(): number;
+            /** 设置-价格（本币） */
+            set priceLC(value: number);
+            /** 映射的属性名称-折扣前价格（本币） */
+            static PROPERTY_UNITPRICELC_NAME: string;
+            /** 获取-折扣前价格（本币） */
+            get unitPriceLC(): number;
+            /** 设置-折扣前价格（本币） */
+            set unitPriceLC(value: number);
+            /** 映射的属性名称-税前价格（本币） */
+            static PROPERTY_PRETAXPRICELC_NAME: string;
+            /** 获取-税前价格（本币） */
+            get preTaxPriceLC(): number;
+            /** 设置-税前价格（本币） */
+            set preTaxPriceLC(value: number);
             /** 映射的属性名称-物料批次集合 */
             static PROPERTY_MATERIALBATCHES_NAME: string;
             /** 获取-物料批次集合 */
@@ -4309,6 +4439,12 @@ declare namespace purchase {
             get branch(): string;
             /** 设置-分支 */
             set branch(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
             /** 映射的属性名称-采购订单-行集合 */
             static PROPERTY_PURCHASEORDERITEMS_NAME: string;
             /** 获取-采购订单-行集合 */
@@ -4371,6 +4507,8 @@ declare namespace purchase {
             create(): PurchaseOrderItem;
             protected afterAdd(item: PurchaseOrderItem): void;
             protected onParentPropertyChanged(name: string): void;
+            /** 子项属性改变时 */
+            protected onItemPropertyChanged(item: PurchaseOrderItem, name: string): void;
         }
         /** 采购订单-行 */
         class PurchaseOrderItem extends ibas.BODocumentLine<PurchaseOrderItem> implements IPurchaseOrderItem {
@@ -4742,6 +4880,30 @@ declare namespace purchase {
             get agreements(): string;
             /** 设置-合同 */
             set agreements(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
+            /** 映射的属性名称-价格（本币） */
+            static PROPERTY_PRICELC_NAME: string;
+            /** 获取-价格（本币） */
+            get priceLC(): number;
+            /** 设置-价格（本币） */
+            set priceLC(value: number);
+            /** 映射的属性名称-折扣前价格（本币） */
+            static PROPERTY_UNITPRICELC_NAME: string;
+            /** 获取-折扣前价格（本币） */
+            get unitPriceLC(): number;
+            /** 设置-折扣前价格（本币） */
+            set unitPriceLC(value: number);
+            /** 映射的属性名称-税前价格（本币） */
+            static PROPERTY_PRETAXPRICELC_NAME: string;
+            /** 获取-税前价格（本币） */
+            get preTaxPriceLC(): number;
+            /** 设置-税前价格（本币） */
+            set preTaxPriceLC(value: number);
             /** 映射的属性名称-采购订单-行-额外信息集合 */
             static PROPERTY_PURCHASEORDERITEMEXTRAS_NAME: string;
             /** 获取-采购订单-行-额外信息集合 */
@@ -5229,6 +5391,12 @@ declare namespace purchase {
             get branch(): string;
             /** 设置-分支 */
             set branch(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
             /** 映射的属性名称-采购退货-行集合 */
             static PROPERTY_PURCHASERETURNITEMS_NAME: string;
             /** 获取-采购退货-行集合 */
@@ -5293,6 +5461,8 @@ declare namespace purchase {
             create(): PurchaseReturnItem;
             protected afterAdd(item: PurchaseReturnItem): void;
             protected onParentPropertyChanged(name: string): void;
+            /** 子项属性改变时 */
+            protected onItemPropertyChanged(item: PurchaseReturnItem, name: string): void;
         }
         /** 采购退货-行 */
         class PurchaseReturnItem extends ibas.BODocumentLine<PurchaseReturnItem> implements IPurchaseReturnItem {
@@ -5664,6 +5834,30 @@ declare namespace purchase {
             get agreements(): string;
             /** 设置-合同 */
             set agreements(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
+            /** 映射的属性名称-价格（本币） */
+            static PROPERTY_PRICELC_NAME: string;
+            /** 获取-价格（本币） */
+            get priceLC(): number;
+            /** 设置-价格（本币） */
+            set priceLC(value: number);
+            /** 映射的属性名称-折扣前价格（本币） */
+            static PROPERTY_UNITPRICELC_NAME: string;
+            /** 获取-折扣前价格（本币） */
+            get unitPriceLC(): number;
+            /** 设置-折扣前价格（本币） */
+            set unitPriceLC(value: number);
+            /** 映射的属性名称-税前价格（本币） */
+            static PROPERTY_PRETAXPRICELC_NAME: string;
+            /** 获取-税前价格（本币） */
+            get preTaxPriceLC(): number;
+            /** 设置-税前价格（本币） */
+            set preTaxPriceLC(value: number);
             /** 映射的属性名称-物料批次集合 */
             static PROPERTY_MATERIALBATCHES_NAME: string;
             /** 获取-物料批次集合 */
@@ -5989,6 +6183,12 @@ declare namespace purchase {
             get branch(): string;
             /** 设置-分支 */
             set branch(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
             /** 映射的属性名称-采购报价-行集合 */
             static PROPERTY_PURCHASEQUOTEITEMS_NAME: string;
             /** 获取-采购报价-行集合 */
@@ -6031,6 +6231,8 @@ declare namespace purchase {
             create(): PurchaseQuoteItem;
             protected afterAdd(item: PurchaseQuoteItem): void;
             protected onParentPropertyChanged(name: string): void;
+            /** 子项属性改变时 */
+            protected onItemPropertyChanged(item: PurchaseQuoteItem, name: string): void;
         }
         /** 采购报价-行 */
         class PurchaseQuoteItem extends ibas.BODocumentLine<PurchaseQuoteItem> implements IPurchaseQuoteItem {
@@ -6402,6 +6604,30 @@ declare namespace purchase {
             get agreements(): string;
             /** 设置-合同 */
             set agreements(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
+            /** 映射的属性名称-价格（本币） */
+            static PROPERTY_PRICELC_NAME: string;
+            /** 获取-价格（本币） */
+            get priceLC(): number;
+            /** 设置-价格（本币） */
+            set priceLC(value: number);
+            /** 映射的属性名称-折扣前价格（本币） */
+            static PROPERTY_UNITPRICELC_NAME: string;
+            /** 获取-折扣前价格（本币） */
+            get unitPriceLC(): number;
+            /** 设置-折扣前价格（本币） */
+            set unitPriceLC(value: number);
+            /** 映射的属性名称-税前价格（本币） */
+            static PROPERTY_PRETAXPRICELC_NAME: string;
+            /** 获取-税前价格（本币） */
+            get preTaxPriceLC(): number;
+            /** 设置-税前价格（本币） */
+            set preTaxPriceLC(value: number);
             /** 映射的属性名称-采购报价-行-额外信息集合 */
             static PROPERTY_PURCHASEQUOTEITEMEXTRAS_NAME: string;
             /** 获取-采购报价-行-额外信息集合 */
@@ -6893,6 +7119,8 @@ declare namespace purchase {
             create(): PurchaseRequestItem;
             protected afterAdd(item: PurchaseRequestItem): void;
             protected onParentPropertyChanged(name: string): void;
+            /** 子项属性改变时 */
+            protected onItemPropertyChanged(item: PurchaseRequestItem, name: string): void;
         }
         /** 采购申请-行 */
         class PurchaseRequestItem extends ibas.BODocumentLine<PurchaseRequestItem> implements IPurchaseRequestItem {
@@ -7258,6 +7486,18 @@ declare namespace purchase {
             get agreements(): string;
             /** 设置-合同 */
             set agreements(value: string);
+            /** 映射的属性名称-价格（本币） */
+            static PROPERTY_PRICELC_NAME: string;
+            /** 获取-价格（本币） */
+            get priceLC(): number;
+            /** 设置-价格（本币） */
+            set priceLC(value: number);
+            /** 映射的属性名称-税前价格（本币） */
+            static PROPERTY_PRETAXPRICELC_NAME: string;
+            /** 获取-税前价格（本币） */
+            get preTaxPriceLC(): number;
+            /** 设置-税前价格（本币） */
+            set preTaxPriceLC(value: number);
             /** 映射的属性名称-采购申请-行-额外信息集合 */
             static PROPERTY_PURCHASEREQUESTITEMEXTRAS_NAME: string;
             /** 获取-采购申请-行-额外信息集合 */
@@ -7733,6 +7973,12 @@ declare namespace purchase {
             get branch(): string;
             /** 设置-分支 */
             set branch(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
             /** 映射的属性名称-采购发票-行集合 */
             static PROPERTY_PURCHASEINVOICEITEMS_NAME: string;
             /** 获取-采购发票-行集合 */
@@ -7805,6 +8051,8 @@ declare namespace purchase {
             create(): PurchaseInvoiceItem;
             protected afterAdd(item: PurchaseInvoiceItem): void;
             protected onParentPropertyChanged(name: string): void;
+            /** 子项属性改变时 */
+            protected onItemPropertyChanged(item: PurchaseInvoiceItem, name: string): void;
         }
         /** 采购发票-预付款 集合 */
         class PurchaseInvoiceDownPayments extends ibas.BusinessObjects<PurchaseInvoiceDownPayment, PurchaseInvoice> implements IPurchaseInvoiceDownPayments {
@@ -8181,6 +8429,30 @@ declare namespace purchase {
             get agreements(): string;
             /** 设置-合同 */
             set agreements(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
+            /** 映射的属性名称-价格（本币） */
+            static PROPERTY_PRICELC_NAME: string;
+            /** 获取-价格（本币） */
+            get priceLC(): number;
+            /** 设置-价格（本币） */
+            set priceLC(value: number);
+            /** 映射的属性名称-折扣前价格（本币） */
+            static PROPERTY_UNITPRICELC_NAME: string;
+            /** 获取-折扣前价格（本币） */
+            get unitPriceLC(): number;
+            /** 设置-折扣前价格（本币） */
+            set unitPriceLC(value: number);
+            /** 映射的属性名称-税前价格（本币） */
+            static PROPERTY_PRETAXPRICELC_NAME: string;
+            /** 获取-税前价格（本币） */
+            get preTaxPriceLC(): number;
+            /** 设置-税前价格（本币） */
+            set preTaxPriceLC(value: number);
             /** 映射的属性名称-物料批次集合 */
             static PROPERTY_MATERIALBATCHES_NAME: string;
             /** 获取-物料批次集合 */
@@ -8701,6 +8973,12 @@ declare namespace purchase {
             get branch(): string;
             /** 设置-分支 */
             set branch(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
             /** 映射的属性名称-采购贷项-行集合 */
             static PROPERTY_PURCHASECREDITNOTEITEMS_NAME: string;
             /** 获取-采购贷项-行集合 */
@@ -8762,6 +9040,8 @@ declare namespace purchase {
             create(): PurchaseCreditNoteItem;
             protected afterAdd(item: PurchaseCreditNoteItem): void;
             protected onParentPropertyChanged(name: string): void;
+            /** 子项属性改变时 */
+            protected onItemPropertyChanged(item: PurchaseCreditNoteItem, name: string): void;
         }
         /** 采购贷项-行 */
         class PurchaseCreditNoteItem extends ibas.BODocumentLine<PurchaseCreditNoteItem> implements IPurchaseCreditNoteItem {
@@ -9133,6 +9413,30 @@ declare namespace purchase {
             get agreements(): string;
             /** 设置-合同 */
             set agreements(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
+            /** 映射的属性名称-价格（本币） */
+            static PROPERTY_PRICELC_NAME: string;
+            /** 获取-价格（本币） */
+            get priceLC(): number;
+            /** 设置-价格（本币） */
+            set priceLC(value: number);
+            /** 映射的属性名称-折扣前价格（本币） */
+            static PROPERTY_UNITPRICELC_NAME: string;
+            /** 获取-折扣前价格（本币） */
+            get unitPriceLC(): number;
+            /** 设置-折扣前价格（本币） */
+            set unitPriceLC(value: number);
+            /** 映射的属性名称-税前价格（本币） */
+            static PROPERTY_PRETAXPRICELC_NAME: string;
+            /** 获取-税前价格（本币） */
+            get preTaxPriceLC(): number;
+            /** 设置-税前价格（本币） */
+            set preTaxPriceLC(value: number);
             /** 映射的属性名称-物料批次集合 */
             static PROPERTY_MATERIALBATCHES_NAME: string;
             /** 获取-物料批次集合 */
@@ -9723,6 +10027,8 @@ declare namespace purchase {
         class BlanketAgreementItems extends ibas.BusinessObjects<BlanketAgreementItem, BlanketAgreement> implements IBlanketAgreementItems {
             /** 创建并添加子项 */
             create(): BlanketAgreementItem;
+            /** 子项属性改变时 */
+            protected onItemPropertyChanged(item: BlanketAgreementItem, name: string): void;
         }
         /** 一揽子协议-项目 */
         class BlanketAgreementItem extends ibas.BODocumentLine<BlanketAgreementItem> implements IBlanketAgreementItem {
@@ -10211,6 +10517,12 @@ declare namespace purchase {
             get paidTotal(): number;
             /** 设置-已付款总计 */
             set paidTotal(value: number);
+            /** 映射的属性名称-付款条款 */
+            static PROPERTY_PAYMENTCODE_NAME: string;
+            /** 获取-付款条款 */
+            get paymentCode(): string;
+            /** 设置-付款条款 */
+            set paymentCode(value: string);
             /** 映射的属性名称-舍入 */
             static PROPERTY_ROUNDING_NAME: string;
             /** 获取-舍入 */
@@ -10297,6 +10609,8 @@ declare namespace purchase {
             create(): DownPaymentRequestItem;
             protected afterAdd(item: DownPaymentRequestItem): void;
             protected onParentPropertyChanged(name: string): void;
+            /** 子项属性改变时 */
+            protected onItemPropertyChanged(item: DownPaymentRequestItem, name: string): void;
         }
         /** 预付款申请-行 */
         class DownPaymentRequestItem extends ibas.BODocumentLine<DownPaymentRequestItem> implements IDownPaymentRequestItem {
@@ -10668,6 +10982,24 @@ declare namespace purchase {
             get agreements(): string;
             /** 设置-合同/协议 */
             set agreements(value: string);
+            /** 映射的属性名称-价格（本币） */
+            static PROPERTY_PRICELC_NAME: string;
+            /** 获取-价格（本币） */
+            get priceLC(): number;
+            /** 设置-价格（本币） */
+            set priceLC(value: number);
+            /** 映射的属性名称-折扣前价格（本币） */
+            static PROPERTY_UNITPRICELC_NAME: string;
+            /** 获取-折扣前价格（本币） */
+            get unitPriceLC(): number;
+            /** 设置-折扣前价格（本币） */
+            set unitPriceLC(value: number);
+            /** 映射的属性名称-税前价格（本币） */
+            static PROPERTY_PRETAXPRICELC_NAME: string;
+            /** 获取-税前价格（本币） */
+            get preTaxPriceLC(): number;
+            /** 设置-税前价格（本币） */
+            set preTaxPriceLC(value: number);
             /** 初始化数据 */
             protected init(): void;
             /** 赋值产品 */
@@ -10981,6 +11313,12 @@ declare namespace purchase {
             get branch(): string;
             /** 设置-分支 */
             set branch(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
             /** 映射的属性名称-采购预留发票-行集合 */
             static PROPERTY_PURCHASERESERVEINVOICEITEMS_NAME: string;
             /** 获取-采购预留发票-行集合 */
@@ -11040,6 +11378,8 @@ declare namespace purchase {
             create(): PurchaseReserveInvoiceItem;
             protected afterAdd(item: PurchaseReserveInvoiceItem): void;
             protected onParentPropertyChanged(name: string): void;
+            /** 子项属性改变时 */
+            protected onItemPropertyChanged(item: PurchaseReserveInvoiceItem, name: string): void;
         }
         /** 采购预留发票-行 */
         class PurchaseReserveInvoiceItem extends ibas.BODocumentLine<PurchaseReserveInvoiceItem> implements IPurchaseReserveInvoiceItem {
@@ -11411,6 +11751,30 @@ declare namespace purchase {
             get agreements(): string;
             /** 设置-合同 */
             set agreements(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
+            /** 映射的属性名称-价格（本币） */
+            static PROPERTY_PRICELC_NAME: string;
+            /** 获取-价格（本币） */
+            get priceLC(): number;
+            /** 设置-价格（本币） */
+            set priceLC(value: number);
+            /** 映射的属性名称-折扣前价格（本币） */
+            static PROPERTY_UNITPRICELC_NAME: string;
+            /** 获取-折扣前价格（本币） */
+            get unitPriceLC(): number;
+            /** 设置-折扣前价格（本币） */
+            set unitPriceLC(value: number);
+            /** 映射的属性名称-税前价格（本币） */
+            static PROPERTY_PRETAXPRICELC_NAME: string;
+            /** 获取-税前价格（本币） */
+            get preTaxPriceLC(): number;
+            /** 设置-税前价格（本币） */
+            set preTaxPriceLC(value: number);
             /** 映射的属性名称-物料批次集合 */
             static PROPERTY_MATERIALBATCHES_NAME: string;
             /** 获取-物料批次集合 */
@@ -11736,6 +12100,12 @@ declare namespace purchase {
             get branch(): string;
             /** 设置-分支 */
             set branch(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
             /** 映射的属性名称-采购退货请求-行集合 */
             static PROPERTY_PURCHASERETURNREQUESTITEMS_NAME: string;
             /** 获取-采购退货请求-行集合 */
@@ -11798,6 +12168,8 @@ declare namespace purchase {
             create(): PurchaseReturnRequestItem;
             protected afterAdd(item: PurchaseReturnRequestItem): void;
             protected onParentPropertyChanged(name: string): void;
+            /** 子项属性改变时 */
+            protected onItemPropertyChanged(item: PurchaseReturnRequestItem, name: string): void;
         }
         /** 采购退货请求-行 */
         class PurchaseReturnRequestItem extends ibas.BODocumentLine<PurchaseReturnRequestItem> implements IPurchaseReturnRequestItem {
@@ -12169,6 +12541,30 @@ declare namespace purchase {
             get agreements(): string;
             /** 设置-合同 */
             set agreements(value: string);
+            /** 映射的属性名称-反向行折扣 */
+            static PROPERTY_INVERSEDISCOUNT_NAME: string;
+            /** 获取-反向行折扣 */
+            get inverseDiscount(): number;
+            /** 设置-反向行折扣 */
+            set inverseDiscount(value: number);
+            /** 映射的属性名称-价格（本币） */
+            static PROPERTY_PRICELC_NAME: string;
+            /** 获取-价格（本币） */
+            get priceLC(): number;
+            /** 设置-价格（本币） */
+            set priceLC(value: number);
+            /** 映射的属性名称-折扣前价格（本币） */
+            static PROPERTY_UNITPRICELC_NAME: string;
+            /** 获取-折扣前价格（本币） */
+            get unitPriceLC(): number;
+            /** 设置-折扣前价格（本币） */
+            set unitPriceLC(value: number);
+            /** 映射的属性名称-税前价格（本币） */
+            static PROPERTY_PRETAXPRICELC_NAME: string;
+            /** 获取-税前价格（本币） */
+            get preTaxPriceLC(): number;
+            /** 设置-税前价格（本币） */
+            set preTaxPriceLC(value: number);
             /** 映射的属性名称-物料批次集合 */
             static PROPERTY_MATERIALBATCHES_NAME: string;
             /** 获取-物料批次集合 */
@@ -12219,8 +12615,15 @@ declare namespace purchase {
          * @param target 目标
          * @param source 源
          */
-        function baseDocumentItem(target: IPurchaseOrderItem | IPurchaseDeliveryItem | IPurchaseReturnItem | IDownPaymentRequestItem | IPurchaseReserveInvoiceItem | IPurchaseInvoiceItem | IPurchaseReturnRequestItem, source: IPurchaseQuoteItem | IPurchaseOrderItem | IPurchaseDeliveryItem | IPurchaseReserveInvoiceItem | IPurchaseInvoiceItem | IPurchaseReturnRequestItem): void;
+        function baseDocumentItem(target: PurchaseOrderItem | PurchaseDeliveryItem | PurchaseReturnItem | DownPaymentRequestItem | PurchaseReserveInvoiceItem | PurchaseInvoiceItem | PurchaseReturnRequestItem | PurchaseCreditNoteItem, source: IPurchaseQuoteItem | IPurchaseOrderItem | IPurchaseDeliveryItem | IPurchaseReserveInvoiceItem | IPurchaseInvoiceItem | IPurchaseReturnRequestItem): void;
         function baseProduct(target: PurchaseQuoteItem | PurchaseOrderItem | PurchaseDeliveryItem | PurchaseReturnItem | PurchaseRequestItem | PurchaseCreditNoteItem | PurchaseInvoiceItem | DownPaymentRequestItem | PurchaseReserveInvoiceItem | PurchaseReturnRequestItem, source: materials.bo.IProduct): void;
+        /**
+         * 设置单据类型
+         *     先判断目标单据是否有相同可选值
+         * @param target 目标单据
+         * @param source 源单据
+         */
+        function baseDocument_OrderType(target: PurchaseOrder | PurchaseDelivery | PurchaseReturn | PurchaseCreditNote | PurchaseInvoice | DownPaymentRequest | PurchaseReserveInvoice | PurchaseReturnRequest, source: IPurchaseQuote | IPurchaseOrder | IPurchaseDelivery | IPurchaseReturn | IPurchaseCreditNote | IPurchaseInvoice | IPurchaseReserveInvoice | PurchaseReturnRequest): void;
         /** 业务规则-推导税前税后价格 */
         class BusinessRuleDeductionTaxPrice extends ibas.BusinessRuleCommon {
             /**
@@ -12358,6 +12761,37 @@ declare namespace purchase {
         }
         /** 业务规则-计算库存数量 */
         class BusinessRuleCalculateInventoryQuantity extends materials.bo.BusinessRuleCalculateInventoryQuantity {
+        }
+        /** 业务规则-反向折扣（1 - %） */
+        class BusinessRuleNegativeDiscount extends ibas.BusinessRuleCommon {
+            /**
+             * 构造方法
+             * @param discount  属性-折扣
+             * @param inverseDiscount  属性-反折扣
+             */
+            constructor(discount: string, inverseDiscount: string);
+            /** 折扣 */
+            discount: string;
+            /** 折扣前价格 */
+            inverseDiscount: string;
+            /** 计算规则 */
+            protected compute(context: ibas.BusinessRuleContextCommon): void;
+        }
+        /**
+         * 推导币种金额
+         */
+        class BusinessRuleDeductionCurrencyAmount extends ibas.BusinessRuleCommon {
+            /**
+             * 构造
+             * @param amountLC 本币
+             * @param amount 交易币
+             * @param rate 汇率
+             */
+            constructor(amountLC: string, amount: string, rate: string);
+            amountLC: string;
+            amount: string;
+            rate: string;
+            protected compute(context: ibas.BusinessRuleContextCommon): void;
         }
     }
 }
@@ -12624,7 +13058,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseDeliveryItemMaterialCatalog(caller: bo.PurchaseDeliveryItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseDeliveryItem): void;
-            protected choosePaymentTerm(): void;
+            protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购收货 */
         interface IPurchaseDeliveryEditView extends ibas.IBOEditView {
@@ -12937,7 +13371,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseOrderItemMaterialCatalog(caller: bo.PurchaseOrderItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseOrderItem): void;
-            protected choosePaymentTerm(): void;
+            protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购订单 */
         interface IPurchaseOrderEditView extends ibas.IBOEditView {
@@ -13412,7 +13846,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseReturnItemMaterialCatalog(caller: bo.PurchaseReturnItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseReturnItem): void;
-            protected choosePaymentTerm(): void;
+            protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购退货 */
         interface IPurchaseReturnEditView extends ibas.IBOEditView {
@@ -13700,7 +14134,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseQuoteItemMaterialCatalog(caller: bo.PurchaseQuoteItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseQuoteItem): void;
-            protected choosePaymentTerm(): void;
+            protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购报价 */
         interface IPurchaseQuoteEditView extends ibas.IBOEditView {
@@ -14385,7 +14819,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseInvoiceItemMaterialCatalog(caller: bo.PurchaseInvoiceItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseInvoiceItem): void;
-            protected choosePaymentTerm(): void;
+            protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购发票 */
         interface IPurchaseInvoiceEditView extends ibas.IBOEditView {
@@ -14688,7 +15122,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseCreditNoteItemMaterialCatalog(caller: bo.PurchaseCreditNoteItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseCreditNoteItem): void;
-            protected choosePaymentTerm(): void;
+            protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购贷项 */
         interface IPurchaseCreditNoteEditView extends ibas.IBOEditView {
@@ -15395,6 +15829,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected chooseDownPaymentRequestItemMaterialCatalog(caller: bo.DownPaymentRequestItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.DownPaymentRequestItem): void;
+            protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-预付款申请 */
         interface IDownPaymentRequestEditView extends ibas.IBOEditView {
@@ -15434,6 +15869,8 @@ declare namespace purchase {
             chooseDownPaymentRequestItemMaterialVersionEvent: Function;
             /** 选择一业务伙伴目录事件 */
             chooseDownPaymentRequestItemMaterialCatalogEvent: Function;
+            /** 选择付款条款事件 */
+            choosePaymentTermEvent: Function;
             /** 预收款申请付款事件 */
             paymentDownPaymentRequestEvent: Function;
             /** 测量物料事件 */
@@ -15569,7 +16006,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseReserveInvoiceItemMaterialCatalog(caller: bo.PurchaseReserveInvoiceItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseReserveInvoiceItem): void;
-            protected choosePaymentTerm(): void;
+            protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购预留发票 */
         interface IPurchaseReserveInvoiceEditView extends ibas.IBOEditView {
@@ -15862,7 +16299,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseReturnRequestItemMaterialCatalog(caller: bo.PurchaseReturnRequestItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseReturnRequestItem): void;
-            protected choosePaymentTerm(): void;
+            protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购退货请求 */
         interface IPurchaseReturnRequestEditView extends ibas.IBOEditView {
