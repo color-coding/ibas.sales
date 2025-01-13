@@ -1123,8 +1123,10 @@ namespace sales {
                             target.customerName = this.editData.customerName;
                             target.baseDocument(this.editData);
                             // 整单基于，则赋折扣、总计
-                            if (target.itemsLineTotal === this.editData.itemsLineTotal
-                                && target.shippingsExpenseTotal === this.editData.shippingsExpenseTotal) {
+                            if (ibas.numbers.valueOf(target.itemsLineTotal) === this.editData.itemsLineTotal
+                                && ibas.numbers.valueOf(target.shippingsExpenseTotal) === this.editData.shippingsExpenseTotal) {
+                                target.rounding = this.editData.rounding;
+                                target.diffAmount = this.editData.diffAmount;
                                 target.discount = this.editData.discount;
                                 target.documentTotal = this.editData.documentTotal;
                             }
@@ -1174,8 +1176,10 @@ namespace sales {
                             target.customerName = this.editData.customerName;
                             target.baseDocument(this.editData);
                             // 整单基于，则赋折扣、总计
-                            if (target.itemsLineTotal === this.editData.itemsLineTotal
-                                && target.shippingsExpenseTotal === this.editData.shippingsExpenseTotal) {
+                            if (ibas.numbers.valueOf(target.itemsLineTotal) === this.editData.itemsLineTotal
+                                && ibas.numbers.valueOf(target.shippingsExpenseTotal) === this.editData.shippingsExpenseTotal) {
+                                target.rounding = this.editData.rounding;
+                                target.diffAmount = this.editData.diffAmount;
                                 target.discount = this.editData.discount;
                                 target.documentTotal = this.editData.documentTotal;
                             }

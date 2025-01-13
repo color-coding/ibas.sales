@@ -19,17 +19,20 @@ public class BusinessRuleDeductionDocumentTotal extends BusinessRuleCommon {
 	 * @param docTotal  属性-单据总计
 	 * @param disTotal  属性-折扣总计
 	 * @param shipTotal 属性-运费总计
+	 * @param diffAmount 属性-舍入
 	 */
 	public BusinessRuleDeductionDocumentTotal(IPropertyInfo<BigDecimal> docTotal, IPropertyInfo<BigDecimal> disTotal,
-			IPropertyInfo<BigDecimal> shipTotal) {
+			IPropertyInfo<BigDecimal> shipTotal, IPropertyInfo<BigDecimal> diffAmount) {
 		this();
 		this.setDocTotal(docTotal);
 		this.setDisTotal(disTotal);
 		this.setShipTotal(shipTotal);
+		this.setDiffAmount(diffAmount);
 		// 要输入的参数
 		this.getInputProperties().add(this.getDocTotal());
 		this.getInputProperties().add(this.getDisTotal());
 		this.getInputProperties().add(this.getShipTotal());
+		this.getInputProperties().add(this.getDiffAmount());
 		// 要输出的参数
 		this.getAffectedProperties().add(this.getDocTotal());
 		this.getAffectedProperties().add(this.getDisTotal());
@@ -65,6 +68,16 @@ public class BusinessRuleDeductionDocumentTotal extends BusinessRuleCommon {
 		this.shipTotal = shipTotal;
 	}
 
+	private IPropertyInfo<BigDecimal> diffAmount;
+
+	public final IPropertyInfo<BigDecimal> getDiffAmount() {
+		return diffAmount;
+	}
+
+	public final void setDiffAmount(IPropertyInfo<BigDecimal> diffAmount) {
+		this.diffAmount = diffAmount;
+	}
+
 	@Override
 	protected void execute(BusinessRuleContext context) throws Exception {
 		BigDecimal docTotal = (BigDecimal) context.getInputValues().get(this.getDocTotal());
@@ -81,17 +94,23 @@ public class BusinessRuleDeductionDocumentTotal extends BusinessRuleCommon {
 		if (shipTotal == null) {
 			shipTotal = Decimal.ZERO;
 		}
+		BigDecimal diffAmount = this.getDiffAmount() != null
+				? (BigDecimal) context.getInputValues().get(this.getDiffAmount())
+				: Decimal.ZERO;
+		if (diffAmount == null) {
+			diffAmount = Decimal.ZERO;
+		}
 		if (Decimal.ZERO.compareTo(docTotal) == 0) {
-			docTotal = disTotal.add(shipTotal);
+			docTotal = Decimal.add(disTotal, shipTotal, diffAmount);
 			context.getOutputValues().put(this.getDocTotal(), docTotal);
 		} else if (Decimal.ZERO.compareTo(disTotal) == 0) {
-			disTotal = docTotal.subtract(shipTotal);
+			disTotal = Decimal.subtract(docTotal, shipTotal, diffAmount);
 			context.getOutputValues().put(this.getDisTotal(), disTotal);
 		} else {
-			BigDecimal result = disTotal.add(shipTotal);
+			BigDecimal result = Decimal.add(disTotal, shipTotal, diffAmount);
 			result.setScale(docTotal.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 			if (Decimal.ONE.compareTo(result.subtract(docTotal).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
-				context.getOutputValues().put(this.getDocTotal(), disTotal.add(shipTotal));
+				context.getOutputValues().put(this.getDocTotal(), result);
 			}
 		}
 	}

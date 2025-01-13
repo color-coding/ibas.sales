@@ -1197,6 +1197,29 @@ namespace sales {
                                         , "string");
                                 },
                             }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_salesinvoice_rounding") }),
+                            new sap.m.FlexBox("", {
+                                width: "100%",
+                                justifyContent: sap.m.FlexJustifyContent.Start,
+                                renderType: sap.m.FlexRendertype.Bare,
+                                alignContent: sap.m.FlexAlignContent.Center,
+                                alignItems: sap.m.FlexAlignItems.Center,
+                                items: [
+                                    new sap.extension.m.Input("", {
+                                    }).bindProperty("bindingValue", {
+                                        path: "diffAmount",
+                                        type: new sap.extension.data.Sum()
+                                    }).bindProperty("editable", {
+                                        path: "rounding",
+                                        type: new sap.extension.data.YesNo()
+                                    }).addStyleClass("sapUiTinyMarginEnd"),
+                                    new sap.extension.m.CheckBox("", {
+                                    }).bindProperty("bindingValue", {
+                                        path: "rounding",
+                                        type: new sap.extension.data.YesNo()
+                                    }),
+                                ]
+                            }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesinvoice_documenttotal") }),
                             new sap.m.FlexBox("", {
                                 width: "100%",
