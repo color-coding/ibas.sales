@@ -218,7 +218,7 @@ public class BusinessRuleDeductionPriceTaxTotal extends BusinessRuleCommon {
 				} else {
 					// 总计 = 价格 * 数量
 					BigDecimal result = Decimal.multiply(price, quantity);
-					result.setScale(total.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+					result = result.setScale(total.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 					if (Decimal.ONE
 							.compareTo(result.subtract(total).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
 						total = result;
@@ -240,7 +240,7 @@ public class BusinessRuleDeductionPriceTaxTotal extends BusinessRuleCommon {
 					preTotal = result;
 					context.getOutputValues().put(this.getPreTotal(), preTotal);
 				} else {
-					result.setScale(preTotal.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+					result = result.setScale(preTotal.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 					if (Decimal.ONE
 							.compareTo(result.subtract(preTotal).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
 						preTotal = result;
@@ -281,7 +281,7 @@ public class BusinessRuleDeductionPriceTaxTotal extends BusinessRuleCommon {
 				prePrice = result;
 				context.getOutputValues().put(this.getPrePrice(), prePrice);
 			} else {
-				result.setScale(prePrice.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+				result = result.setScale(prePrice.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 				if (Decimal.ONE
 						.compareTo(result.subtract(prePrice).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
 					prePrice = result;

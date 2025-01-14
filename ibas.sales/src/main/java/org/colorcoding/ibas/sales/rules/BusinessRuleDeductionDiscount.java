@@ -97,7 +97,7 @@ public class BusinessRuleDeductionDiscount extends BusinessRuleCommon {
 			// 计算折扣
 			BigDecimal result = Decimal.isZero(preDiscount) ? Decimal.ONE : Decimal.divide(afterDiscount, preDiscount);
 			if (discount.scale() > 0) {
-				result.setScale(discount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+				result = result.setScale(discount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 				if (result.compareTo(discount) != 0) {
 					context.getOutputValues().put(this.getDiscount(), result);
 				}

@@ -63,7 +63,7 @@ public class BusinessRuleDeductionInverseDiscount extends BusinessRuleCommon {
 		}
 		BigDecimal result = Decimal.ONE.subtract(discount);
 		if (discount.scale() > 0) {
-			result.setScale(discount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+			result = result.setScale(discount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 			if (result.compareTo(inverseDiscount) != 0) {
 				context.getOutputValues().put(this.getInverseDiscount(), result);
 			}

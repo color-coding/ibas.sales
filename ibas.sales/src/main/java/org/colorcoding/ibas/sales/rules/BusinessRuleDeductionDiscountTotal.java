@@ -94,7 +94,7 @@ public class BusinessRuleDeductionDiscountTotal extends BusinessRuleCommon {
 				if (Decimal.ZERO.compareTo(discount) == 0) {
 					context.getOutputValues().put(this.getDiscount(), result);
 				} else {
-					result.setScale(discount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+					result = result.setScale(discount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 					if (Decimal.ONE.compareTo(result.subtract(total).abs().multiply(Decimal.valueOf("100"))
 							.multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
 						context.getOutputValues().put(this.getDiscount(), result);

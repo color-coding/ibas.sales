@@ -108,7 +108,7 @@ public class BusinessRuleDeductionDocumentTotal extends BusinessRuleCommon {
 			context.getOutputValues().put(this.getDisTotal(), disTotal);
 		} else {
 			BigDecimal result = Decimal.add(disTotal, shipTotal, diffAmount);
-			result.setScale(docTotal.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+			result = result.setScale(docTotal.scale(), Decimal.ROUNDING_MODE_DEFAULT);
 			if (Decimal.ONE.compareTo(result.subtract(docTotal).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
 				context.getOutputValues().put(this.getDocTotal(), result);
 			}
