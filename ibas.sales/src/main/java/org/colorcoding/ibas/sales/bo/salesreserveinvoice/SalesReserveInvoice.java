@@ -1,6 +1,7 @@
 package org.colorcoding.ibas.sales.bo.salesreserveinvoice;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.function.Predicate;
 
@@ -2230,6 +2231,12 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 			return this.getBranch();
 		case Ledgers.CONDITION_PROPERTY_CUSTOMER:
 			return this.getCustomerCode();
+		case Ledgers.CONDITION_PROPERTY_MATERIAL:
+			String[] items = new String[this.getSalesReserveInvoiceItems().size()];
+			for (int i = 0; i < items.length; i++) {
+				items[i] = this.getSalesReserveInvoiceItems().get(i).getItemCode();
+			}
+			return Arrays.toString(items);
 		default:
 			return null;
 		}

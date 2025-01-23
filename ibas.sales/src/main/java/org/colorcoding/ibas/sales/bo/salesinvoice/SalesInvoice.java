@@ -1,6 +1,7 @@
 package org.colorcoding.ibas.sales.bo.salesinvoice;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.function.Predicate;
 
@@ -2464,6 +2465,12 @@ public class SalesInvoice extends BusinessObject<SalesInvoice>
 			return this.getBranch();
 		case Ledgers.CONDITION_PROPERTY_CUSTOMER:
 			return this.getCustomerCode();
+		case Ledgers.CONDITION_PROPERTY_MATERIAL:
+			String[] items = new String[this.getSalesInvoiceItems().size()];
+			for (int i = 0; i < items.length; i++) {
+				items[i] = this.getSalesInvoiceItems().get(i).getItemCode();
+			}
+			return Arrays.toString(items);
 		default:
 			return null;
 		}
