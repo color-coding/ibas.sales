@@ -379,7 +379,7 @@ namespace sales {
                         ],
                         sections: [
                             new sap.uxap.ObjectPageSection("", {
-                                title: ibas.i18n.prop("bo_downpaymentrequestitem"),
+                                title: ibas.i18n.prop("bo_downpaymentrequestitem_ar"),
                                 subSections: [
                                     new sap.uxap.ObjectPageSubSection("", {
                                         blocks: [

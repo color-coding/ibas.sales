@@ -29,6 +29,8 @@ declare namespace purchase {
         const CONFIG_ITEM_DISCOUNT_PRESENTATION_METHOD: string;
         /** 配置项目-单据统计标记删除行 */
         const CONFIG_ITEM_DOCUMENT_STATISTICS_TAG_DELETED_LINE: string;
+        /** 配置项目-采购助手显示价格类型 */
+        const CONFIG_ITEM_PURCHASING_ASSISTANT_PRICE_TYPE: string;
         /**
          * 获取此模块配置
          * @param key 配置项
@@ -10279,6 +10281,8 @@ declare namespace purchase {
     namespace bo {
         /** 预付款申请 */
         class DownPaymentRequest extends ibas.BODocument<DownPaymentRequest> implements IDownPaymentRequest {
+            /** 资源后缀 */
+            static resource_suffix: string;
             /** 业务对象编码 */
             static BUSINESS_OBJECT_CODE: string;
             /** 构造函数 */
@@ -12685,14 +12689,17 @@ declare namespace purchase {
              * @param docTotal 属性-单据总计
              * @param disTotal   属性-折扣总计
              * @param shipTotal  属性-运费总计
+             * @param diffAmount  属性-舍入
              */
-            constructor(docTotal: string, disTotal: string, shipTotal?: string);
+            constructor(docTotal: string, disTotal: string, shipTotal?: string, diffAmount?: string);
             /** 单据总计 */
             docTotal: string;
             /** 折扣总计 */
             disTotal: string;
             /** 运费总计 */
             shipTotal: string;
+            /** 舍入 */
+            diffAmount: string;
             /** 计算规则 */
             protected compute(context: ibas.BusinessRuleContextCommon): void;
         }
@@ -12778,7 +12785,7 @@ declare namespace purchase {
             protected compute(context: ibas.BusinessRuleContextCommon): void;
         }
         /**
-         * 推导币种金额
+         * 业务规则-推导币种金额
          */
         class BusinessRuleDeductionCurrencyAmount extends ibas.BusinessRuleCommon {
             /**
@@ -12791,6 +12798,20 @@ declare namespace purchase {
             amountLC: string;
             amount: string;
             rate: string;
+            protected compute(context: ibas.BusinessRuleContextCommon): void;
+        }
+        /**
+         * 业务规则-舍入差异
+         */
+        class BusinessRuleRoundingAmount extends ibas.BusinessRuleCommon {
+            /**
+             * 构造
+             * @param rounding 舍入
+             * @param amount 差异金额
+             */
+            constructor(rounding: string, amount: string);
+            rounding: string;
+            amount: string;
             protected compute(context: ibas.BusinessRuleContextCommon): void;
         }
     }
