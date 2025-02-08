@@ -117,7 +117,7 @@ namespace sales {
                         sectionChange(event: sap.ui.base.Event): void {
                             let section: any = event.getParameter("section");
                             if (section instanceof sap.uxap.ObjectPageSection) {
-                                if (section.getTitle() === ibas.i18n.prop("bo_downpaymentrequestitem")) {
+                                if (section.getTitle() === ibas.i18n.prop("bo_downpaymentrequestitem_ar")) {
                                     that.page.setShowFooter(true);
                                 } else {
                                     that.page.setShowFooter(false);
@@ -483,7 +483,7 @@ namespace sales {
                                 ]
                             }),
                             new sap.uxap.ObjectPageSection("", {
-                                title: ibas.i18n.prop("bo_downpaymentrequestitem"),
+                                title: ibas.i18n.prop("bo_downpaymentrequestitem_ar"),
                                 subSections: [
                                     new sap.uxap.ObjectPageSubSection("", {
                                         blocks: [
@@ -846,7 +846,7 @@ namespace sales {
                     let editForm: sap.m.Dialog = <any>sap.ui.getCore().byId(this.id + "_editform");
                     if (!(editForm instanceof sap.m.Dialog)) {
                         editForm = new sap.m.Dialog(this.id + "_editform", {
-                            title: ibas.strings.format("{0} - {1}", ibas.i18n.prop("bo_downpaymentrequestitem"), data.lineId),
+                            title: ibas.strings.format("{0} - {1}", ibas.i18n.prop("bo_downpaymentrequestitem_ar"), data.lineId),
                             type: sap.m.DialogType.Standard,
                             state: sap.ui.core.ValueState.None,
                             stretch: ibas.config.get(ibas.CONFIG_ITEM_PLANTFORM) === ibas.emPlantform.PHONE ? true : false,
@@ -1035,7 +1035,7 @@ namespace sales {
                                                 let index: number = datas.indexOf(form.getModel().getData());
                                                 index = index <= 0 ? datas.length - 1 : index - 1;
                                                 form.setModel(new sap.extension.model.JSONModel(datas[index]));
-                                                editForm.setTitle(ibas.strings.format("{0} - {1}", ibas.i18n.prop("bo_downpaymentrequestitem"), datas[index].lineId));
+                                                editForm.setTitle(ibas.strings.format("{0} - {1}", ibas.i18n.prop("bo_downpaymentrequestitem_ar"), datas[index].lineId));
                                             } else {
                                                 that.application.viewShower.messages({
                                                     title: that.title,
@@ -1058,7 +1058,7 @@ namespace sales {
                                                 let index: number = datas.indexOf(form.getModel().getData());
                                                 index = index >= datas.length - 1 ? 0 : index + 1;
                                                 form.setModel(new sap.extension.model.JSONModel(datas[index]));
-                                                editForm.setTitle(ibas.strings.format("{0} - {1}", ibas.i18n.prop("bo_downpaymentrequestitem"), datas[index].lineId));
+                                                editForm.setTitle(ibas.strings.format("{0} - {1}", ibas.i18n.prop("bo_downpaymentrequestitem_ar"), datas[index].lineId));
                                             } else {
                                                 that.application.viewShower.messages({
                                                     title: that.title,
