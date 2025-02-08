@@ -1203,6 +1203,8 @@
         "bo_downpaymentrequest_documentlinediscount": "Down Payment Percentage",
         "bo_downpaymentrequest_downpaymentrequestitems": "Down Payment Request - Items Collection",
         "bo_downpaymentrequestitem": "Down Payment Request - Item",
+        "bo_downpaymentrequestitem_ar": "Down Payment Request - Item",
+        "bo_downpaymentrequestitem_ap": "Advance Payment Request - Item",
         "bo_downpaymentrequestitem_docentry": "Document Entry",
         "bo_downpaymentrequestitem_lineid": "Line ID",
         "bo_downpaymentrequestitem_visorder": "Visual Order",
