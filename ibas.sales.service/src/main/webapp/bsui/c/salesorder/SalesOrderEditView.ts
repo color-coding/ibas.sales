@@ -1381,7 +1381,7 @@ namespace sales {
                                                 })
                                             }),
                                             new sap.m.MenuItem("", {
-                                                text: ibas.i18n.prop("bo_downpaymentrequest"),
+                                                text: ibas.i18n.prop("bo_downpaymentrequest_ar"),
                                                 icon: "sap-icon://doc-attachment",
                                                 press(this: sap.m.Button): void {
                                                     that.fireViewEvents(that.turnToDownPaymentRequestEvent);

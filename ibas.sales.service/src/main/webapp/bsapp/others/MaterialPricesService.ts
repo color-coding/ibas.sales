@@ -309,7 +309,7 @@ namespace sales {
                 super();
                 this.id = DownPaymentRequestMaterialPriceService.APPLICATION_ID;
                 this.name = DownPaymentRequestMaterialPriceService.APPLICATION_NAME;
-                this.description = ibas.i18n.prop("bo_downpaymentrequest");
+                this.description = ibas.i18n.prop("bo_downpaymentrequest_ar");
                 this.proxy = materials.app.DocumentMaterialPriceServiceProxy;
                 this.category = ibas.enums.toString(businesspartner.bo.emBusinessPartnerType, businesspartner.bo.emBusinessPartnerType.CUSTOMER);
             }
