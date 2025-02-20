@@ -3005,6 +3005,9 @@ public class SalesCreditNoteItem extends BusinessObject<SalesCreditNoteItem> imp
 					if (SalesCreditNoteItem.this.isDeleted()) {
 						return true;
 					}
+					if (SalesCreditNoteItem.this.getLineStatus() == emDocumentStatus.PLANNED) {
+						return true;
+					}
 					if (SalesCreditNoteItem.this instanceof IBOTagCanceled) {
 						IBOTagCanceled boTag = (IBOTagCanceled) SalesCreditNoteItem.this;
 						if (boTag.getCanceled() == emYesNo.YES) {

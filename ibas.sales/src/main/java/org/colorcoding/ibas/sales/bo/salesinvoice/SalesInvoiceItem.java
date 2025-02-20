@@ -2912,6 +2912,9 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 					if (SalesInvoiceItem.this.isDeleted()) {
 						return true;
 					}
+					if (SalesInvoiceItem.this.getLineStatus() == emDocumentStatus.PLANNED) {
+						return true;
+					}
 					if (SalesInvoiceItem.this instanceof IBOTagCanceled) {
 						IBOTagCanceled boTag = (IBOTagCanceled) SalesInvoiceItem.this;
 						if (boTag.getCanceled() == emYesNo.YES) {

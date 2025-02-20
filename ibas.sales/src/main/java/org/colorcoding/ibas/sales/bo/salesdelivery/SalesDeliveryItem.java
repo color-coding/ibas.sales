@@ -2840,6 +2840,9 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 						if (SalesDeliveryItem.this.isDeleted()) {
 							return true;
 						}
+						if (SalesDeliveryItem.this.getLineStatus() == emDocumentStatus.PLANNED) {
+							return true;
+						}
 						if (SalesDeliveryItem.this instanceof IBOTagCanceled) {
 							IBOTagCanceled boTag = (IBOTagCanceled) SalesDeliveryItem.this;
 							if (boTag.getCanceled() == emYesNo.YES) {

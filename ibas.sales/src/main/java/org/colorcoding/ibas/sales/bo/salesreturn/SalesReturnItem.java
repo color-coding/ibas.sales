@@ -2885,6 +2885,9 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 				if (SalesReturnItem.this.isDeleted()) {
 					return true;
 				}
+				if (SalesReturnItem.this.getLineStatus() == emDocumentStatus.PLANNED) {
+					return true;
+				}
 				if (SalesReturnItem.this instanceof IBOTagCanceled) {
 					IBOTagCanceled boTag = (IBOTagCanceled) SalesReturnItem.this;
 					if (boTag.getCanceled() == emYesNo.YES) {
