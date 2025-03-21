@@ -1697,9 +1697,17 @@ namespace sales {
                         itemDescription: caller.itemDescription,
                         quantity: caller.quantity,
                         uom: caller.uom,
-                        applyPrice: (price, currency) => {
-                            caller.preTaxPrice = price;
-                            caller.currency = currency;
+                        applyPrice: (type, price, currency) => {
+                            if (type === "PRICE") {
+                                caller.price = price;
+                                caller.currency = currency;
+                            } else if (type === "PRETAXPRICE") {
+                                caller.preTaxPrice = price;
+                                caller.currency = currency;
+                            } else if (type === "UNITPRICE") {
+                                caller.unitPrice = price;
+                                caller.currency = currency;
+                            }
                         }
                     })
                 });

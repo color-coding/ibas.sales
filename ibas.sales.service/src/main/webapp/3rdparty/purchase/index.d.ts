@@ -1454,6 +1454,8 @@ declare namespace purchase {
             uomRate: number;
             /** 库存数量 */
             inventoryQuantity: number;
+            /** 仓库 */
+            warehouse: string;
             /** 供应商 */
             supplier: string;
             /** 价格 */
@@ -7380,6 +7382,12 @@ declare namespace purchase {
             get inventoryQuantity(): number;
             /** 设置-库存数量 */
             set inventoryQuantity(value: number);
+            /** 映射的属性名称-仓库 */
+            static PROPERTY_WAREHOUSE_NAME: string;
+            /** 获取-仓库 */
+            get warehouse(): string;
+            /** 设置-仓库 */
+            set warehouse(value: string);
             /** 映射的属性名称-供应商 */
             static PROPERTY_SUPPLIER_NAME: string;
             /** 获取-供应商 */
@@ -14598,6 +14606,7 @@ declare namespace purchase {
             private choosePurchaseRequestItemDistributionRule;
             private doneItems;
             private purchaseRequestTo;
+            private choosePurchaseRequestItemWarehouse;
             private choosePurchaseRequestItemMaterialVersion;
             protected measuringMaterials(): void;
             protected viewHistoricalPrices(caller: bo.PurchaseRequestItem): void;
@@ -14620,6 +14629,8 @@ declare namespace purchase {
             choosePurchaseRequestItemMaterialEvent: Function;
             /** 选择采购申请-行物料单位 */
             choosePurchaseRequestItemUnitEvent: Function;
+            /** 选择采购申请-行 仓库 */
+            choosePurchaseRequestItemWarehouseEvent: Function;
             /** 选择供应商合同 */
             chooseSupplierAgreementsEvent: Function;
             /** 显示采购申请额外信息事件 */
