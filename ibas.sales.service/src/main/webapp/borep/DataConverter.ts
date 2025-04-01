@@ -364,6 +364,15 @@ namespace sales {
                 target.lineTotal = source.lineTotal;
                 target.preTaxLineTotal = source.preTaxLineTotal;
                 target.taxTotal = source.taxTotal;
+                // 总计小数位小于价格时，价格赋值
+                if (DECIMAL_PLACES_SUM < DECIMAL_PLACES_PRICE) {
+                    if (Math.abs(target.unitPrice - source.unitPrice) < Math.pow(0.1, DECIMAL_PLACES_SUM)) {
+                        target.unitPrice = source.unitPrice;
+                    }
+                    if (Math.abs(target.price - source.price) < Math.pow(0.1, DECIMAL_PLACES_SUM)) {
+                        target.price = source.price;
+                    }
+                }
             }
             if (target instanceof SalesReturnItem && source instanceof SalesReturnRequestItem) {
                 target.returnCost = source.returnCost;
@@ -789,7 +798,7 @@ namespace sales {
                             // 总计小数位小于价格小数位，会有舍入问题，估降低精度
                             (DECIMAL_PLACES_PRICE > DECIMAL_PLACES_SUM ? DECIMAL_PLACES_SUM : DECIMAL_PLACES_PRICE))
                         ) {
-                            if (TRUNCATE_DECIMALS) {
+                            if (TRUNCATE_DECIMALS && price !== 0 && Math.abs(rPrice - price) < 0.4) {
                                 // 需要截取小数，且价格小数位大于总计的
                                 let pValue: number = ibas.numbers.round(rPrice, DECIMAL_PLACES_PRICE);
                                 let sValue: number = ibas.numbers.round(rPrice, DECIMAL_PLACES_SUM);
@@ -958,7 +967,7 @@ namespace sales {
                             // 总计小数位小于价格小数位，会有舍入问题，估降低精度
                             (DECIMAL_PLACES_PRICE > DECIMAL_PLACES_SUM ? DECIMAL_PLACES_SUM : DECIMAL_PLACES_PRICE))
                         ) {
-                            if (TRUNCATE_DECIMALS) {
+                            if (TRUNCATE_DECIMALS && price !== 0 && Math.abs(rPrice - price) < 0.4) {
                                 // 需要截取小数，且价格小数位大于总计的
                                 let pValue: number = ibas.numbers.round(rPrice, DECIMAL_PLACES_PRICE);
                                 let sValue: number = ibas.numbers.round(rPrice, DECIMAL_PLACES_SUM);
