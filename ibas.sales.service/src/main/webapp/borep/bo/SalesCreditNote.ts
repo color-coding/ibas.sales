@@ -849,6 +849,9 @@ namespace sales {
                         }
                         let myAddress: IShippingAddress = address.clone();
                         myAddress.createActionId = address.createActionId;
+                        if (address.isNew === false) {
+                            myAddress.sourceKey = address.objectKey;
+                        }
                         // 不复制重名的
                         if (this.shippingAddresss.firstOrDefault(c => c.name === address.name) !== null) {
                             myAddress.name = ibas.strings.format("{0}_{1}", myAddress.name, this.shippingAddresss.length);
@@ -900,6 +903,9 @@ namespace sales {
                         }
                         let myAddress: IShippingAddress = address.clone();
                         myAddress.createActionId = address.createActionId;
+                        if (address.isNew === false) {
+                            myAddress.sourceKey = address.objectKey;
+                        }
                         // 不复制重名的
                         if (this.shippingAddresss.firstOrDefault(c => c.name === address.name) !== null) {
                             myAddress.name = ibas.strings.format("{0}_{1}", myAddress.name, this.shippingAddresss.length);
@@ -999,6 +1005,9 @@ namespace sales {
                         }
                         let myAddress: IShippingAddress = address.clone();
                         myAddress.createActionId = address.createActionId;
+                        if (address.isNew === false) {
+                            myAddress.sourceKey = address.objectKey;
+                        }
                         // 不复制重名的
                         if (this.shippingAddresss.firstOrDefault(c => c.name === address.name) !== null) {
                             myAddress.name = ibas.strings.format("{0}_{1}", myAddress.name, this.shippingAddresss.length);

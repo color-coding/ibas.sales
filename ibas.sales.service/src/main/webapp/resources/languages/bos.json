@@ -1043,6 +1043,7 @@
         "bo_shippingaddress_updateusersign": "Last Modified By",
         "bo_shippingaddress_createactionid": "Creation Action ID",
         "bo_shippingaddress_updateactionid": "Update Action ID",
+        "bo_shippingaddress_sourcekey": "Source Key",
         "bo_shippingaddress_closing_delimiter": "---- End ----"
     },
     {

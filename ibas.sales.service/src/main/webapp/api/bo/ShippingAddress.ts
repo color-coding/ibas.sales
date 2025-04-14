@@ -122,6 +122,9 @@ namespace sales {
             /** 更新动作标识 */
             updateActionId: string;
 
+            /** 来源编号 */
+            sourceKey: number;
+
             /** 基于地址 */
             baseAddress(address: businesspartner.bo.IAddress): void;
         }
