@@ -2234,6 +2234,8 @@ declare namespace purchase {
             createActionId: string;
             /** 更新动作标识 */
             updateActionId: string;
+            /** 来源编号 */
+            sourceKey: number;
         }
         /** 送货地址 集合 */
         interface IShippingAddresss extends ibas.IBusinessObjects<IShippingAddress> {
@@ -2405,6 +2407,12 @@ declare namespace purchase {
             quantity: number;
             /** 单位 */
             uom: string;
+            /** 库存单位 */
+            inventoryUOM: string;
+            /** 单位换算率 */
+            uomRate: number;
+            /** 库存数量 */
+            inventoryQuantity: number;
             /** 价格 */
             price: number;
             /** 货币 */
@@ -9706,6 +9714,12 @@ declare namespace purchase {
             get updateActionId(): string;
             /** 设置-更新动作标识 */
             set updateActionId(value: string);
+            /** 映射的属性名称-来源编号 */
+            static PROPERTY_SOURCEKEY_NAME: string;
+            /** 获取-来源编号 */
+            get sourceKey(): number;
+            /** 设置-来源编号 */
+            set sourceKey(value: number);
             /** 基于地址 */
             baseAddress(address: businesspartner.bo.IAddress): void;
             /** 初始化数据 */
@@ -10194,6 +10208,24 @@ declare namespace purchase {
             get uom(): string;
             /** 设置-单位 */
             set uom(value: string);
+            /** 映射的属性名称-库存单位 */
+            static PROPERTY_INVENTORYUOM_NAME: string;
+            /** 获取-库存单位 */
+            get inventoryUOM(): string;
+            /** 设置-库存单位 */
+            set inventoryUOM(value: string);
+            /** 映射的属性名称-单位换算率 */
+            static PROPERTY_UOMRATE_NAME: string;
+            /** 获取-单位换算率 */
+            get uomRate(): number;
+            /** 设置-单位换算率 */
+            set uomRate(value: number);
+            /** 映射的属性名称-库存数量 */
+            static PROPERTY_INVENTORYQUANTITY_NAME: string;
+            /** 获取-库存数量 */
+            get inventoryQuantity(): number;
+            /** 设置-库存数量 */
+            set inventoryQuantity(value: number);
             /** 映射的属性名称-价格 */
             static PROPERTY_PRICE_NAME: string;
             /** 获取-价格 */

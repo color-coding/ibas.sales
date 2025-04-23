@@ -341,6 +341,7 @@ namespace sales {
                     onCompleted(selecteds: ibas.IList<materials.bo.IProduct>): void {
                         let index: number = that.editData.blanketAgreementItems.indexOf(caller);
                         let item: bo.BlanketAgreementItem = that.editData.blanketAgreementItems[index];
+                        let beChangeds: ibas.IList<materials.app.IBeChangedUOMSource> = new ibas.ArrayList<materials.app.IBeChangedUOMSource>();
                         // 选择返回数量多余触发数量时,自动创建新的项目
                         let created: boolean = false;
                         for (let selected of selecteds) {
@@ -355,6 +356,7 @@ namespace sales {
                             if (ibas.strings.isEmpty(item.uom)) {
                                 item.uom = selected.inventoryUOM;
                             }
+                            item.inventoryUOM = selected.inventoryUOM;
                             if (!ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
                                 item.tax = that.view.defaultTaxGroup;
                                 if (!ibas.strings.isEmpty(item.tax)) {
@@ -373,11 +375,31 @@ namespace sales {
                             if (!ibas.objects.isNull(that.customer)) {
                                 item.currency = that.customer.currency;
                             }
+                            beChangeds.add({
+                                caller: item,
+                                sourceUnit: item.uom,
+                                targetUnit: item.inventoryUOM,
+                                material: item.itemCode,
+                                setUnitRate(this: bo.BlanketAgreementItem, value: number): void {
+                                    this.uomRate = value;
+                                }
+                            });
                             item = null;
                         }
                         if (created) {
                             // 创建了新的行项目
                             that.view.showBlanketAgreementItems(that.editData.blanketAgreementItems.filterDeleted());
+                        }
+                        if (beChangeds.length > 0) {
+                            // 设置单位换算率
+                            materials.app.changeMaterialsUnitRate({
+                                data: beChangeds,
+                                onCompleted: (error) => {
+                                    if (error instanceof Error) {
+                                        that.messages(error);
+                                    }
+                                }
+                            });
                         }
                     }
                 });
@@ -403,6 +425,27 @@ namespace sales {
                         for (let selected of selecteds) {
                             caller.uom = selected.name;
                         }
+                        materials.app.changeMaterialsUnitRate({
+                            data: {
+                                get sourceUnit(): string {
+                                    return caller.uom;
+                                },
+                                get targetUnit(): string {
+                                    return caller.inventoryUOM;
+                                },
+                                get material(): string {
+                                    return caller.itemCode;
+                                },
+                                setUnitRate(rate: number): void {
+                                    caller.uomRate = rate;
+                                }
+                            },
+                            onCompleted: (error) => {
+                                if (error instanceof Error) {
+                                    that.messages(error);
+                                }
+                            }
+                        });
                     }
                 });
             }
