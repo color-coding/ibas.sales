@@ -17,14 +17,15 @@ import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
+import org.colorcoding.ibas.bobas.core.ITrackable;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.bobas.db.DbField;
+import org.colorcoding.ibas.bobas.db.DbFieldType;
 import org.colorcoding.ibas.bobas.logic.BusinessLogicException;
 import org.colorcoding.ibas.bobas.logic.IBusinessObjectGroup;
-import org.colorcoding.ibas.bobas.mapping.DbField;
-import org.colorcoding.ibas.bobas.mapping.DbFieldType;
-import org.colorcoding.ibas.bobas.mapping.LogicContract;
+import org.colorcoding.ibas.bobas.logic.LogicContract;
 import org.colorcoding.ibas.materials.bo.materialinventory.IMaterialInventoryReservation;
 import org.colorcoding.ibas.materials.bo.materialinventory.IMaterialInventoryReservations;
 import org.colorcoding.ibas.materials.bo.materialinventory.MaterialInventoryReservation;
@@ -63,27 +64,28 @@ public class MaterialInventoryReservationStatusService extends
 		condition = criteria.getConditions().create();
 		condition.setAlias(MaterialInventoryReservation.PROPERTY_TARGETDOCUMENTLINEID.getName());
 		condition.setValue(contract.getTargetDocumentLineId());
-		IMaterialInventoryReservationGroup reservationGroup = this.fetchBeAffected(criteria,
-				IMaterialInventoryReservationGroup.class);
+		IMaterialInventoryReservationGroup reservationGroup = this
+				.fetchBeAffected(IMaterialInventoryReservationGroup.class, criteria);
 		if (reservationGroup == null) {
-			BORepositoryMaterials boRepository = new BORepositoryMaterials();
-			boRepository.setRepository(super.getRepository());
-			IOperationResult<IMaterialInventoryReservation> opRsltInventory = boRepository
-					.fetchMaterialInventoryReservation(criteria);
-			if (opRsltInventory.getError() != null) {
-				throw new BusinessLogicException(opRsltInventory.getError());
-			}
-			IMaterialInventoryReservation reservation;
-			reservationGroup = new MaterialInventoryReservationGroup();
-			for (IMaterialInventoryReservation item : opRsltInventory.getResultObjects()) {
-				// 判断内存中是否已有
-				reservation = this.fetchBeAffected(item.getCriteria(), IMaterialInventoryReservation.class);
-				if (reservation == null) {
-					// 使用数据库的
-					reservationGroup.getItems().add(item);
-				} else {
-					// 使用内存的
-					reservationGroup.getItems().add(reservation);
+			try (BORepositoryMaterials boRepository = new BORepositoryMaterials()) {
+				boRepository.setTransaction(this.getTransaction());
+				IOperationResult<IMaterialInventoryReservation> opRsltInventory = boRepository
+						.fetchMaterialInventoryReservation(criteria);
+				if (opRsltInventory.getError() != null) {
+					throw new BusinessLogicException(opRsltInventory.getError());
+				}
+				IMaterialInventoryReservation reservation;
+				reservationGroup = new MaterialInventoryReservationGroup();
+				for (IMaterialInventoryReservation item : opRsltInventory.getResultObjects()) {
+					// 判断内存中是否已有
+					reservation = this.fetchBeAffected(IMaterialInventoryReservation.class, item.getCriteria());
+					if (reservation == null) {
+						// 使用数据库的
+						reservationGroup.getItems().add(item);
+					} else {
+						// 使用内存的
+						reservationGroup.getItems().add(reservation);
+					}
 				}
 			}
 		}
@@ -116,16 +118,19 @@ public class MaterialInventoryReservationStatusService extends
 	protected void revoke(IMaterialInventoryReservationStatusContract contract) {
 		for (IMaterialInventoryReservation item : this.getBeAffected().getItems()) {
 			// 仅删除时，修改为
-			if (this.getLogicChain().getTrigger().isDeleted()) {
-				item.setStatus(emBOStatus.CLOSED);
-			}
-			if (this.getLogicChain().getTrigger() instanceof IBOTagCanceled) {
-				if (((IBOTagCanceled) this.getLogicChain().getTrigger()).getCanceled() == emYesNo.YES) {
+			if (this.getTrigger() instanceof ITrackable) {
+				ITrackable trackable = (ITrackable) this.getTrigger();
+				if (trackable.isDeleted()) {
 					item.setStatus(emBOStatus.CLOSED);
 				}
 			}
-			if (this.getLogicChain().getTrigger() instanceof IBOTagDeleted) {
-				if (((IBOTagDeleted) this.getLogicChain().getTrigger()).getDeleted() == emYesNo.YES) {
+			if (this.getTrigger() instanceof IBOTagCanceled) {
+				if (((IBOTagCanceled) this.getTrigger()).getCanceled() == emYesNo.YES) {
+					item.setStatus(emBOStatus.CLOSED);
+				}
+			}
+			if (this.getTrigger() instanceof IBOTagDeleted) {
+				if (((IBOTagDeleted) this.getTrigger()).getDeleted() == emYesNo.YES) {
 					item.setStatus(emBOStatus.CLOSED);
 				}
 			}
