@@ -3,7 +3,7 @@ package org.colorcoding.ibas.sales.rules;
 import java.math.BigDecimal;
 
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
-import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleCommon;
 
@@ -55,15 +55,15 @@ public class BusinessRuleDeductionInverseDiscount extends BusinessRuleCommon {
 	protected void execute(BusinessRuleContext context) throws Exception {
 		BigDecimal discount = (BigDecimal) context.getInputValues().get(this.getDiscount());
 		if (discount == null) {
-			discount = Decimal.ZERO;
+			discount = Decimals.VALUE_ZERO;
 		}
 		BigDecimal inverseDiscount = (BigDecimal) context.getInputValues().get(this.getInverseDiscount());
 		if (inverseDiscount == null) {
-			inverseDiscount = Decimal.ZERO;
+			inverseDiscount = Decimals.VALUE_ZERO;
 		}
-		BigDecimal result = Decimal.ONE.subtract(discount);
+		BigDecimal result = Decimals.VALUE_ONE.subtract(discount);
 		if (discount.scale() > 0) {
-			result = result.setScale(discount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+			result = result.setScale(discount.scale(), Decimals.ROUNDING_MODE_DEFAULT);
 			if (result.compareTo(inverseDiscount) != 0) {
 				context.getOutputValues().put(this.getInverseDiscount(), result);
 			}
