@@ -3,7 +3,7 @@ package org.colorcoding.ibas.sales.rules;
 import java.math.BigDecimal;
 
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
-import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleCommon;
 
@@ -69,34 +69,34 @@ public class BusinessRuleDeductionDiscountTotal extends BusinessRuleCommon {
 	protected void execute(BusinessRuleContext context) throws Exception {
 		BigDecimal discount = (BigDecimal) context.getInputValues().get(this.getDiscount());
 		if (discount == null) {
-			discount = Decimal.ZERO;
+			discount = Decimals.VALUE_ZERO;
 		}
 		BigDecimal total = (BigDecimal) context.getInputValues().get(this.getTotal());
 		if (total == null) {
-			total = Decimal.ZERO;
+			total = Decimals.VALUE_ZERO;
 		}
 		BigDecimal preTotal = (BigDecimal) context.getInputValues().get(this.getPreTotal());
 		if (preTotal == null) {
-			preTotal = Decimal.ZERO;
+			preTotal = Decimals.VALUE_ZERO;
 		}
-		if (discount.compareTo(Decimal.ZERO) < 0) {
-			context.getOutputValues().put(this.getDiscount(), Decimal.ONE);
+		if (discount.compareTo(Decimals.VALUE_ZERO) < 0) {
+			context.getOutputValues().put(this.getDiscount(), Decimals.VALUE_ONE);
 			context.getOutputValues().put(this.getTotal(), preTotal);
 		} else {
-			if (Decimal.ZERO.compareTo(total) == 0 && Decimal.ZERO.compareTo(preTotal) != 0) {
-				total = Decimal.multiply(preTotal, discount);
+			if (Decimals.VALUE_ZERO.compareTo(total) == 0 && Decimals.VALUE_ZERO.compareTo(preTotal) != 0) {
+				total = Decimals.multiply(preTotal, discount);
 				context.getOutputValues().put(this.getTotal(), total);
-			} else if (Decimal.ZERO.compareTo(preTotal) == 0 && Decimal.ZERO.compareTo(total) != 0) {
-				preTotal = Decimal.isZero(discount) ? Decimal.ZERO : Decimal.divide(total, discount);
+			} else if (Decimals.VALUE_ZERO.compareTo(preTotal) == 0 && Decimals.VALUE_ZERO.compareTo(total) != 0) {
+				preTotal = Decimals.isZero(discount) ? Decimals.VALUE_ZERO : Decimals.divide(total, discount);
 				context.getOutputValues().put(this.getPreTotal(), preTotal);
 			} else {
-				BigDecimal result = Decimal.isZero(preTotal) ? Decimal.ONE : Decimal.divide(total, preTotal);
-				if (Decimal.ZERO.compareTo(discount) == 0) {
+				BigDecimal result = Decimals.isZero(preTotal) ? Decimals.VALUE_ONE : Decimals.divide(total, preTotal);
+				if (Decimals.VALUE_ZERO.compareTo(discount) == 0) {
 					context.getOutputValues().put(this.getDiscount(), result);
 				} else {
-					result = result.setScale(discount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
-					if (Decimal.ONE.compareTo(result.subtract(total).abs().multiply(Decimal.valueOf("100"))
-							.multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
+					result = result.setScale(discount.scale(), Decimals.ROUNDING_MODE_DEFAULT);
+					if (Decimals.VALUE_ONE.compareTo(result.subtract(total).abs().multiply(Decimals.valueOf("100"))
+							.multiply(Decimals.VALUE_ONE.add(Decimals.VALUE_ONE))) <= 0) {
 						context.getOutputValues().put(this.getDiscount(), result);
 					}
 				}
