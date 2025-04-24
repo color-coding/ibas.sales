@@ -3,7 +3,7 @@ package org.colorcoding.ibas.sales.rules;
 import java.math.BigDecimal;
 
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
-import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleCommon;
 
@@ -70,30 +70,30 @@ public class BusinessRuleDeductionTaxTotal extends BusinessRuleCommon {
 	protected void execute(BusinessRuleContext context) throws Exception {
 		BigDecimal taxRate = (BigDecimal) context.getInputValues().get(this.getTaxRate());
 		if (taxRate == null) {
-			taxRate = Decimal.ZERO;
+			taxRate = Decimals.VALUE_ZERO;
 		}
 		BigDecimal tax = (BigDecimal) context.getInputValues().get(this.getTax());
 		if (tax == null) {
-			tax = Decimal.ZERO;
+			tax = Decimals.VALUE_ZERO;
 		}
 		BigDecimal total = (BigDecimal) context.getInputValues().get(this.getTotal());
 		if (total == null) {
-			total = Decimal.ZERO;
+			total = Decimals.VALUE_ZERO;
 		}
-		if (taxRate.compareTo(Decimal.ZERO) <= 0) {
-			context.getOutputValues().put(this.getTaxRate(), Decimal.ZERO);
-			context.getOutputValues().put(this.getTax(), Decimal.ZERO);
+		if (taxRate.compareTo(Decimals.VALUE_ZERO) <= 0) {
+			context.getOutputValues().put(this.getTaxRate(), Decimals.VALUE_ZERO);
+			context.getOutputValues().put(this.getTax(), Decimals.VALUE_ZERO);
 		} else {
-			if (Decimal.ZERO.compareTo(tax) == 0 && Decimal.ZERO.compareTo(total) != 0) {
-				tax = Decimal.multiply(total, taxRate);
+			if (Decimals.VALUE_ZERO.compareTo(tax) == 0 && Decimals.VALUE_ZERO.compareTo(total) != 0) {
+				tax = Decimals.multiply(total, taxRate);
 				context.getOutputValues().put(this.getTax(), tax);
-			} else if (Decimal.ZERO.compareTo(total) == 0 && Decimal.ZERO.compareTo(tax) != 0) {
-				total = Decimal.divide(tax, taxRate);
+			} else if (Decimals.VALUE_ZERO.compareTo(total) == 0 && Decimals.VALUE_ZERO.compareTo(tax) != 0) {
+				total = Decimals.divide(tax, taxRate);
 				context.getOutputValues().put(this.getTotal(), total);
 			} else {
-				BigDecimal result = Decimal.multiply(total, taxRate);
-				result = result.setScale(tax.scale(), Decimal.ROUNDING_MODE_DEFAULT);
-				if (Decimal.ONE.compareTo(result.subtract(tax).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
+				BigDecimal result = Decimals.multiply(total, taxRate);
+				result = result.setScale(tax.scale(), Decimals.ROUNDING_MODE_DEFAULT);
+				if (Decimals.VALUE_ONE.compareTo(result.subtract(tax).abs().multiply(Decimals.VALUE_ONE.add(Decimals.VALUE_ONE))) <= 0) {
 					context.getOutputValues().put(this.getTax(), tax);
 				}
 			}
