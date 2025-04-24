@@ -3,7 +3,7 @@ package org.colorcoding.ibas.sales.rules;
 import java.math.BigDecimal;
 
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
-import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleCommon;
 
@@ -70,34 +70,34 @@ public class BusinessRuleDeductionDiscount extends BusinessRuleCommon {
 	protected void execute(BusinessRuleContext context) throws Exception {
 		BigDecimal discount = (BigDecimal) context.getInputValues().get(this.getDiscount());
 		if (discount == null) {
-			discount = Decimal.ZERO;
+			discount = Decimals.VALUE_ZERO;
 		}
 		BigDecimal preDiscount = (BigDecimal) context.getInputValues().get(this.getPreDiscount());
 		if (preDiscount == null) {
-			preDiscount = Decimal.ZERO;
+			preDiscount = Decimals.VALUE_ZERO;
 		}
 		BigDecimal afterDiscount = (BigDecimal) context.getInputValues().get(this.getAfterDiscount());
 		if (afterDiscount == null) {
-			afterDiscount = Decimal.ZERO;
+			afterDiscount = Decimals.VALUE_ZERO;
 		}
 		// 无效折扣，则为1
-		if (Decimal.ZERO.compareTo(discount) >= 0) {
-			discount = Decimal.ONE;
+		if (Decimals.VALUE_ZERO.compareTo(discount) >= 0) {
+			discount = Decimals.VALUE_ONE;
 			context.getOutputValues().put(this.getDiscount(), discount);
 		}
-		if (Decimal.ZERO.compareTo(afterDiscount) == 0 && Decimal.ZERO.compareTo(preDiscount) != 0) {
+		if (Decimals.VALUE_ZERO.compareTo(afterDiscount) == 0 && Decimals.VALUE_ZERO.compareTo(preDiscount) != 0) {
 			// 根据折前计算折后
-			afterDiscount = Decimal.multiply(preDiscount, discount);
+			afterDiscount = Decimals.multiply(preDiscount, discount);
 			context.getOutputValues().put(this.getAfterDiscount(), afterDiscount);
-		} else if (Decimal.ZERO.compareTo(preDiscount) == 0 && Decimal.ZERO.compareTo(afterDiscount) != 0) {
+		} else if (Decimals.VALUE_ZERO.compareTo(preDiscount) == 0 && Decimals.VALUE_ZERO.compareTo(afterDiscount) != 0) {
 			// 根据折后计算折前
-			preDiscount = Decimal.divide(afterDiscount, discount);
+			preDiscount = Decimals.divide(afterDiscount, discount);
 			context.getOutputValues().put(this.getPreDiscount(), preDiscount);
 		} else {
 			// 计算折扣
-			BigDecimal result = Decimal.isZero(preDiscount) ? Decimal.ONE : Decimal.divide(afterDiscount, preDiscount);
+			BigDecimal result = Decimals.isZero(preDiscount) ? Decimals.VALUE_ONE : Decimals.divide(afterDiscount, preDiscount);
 			if (discount.scale() > 0) {
-				result = result.setScale(discount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+				result = result.setScale(discount.scale(), Decimals.ROUNDING_MODE_DEFAULT);
 				if (result.compareTo(discount) != 0) {
 					context.getOutputValues().put(this.getDiscount(), result);
 				}

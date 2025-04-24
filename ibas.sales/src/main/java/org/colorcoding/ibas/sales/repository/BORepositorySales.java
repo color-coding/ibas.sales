@@ -42,7 +42,7 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 * @return 操作结果
 	 */
 	public OperationResult<ProductSuit> fetchProductSuit(ICriteria criteria, String token) {
-		return super.fetch(criteria, token, ProductSuit.class);
+		return super.fetch(ProductSuit.class, criteria, token);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 * @return 操作结果
 	 */
 	public OperationResult<SalesDelivery> fetchSalesDelivery(ICriteria criteria, String token) {
-		return super.fetch(criteria, token, SalesDelivery.class);
+		return super.fetch(SalesDelivery.class, criteria, token);
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 * @return 操作结果
 	 */
 	public OperationResult<SalesOrder> fetchSalesOrder(ICriteria criteria, String token) {
-		return super.fetch(criteria, token, SalesOrder.class);
+		return super.fetch(SalesOrder.class, criteria, token);
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 * @return 操作结果
 	 */
 	public OperationResult<SalesReturn> fetchSalesReturn(ICriteria criteria, String token) {
-		return super.fetch(criteria, token, SalesReturn.class);
+		return super.fetch(SalesReturn.class, criteria, token);
 	}
 
 	/**
@@ -214,7 +214,7 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 * @return 操作结果
 	 */
 	public OperationResult<SalesQuote> fetchSalesQuote(ICriteria criteria, String token) {
-		return super.fetch(criteria, token, SalesQuote.class);
+		return super.fetch(SalesQuote.class, criteria, token);
 	}
 
 	/**
@@ -257,7 +257,7 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 * @return 操作结果
 	 */
 	public OperationResult<SalesCreditNote> fetchSalesCreditNote(ICriteria criteria, String token) {
-		return super.fetch(criteria, token, SalesCreditNote.class);
+		return super.fetch(SalesCreditNote.class, criteria, token);
 	}
 
 	/**
@@ -301,7 +301,7 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 * @return 操作结果
 	 */
 	public OperationResult<SalesInvoice> fetchSalesInvoice(ICriteria criteria, String token) {
-		return super.fetch(criteria, token, SalesInvoice.class);
+		return super.fetch(SalesInvoice.class, criteria, token);
 	}
 
 	/**
@@ -344,7 +344,7 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 * @return 操作结果
 	 */
 	public OperationResult<BlanketAgreement> fetchBlanketAgreement(ICriteria criteria, String token) {
-		return super.fetch(criteria, token, BlanketAgreement.class);
+		return super.fetch(BlanketAgreement.class, criteria, token);
 	}
 
 	/**
@@ -388,7 +388,7 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 * @return 操作结果
 	 */
 	public OperationResult<DownPaymentRequest> fetchDownPaymentRequest(ICriteria criteria, String token) {
-		return super.fetch(criteria, token, DownPaymentRequest.class);
+		return super.fetch(DownPaymentRequest.class, criteria, token);
 	}
 
 	/**
@@ -432,7 +432,7 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 * @return 操作结果
 	 */
 	public OperationResult<SalesReserveInvoice> fetchSalesReserveInvoice(ICriteria criteria, String token) {
-		return super.fetch(criteria, token, SalesReserveInvoice.class);
+		return super.fetch(SalesReserveInvoice.class, criteria, token);
 	}
 
 	/**
@@ -475,7 +475,7 @@ public class BORepositorySales extends BORepositoryServiceApplication
 	 * @return 操作结果
 	 */
 	public OperationResult<SalesReturnRequest> fetchSalesReturnRequest(ICriteria criteria, String token) {
-		return super.fetch(criteria, token, SalesReturnRequest.class);
+		return super.fetch(SalesReturnRequest.class, criteria, token);
 	}
 
 	/**

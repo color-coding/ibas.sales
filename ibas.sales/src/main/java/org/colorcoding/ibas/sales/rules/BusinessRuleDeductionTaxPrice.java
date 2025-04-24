@@ -3,7 +3,7 @@ package org.colorcoding.ibas.sales.rules;
 import java.math.BigDecimal;
 
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
-import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleCommon;
 
@@ -70,30 +70,30 @@ public class BusinessRuleDeductionTaxPrice extends BusinessRuleCommon {
 	protected void execute(BusinessRuleContext context) throws Exception {
 		BigDecimal taxRate = (BigDecimal) context.getInputValues().get(this.getTaxRate());
 		if (taxRate == null) {
-			taxRate = Decimal.ZERO;
+			taxRate = Decimals.VALUE_ZERO;
 		}
 		BigDecimal preTax = (BigDecimal) context.getInputValues().get(this.getPreTax());
 		if (preTax == null) {
-			preTax = Decimal.ZERO;
+			preTax = Decimals.VALUE_ZERO;
 		}
 		BigDecimal afterTax = (BigDecimal) context.getInputValues().get(this.getAfterTax());
 		if (afterTax == null) {
-			afterTax = Decimal.ZERO;
+			afterTax = Decimals.VALUE_ZERO;
 		}
-		if (taxRate.compareTo(Decimal.ZERO) <= 0) {
-			context.getOutputValues().put(this.getTaxRate(), Decimal.ZERO);
+		if (taxRate.compareTo(Decimals.VALUE_ZERO) <= 0) {
+			context.getOutputValues().put(this.getTaxRate(), Decimals.VALUE_ZERO);
 			context.getOutputValues().put(this.getAfterTax(), preTax);
 		} else {
-			if (Decimal.ZERO.compareTo(afterTax) == 0 && Decimal.ZERO.compareTo(preTax) != 0) {
-				afterTax = Decimal.multiply(preTax, taxRate.add(Decimal.ONE));
+			if (Decimals.VALUE_ZERO.compareTo(afterTax) == 0 && Decimals.VALUE_ZERO.compareTo(preTax) != 0) {
+				afterTax = Decimals.multiply(preTax, taxRate.add(Decimals.VALUE_ONE));
 				context.getOutputValues().put(this.getAfterTax(), afterTax);
-			} else if (Decimal.ZERO.compareTo(preTax) == 0 && Decimal.ZERO.compareTo(afterTax) != 0) {
-				preTax = Decimal.divide(afterTax, taxRate.add(Decimal.ONE));
+			} else if (Decimals.VALUE_ZERO.compareTo(preTax) == 0 && Decimals.VALUE_ZERO.compareTo(afterTax) != 0) {
+				preTax = Decimals.divide(afterTax, taxRate.add(Decimals.VALUE_ONE));
 				context.getOutputValues().put(this.getPreTax(), preTax);
 			} else {
-				BigDecimal result = Decimal.divide(afterTax, taxRate.add(Decimal.ONE));
-				result = result.setScale(preTax.scale(), Decimal.ROUNDING_MODE_DEFAULT);
-				if (Decimal.ONE.compareTo(result.subtract(preTax).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
+				BigDecimal result = Decimals.divide(afterTax, taxRate.add(Decimals.VALUE_ONE));
+				result = result.setScale(preTax.scale(), Decimals.ROUNDING_MODE_DEFAULT);
+				if (Decimals.VALUE_ONE.compareTo(result.subtract(preTax).abs().multiply(Decimals.VALUE_ONE.add(Decimals.VALUE_ONE))) <= 0) {
 					context.getOutputValues().put(this.getPreTax(), preTax);
 				}
 			}

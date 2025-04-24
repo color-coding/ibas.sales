@@ -3,7 +3,7 @@ package org.colorcoding.ibas.sales.rules;
 import java.math.BigDecimal;
 
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
-import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleCommon;
 
@@ -82,34 +82,34 @@ public class BusinessRuleDeductionDocumentTotal extends BusinessRuleCommon {
 	protected void execute(BusinessRuleContext context) throws Exception {
 		BigDecimal docTotal = (BigDecimal) context.getInputValues().get(this.getDocTotal());
 		if (docTotal == null) {
-			docTotal = Decimal.ZERO;
+			docTotal = Decimals.VALUE_ZERO;
 		}
 		BigDecimal disTotal = (BigDecimal) context.getInputValues().get(this.getDisTotal());
 		if (disTotal == null) {
-			disTotal = Decimal.ZERO;
+			disTotal = Decimals.VALUE_ZERO;
 		}
 		BigDecimal shipTotal = this.getShipTotal() != null
 				? (BigDecimal) context.getInputValues().get(this.getShipTotal())
-				: Decimal.ZERO;
+				: Decimals.VALUE_ZERO;
 		if (shipTotal == null) {
-			shipTotal = Decimal.ZERO;
+			shipTotal = Decimals.VALUE_ZERO;
 		}
 		BigDecimal diffAmount = this.getDiffAmount() != null
 				? (BigDecimal) context.getInputValues().get(this.getDiffAmount())
-				: Decimal.ZERO;
+				: Decimals.VALUE_ZERO;
 		if (diffAmount == null) {
-			diffAmount = Decimal.ZERO;
+			diffAmount = Decimals.VALUE_ZERO;
 		}
-		if (Decimal.ZERO.compareTo(docTotal) == 0) {
-			docTotal = Decimal.add(disTotal, shipTotal, diffAmount);
+		if (Decimals.VALUE_ZERO.compareTo(docTotal) == 0) {
+			docTotal = Decimals.add(disTotal, shipTotal, diffAmount);
 			context.getOutputValues().put(this.getDocTotal(), docTotal);
-		} else if (Decimal.ZERO.compareTo(disTotal) == 0) {
-			disTotal = Decimal.subtract(docTotal, shipTotal, diffAmount);
+		} else if (Decimals.VALUE_ZERO.compareTo(disTotal) == 0) {
+			disTotal = Decimals.subtract(docTotal, shipTotal, diffAmount);
 			context.getOutputValues().put(this.getDisTotal(), disTotal);
 		} else {
-			BigDecimal result = Decimal.add(disTotal, shipTotal, diffAmount);
-			result = result.setScale(docTotal.scale(), Decimal.ROUNDING_MODE_DEFAULT);
-			if (Decimal.ONE.compareTo(result.subtract(docTotal).abs().multiply(Decimal.ONE.add(Decimal.ONE))) <= 0) {
+			BigDecimal result = Decimals.add(disTotal, shipTotal, diffAmount);
+			result = result.setScale(docTotal.scale(), Decimals.ROUNDING_MODE_DEFAULT);
+			if (Decimals.VALUE_ONE.compareTo(result.subtract(docTotal).abs().multiply(Decimals.VALUE_ONE.add(Decimals.VALUE_ONE))) <= 0) {
 				context.getOutputValues().put(this.getDocTotal(), result);
 			}
 		}

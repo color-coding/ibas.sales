@@ -5,17 +5,17 @@ import java.math.BigDecimal;
 import org.colorcoding.ibas.bobas.common.ConditionOperation;
 import org.colorcoding.ibas.bobas.common.ConditionRelationship;
 import org.colorcoding.ibas.bobas.common.Criteria;
+import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.ICriteria;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
-import org.colorcoding.ibas.bobas.data.Decimal;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.i18n.I18N;
-import org.colorcoding.ibas.bobas.logic.BusinessLogic;
-import org.colorcoding.ibas.bobas.logic.BusinessLogicException;
-import org.colorcoding.ibas.bobas.mapping.LogicContract;
 import org.colorcoding.ibas.bobas.message.Logger;
 import org.colorcoding.ibas.bobas.message.MessageLevel;
+import org.colorcoding.ibas.bobas.logic.BusinessLogic;
+import org.colorcoding.ibas.bobas.logic.BusinessLogicException;
+import org.colorcoding.ibas.bobas.logic.LogicContract;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.colorcoding.ibas.sales.bo.salesorder.ISalesOrder;
 import org.colorcoding.ibas.sales.bo.salesorder.ISalesOrderItem;
@@ -59,15 +59,16 @@ public class SalesOrderOrderService extends BusinessLogic<ISalesOrderOrderContra
 		condition.setOperation(ConditionOperation.EQUAL);
 		condition.setValue(contract.getBaseDocumentEntry());
 
-		ISalesOrder order = this.fetchBeAffected(criteria, ISalesOrder.class);
+		ISalesOrder order = this.fetchBeAffected(ISalesOrder.class, criteria);
 		if (order == null) {
-			BORepositorySales boRepository = new BORepositorySales();
-			boRepository.setRepository(super.getRepository());
-			IOperationResult<ISalesOrder> operationResult = boRepository.fetchSalesOrder(criteria);
-			if (operationResult.getError() != null) {
-				throw new BusinessLogicException(operationResult.getError());
+			try (BORepositorySales boRepository = new BORepositorySales()) {
+				boRepository.setTransaction(this.getTransaction());
+				IOperationResult<ISalesOrder> operationResult = boRepository.fetchSalesOrder(criteria);
+				if (operationResult.getError() != null) {
+					throw new BusinessLogicException(operationResult.getError());
+				}
+				order = operationResult.getResultObjects().firstOrDefault();
 			}
-			order = operationResult.getResultObjects().firstOrDefault();
 		}
 		if (order == null) {
 			throw new BusinessLogicException(I18N.prop("msg_sl_not_found_order", contract.getBaseDocumentType(),
@@ -86,11 +87,11 @@ public class SalesOrderOrderService extends BusinessLogic<ISalesOrderOrderContra
 		}
 		BigDecimal orderedQuantity = orderItem.getOrderedQuantity();
 		if (orderedQuantity == null) {
-			orderedQuantity = Decimal.ZERO;
+			orderedQuantity = Decimals.VALUE_ZERO;
 		}
 		orderedQuantity = orderedQuantity.add(contract.getQuantity());
 		orderItem.setOrderedQuantity(orderedQuantity);
-		if (orderItem.getClosedQuantity().compareTo(Decimal.ZERO) > 0) {
+		if (orderItem.getClosedQuantity().compareTo(Decimals.VALUE_ZERO) > 0) {
 			orderItem.setReferenced(emYesNo.YES);
 		}
 	}
@@ -105,11 +106,11 @@ public class SalesOrderOrderService extends BusinessLogic<ISalesOrderOrderContra
 		}
 		BigDecimal orderedQuantity = orderItem.getOrderedQuantity();
 		if (orderedQuantity == null) {
-			orderedQuantity = Decimal.ZERO;
+			orderedQuantity = Decimals.VALUE_ZERO;
 		}
 		orderedQuantity = orderedQuantity.subtract(contract.getQuantity());
 		orderItem.setOrderedQuantity(orderedQuantity);
-		if (orderItem.getClosedQuantity().compareTo(Decimal.ZERO) <= 0) {
+		if (orderItem.getClosedQuantity().compareTo(Decimals.VALUE_ZERO) <= 0) {
 			orderItem.setReferenced(emYesNo.NO);
 		}
 	}

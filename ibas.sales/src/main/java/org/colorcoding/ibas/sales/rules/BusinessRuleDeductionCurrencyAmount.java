@@ -3,7 +3,7 @@ package org.colorcoding.ibas.sales.rules;
 import java.math.BigDecimal;
 
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
-import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleCommon;
 
@@ -72,38 +72,38 @@ public class BusinessRuleDeductionCurrencyAmount extends BusinessRuleCommon {
 	protected void execute(BusinessRuleContext context) throws Exception {
 		BigDecimal amountLC = (BigDecimal) context.getInputValues().get(this.getAmountLC());
 		if (amountLC == null) {
-			amountLC = Decimal.ZERO;
+			amountLC = Decimals.VALUE_ZERO;
 		}
 		BigDecimal amount = (BigDecimal) context.getInputValues().get(this.getAmount());
 		if (amount == null) {
-			amount = Decimal.ZERO;
+			amount = Decimals.VALUE_ZERO;
 		}
 		BigDecimal rate = (BigDecimal) context.getInputValues().get(this.getRate());
 		if (rate == null) {
-			rate = Decimal.ZERO;
+			rate = Decimals.VALUE_ZERO;
 		}
-		if (Decimal.isZero(rate)) {
+		if (Decimals.isZero(rate)) {
 			// 未设置汇率则为1
-			rate = Decimal.ONE;
+			rate = Decimals.VALUE_ONE;
 		}
-		if (Decimal.isZero(amount) && !Decimal.isZero(amountLC)) {
+		if (Decimals.isZero(amount) && !Decimals.isZero(amountLC)) {
 			// 输入了本币
-			BigDecimal result = Decimal.multiply(amountLC, rate);
+			BigDecimal result = Decimals.multiply(amountLC, rate);
 			if (amount.scale() > 0) {
-				result = result.setScale(amount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+				result = result.setScale(amount.scale(), Decimals.ROUNDING_MODE_DEFAULT);
 			} else if (amountLC.scale() > 0) {
-				result = result.setScale(amountLC.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+				result = result.setScale(amountLC.scale(), Decimals.ROUNDING_MODE_DEFAULT);
 			}
 			if (amount.subtract(result).abs().compareTo(PRICE_DIFF) > 0) {
 				context.getOutputValues().put(this.getAmount(), result);
 			}
 		} else {
 			// 输入了交易币
-			BigDecimal result = Decimal.divide(amount, rate);
+			BigDecimal result = Decimals.divide(amount, rate);
 			if (amountLC.scale() > 0) {
-				result = result.setScale(amountLC.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+				result = result.setScale(amountLC.scale(), Decimals.ROUNDING_MODE_DEFAULT);
 			} else if (amount.scale() > 0) {
-				result = result.setScale(amount.scale(), Decimal.ROUNDING_MODE_DEFAULT);
+				result = result.setScale(amount.scale(), Decimals.ROUNDING_MODE_DEFAULT);
 			}
 			if (amountLC.subtract(result).abs().compareTo(PRICE_DIFF) > 0) {
 				context.getOutputValues().put(this.getAmountLC(), result);

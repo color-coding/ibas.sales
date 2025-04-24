@@ -14,12 +14,12 @@ import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
-import org.colorcoding.ibas.bobas.data.Decimal;
+import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.mapping.BusinessObjectUnit;
-import org.colorcoding.ibas.bobas.mapping.DbField;
-import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.bobas.bo.BusinessObjectUnit;
+import org.colorcoding.ibas.bobas.db.DbField;
+import org.colorcoding.ibas.bobas.db.DbFieldType;
 import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
@@ -225,7 +225,7 @@ public class ProductSuit extends BusinessObject<ProductSuit>
 	 * @param value 值
 	 */
 	public final void setUnitQuantity(String value) {
-		this.setUnitQuantity(Decimal.valueOf(value));
+		this.setUnitQuantity(Decimals.valueOf(value));
 	}
 
 	/**
@@ -234,7 +234,7 @@ public class ProductSuit extends BusinessObject<ProductSuit>
 	 * @param value 值
 	 */
 	public final void setUnitQuantity(int value) {
-		this.setUnitQuantity(Decimal.valueOf(value));
+		this.setUnitQuantity(Decimals.valueOf(value));
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class ProductSuit extends BusinessObject<ProductSuit>
 	 * @param value 值
 	 */
 	public final void setUnitQuantity(double value) {
-		this.setUnitQuantity(Decimal.valueOf(value));
+		this.setUnitQuantity(Decimals.valueOf(value));
 	}
 
 	/**
@@ -407,7 +407,7 @@ public class ProductSuit extends BusinessObject<ProductSuit>
 	 * @param value 值
 	 */
 	public final void setTotal(String value) {
-		this.setTotal(Decimal.valueOf(value));
+		this.setTotal(Decimals.valueOf(value));
 	}
 
 	/**
@@ -416,7 +416,7 @@ public class ProductSuit extends BusinessObject<ProductSuit>
 	 * @param value 值
 	 */
 	public final void setTotal(int value) {
-		this.setTotal(Decimal.valueOf(value));
+		this.setTotal(Decimals.valueOf(value));
 	}
 
 	/**
@@ -425,7 +425,7 @@ public class ProductSuit extends BusinessObject<ProductSuit>
 	 * @param value 值
 	 */
 	public final void setTotal(double value) {
-		this.setTotal(Decimal.valueOf(value));
+		this.setTotal(Decimals.valueOf(value));
 	}
 
 	/**
@@ -1034,10 +1034,10 @@ public class ProductSuit extends BusinessObject<ProductSuit>
 		return new IBusinessRule[] { // 注册的业务规则
 				new BusinessRuleRequired(PROPERTY_PRODUCT), // 要求有值
 				new BusinessRuleRequiredElements(PROPERTY_PRODUCTSUITITEMS), // 要求有元素
-				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_UNITQUANTITY), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimals.VALUE_ZERO, PROPERTY_UNITQUANTITY), // 不能低于0
 				new BusinessRuleSumElements(PROPERTY_TOTAL, PROPERTY_PRODUCTSUITITEMS,
 						ProductSuitItem.PROPERTY_LINETOTAL), // 计算单据总计
-				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_TOTAL), // 不能低于0
+				new BusinessRuleMinValue<BigDecimal>(Decimals.VALUE_ZERO, PROPERTY_TOTAL), // 不能低于0
 		};
 	}
 }
