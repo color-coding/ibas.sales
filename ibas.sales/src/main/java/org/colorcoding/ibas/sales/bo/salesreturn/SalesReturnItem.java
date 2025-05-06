@@ -2709,7 +2709,7 @@ public class SalesReturnItem extends BusinessObject<SalesReturnItem> implements 
 		}
 		BigDecimal price = this.getPreTaxPrice();
 		if (!MyConfiguration.isInventoryUnitLinePrice()) {
-			price = Decimal.divide(this.getPreTaxPrice(), this.getUOMRate());
+			price = Decimal.divide(this.getPreTaxPrice(), this.getUOMRate(), Decimal.DECIMAL_PLACES_STORAGE);
 		}
 		// 基于交货的退货，则使用交货成本
 		if (MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE).equals(this.getBaseDocumentType())

@@ -2674,7 +2674,7 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 		if (MyConfiguration.isInventoryUnitLinePrice()) {
 			return this.getPreTaxPrice();
 		}
-		return Decimal.divide(this.getPreTaxPrice(), this.getUOMRate());
+		return Decimal.divide(this.getPreTaxPrice(), this.getUOMRate(), Decimal.DECIMAL_PLACES_STORAGE);
 	}
 
 	@Override
@@ -3037,7 +3037,8 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 					if (MyConfiguration.isInventoryUnitLinePrice()) {
 						return SalesInvoiceItem.this.getPreTaxPrice();
 					}
-					return Decimal.divide(SalesInvoiceItem.this.getPreTaxPrice(), SalesInvoiceItem.this.getUOMRate());
+					return Decimal.divide(SalesInvoiceItem.this.getPreTaxPrice(), SalesInvoiceItem.this.getUOMRate(),
+							Decimal.DECIMAL_PLACES_STORAGE);
 				}
 
 				@Override
