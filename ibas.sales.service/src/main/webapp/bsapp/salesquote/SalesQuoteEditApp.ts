@@ -44,6 +44,7 @@ namespace sales {
                 this.view.chooseCustomerAgreementsEvent = this.chooseCustomerAgreements;
                 this.view.showSalesQuoteItemExtraEvent = this.showSalesQuoteItemExtra;
                 this.view.turnToSalesOrderEvent = this.turnToSalesOrder;
+                this.view.turnToDownPaymentRequestEvent = this.turnToDownPaymentRequest;
                 this.view.reserveMaterialsInventoryEvent = this.reserveMaterialsInventory;
                 this.view.measuringMaterialsEvent = this.measuringMaterials;
                 this.view.viewHistoricalPricesEvent = this.viewHistoricalPrices;
@@ -1578,6 +1579,63 @@ namespace sales {
                     });
                 }
             }
+            /** 转为预付款申请 */
+            protected turnToDownPaymentRequest(): void {
+                if (ibas.objects.isNull(this.editData) || this.editData.isDirty === true) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_data_saved_first"));
+                    return;
+                }
+                let boRepository: bo.BORepositorySales = new bo.BORepositorySales();
+                boRepository.fetchSalesQuote({
+                    criteria: this.editData.criteria(),
+                    onCompleted: (opRslt) => {
+                        try {
+                            if (opRslt.resultCode !== 0) {
+                                throw new Error(opRslt.message);
+                            }
+                            if (opRslt.resultObjects.length === 0) {
+                                throw new Error(ibas.i18n.prop("shell_data_deleted"));
+                            }
+                            this.editData = opRslt.resultObjects.firstOrDefault();
+                            this.view.showSalesQuote(this.editData);
+                            this.view.showSalesQuoteItems(this.editData.salesQuoteItems.filterDeleted());
+                            if (ibas.dates.compare(ibas.dates.today(), this.editData.deliveryDate) < 0) {
+                                this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("sales_salesquote_expired_date"));
+                                return;
+                            }
+                            if ((this.editData.approvalStatus !== ibas.emApprovalStatus.APPROVED && this.editData.approvalStatus !== ibas.emApprovalStatus.UNAFFECTED)
+                                || this.editData.deleted === ibas.emYesNo.YES
+                                || this.editData.canceled === ibas.emYesNo.YES
+                                || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
+                            ) {
+                                throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                            }
+                            let target: bo.DownPaymentRequest = new bo.DownPaymentRequest();
+                            target.customerCode = this.editData.customerCode;
+                            target.customerName = this.editData.customerName;
+                            target.baseDocument(this.editData);
+                            target.paymentCode = this.editData.paymentCode;
+                            // 整单基于，则赋折扣、总计
+                            if (ibas.numbers.valueOf(target.itemsLineTotal) === this.editData.itemsLineTotal) {
+                                target.rounding = this.editData.rounding;
+                                target.diffAmount = this.editData.diffAmount;
+                                target.discount = this.editData.discount;
+                                target.documentTotal = this.editData.documentTotal;
+                            }
+                            // 设置单据类型
+                            bo.baseDocument_OrderType(target, this.editData);
+
+                            let app: DownPaymentRequestEditApp = new DownPaymentRequestEditApp();
+                            app.navigation = this.navigation;
+                            app.viewShower = this.viewShower;
+                            app.run(target);
+                        } catch (error) {
+                            this.messages(error);
+                        }
+                    }
+                });
+
+            }
         }
         /** 视图-销售报价 */
         export interface ISalesQuoteEditView extends ibas.IBOEditView {
@@ -1619,6 +1677,8 @@ namespace sales {
             showSalesQuoteItemExtraEvent: Function;
             /** 转为销售订单事件 */
             turnToSalesOrderEvent: Function;
+            /** 转为预付款申请事件 */
+            turnToDownPaymentRequestEvent: Function;
             /** 预留物料库存 */
             reserveMaterialsInventoryEvent: Function;
             /** 测量物料事件 */

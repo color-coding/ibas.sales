@@ -46,6 +46,8 @@ namespace sales {
                 showSalesQuoteItemExtraEvent: Function;
                 /** 转为销售报价事件 */
                 turnToSalesOrderEvent: Function;
+                /** 转为预付款申请事件 */
+                turnToDownPaymentRequestEvent: Function;
                 /** 预留物料库存 */
                 reserveMaterialsInventoryEvent: Function;
                 /** 测量物料事件 */
@@ -1222,6 +1224,17 @@ namespace sales {
                                                 visible: shell.app.privileges.canRun({
                                                     id: sales.app.SalesOrderFunc.FUNCTION_ID,
                                                     name: sales.app.SalesOrderFunc.FUNCTION_NAME,
+                                                })
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("bo_downpaymentrequest_ar"),
+                                                icon: "sap-icon://doc-attachment",
+                                                press(this: sap.m.Button): void {
+                                                    that.fireViewEvents(that.turnToDownPaymentRequestEvent);
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: sales.app.DownPaymentRequestFunc.FUNCTION_ID,
+                                                    name: sales.app.DownPaymentRequestFunc.FUNCTION_NAME,
                                                 })
                                             }),
                                             new sap.m.MenuItem("", {
