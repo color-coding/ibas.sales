@@ -857,6 +857,20 @@ public interface ISalesCreditNote extends IBODocument, IShippingAddressParent {
 	void setInverseDiscount(BigDecimal value);
 
 	/**
+	* 获取-取消日期
+	* 
+	* @return 值
+	*/
+	DateTime getCancellationDate();
+
+	/**
+	* 设置-取消日期
+	* 
+	* @param value 值
+	*/
+	void setCancellationDate(DateTime value);
+
+	/**
 	 * 获取-销售贷项-行集合
 	 * 
 	 * @return 值

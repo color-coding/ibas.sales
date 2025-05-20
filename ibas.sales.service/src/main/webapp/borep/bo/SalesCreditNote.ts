@@ -575,6 +575,17 @@ namespace sales {
                 this.setProperty(SalesCreditNote.PROPERTY_INVERSEDISCOUNT_NAME, value);
             }
 
+            /** 映射的属性名称-取消日期 */
+            static PROPERTY_CANCELLATIONDATE_NAME: string = "CancellationDate";
+            /** 获取-取消日期 */
+            get cancellationDate(): Date {
+                return this.getProperty<Date>(SalesCreditNote.PROPERTY_CANCELLATIONDATE_NAME);
+            }
+            /** 设置-取消日期 */
+            set cancellationDate(value: Date) {
+                this.setProperty(SalesCreditNote.PROPERTY_CANCELLATIONDATE_NAME, value);
+            }
+
             /** 映射的属性名称-销售贷项-行集合 */
             static PROPERTY_SALESCREDITNOTEITEMS_NAME: string = "SalesCreditNoteItems";
             /** 获取-销售贷项-行集合 */
@@ -733,6 +744,10 @@ namespace sales {
                     new BusinessRuleNegativeDiscount(
                         SalesCreditNote.PROPERTY_DISCOUNT_NAME, SalesCreditNote.PROPERTY_INVERSEDISCOUNT_NAME
                     ),
+                    // 计算单据取消日期
+                    new BusinessRuleCancellationDate(
+                        SalesCreditNote.PROPERTY_CANCELED_NAME, SalesCreditNote.PROPERTY_CANCELLATIONDATE_NAME
+                    ),
                 ];
             }
             /** 重置 */
@@ -741,6 +756,7 @@ namespace sales {
                 this.paidTotal = 0;
                 this.documentStatus = ibas.emDocumentStatus.RELEASED;
                 this.salesCreditNoteItems.forEach(c => c.lineStatus = ibas.emDocumentStatus.RELEASED);
+                this.cancellationDate = undefined;
             }
             /** 转换之前 */
             beforeConvert(): void { }

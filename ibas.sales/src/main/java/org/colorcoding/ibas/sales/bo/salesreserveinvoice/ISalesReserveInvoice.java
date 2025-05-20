@@ -858,6 +858,20 @@ public interface ISalesReserveInvoice extends IBODocument, IShippingAddressParen
 	void setInverseDiscount(BigDecimal value);
 
 	/**
+	* 获取-取消日期
+	* 
+	* @return 值
+	*/
+	DateTime getCancellationDate();
+
+	/**
+	* 设置-取消日期
+	* 
+	* @param value 值
+	*/
+	void setCancellationDate(DateTime value);
+
+	/**
 	 * 获取-销售预留发票-行集合
 	 * 
 	 * @return 值

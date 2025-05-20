@@ -66,6 +66,7 @@ import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
 import org.colorcoding.ibas.sales.logic.journalentry.SalesCreditNoteInvoiceMaterialsCost;
 import org.colorcoding.ibas.sales.logic.journalentry.SalesCreditNoteReturnMaterialsCost;
+import org.colorcoding.ibas.sales.rules.BusinessRuleCancellationDate;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionInverseDiscount;
@@ -1852,6 +1853,37 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 	}
 
 	/**
+	* 属性名称-取消日期
+	*/
+	private static final String PROPERTY_CANCELLATIONDATE_NAME = "CancellationDate";
+
+	/**
+	* 取消日期 属性
+	*/
+	@DbField(name = "CnclDate", type = DbFieldType.DATE, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<DateTime> PROPERTY_CANCELLATIONDATE = registerProperty(
+			PROPERTY_CANCELLATIONDATE_NAME, DateTime.class, MY_CLASS);
+
+	/**
+	* 获取-取消日期
+	* 
+	* @return 值
+	*/
+	@XmlElement(name = PROPERTY_CANCELLATIONDATE_NAME)
+	public final DateTime getCancellationDate() {
+		return this.getProperty(PROPERTY_CANCELLATIONDATE);
+	}
+
+	/**
+	* 设置-取消日期
+	* 
+	* @param value 值
+	*/
+	public final void setCancellationDate(DateTime value) {
+		this.setProperty(PROPERTY_CANCELLATIONDATE, value);
+	}
+
+	/**
 	 * 属性名称-销售贷项-行
 	 */
 	private static final String PROPERTY_SALESCREDITNOTEITEMS_NAME = "SalesCreditNoteItems";
@@ -2036,6 +2068,7 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 				new BusinessRuleDeductionInverseDiscount(PROPERTY_DISCOUNT, PROPERTY_INVERSEDISCOUNT),
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DISCOUNTTOTAL), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimal.ZERO, PROPERTY_DOCUMENTTOTAL), // 不能低于0
+				new BusinessRuleCancellationDate(PROPERTY_CANCELED, PROPERTY_CANCELLATIONDATE),// 单据取消日期
 
 		};
 	}
@@ -2127,6 +2160,9 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote>
 
 					@Override
 					public DateTime getDocumentDate() {
+						if (SalesCreditNote.this.getCanceled() == emYesNo.YES) {
+							return SalesCreditNote.this.getCancellationDate();
+						}
 						return SalesCreditNote.this.getDocumentDate();
 					}
 

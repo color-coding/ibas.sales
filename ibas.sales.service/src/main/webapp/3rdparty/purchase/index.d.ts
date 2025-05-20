@@ -1666,6 +1666,8 @@ declare namespace purchase {
             branch: string;
             /** 反向折扣 */
             inverseDiscount: number;
+            /** 取消日期 */
+            cancellationDate: Date;
             /** 采购发票-行集合 */
             purchaseInvoiceItems: IPurchaseInvoiceItems;
             /** 送货地址集合 */
@@ -1998,6 +2000,8 @@ declare namespace purchase {
             branch: string;
             /** 反向折扣 */
             inverseDiscount: number;
+            /** 取消日期 */
+            cancellationDate: Date;
             /** 采购贷项-行集合 */
             purchaseCreditNoteItems: IPurchaseCreditNoteItems;
             /** 送货地址集合 */
@@ -2803,6 +2807,8 @@ declare namespace purchase {
             branch: string;
             /** 反向折扣 */
             inverseDiscount: number;
+            /** 取消日期 */
+            cancellationDate: Date;
             /** 采购预留发票-行集合 */
             purchaseReserveInvoiceItems: IPurchaseReserveInvoiceItems;
             /** 送货地址集合 */
@@ -7997,6 +8003,12 @@ declare namespace purchase {
             get inverseDiscount(): number;
             /** 设置-反向行折扣 */
             set inverseDiscount(value: number);
+            /** 映射的属性名称-取消日期 */
+            static PROPERTY_CANCELLATIONDATE_NAME: string;
+            /** 获取-取消日期 */
+            get cancellationDate(): Date;
+            /** 设置-取消日期 */
+            set cancellationDate(value: Date);
             /** 映射的属性名称-采购发票-行集合 */
             static PROPERTY_PURCHASEINVOICEITEMS_NAME: string;
             /** 获取-采购发票-行集合 */
@@ -8997,6 +9009,12 @@ declare namespace purchase {
             get inverseDiscount(): number;
             /** 设置-反向行折扣 */
             set inverseDiscount(value: number);
+            /** 映射的属性名称-取消日期 */
+            static PROPERTY_CANCELLATIONDATE_NAME: string;
+            /** 获取-取消日期 */
+            get cancellationDate(): Date;
+            /** 设置-取消日期 */
+            set cancellationDate(value: Date);
             /** 映射的属性名称-采购贷项-行集合 */
             static PROPERTY_PURCHASECREDITNOTEITEMS_NAME: string;
             /** 获取-采购贷项-行集合 */
@@ -10642,6 +10660,8 @@ declare namespace purchase {
             beforeConvert(): void;
             /** 数据解析后 */
             afterParsing(): void;
+            /** 基于采购报价 */
+            baseDocument(document: IPurchaseQuote): void;
             /** 基于采购订单 */
             baseDocument(document: IPurchaseOrder): void;
             /** 基于采购收货 */
@@ -11363,6 +11383,12 @@ declare namespace purchase {
             get inverseDiscount(): number;
             /** 设置-反向行折扣 */
             set inverseDiscount(value: number);
+            /** 映射的属性名称-取消日期 */
+            static PROPERTY_CANCELLATIONDATE_NAME: string;
+            /** 获取-取消日期 */
+            get cancellationDate(): Date;
+            /** 设置-取消日期 */
+            set cancellationDate(value: Date);
             /** 映射的属性名称-采购预留发票-行集合 */
             static PROPERTY_PURCHASERESERVEINVOICEITEMS_NAME: string;
             /** 获取-采购预留发票-行集合 */
@@ -14196,6 +14222,8 @@ declare namespace purchase {
             protected choosePurchaseQuoteItemMaterialCatalog(caller: bo.PurchaseQuoteItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseQuoteItem): void;
             protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
+            /** 转为预付款申请事件 */
+            protected turnToDownPaymentRequest(): void;
         }
         /** 视图-采购报价 */
         interface IPurchaseQuoteEditView extends ibas.IBOEditView {
@@ -14239,6 +14267,8 @@ declare namespace purchase {
             choosePurchaseQuotePurchaseRequestEvent: Function;
             /** 转为采购订单事件 */
             turnToPurchaseOrderEvent: Function;
+            /** 转为预付款申请事件 */
+            turnToDownPaymentRequestEvent: Function;
             /** 测量物料事件 */
             measuringMaterialsEvent: Function;
             /** 查看物料历史价格事件 */

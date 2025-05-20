@@ -576,6 +576,17 @@ namespace sales {
                 this.setProperty(SalesReserveInvoice.PROPERTY_INVERSEDISCOUNT_NAME, value);
             }
 
+            /** 映射的属性名称-取消日期 */
+            static PROPERTY_CANCELLATIONDATE_NAME: string = "CancellationDate";
+            /** 获取-取消日期 */
+            get cancellationDate(): Date {
+                return this.getProperty<Date>(SalesReserveInvoice.PROPERTY_CANCELLATIONDATE_NAME);
+            }
+            /** 设置-取消日期 */
+            set cancellationDate(value: Date) {
+                this.setProperty(SalesReserveInvoice.PROPERTY_CANCELLATIONDATE_NAME, value);
+            }
+
             /** 映射的属性名称-销售预留发票-行集合 */
             static PROPERTY_SALESRESERVEINVOICEITEMS_NAME: string = "SalesReserveInvoiceItems";
             /** 获取-销售预留发票-行集合 */
@@ -734,6 +745,10 @@ namespace sales {
                     new BusinessRuleNegativeDiscount(
                         SalesReserveInvoice.PROPERTY_DISCOUNT_NAME, SalesReserveInvoice.PROPERTY_INVERSEDISCOUNT_NAME
                     ),
+                    // 计算单据取消日期
+                    new BusinessRuleCancellationDate(
+                        SalesReserveInvoice.PROPERTY_CANCELED_NAME, SalesReserveInvoice.PROPERTY_CANCELLATIONDATE_NAME
+                    ),
                 ];
             }
             /** 重置 */
@@ -742,6 +757,7 @@ namespace sales {
                 this.paidTotal = 0;
                 this.documentStatus = ibas.emDocumentStatus.RELEASED;
                 this.salesReserveInvoiceItems.forEach(c => c.lineStatus = ibas.emDocumentStatus.RELEASED);
+                this.cancellationDate = undefined;
             }
             /** 转换之前 */
             beforeConvert(): void { }

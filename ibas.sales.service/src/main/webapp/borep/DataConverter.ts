@@ -1195,5 +1195,43 @@ namespace sales {
                 }
             }
         }
+        /**
+         * 业务规则-单据取消日期
+         */
+        export class BusinessRuleCancellationDate extends ibas.BusinessRuleCommon {
+            /**
+             * 构造
+             * @param amountLC 本币
+             * @param amount 交易币
+             * @param rate 汇率
+             */
+            constructor(canceled: string, cancellationDate: string) {
+                super();
+                this.name = ibas.i18n.prop("sales_business_rule_cancellation_date");
+                this.canceled = canceled;
+                this.cancellationDate = cancellationDate;
+                this.inputProperties.add(this.canceled);
+                this.inputProperties.add(this.cancellationDate);
+                this.affectedProperties.add(this.cancellationDate);
+            }
+
+            canceled: string;
+            cancellationDate: string;
+
+            protected compute(context: ibas.BusinessRuleContextCommon): void {
+                let canceled: ibas.emYesNo = context.inputValues.get(this.canceled);
+                let cancellationDate: Date = ibas.dates.valueOf(context.inputValues.get(this.cancellationDate));
+
+                if (canceled === ibas.emYesNo.YES) {
+                    if (ibas.objects.isNull(cancellationDate) || ibas.dates.equals(cancellationDate, ibas.dates.valueOf("1900-01-01"))) {
+                        context.outputValues.set(this.cancellationDate, ibas.dates.today());
+                    }
+                } else {
+                    if (!ibas.objects.isNull(cancellationDate) && !ibas.dates.equals(cancellationDate, ibas.dates.valueOf("1900-01-01"))) {
+                        context.outputValues.set(this.cancellationDate, null);
+                    }
+                }
+            }
+        }
     }
 }

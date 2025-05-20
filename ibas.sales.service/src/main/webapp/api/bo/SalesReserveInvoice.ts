@@ -111,6 +111,8 @@ namespace sales {
             grossProfit: number;
             /** 反向折扣 */
             inverseDiscount: number;
+            /** 取消日期 */
+            cancellationDate: Date;
             /** 销售预留发票-行集合 */
             salesReserveInvoiceItems: ISalesReserveInvoiceItems;
             /** 送货地址集合 */
