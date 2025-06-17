@@ -909,7 +909,7 @@ namespace sales {
                         if (item.deleted === ibas.emYesNo.YES) {
                             continue;
                         }
-                        if (item.lineStatus === ibas.emDocumentStatus.PLANNED) {
+                        if (item.lineStatus !== ibas.emDocumentStatus.RELEASED) {
                             continue;
                         }
                         if (this.salesInvoiceItems.firstOrDefault(
