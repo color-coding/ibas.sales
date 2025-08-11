@@ -301,6 +301,47 @@ namespace sales {
                                 }),
                             }),
                         ],
+                        nextDataSet(event: sap.ui.base.Event): void {
+                            // 查询下一个数据集
+                            let data: bo.SalesDeliveryItem = event.getParameter("data");
+                            if (ibas.objects.isNull(data)) {
+                                return;
+                            }
+                            if (ibas.objects.isNull(that.lastCriteria)) {
+                                return;
+                            }
+                            let docData: bo.SalesDelivery = new bo.SalesDelivery();
+                            docData.docEntry = data.docEntry;
+
+                            let criteria: ibas.ICriteria = that.lastCriteria.next(docData);
+                            if (ibas.objects.isNull(criteria)) {
+                                return;
+                            }
+                            ibas.logger.log(ibas.emMessageLevel.DEBUG, "result: {0}", criteria.toString());
+                            that.fireViewEvents(that.fetchDataEvent, criteria);
+                        },
+                        rowDoubleClick(event: sap.ui.base.Event): void {
+                            let selectItems: bo.SalesDeliveryItem[] = ibas.arrays.create(event.getParameter("row")?.getBindingContext()?.getObject());
+                            if (selectItems.length === 0) {
+                                selectItems = that.itemTable.getSelecteds();
+                            }
+                            let selects: bo.SalesDelivery[] = that.table.getModel().getData("rows");
+                            for (let select of selects) {
+                                let has: boolean = false;
+                                for (let i: number = select.salesDeliveryItems.length - 1; i >= 0; i--) {
+                                    let item: any = select.salesDeliveryItems[i];
+                                    if (selectItems.find(c => c === item)) {
+                                        has = true;
+                                        continue;
+                                    }
+                                    select.salesDeliveryItems.removeAt(i);
+                                }
+                                if (has === false) {
+                                    select.markDeleted();
+                                }
+                            }
+                            that.fireViewEvents(that.chooseDataEvent, selects.filter(c => c.isDeleted === false));
+                        }
                     });
                     return new sap.m.Dialog("", {
                         title: this.title,
@@ -356,6 +397,7 @@ namespace sales {
                                                                             message: ibas.i18n.prop("shell_please_chooose_data", ibas.i18n.prop("shell_data_customized")),
                                                                         });
                                                                     } else {
+                                                                        that.itemTable.setModel(undefined);
                                                                         that.showDataItems(selecteds);
                                                                     }
                                                                 },
@@ -454,25 +496,7 @@ namespace sales {
                                                     text: ibas.i18n.prop("shell_data_choose"),
                                                     type: sap.m.ButtonType.Default,
                                                     press: function (): void {
-                                                        let selectItems: bo.SalesDeliveryItem[] = that.itemTable.getSelecteds();
-                                                        if (selectItems.length > 0) {
-                                                            let selects: bo.SalesDelivery[] = that.table.getSelecteds();
-                                                            for (let select of selects) {
-                                                                let has: boolean = false;
-                                                                for (let i: number = select.salesDeliveryItems.length - 1; i >= 0; i--) {
-                                                                    let item: any = select.salesDeliveryItems[i];
-                                                                    if (selectItems.find(c => c === item)) {
-                                                                        has = true;
-                                                                        continue;
-                                                                    }
-                                                                    select.salesDeliveryItems.removeAt(i);
-                                                                }
-                                                                if (has === false) {
-                                                                    select.markDeleted();
-                                                                }
-                                                            }
-                                                            that.fireViewEvents(that.chooseDataEvent, selects.filter(c => c.isDeleted === false));
-                                                        }
+                                                        (<any>that.itemTable).fireRowDoubleClick({});
                                                     }
                                                 }),
                                                 new sap.m.Button("", {
@@ -521,7 +545,14 @@ namespace sales {
                     for (let item of datas) {
                         dataItems.add(item.salesDeliveryItems);
                     }
-                    this.itemTable.setModel(new sap.extension.model.JSONModel(dataItems));
+                    let model: sap.ui.model.Model = this.itemTable.getModel();
+                    if (model instanceof sap.extension.model.JSONModel) {
+                        // 已绑定过数据
+                        model.addData(dataItems);
+                    } else {
+                        this.itemTable.setModel(new sap.extension.model.JSONModel(dataItems));
+                    }
+                    this.itemTable.setBusy(false);
                 }
                 /** 显示数据 */
                 showData(datas: bo.SalesDelivery[]): void {
@@ -531,9 +562,17 @@ namespace sales {
                         model.addData(datas);
                     } else {
                         // 未绑定过数据
+                        if (config.isFirstUseDocumentLineChoose()) {
+                            if (this.container.getCurrentPage() !== this.container.getPages()[1]) {
+                                this.container.to(this.container.getPages()[1]);
+                            }
+                        }
                         this.table.setModel(new sap.extension.model.JSONModel({ rows: datas }));
                     }
                     this.table.setBusy(false);
+                    if (this.container.getCurrentPage() === this.container.getPages()[1]) {
+                        this.showDataItems(datas);
+                    }
                 }
                 /** 记录上次查询条件，表格滚动时自动触发 */
                 query(criteria: ibas.ICriteria): void {
