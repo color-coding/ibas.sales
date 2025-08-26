@@ -31,6 +31,8 @@ declare namespace purchase {
         const CONFIG_ITEM_DOCUMENT_STATISTICS_TAG_DELETED_LINE: string;
         /** 配置项目-采购助手显示价格类型 */
         const CONFIG_ITEM_PURCHASING_ASSISTANT_PRICE_TYPE: string;
+        /** 配置项目-首先应用单据行选择 */
+        const CONFIG_ITEM_FIRST_USE_DOCUMENT_LINE_CHOOSE: string;
         /**
          * 获取此模块配置
          * @param key 配置项
@@ -41,6 +43,7 @@ declare namespace purchase {
         function isPriceAnchoringAfterTax(): boolean;
         function isInverseDiscount(): boolean;
         function isStatisticsTagDeleted(): boolean;
+        function isFirstUseDocumentLineChoose(): boolean;
     }
     namespace bo {
         /** 业务仓库名称 */
@@ -184,6 +187,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -444,6 +449,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -758,6 +765,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -1018,6 +1027,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -1330,6 +1341,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 需求人 */
@@ -1626,6 +1639,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 客户代码 */
@@ -1960,6 +1975,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 客户代码 */
@@ -2317,6 +2334,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -2515,6 +2534,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -2767,6 +2788,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 客户代码 */
@@ -3027,6 +3050,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -3553,6 +3578,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -3728,6 +3759,8 @@ declare namespace purchase {
             baseDocument(document: IPurchaseOrder): void;
             /** 基于采购预留发票 */
             baseDocument(document: IPurchaseReserveInvoice): void;
+            /** 基于采购退货 */
+            baseDocument(document: IPurchaseReturn): void;
         }
         /** 采购收货-行 集合 */
         class PurchaseDeliveryItems extends ibas.BusinessObjects<PurchaseDeliveryItem, PurchaseDelivery> implements IPurchaseDeliveryItems {
@@ -4343,6 +4376,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -5295,6 +5334,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -6087,6 +6132,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -7007,6 +7058,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -7883,6 +7940,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -8889,6 +8952,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -9952,6 +10021,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -10519,6 +10594,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -11263,6 +11344,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -12056,6 +12143,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -13125,6 +13218,8 @@ declare namespace purchase {
             private choosePurchaseDeliveryItemMaterialSerial;
             /** 选择采购收货-采购订单事件 */
             private choosePurchaseDeliveryPurchaseOrder;
+            /** 选择采购收货-采购退货事件 */
+            private choosePurchaseDeliveryPurchaseReturn;
             /** 选择联系人 */
             private choosePurchaseDeliveryContactPerson;
             private editShippingAddresses;
@@ -13179,6 +13274,8 @@ declare namespace purchase {
             showPurchaseDeliveryItems(datas: bo.PurchaseDeliveryItem[]): void;
             /** 选择采购收货-采购订单事件 */
             choosePurchaseDeliveryPurchaseOrderEvent: Function;
+            /** 选择采购收货-采购退货事件 */
+            choosePurchaseDeliveryPurchaseReturnEvent: Function;
             /** 选择采购收货-一揽子协议事件 */
             choosePurchaseDeliveryBlanketAgreementEvent: Function;
             /** 选择采购收货-采购预留发票 */

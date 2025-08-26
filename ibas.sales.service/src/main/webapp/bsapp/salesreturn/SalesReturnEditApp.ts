@@ -1247,6 +1247,12 @@ namespace sales {
                     if (item.isDeleted === true) {
                         continue;
                     }
+                    if (item.canceled === ibas.emYesNo.YES) {
+                        continue;
+                    }
+                    if (item.deleted === ibas.emYesNo.YES) {
+                        continue;
+                    }
                     if (!ibas.strings.isEmpty(item.parentLineSign)) {
                         continue;
                     }
