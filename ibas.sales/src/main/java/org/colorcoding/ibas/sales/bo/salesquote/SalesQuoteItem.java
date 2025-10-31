@@ -26,6 +26,8 @@ import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
+import org.colorcoding.ibas.businesspartner.data.emBusinessPartnerType;
+import org.colorcoding.ibas.materials.logic.IMaterialCatalogCheckContract;
 import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCheckContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.materials.rules.BusinessRuleDeductionPriceQtyTotal;
@@ -2744,6 +2746,39 @@ public class SalesQuoteItem extends BusinessObject<SalesQuoteItem>
 			@Override
 			public String getWarehouse() {
 				return Strings.VALUE_EMPTY;
+			}
+		});
+		// 物料目录检查
+		contracts.add(new IMaterialCatalogCheckContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesQuoteItem.this.getIdentifiers();
+			}
+
+			@Override
+			public void setCatalogCode(String value) {
+				SalesQuoteItem.this.setCatalogCode(value);
+			}
+
+			@Override
+			public String getItemCode() {
+				return SalesQuoteItem.this.getItemCode();
+			}
+
+			@Override
+			public String getCatalogCode() {
+				return SalesQuoteItem.this.getCatalogCode();
+			}
+
+			@Override
+			public emBusinessPartnerType getBusinessPartnerType() {
+				return emBusinessPartnerType.CUSTOMER;
+			}
+
+			@Override
+			public String getBusinessPartnerCode() {
+				return SalesQuoteItem.this.parent.getCustomerCode();
 			}
 		});
 		// 订购预留关闭

@@ -14,19 +14,20 @@ import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBOTagCanceled;
 import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
 import org.colorcoding.ibas.bobas.bo.IBOUserFields;
+import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
-import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
-import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
 import org.colorcoding.ibas.bobas.db.DbField;
 import org.colorcoding.ibas.bobas.db.DbFieldType;
+import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
+import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
+import org.colorcoding.ibas.businesspartner.data.emBusinessPartnerType;
 import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchItems;
 import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItem;
 import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItems;
@@ -35,6 +36,7 @@ import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.IDocumentAmountClosingContract;
+import org.colorcoding.ibas.materials.logic.IMaterialCatalogCheckContract;
 import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCheckContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
 import org.colorcoding.ibas.materials.rules.BusinessRuleDeductionPriceQtyTotal;
@@ -2794,6 +2796,39 @@ public class SalesReserveInvoiceItem extends BusinessObject<SalesReserveInvoiceI
 						return SalesReserveInvoiceItem.this.getWarehouse();
 					}
 				},
+				// 物料目录检查
+				new IMaterialCatalogCheckContract() {
+
+					@Override
+					public String getIdentifiers() {
+						return SalesReserveInvoiceItem.this.getIdentifiers();
+					}
+
+					@Override
+					public void setCatalogCode(String value) {
+						SalesReserveInvoiceItem.this.setCatalogCode(value);
+					}
+
+					@Override
+					public String getItemCode() {
+						return SalesReserveInvoiceItem.this.getItemCode();
+					}
+
+					@Override
+					public String getCatalogCode() {
+						return SalesReserveInvoiceItem.this.getCatalogCode();
+					}
+
+					@Override
+					public emBusinessPartnerType getBusinessPartnerType() {
+						return emBusinessPartnerType.CUSTOMER;
+					}
+
+					@Override
+					public String getBusinessPartnerCode() {
+						return SalesReserveInvoiceItem.this.parent.getCustomerCode();
+					}
+				},
 				// 一揽子协议
 				new IBlanketAgreementQuantityContract() {
 
@@ -2883,6 +2918,8 @@ public class SalesReserveInvoiceItem extends BusinessObject<SalesReserveInvoiceI
 			return this.getWarehouse();
 		case Ledgers.CONDITION_PROPERTY_TAX:
 			return this.getTax();
+		case Ledgers.CONDITION_PROPERTY_TAX_RATE:
+			return this.getTaxRate();
 		case Ledgers.CONDITION_PROPERTY_REFERENCE_1:
 			return this.getReference1();
 		case Ledgers.CONDITION_PROPERTY_REFERENCE_2:

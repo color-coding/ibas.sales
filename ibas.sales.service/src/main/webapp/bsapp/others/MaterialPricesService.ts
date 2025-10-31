@@ -94,6 +94,12 @@ namespace sales {
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesOrderItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesOrderItem.PROPERTY_DELETED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesOrderItem.PROPERTY_CANCELED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
                 // 日期排序
                 let sort: ibas.ISort = criteria.sorts.create();
                 sort.alias = bo.SalesOrder.PROPERTY_DOCUMENTDATE_NAME;
@@ -250,6 +256,12 @@ namespace sales {
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.DownPaymentRequestItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.DownPaymentRequestItem.PROPERTY_DELETED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.DownPaymentRequestItem.PROPERTY_CANCELED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
                 // 日期排序
                 let sort: ibas.ISort = criteria.sorts.create();
                 sort.alias = bo.DownPaymentRequest.PROPERTY_DOCUMENTDATE_NAME;
@@ -407,6 +419,12 @@ namespace sales {
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesCreditNoteItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesCreditNoteItem.PROPERTY_DELETED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesCreditNoteItem.PROPERTY_CANCELED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
                 // 日期排序
                 let sort: ibas.ISort = criteria.sorts.create();
                 sort.alias = bo.SalesCreditNote.PROPERTY_DOCUMENTDATE_NAME;
@@ -563,6 +581,12 @@ namespace sales {
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesDeliveryItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesDeliveryItem.PROPERTY_DELETED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesDeliveryItem.PROPERTY_CANCELED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
                 // 日期排序
                 let sort: ibas.ISort = criteria.sorts.create();
                 sort.alias = bo.SalesDelivery.PROPERTY_DOCUMENTDATE_NAME;
@@ -720,6 +744,12 @@ namespace sales {
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesInvoiceItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesInvoiceItem.PROPERTY_DELETED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesInvoiceItem.PROPERTY_CANCELED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
                 // 日期排序
                 let sort: ibas.ISort = criteria.sorts.create();
                 sort.alias = bo.SalesInvoice.PROPERTY_DOCUMENTDATE_NAME;
@@ -876,6 +906,12 @@ namespace sales {
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesQuoteItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesQuoteItem.PROPERTY_DELETED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesQuoteItem.PROPERTY_CANCELED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
                 // 日期排序
                 let sort: ibas.ISort = criteria.sorts.create();
                 sort.alias = bo.SalesQuote.PROPERTY_DOCUMENTDATE_NAME;
@@ -1032,6 +1068,12 @@ namespace sales {
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesReserveInvoiceItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesReserveInvoiceItem.PROPERTY_DELETED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesReserveInvoiceItem.PROPERTY_CANCELED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
                 // 日期排序
                 let sort: ibas.ISort = criteria.sorts.create();
                 sort.alias = bo.SalesReserveInvoice.PROPERTY_DOCUMENTDATE_NAME;
@@ -1188,6 +1230,12 @@ namespace sales {
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesReturnItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesReturnItem.PROPERTY_DELETED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesReturnItem.PROPERTY_CANCELED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
                 // 日期排序
                 let sort: ibas.ISort = criteria.sorts.create();
                 sort.alias = bo.SalesReturn.PROPERTY_DOCUMENTDATE_NAME;
@@ -1345,6 +1393,12 @@ namespace sales {
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesReturnRequestItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesReturnRequestItem.PROPERTY_DELETED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesReturnRequestItem.PROPERTY_CANCELED_NAME;
+                condition.value = ibas.emYesNo.NO.toString();
                 // 日期排序
                 let sort: ibas.ISort = criteria.sorts.create();
                 sort.alias = bo.SalesReturnRequest.PROPERTY_DOCUMENTDATE_NAME;

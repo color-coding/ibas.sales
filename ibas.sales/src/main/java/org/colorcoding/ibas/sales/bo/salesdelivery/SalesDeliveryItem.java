@@ -29,6 +29,7 @@ import org.colorcoding.ibas.bobas.rule.BusinessRuleException;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
+import org.colorcoding.ibas.businesspartner.data.emBusinessPartnerType;
 import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchItems;
 import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItem;
 import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItems;
@@ -37,6 +38,7 @@ import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
+import org.colorcoding.ibas.materials.logic.IMaterialCatalogCheckContract;
 import org.colorcoding.ibas.materials.logic.IMaterialIssueContract;
 import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCheckContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
@@ -2675,7 +2677,7 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 		if (MyConfiguration.isInventoryUnitLinePrice()) {
 			return this.getPreTaxPrice();
 		}
-		return Decimals.divide(this.getPreTaxPrice(), this.getUOMRate());
+		return Decimals.divide(this.getPreTaxPrice(), this.getUOMRate(), Decimals.DECIMAL_PLACES_STORAGE);
 	}
 
 	@Override
@@ -2835,6 +2837,39 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 						return SalesDeliveryItem.this.getWarehouse();
 					}
 				},
+				// 物料目录检查
+				new IMaterialCatalogCheckContract() {
+
+					@Override
+					public String getIdentifiers() {
+						return SalesDeliveryItem.this.getIdentifiers();
+					}
+
+					@Override
+					public void setCatalogCode(String value) {
+						SalesDeliveryItem.this.setCatalogCode(value);
+					}
+
+					@Override
+					public String getItemCode() {
+						return SalesDeliveryItem.this.getItemCode();
+					}
+
+					@Override
+					public String getCatalogCode() {
+						return SalesDeliveryItem.this.getCatalogCode();
+					}
+
+					@Override
+					public emBusinessPartnerType getBusinessPartnerType() {
+						return emBusinessPartnerType.CUSTOMER;
+					}
+
+					@Override
+					public String getBusinessPartnerCode() {
+						return SalesDeliveryItem.this.parent.getCustomerCode();
+					}
+				},
 				// 物料发货
 				new IMaterialIssueContract() {
 					@Override
@@ -2966,7 +3001,7 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 							return SalesDeliveryItem.this.getPreTaxPrice();
 						}
 						return Decimals.divide(SalesDeliveryItem.this.getPreTaxPrice(),
-								SalesDeliveryItem.this.getUOMRate());
+								SalesDeliveryItem.this.getUOMRate(), Decimals.DECIMAL_PLACES_STORAGE);
 					}
 
 					@Override
@@ -3084,6 +3119,8 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 			return this.getWarehouse();
 		case Ledgers.CONDITION_PROPERTY_TAX:
 			return this.getTax();
+		case Ledgers.CONDITION_PROPERTY_TAX_RATE:
+			return this.getTaxRate();
 		case Ledgers.CONDITION_PROPERTY_REFERENCE_1:
 			return this.getReference1();
 		case Ledgers.CONDITION_PROPERTY_REFERENCE_2:

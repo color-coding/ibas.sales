@@ -1305,6 +1305,12 @@ namespace sales {
                     if (item.isDeleted === true) {
                         continue;
                     }
+                    if (item.canceled === ibas.emYesNo.YES) {
+                        continue;
+                    }
+                    if (item.deleted === ibas.emYesNo.YES) {
+                        continue;
+                    }
                     if (!ibas.strings.isEmpty(item.parentLineSign)) {
                         continue;
                     }
@@ -1383,12 +1389,15 @@ namespace sales {
                         uom: caller.uom,
                         applyPrice: (type, price, currency) => {
                             if (type === "PRICE") {
+                                caller.price = 0;
                                 caller.price = price;
                                 caller.currency = currency;
                             } else if (type === "PRETAXPRICE") {
+                                caller.preTaxPrice = 0;
                                 caller.preTaxPrice = price;
                                 caller.currency = currency;
                             } else if (type === "UNITPRICE") {
+                                caller.unitPrice = 0;
                                 caller.unitPrice = price;
                                 caller.currency = currency;
                             }

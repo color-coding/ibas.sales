@@ -30,6 +30,8 @@ namespace sales {
         export const CONFIG_ITEM_DISCOUNT_PRESENTATION_METHOD: string = "discountPresentationMethod";
         /** 配置项目-单据统计标记删除行 */
         export const CONFIG_ITEM_DOCUMENT_STATISTICS_TAG_DELETED_LINE: string = "documentStatisticsTagDeletedLine";
+        /** 配置项目-首先应用单据行选择 */
+        export const CONFIG_ITEM_FIRST_USE_DOCUMENT_LINE_CHOOSE: string = "firstUseDocumentLineChoose";
         /**
          * 获取此模块配置
          * @param key 配置项
@@ -77,6 +79,13 @@ namespace sales {
                 statisticsTagDeleted = get(CONFIG_ITEM_DOCUMENT_STATISTICS_TAG_DELETED_LINE, true);
             }
             return statisticsTagDeleted;
+        }
+        let firstLineChoose: boolean = undefined;
+        export function isFirstUseDocumentLineChoose(): boolean {
+            if (ibas.objects.isNull(firstLineChoose)) {
+                firstLineChoose = get(CONFIG_ITEM_FIRST_USE_DOCUMENT_LINE_CHOOSE, false);
+            }
+            return firstLineChoose;
         }
     }
     export namespace bo {

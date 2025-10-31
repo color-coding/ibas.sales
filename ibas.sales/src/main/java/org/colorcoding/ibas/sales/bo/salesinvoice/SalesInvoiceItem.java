@@ -14,21 +14,22 @@ import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBOTagCanceled;
 import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
 import org.colorcoding.ibas.bobas.bo.IBOUserFields;
+import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.ArrayList;
 import org.colorcoding.ibas.bobas.data.DateTime;
-import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
-import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
 import org.colorcoding.ibas.bobas.db.DbField;
 import org.colorcoding.ibas.bobas.db.DbFieldType;
+import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
+import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleException;
 import org.colorcoding.ibas.bobas.rule.IBusinessRule;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleMinValue;
 import org.colorcoding.ibas.bobas.rule.common.BusinessRuleRequired;
+import org.colorcoding.ibas.businesspartner.data.emBusinessPartnerType;
 import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchItems;
 import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItem;
 import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItems;
@@ -38,6 +39,7 @@ import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
 import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.IDocumentAmountClosingContract;
 import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
+import org.colorcoding.ibas.materials.logic.IMaterialCatalogCheckContract;
 import org.colorcoding.ibas.materials.logic.IMaterialIssueContract;
 import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCheckContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
@@ -2674,7 +2676,7 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 		if (MyConfiguration.isInventoryUnitLinePrice()) {
 			return this.getPreTaxPrice();
 		}
-		return Decimals.divide(this.getPreTaxPrice(), this.getUOMRate());
+		return Decimals.divide(this.getPreTaxPrice(), this.getUOMRate(), Decimals.DECIMAL_PLACES_STORAGE);
 	}
 
 	@Override
@@ -2842,6 +2844,39 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 			@Override
 			public String getWarehouse() {
 				return SalesInvoiceItem.this.getWarehouse();
+			}
+		});
+		// 物料目录检查
+		contracts.add(new IMaterialCatalogCheckContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesInvoiceItem.this.getIdentifiers();
+			}
+
+			@Override
+			public void setCatalogCode(String value) {
+				SalesInvoiceItem.this.setCatalogCode(value);
+			}
+
+			@Override
+			public String getItemCode() {
+				return SalesInvoiceItem.this.getItemCode();
+			}
+
+			@Override
+			public String getCatalogCode() {
+				return SalesInvoiceItem.this.getCatalogCode();
+			}
+
+			@Override
+			public emBusinessPartnerType getBusinessPartnerType() {
+				return emBusinessPartnerType.CUSTOMER;
+			}
+
+			@Override
+			public String getBusinessPartnerCode() {
+				return SalesInvoiceItem.this.parent.getCustomerCode();
 			}
 		});
 		// 基于单据完成数量
@@ -3037,7 +3072,8 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 					if (MyConfiguration.isInventoryUnitLinePrice()) {
 						return SalesInvoiceItem.this.getPreTaxPrice();
 					}
-					return Decimals.divide(SalesInvoiceItem.this.getPreTaxPrice(), SalesInvoiceItem.this.getUOMRate());
+					return Decimals.divide(SalesInvoiceItem.this.getPreTaxPrice(), SalesInvoiceItem.this.getUOMRate(),
+							Decimals.DECIMAL_PLACES_STORAGE);
 				}
 
 				@Override
@@ -3137,6 +3173,8 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 			return this.getWarehouse();
 		case Ledgers.CONDITION_PROPERTY_TAX:
 			return this.getTax();
+		case Ledgers.CONDITION_PROPERTY_TAX_RATE:
+			return this.getTaxRate();
 		case Ledgers.CONDITION_PROPERTY_REFERENCE_1:
 			return this.getReference1();
 		case Ledgers.CONDITION_PROPERTY_REFERENCE_2:

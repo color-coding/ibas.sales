@@ -46,6 +46,8 @@ namespace sales {
                 showSalesQuoteItemExtraEvent: Function;
                 /** 转为销售报价事件 */
                 turnToSalesOrderEvent: Function;
+                /** 转为预付款申请事件 */
+                turnToDownPaymentRequestEvent: Function;
                 /** 预留物料库存 */
                 reserveMaterialsInventoryEvent: Function;
                 /** 测量物料事件 */
@@ -304,38 +306,55 @@ namespace sales {
                                 }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_documentstatus") }),
-                            new sap.extension.m.EnumSelect("", {
-                                enumType: ibas.emDocumentStatus
-                            }).bindProperty("bindingValue", {
-                                path: "documentStatus",
-                                type: new sap.extension.data.DocumentStatus()
-                            }),
-                            new sap.extension.m.TipsCheckBox("", {
-                                text: ibas.i18n.prop("bo_salesquote_canceled"),
-                                tipsOnSelection: ibas.i18n.prop(["shell_data_cancel", "shell_data_status"]),
-                            }).bindProperty("bindingValue", {
-                                path: "canceled",
-                                type: new sap.extension.data.YesNo()
-                            }).bindProperty("editable", {
-                                parts: [
-                                    {
-                                        path: "approvalStatus",
-                                        type: new sap.extension.data.ApprovalStatus(),
-                                    },
-                                    {
+                            new sap.m.FlexBox("", {
+                                width: "100%",
+                                justifyContent: sap.m.FlexJustifyContent.Start,
+                                renderType: sap.m.FlexRendertype.Bare,
+                                alignContent: sap.m.FlexAlignContent.Center,
+                                alignItems: sap.m.FlexAlignItems.Center,
+                                items: [
+                                    new sap.extension.m.EnumSelect("", {
+                                        enumType: ibas.emDocumentStatus,
+                                        width: "100%",
+                                    }).bindProperty("bindingValue", {
                                         path: "documentStatus",
-                                        type: new sap.extension.data.DocumentStatus(),
-                                    }
-                                ],
-                                formatter(apStatus: ibas.emApprovalStatus, docStatus: ibas.emDocumentStatus): boolean {
-                                    if (apStatus === ibas.emApprovalStatus.PROCESSING) {
-                                        return false;
-                                    }
-                                    if (docStatus === ibas.emDocumentStatus.PLANNED) {
-                                        return false;
-                                    }
-                                    return true;
-                                }
+                                        type: new sap.extension.data.DocumentStatus()
+                                    }).addStyleClass("sapUiSmallMarginEnd"),
+                                    new sap.extension.m.TipsCheckBox("", {
+                                        text: ibas.i18n.prop("bo_salesquote_canceled"),
+                                        tipsOnSelection: ibas.i18n.prop(["shell_data_cancel", "shell_data_status"]),
+                                    }).bindProperty("bindingValue", {
+                                        path: "canceled",
+                                        type: new sap.extension.data.YesNo()
+                                    }).bindProperty("editable", {
+                                        parts: [
+                                            {
+                                                path: "approvalStatus",
+                                                type: new sap.extension.data.ApprovalStatus(),
+                                            },
+                                            {
+                                                path: "documentStatus",
+                                                type: new sap.extension.data.DocumentStatus(),
+                                            }
+                                        ],
+                                        formatter(apStatus: ibas.emApprovalStatus, docStatus: ibas.emDocumentStatus): boolean {
+                                            if (apStatus === ibas.emApprovalStatus.PROCESSING) {
+                                                return false;
+                                            }
+                                            if (docStatus === ibas.emDocumentStatus.PLANNED) {
+                                                return false;
+                                            }
+                                            return true;
+                                        }
+                                    }).addStyleClass("sapUiSmallMarginEnd"),
+                                    new sap.extension.m.CheckBox("", {
+                                        text: ibas.i18n.prop("bo_salesquote_printed"),
+                                        editable: false,
+                                    }).bindProperty("bindingValue", {
+                                        path: "printed",
+                                        type: new sap.extension.data.YesNo()
+                                    }),
+                                ]
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_salesquote_documentdate") }),
                             new sap.extension.m.DatePicker("", {
@@ -956,6 +975,7 @@ namespace sales {
                                     }),
                                 ],
                                 sortProperty: "visOrder",
+                                sortIntervalStep: 1,
                             })
                         ]
                     });
@@ -1222,6 +1242,17 @@ namespace sales {
                                                 visible: shell.app.privileges.canRun({
                                                     id: sales.app.SalesOrderFunc.FUNCTION_ID,
                                                     name: sales.app.SalesOrderFunc.FUNCTION_NAME,
+                                                })
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("bo_downpaymentrequest_ar"),
+                                                icon: "sap-icon://doc-attachment",
+                                                press(this: sap.m.Button): void {
+                                                    that.fireViewEvents(that.turnToDownPaymentRequestEvent);
+                                                },
+                                                visible: shell.app.privileges.canRun({
+                                                    id: sales.app.DownPaymentRequestFunc.FUNCTION_ID,
+                                                    name: sales.app.DownPaymentRequestFunc.FUNCTION_NAME,
                                                 })
                                             }),
                                             new sap.m.MenuItem("", {

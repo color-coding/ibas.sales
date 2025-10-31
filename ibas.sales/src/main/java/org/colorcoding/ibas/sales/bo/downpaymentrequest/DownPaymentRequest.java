@@ -47,6 +47,7 @@ import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
 import org.colorcoding.ibas.document.IDocumentCloseAmountOperator;
 import org.colorcoding.ibas.document.IDocumentClosingAmountItem;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
+import org.colorcoding.ibas.document.IDocumentPrintedOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.rules.BusinessRulePreventCancelDocument;
 import org.colorcoding.ibas.sales.MyConfiguration;
@@ -64,7 +65,7 @@ import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 public class DownPaymentRequest extends BusinessObject<DownPaymentRequest>
 		implements IDownPaymentRequest, IDataOwnership, IApprovalData, IPeriodData, IProjectData, IBOTagDeleted,
 		IBOTagCanceled, IBOSeriesKey, IBOUserFields, IBusinessLogicsHost, IDocumentPaidTotalOperator,
-		IDocumentCloseAmountOperator, IJECPropertyValueGetter {
+		IDocumentCloseAmountOperator, IJECPropertyValueGetter, IDocumentPrintedOperator {
 
 	/**
 	 * 序列化版本标记
@@ -991,6 +992,37 @@ public class DownPaymentRequest extends BusinessObject<DownPaymentRequest>
 	}
 
 	/**
+	 * 属性名称-已打印
+	 */
+	private static final String PROPERTY_PRINTED_NAME = "Printed";
+
+	/**
+	 * 已打印 属性
+	 */
+	@DbField(name = "Printed", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<emYesNo> PROPERTY_PRINTED = registerProperty(PROPERTY_PRINTED_NAME, emYesNo.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-已打印
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_PRINTED_NAME)
+	public final emYesNo getPrinted() {
+		return this.getProperty(PROPERTY_PRINTED);
+	}
+
+	/**
+	 * 设置-已打印
+	 * 
+	 * @param value 值
+	 */
+	public final void setPrinted(emYesNo value) {
+		this.setProperty(PROPERTY_PRINTED, value);
+	}
+
+	/**
 	 * 属性名称-已删除
 	 */
 	private static final String PROPERTY_DELETED_NAME = "Deleted";
@@ -1783,6 +1815,16 @@ public class DownPaymentRequest extends BusinessObject<DownPaymentRequest>
 					@Override
 					public String getCustomerCode() {
 						return DownPaymentRequest.this.getCustomerCode();
+					}
+
+					@Override
+					public String getCustomerName() {
+						return DownPaymentRequest.this.getCustomerName();
+					}
+
+					@Override
+					public void setCustomerName(String value) {
+						DownPaymentRequest.this.setCustomerName(value);
 					}
 				},
 				// 分支检查

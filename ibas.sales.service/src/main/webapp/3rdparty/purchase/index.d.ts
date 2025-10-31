@@ -31,6 +31,8 @@ declare namespace purchase {
         const CONFIG_ITEM_DOCUMENT_STATISTICS_TAG_DELETED_LINE: string;
         /** 配置项目-采购助手显示价格类型 */
         const CONFIG_ITEM_PURCHASING_ASSISTANT_PRICE_TYPE: string;
+        /** 配置项目-首先应用单据行选择 */
+        const CONFIG_ITEM_FIRST_USE_DOCUMENT_LINE_CHOOSE: string;
         /**
          * 获取此模块配置
          * @param key 配置项
@@ -41,6 +43,7 @@ declare namespace purchase {
         function isPriceAnchoringAfterTax(): boolean;
         function isInverseDiscount(): boolean;
         function isStatisticsTagDeleted(): boolean;
+        function isFirstUseDocumentLineChoose(): boolean;
     }
     namespace bo {
         /** 业务仓库名称 */
@@ -184,6 +187,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -444,6 +449,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -758,6 +765,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -1018,6 +1027,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -1330,6 +1341,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 需求人 */
@@ -1626,6 +1639,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 客户代码 */
@@ -1666,6 +1681,8 @@ declare namespace purchase {
             branch: string;
             /** 反向折扣 */
             inverseDiscount: number;
+            /** 取消日期 */
+            cancellationDate: Date;
             /** 采购发票-行集合 */
             purchaseInvoiceItems: IPurchaseInvoiceItems;
             /** 送货地址集合 */
@@ -1958,6 +1975,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 客户代码 */
@@ -1998,6 +2017,8 @@ declare namespace purchase {
             branch: string;
             /** 反向折扣 */
             inverseDiscount: number;
+            /** 取消日期 */
+            cancellationDate: Date;
             /** 采购贷项-行集合 */
             purchaseCreditNoteItems: IPurchaseCreditNoteItems;
             /** 送货地址集合 */
@@ -2234,6 +2255,8 @@ declare namespace purchase {
             createActionId: string;
             /** 更新动作标识 */
             updateActionId: string;
+            /** 来源编号 */
+            sourceKey: number;
         }
         /** 送货地址 集合 */
         interface IShippingAddresss extends ibas.IBusinessObjects<IShippingAddress> {
@@ -2311,6 +2334,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -2405,6 +2430,12 @@ declare namespace purchase {
             quantity: number;
             /** 单位 */
             uom: string;
+            /** 库存单位 */
+            inventoryUOM: string;
+            /** 单位换算率 */
+            uomRate: number;
+            /** 库存数量 */
+            inventoryQuantity: number;
             /** 价格 */
             price: number;
             /** 货币 */
@@ -2503,6 +2534,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -2755,6 +2788,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 客户代码 */
@@ -2795,6 +2830,8 @@ declare namespace purchase {
             branch: string;
             /** 反向折扣 */
             inverseDiscount: number;
+            /** 取消日期 */
+            cancellationDate: Date;
             /** 采购预留发票-行集合 */
             purchaseReserveInvoiceItems: IPurchaseReserveInvoiceItems;
             /** 送货地址集合 */
@@ -3013,6 +3050,8 @@ declare namespace purchase {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 供应商代码 */
@@ -3539,6 +3578,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -3714,6 +3759,8 @@ declare namespace purchase {
             baseDocument(document: IPurchaseOrder): void;
             /** 基于采购预留发票 */
             baseDocument(document: IPurchaseReserveInvoice): void;
+            /** 基于采购退货 */
+            baseDocument(document: IPurchaseReturn): void;
         }
         /** 采购收货-行 集合 */
         class PurchaseDeliveryItems extends ibas.BusinessObjects<PurchaseDeliveryItem, PurchaseDelivery> implements IPurchaseDeliveryItems {
@@ -4329,6 +4376,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -5281,6 +5334,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -6073,6 +6132,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -6993,6 +7058,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -7869,6 +7940,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -7989,6 +8066,12 @@ declare namespace purchase {
             get inverseDiscount(): number;
             /** 设置-反向行折扣 */
             set inverseDiscount(value: number);
+            /** 映射的属性名称-取消日期 */
+            static PROPERTY_CANCELLATIONDATE_NAME: string;
+            /** 获取-取消日期 */
+            get cancellationDate(): Date;
+            /** 设置-取消日期 */
+            set cancellationDate(value: Date);
             /** 映射的属性名称-采购发票-行集合 */
             static PROPERTY_PURCHASEINVOICEITEMS_NAME: string;
             /** 获取-采购发票-行集合 */
@@ -8869,6 +8952,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -8989,6 +9078,12 @@ declare namespace purchase {
             get inverseDiscount(): number;
             /** 设置-反向行折扣 */
             set inverseDiscount(value: number);
+            /** 映射的属性名称-取消日期 */
+            static PROPERTY_CANCELLATIONDATE_NAME: string;
+            /** 获取-取消日期 */
+            get cancellationDate(): Date;
+            /** 设置-取消日期 */
+            set cancellationDate(value: Date);
             /** 映射的属性名称-采购贷项-行集合 */
             static PROPERTY_PURCHASECREDITNOTEITEMS_NAME: string;
             /** 获取-采购贷项-行集合 */
@@ -9706,6 +9801,12 @@ declare namespace purchase {
             get updateActionId(): string;
             /** 设置-更新动作标识 */
             set updateActionId(value: string);
+            /** 映射的属性名称-来源编号 */
+            static PROPERTY_SOURCEKEY_NAME: string;
+            /** 获取-来源编号 */
+            get sourceKey(): number;
+            /** 设置-来源编号 */
+            set sourceKey(value: number);
             /** 基于地址 */
             baseAddress(address: businesspartner.bo.IAddress): void;
             /** 初始化数据 */
@@ -9920,6 +10021,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -10194,6 +10301,24 @@ declare namespace purchase {
             get uom(): string;
             /** 设置-单位 */
             set uom(value: string);
+            /** 映射的属性名称-库存单位 */
+            static PROPERTY_INVENTORYUOM_NAME: string;
+            /** 获取-库存单位 */
+            get inventoryUOM(): string;
+            /** 设置-库存单位 */
+            set inventoryUOM(value: string);
+            /** 映射的属性名称-单位换算率 */
+            static PROPERTY_UOMRATE_NAME: string;
+            /** 获取-单位换算率 */
+            get uomRate(): number;
+            /** 设置-单位换算率 */
+            set uomRate(value: number);
+            /** 映射的属性名称-库存数量 */
+            static PROPERTY_INVENTORYQUANTITY_NAME: string;
+            /** 获取-库存数量 */
+            get inventoryQuantity(): number;
+            /** 设置-库存数量 */
+            set inventoryQuantity(value: number);
             /** 映射的属性名称-价格 */
             static PROPERTY_PRICE_NAME: string;
             /** 获取-价格 */
@@ -10469,6 +10594,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -10610,6 +10741,8 @@ declare namespace purchase {
             beforeConvert(): void;
             /** 数据解析后 */
             afterParsing(): void;
+            /** 基于采购报价 */
+            baseDocument(document: IPurchaseQuote): void;
             /** 基于采购订单 */
             baseDocument(document: IPurchaseOrder): void;
             /** 基于采购收货 */
@@ -11211,6 +11344,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -11331,6 +11470,12 @@ declare namespace purchase {
             get inverseDiscount(): number;
             /** 设置-反向行折扣 */
             set inverseDiscount(value: number);
+            /** 映射的属性名称-取消日期 */
+            static PROPERTY_CANCELLATIONDATE_NAME: string;
+            /** 获取-取消日期 */
+            get cancellationDate(): Date;
+            /** 设置-取消日期 */
+            set cancellationDate(value: Date);
             /** 映射的属性名称-采购预留发票-行集合 */
             static PROPERTY_PURCHASERESERVEINVOICEITEMS_NAME: string;
             /** 获取-采购预留发票-行集合 */
@@ -11998,6 +12143,12 @@ declare namespace purchase {
             get referenced(): ibas.emYesNo;
             /** 设置-已引用 */
             set referenced(value: ibas.emYesNo);
+            /** 映射的属性名称-已打印 */
+            static PROPERTY_PRINTED_NAME: string;
+            /** 获取-已打印 */
+            get printed(): ibas.emYesNo;
+            /** 设置-已打印 */
+            set printed(value: ibas.emYesNo);
             /** 映射的属性名称-已删除 */
             static PROPERTY_DELETED_NAME: string;
             /** 获取-已删除 */
@@ -13067,6 +13218,8 @@ declare namespace purchase {
             private choosePurchaseDeliveryItemMaterialSerial;
             /** 选择采购收货-采购订单事件 */
             private choosePurchaseDeliveryPurchaseOrder;
+            /** 选择采购收货-采购退货事件 */
+            private choosePurchaseDeliveryPurchaseReturn;
             /** 选择联系人 */
             private choosePurchaseDeliveryContactPerson;
             private editShippingAddresses;
@@ -13121,6 +13274,8 @@ declare namespace purchase {
             showPurchaseDeliveryItems(datas: bo.PurchaseDeliveryItem[]): void;
             /** 选择采购收货-采购订单事件 */
             choosePurchaseDeliveryPurchaseOrderEvent: Function;
+            /** 选择采购收货-采购退货事件 */
+            choosePurchaseDeliveryPurchaseReturnEvent: Function;
             /** 选择采购收货-一揽子协议事件 */
             choosePurchaseDeliveryBlanketAgreementEvent: Function;
             /** 选择采购收货-采购预留发票 */
@@ -14164,6 +14319,8 @@ declare namespace purchase {
             protected choosePurchaseQuoteItemMaterialCatalog(caller: bo.PurchaseQuoteItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseQuoteItem): void;
             protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
+            /** 转为预付款申请事件 */
+            protected turnToDownPaymentRequest(): void;
         }
         /** 视图-采购报价 */
         interface IPurchaseQuoteEditView extends ibas.IBOEditView {
@@ -14207,6 +14364,8 @@ declare namespace purchase {
             choosePurchaseQuotePurchaseRequestEvent: Function;
             /** 转为采购订单事件 */
             turnToPurchaseOrderEvent: Function;
+            /** 转为预付款申请事件 */
+            turnToDownPaymentRequestEvent: Function;
             /** 测量物料事件 */
             measuringMaterialsEvent: Function;
             /** 查看物料历史价格事件 */

@@ -42,6 +42,7 @@ import org.colorcoding.ibas.businesspartner.data.emBusinessPartnerType;
 import org.colorcoding.ibas.businesspartner.logic.ILeadCheckContract;
 import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
 import org.colorcoding.ibas.document.IDocumentClosingQuantityItem;
+import org.colorcoding.ibas.document.IDocumentPrintedOperator;
 import org.colorcoding.ibas.materials.logic.IMaterialPriceCheckContract;
 import org.colorcoding.ibas.materials.rules.BusinessRulePreventCancelDocument;
 import org.colorcoding.ibas.sales.MyConfiguration;
@@ -58,8 +59,9 @@ import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionInverseDiscount;
 @XmlType(name = SalesQuote.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = SalesQuote.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BusinessObjectUnit(code = SalesQuote.BUSINESS_OBJECT_CODE)
-public class SalesQuote extends BusinessObject<SalesQuote> implements ISalesQuote, IDataOwnership, IApprovalData,
-		IBusinessLogicsHost, IProjectData, IBOSeriesKey, IBOUserFields, IDocumentCloseQuantityOperator {
+public class SalesQuote extends BusinessObject<SalesQuote>
+		implements ISalesQuote, IDataOwnership, IApprovalData, IBusinessLogicsHost, IProjectData, IBOSeriesKey,
+		IBOUserFields, IDocumentCloseQuantityOperator, IDocumentPrintedOperator {
 
 	private static final long serialVersionUID = -4055140005806497062L;
 
@@ -980,6 +982,37 @@ public class SalesQuote extends BusinessObject<SalesQuote> implements ISalesQuot
 	 */
 	public final void setReferenced(emYesNo value) {
 		this.setProperty(PROPERTY_REFERENCED, value);
+	}
+
+	/**
+	 * 属性名称-已打印
+	 */
+	private static final String PROPERTY_PRINTED_NAME = "Printed";
+
+	/**
+	 * 已打印 属性
+	 */
+	@DbField(name = "Printed", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<emYesNo> PROPERTY_PRINTED = registerProperty(PROPERTY_PRINTED_NAME, emYesNo.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-已打印
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_PRINTED_NAME)
+	public final emYesNo getPrinted() {
+		return this.getProperty(PROPERTY_PRINTED);
+	}
+
+	/**
+	 * 设置-已打印
+	 * 
+	 * @param value 值
+	 */
+	public final void setPrinted(emYesNo value) {
+		this.setProperty(PROPERTY_PRINTED, value);
 	}
 
 	/**
@@ -2012,6 +2045,16 @@ public class SalesQuote extends BusinessObject<SalesQuote> implements ISalesQuot
 				public String getLeadCode() {
 					return SalesQuote.this.getCustomerCode();
 				}
+
+				@Override
+				public String getLeadName() {
+					return SalesQuote.this.getCustomerName();
+				}
+
+				@Override
+				public void setLeadName(String value) {
+					SalesQuote.this.setCustomerName(value);
+				}
 			});
 		} else if (this.getCustomerType() == emBusinessPartnerType.CUSTOMER) {
 			// 客户检查
@@ -2034,6 +2077,16 @@ public class SalesQuote extends BusinessObject<SalesQuote> implements ISalesQuot
 				@Override
 				public void setFloorList(Integer value) {
 					SalesQuote.this.floorList = value;
+				}
+
+				@Override
+				public String getCustomerName() {
+					return SalesQuote.this.getCustomerName();
+				}
+
+				@Override
+				public void setCustomerName(String value) {
+					SalesQuote.this.setCustomerName(value);
 				}
 
 			});

@@ -52,6 +52,7 @@ import org.colorcoding.ibas.businesspartner.logic.ICustomerCheckContract;
 import org.colorcoding.ibas.document.IDocumentCloseAmountOperator;
 import org.colorcoding.ibas.document.IDocumentClosingAmountItem;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
+import org.colorcoding.ibas.document.IDocumentPrintedOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.journalentry.JournalEntrySmartContent;
 import org.colorcoding.ibas.materials.rules.BusinessRulePreventCancelDocument;
@@ -60,6 +61,7 @@ import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.IShippingAddresss;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddress;
 import org.colorcoding.ibas.sales.bo.shippingaddress.ShippingAddresss;
+import org.colorcoding.ibas.sales.rules.BusinessRuleCancellationDate;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDiscountTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionDocumentTotal;
 import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionInverseDiscount;
@@ -72,9 +74,10 @@ import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionInverseDiscount;
 @XmlType(name = SalesReserveInvoice.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = SalesReserveInvoice.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BusinessObjectUnit(code = SalesReserveInvoice.BUSINESS_OBJECT_CODE)
-public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> implements ISalesReserveInvoice,
-		IDataOwnership, IApprovalData, IPeriodData, IProjectData, IBOTagDeleted, IBOTagCanceled, IBusinessLogicsHost,
-		IBOSeriesKey, IBOUserFields, IDocumentPaidTotalOperator, IDocumentCloseAmountOperator, IJECPropertyValueGetter {
+public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice>
+		implements ISalesReserveInvoice, IDataOwnership, IApprovalData, IPeriodData, IProjectData, IBOTagDeleted,
+		IBOTagCanceled, IBusinessLogicsHost, IBOSeriesKey, IBOUserFields, IDocumentPaidTotalOperator,
+		IDocumentCloseAmountOperator, IJECPropertyValueGetter, IDocumentPrintedOperator {
 
 	/**
 	 * 序列化版本标记
@@ -1001,6 +1004,37 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 	}
 
 	/**
+	 * 属性名称-已打印
+	 */
+	private static final String PROPERTY_PRINTED_NAME = "Printed";
+
+	/**
+	 * 已打印 属性
+	 */
+	@DbField(name = "Printed", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<emYesNo> PROPERTY_PRINTED = registerProperty(PROPERTY_PRINTED_NAME, emYesNo.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-已打印
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_PRINTED_NAME)
+	public final emYesNo getPrinted() {
+		return this.getProperty(PROPERTY_PRINTED);
+	}
+
+	/**
+	 * 设置-已打印
+	 * 
+	 * @param value 值
+	 */
+	public final void setPrinted(emYesNo value) {
+		this.setProperty(PROPERTY_PRINTED, value);
+	}
+
+	/**
 	 * 属性名称-已删除
 	 */
 	private static final String PROPERTY_DELETED_NAME = "Deleted";
@@ -1845,6 +1879,37 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 	}
 
 	/**
+	 * 属性名称-取消日期
+	 */
+	private static final String PROPERTY_CANCELLATIONDATE_NAME = "CancellationDate";
+
+	/**
+	 * 取消日期 属性
+	 */
+	@DbField(name = "CnclDate", type = DbFieldType.DATE, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<DateTime> PROPERTY_CANCELLATIONDATE = registerProperty(
+			PROPERTY_CANCELLATIONDATE_NAME, DateTime.class, MY_CLASS);
+
+	/**
+	 * 获取-取消日期
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_CANCELLATIONDATE_NAME)
+	public final DateTime getCancellationDate() {
+		return this.getProperty(PROPERTY_CANCELLATIONDATE);
+	}
+
+	/**
+	 * 设置-取消日期
+	 * 
+	 * @param value 值
+	 */
+	public final void setCancellationDate(DateTime value) {
+		this.setProperty(PROPERTY_CANCELLATIONDATE, value);
+	}
+
+	/**
 	 * 属性名称-销售预留发票-行
 	 */
 	private static final String PROPERTY_SALESRESERVEINVOICEITEMS_NAME = "SalesReserveInvoiceItems";
@@ -2029,6 +2094,7 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 				new BusinessRuleDeductionInverseDiscount(PROPERTY_DISCOUNT, PROPERTY_INVERSEDISCOUNT),
 				new BusinessRuleMinValue<BigDecimal>(Decimals.VALUE_ZERO, PROPERTY_DISCOUNTTOTAL), // 不能低于0
 				new BusinessRuleMinValue<BigDecimal>(Decimals.VALUE_ZERO, PROPERTY_DOCUMENTTOTAL), // 不能低于0
+				new BusinessRuleCancellationDate(PROPERTY_CANCELED, PROPERTY_CANCELLATIONDATE),// 单据取消日期
 		};
 	}
 
@@ -2059,6 +2125,16 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 					@Override
 					public String getCustomerCode() {
 						return SalesReserveInvoice.this.getCustomerCode();
+					}
+
+					@Override
+					public String getCustomerName() {
+						return SalesReserveInvoice.this.getCustomerName();
+					}
+
+					@Override
+					public void setCustomerName(String value) {
+						SalesReserveInvoice.this.setCustomerName(value);
 					}
 				},
 				// 分支检查
@@ -2119,6 +2195,9 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 
 					@Override
 					public DateTime getDocumentDate() {
+						if (SalesReserveInvoice.this.getCanceled() == emYesNo.YES) {
+							return SalesReserveInvoice.this.getCancellationDate();
+						}
 						return SalesReserveInvoice.this.getDocumentDate();
 					}
 
@@ -2251,7 +2330,12 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice> imp
 
 	@Override
 	public boolean isSmartDocumentStatus() {
-		// 付款后的状态改变
+		// 付款后的状态改变，单行均完成时
+		for (ISalesReserveInvoiceItem item : this.getSalesReserveInvoiceItems()) {
+			if (item.getLineStatus() == emDocumentStatus.PLANNED || item.getLineStatus() == emDocumentStatus.RELEASED) {
+				return false;
+			}
+		}
 		return true;
 	}
 

@@ -67,6 +67,8 @@ namespace sales {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 客户代码 */
@@ -111,6 +113,8 @@ namespace sales {
             grossProfit: number;
             /** 反向折扣 */
             inverseDiscount: number;
+            /** 取消日期 */
+            cancellationDate: Date;
             /** 销售发票-行集合 */
             salesInvoiceItems: ISalesInvoiceItems;
             /** 销售发票-预收款集合 */

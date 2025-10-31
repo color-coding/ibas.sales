@@ -67,6 +67,8 @@ namespace sales {
             remarks: string;
             /** 已引用 */
             referenced: ibas.emYesNo;
+            /** 已打印 */
+            printed: ibas.emYesNo;
             /** 已删除 */
             deleted: ibas.emYesNo;
             /** 客户代码 */
@@ -165,6 +167,12 @@ namespace sales {
             quantity: number;
             /** 单位 */
             uom: string;
+            /** 库存单位 */
+            inventoryUOM: string;
+            /** 单位换算率 */
+            uomRate: number;
+            /** 库存数量 */
+            inventoryQuantity: number;
             /** 价格 */
             price: number;
             /** 货币 */

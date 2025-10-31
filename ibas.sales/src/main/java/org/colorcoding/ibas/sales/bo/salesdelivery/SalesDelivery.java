@@ -52,6 +52,7 @@ import org.colorcoding.ibas.document.IDocumentCloseQuantityOperator;
 import org.colorcoding.ibas.document.IDocumentClosingAmountItem;
 import org.colorcoding.ibas.document.IDocumentClosingQuantityItem;
 import org.colorcoding.ibas.document.IDocumentPaidTotalOperator;
+import org.colorcoding.ibas.document.IDocumentPrintedOperator;
 import org.colorcoding.ibas.materials.data.Ledgers;
 import org.colorcoding.ibas.materials.logic.journalentry.MaterialsInventoryCost;
 import org.colorcoding.ibas.materials.rules.BusinessRulePreventCancelDocument;
@@ -72,9 +73,10 @@ import org.colorcoding.ibas.sales.rules.BusinessRuleDeductionInverseDiscount;
 @XmlType(name = SalesDelivery.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = SalesDelivery.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BusinessObjectUnit(code = SalesDelivery.BUSINESS_OBJECT_CODE)
-public class SalesDelivery extends BusinessObject<SalesDelivery> implements ISalesDelivery, IDataOwnership,
-		IApprovalData, IPeriodData, IProjectData, IBOTagDeleted, IBOTagCanceled, IBusinessLogicsHost, IBOSeriesKey,
-		IBOUserFields, IDocumentPaidTotalOperator, IDocumentCloseQuantityOperator, IDocumentCloseAmountOperator {
+public class SalesDelivery extends BusinessObject<SalesDelivery>
+		implements ISalesDelivery, IDataOwnership, IApprovalData, IPeriodData, IProjectData, IBOTagDeleted,
+		IBOTagCanceled, IBusinessLogicsHost, IBOSeriesKey, IBOUserFields, IDocumentPaidTotalOperator,
+		IDocumentCloseQuantityOperator, IDocumentCloseAmountOperator, IDocumentPrintedOperator {
 
 	/**
 	 * 序列化版本标记
@@ -998,6 +1000,37 @@ public class SalesDelivery extends BusinessObject<SalesDelivery> implements ISal
 	 */
 	public final void setReferenced(emYesNo value) {
 		this.setProperty(PROPERTY_REFERENCED, value);
+	}
+
+	/**
+	 * 属性名称-已打印
+	 */
+	private static final String PROPERTY_PRINTED_NAME = "Printed";
+
+	/**
+	 * 已打印 属性
+	 */
+	@DbField(name = "Printed", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
+	public static final IPropertyInfo<emYesNo> PROPERTY_PRINTED = registerProperty(PROPERTY_PRINTED_NAME, emYesNo.class,
+			MY_CLASS);
+
+	/**
+	 * 获取-已打印
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_PRINTED_NAME)
+	public final emYesNo getPrinted() {
+		return this.getProperty(PROPERTY_PRINTED);
+	}
+
+	/**
+	 * 设置-已打印
+	 * 
+	 * @param value 值
+	 */
+	public final void setPrinted(emYesNo value) {
+		this.setProperty(PROPERTY_PRINTED, value);
 	}
 
 	/**
@@ -2060,6 +2093,16 @@ public class SalesDelivery extends BusinessObject<SalesDelivery> implements ISal
 					@Override
 					public String getCustomerCode() {
 						return SalesDelivery.this.getCustomerCode();
+					}
+
+					@Override
+					public String getCustomerName() {
+						return SalesDelivery.this.getCustomerName();
+					}
+
+					@Override
+					public void setCustomerName(String value) {
+						SalesDelivery.this.setCustomerName(value);
 					}
 				},
 				// 分支检查
