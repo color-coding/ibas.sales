@@ -804,5 +804,164 @@ namespace sales {
                 return new SalesReserveInvoiceReceiptService();
             }
         }
+
+        /** 单据收款-销售贷项 */
+        export class SalesCreditNoteReceiptService
+            extends ibas.ServiceWithResultApplication<ibas.IView, receiptpayment.app.IDocumentReceiptContract, receiptpayment.bo.IPaymentItem[]> {
+            /** 应用标识 */
+            static APPLICATION_ID: string = "82ce0250-ebb4-4b74-ac63-db02bf3b2271";
+            /** 应用名称 */
+            static APPLICATION_NAME: string = "sales_receipt_salescreditnote";
+            /** 构造函数 */
+            constructor() {
+                super();
+                this.id = SalesCreditNoteReceiptService.APPLICATION_ID;
+                this.name = SalesCreditNoteReceiptService.APPLICATION_NAME;
+                this.description = ibas.i18n.prop(["sales_receipt", "bo_salescreditnote"]);
+            }
+            /** 注册视图 */
+            protected registerView(): void {
+                super.registerView();
+                // 其他事件
+            }
+            /** 视图显示后 */
+            protected viewShowed(): void {
+                // 视图加载完成
+            }
+            protected runService(contract: receiptpayment.app.IDocumentReceiptContract): void {
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                // 不查子项（需要记录原始类型）
+                // criteria.noChilds = true;
+                let condition: ibas.ICondition = criteria.conditions.create();
+                // 未取消的
+                condition.alias = sales.bo.SalesCreditNote.PROPERTY_CANCELED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 未删除的
+                condition = criteria.conditions.create();
+                condition.alias = sales.bo.SalesCreditNote.PROPERTY_DELETED_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emYesNo.NO.toString();
+                // 未结算的，非计划的
+                condition = criteria.conditions.create();
+                condition.alias = sales.bo.SalesCreditNote.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                condition.value = ibas.emDocumentStatus.CLOSED.toString();
+                condition = criteria.conditions.create();
+                condition.alias = sales.bo.SalesCreditNote.PROPERTY_DOCUMENTSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.NOT_EQUAL;
+                condition.value = ibas.emDocumentStatus.PLANNED.toString();
+                // 审批通过的或未进审批
+                condition = criteria.conditions.create();
+                condition.alias = sales.bo.SalesCreditNote.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.APPROVED.toString();
+                condition.bracketOpen = 1;
+                condition = criteria.conditions.create();
+                condition.alias = sales.bo.SalesCreditNote.PROPERTY_APPROVALSTATUS_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = ibas.emApprovalStatus.UNAFFECTED.toString();
+                condition.relationship = ibas.emConditionRelationship.OR;
+                condition.bracketClose = 1;
+                // 是否指定分支
+                if (!ibas.strings.isEmpty(contract.receipt.branch)) {
+                    condition = criteria.conditions.create();
+                    condition.alias = sales.bo.SalesCreditNote.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = contract.receipt.branch;
+                } else {
+                    condition = criteria.conditions.create();
+                    condition.alias = sales.bo.SalesCreditNote.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.EQUAL;
+                    condition.value = "";
+                    condition.bracketOpen = 1;
+                    condition = criteria.conditions.create();
+                    condition.alias = sales.bo.SalesCreditNote.PROPERTY_BRANCH_NAME;
+                    condition.operation = ibas.emConditionOperation.IS_NULL;
+                    condition.relationship = ibas.emConditionRelationship.OR;
+                    condition.bracketClose = 1;
+                }
+                // 当前客户的
+                condition = criteria.conditions.create();
+                condition.alias = sales.bo.SalesCreditNote.PROPERTY_CUSTOMERCODE_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = contract.receipt.businessPartnerCode;
+                // 未收全款的
+                condition = criteria.conditions.create();
+                condition.alias = sales.bo.SalesCreditNote.PROPERTY_DOCUMENTTOTAL_NAME;
+                condition.operation = ibas.emConditionOperation.GRATER_THAN;
+                condition.comparedAlias = sales.bo.SalesCreditNote.PROPERTY_PAIDTOTAL_NAME;
+                // 调用选择服务
+                let that: this = this;
+                ibas.servicesManager.runChooseService<sales.bo.ISalesCreditNote>({
+                    boCode: sales.bo.BO_CODE_SALESCREDITNOTE,
+                    chooseType: ibas.emChooseType.MULTIPLE,
+                    criteria: criteria,
+                    onCompleted(selecteds: ibas.IList<sales.bo.ISalesCreditNote>): void {
+                        for (let selected of selecteds) {
+                            // 记录原始单据信息（不一致则忽略）
+                            let originalType: string = null;
+                            let originalEntry: number = 0;
+                            for (let item of selected.salesCreditNoteItems) {
+                                if (originalType === null) {
+                                    originalType = item.baseDocumentType;
+                                } else {
+                                    if (originalType !== item.baseDocumentType) {
+                                        originalType = null;
+                                        break;
+                                    }
+                                }
+                                if (originalEntry === 0) {
+                                    originalEntry = item.baseDocumentEntry;
+                                } else {
+                                    if (originalEntry !== item.baseDocumentEntry) {
+                                        originalEntry = 0;
+                                        break;
+                                    }
+                                }
+                            }
+                            for (let item of contract.receipt.receiptItems) {
+                                if (item.baseDocumentType === selected.objectCode
+                                    && item.baseDocumentEntry === selected.docEntry
+                                    && item.baseDocumentLineId === -1) {
+                                    selected.paidTotal += Math.abs(item.amount);
+                                }
+                            }
+                            if (selected.paidTotal >= selected.documentTotal) {
+                                continue;
+                            }
+                            let item: receiptpayment.bo.ReceiptItem = contract.receipt.receiptItems.create();
+                            item.baseDocumentType = selected.objectCode;
+                            item.baseDocumentEntry = selected.docEntry;
+                            item.baseDocumentLineId = -1;
+                            item.consumer = selected.consumer;
+                            item.amount = -(selected.documentTotal - selected.paidTotal);
+                            item.currency = selected.documentCurrency;
+                            if (originalType !== null && originalEntry > 0) {
+                                item.originalDocumentType = originalType;
+                                item.originalDocumentEntry = originalEntry;
+                                item.originalDocumentLineId = -1;
+                            }
+                        }
+                        that.fireCompleted(contract.receipt.receiptItems);
+                    }
+                });
+            }
+        }
+        /** 单据收款-销售贷项 */
+        export class SalesCreditNoteReceiptServiceMapping extends ibas.ServiceMapping {
+            /** 构造函数 */
+            constructor() {
+                super();
+                this.id = SalesCreditNoteReceiptService.APPLICATION_ID;
+                this.name = SalesCreditNoteReceiptService.APPLICATION_NAME;
+                this.description = ibas.i18n.prop("bo_salescreditnote");
+                this.proxy = receiptpayment.app.DocumentReceiptServiceProxy;
+            }
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IServiceContract> {
+                return new SalesCreditNoteReceiptService();
+            }
+        }
     }
 }
