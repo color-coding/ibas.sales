@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.accounting.logic.IJECPropertyValueGetter;
 import org.colorcoding.ibas.accounting.logic.ITaxGroupCheckContract;
+import org.colorcoding.ibas.bobas.approval.IApprovalData;
 import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.bo.IBOTagCanceled;
 import org.colorcoding.ibas.bobas.bo.IBOTagDeleted;
@@ -17,6 +18,7 @@ import org.colorcoding.ibas.bobas.bo.IBOUserFields;
 import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
+import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
@@ -2904,6 +2906,13 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 						if (SalesDeliveryItem.this.parent instanceof IBOTagDeleted) {
 							IBOTagDeleted boTag = (IBOTagDeleted) SalesDeliveryItem.this.parent;
 							if (boTag.getDeleted() == emYesNo.YES) {
+								return true;
+							}
+						}
+						if (SalesDeliveryItem.this.parent instanceof IApprovalData) {
+							IApprovalData apData = (IApprovalData) SalesDeliveryItem.this.parent;
+							if (apData.getApprovalStatus() != emApprovalStatus.UNAFFECTED
+									&& apData.getApprovalStatus() != emApprovalStatus.APPROVED) {
 								return true;
 							}
 						}
