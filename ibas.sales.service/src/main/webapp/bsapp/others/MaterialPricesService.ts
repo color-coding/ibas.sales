@@ -91,6 +91,7 @@ namespace sales {
                 let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
                 cCriteria.propertyPath = bo.SalesOrder.PROPERTY_SALESORDERITEMS_NAME;
                 cCriteria.onlyHasChilds = true;
+                cCriteria.entry = true;
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesOrderItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
@@ -253,6 +254,7 @@ namespace sales {
                 let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
                 cCriteria.propertyPath = bo.DownPaymentRequest.PROPERTY_DOWNPAYMNETREQUESTITEMS_NAME;
                 cCriteria.onlyHasChilds = true;
+                cCriteria.entry = true;
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.DownPaymentRequestItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
@@ -416,6 +418,7 @@ namespace sales {
                 let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
                 cCriteria.propertyPath = bo.SalesCreditNote.PROPERTY_SALESCREDITNOTEITEMS_NAME;
                 cCriteria.onlyHasChilds = true;
+                cCriteria.entry = true;
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesCreditNoteItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
@@ -578,6 +581,7 @@ namespace sales {
                 let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
                 cCriteria.propertyPath = bo.SalesDelivery.PROPERTY_SALESDELIVERYITEMS_NAME;
                 cCriteria.onlyHasChilds = true;
+                cCriteria.entry = true;
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesDeliveryItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
@@ -741,6 +745,7 @@ namespace sales {
                 let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
                 cCriteria.propertyPath = bo.SalesInvoice.PROPERTY_SALESINVOICEITEMS_NAME;
                 cCriteria.onlyHasChilds = true;
+                cCriteria.entry = true;
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesInvoiceItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
@@ -903,6 +908,7 @@ namespace sales {
                 let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
                 cCriteria.propertyPath = bo.SalesQuote.PROPERTY_SALESQUOTEITEMS_NAME;
                 cCriteria.onlyHasChilds = true;
+                cCriteria.entry = true;
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesQuoteItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
@@ -1065,6 +1071,7 @@ namespace sales {
                 let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
                 cCriteria.propertyPath = bo.SalesReserveInvoice.PROPERTY_SALESRESERVEINVOICEITEMS_NAME;
                 cCriteria.onlyHasChilds = true;
+                cCriteria.entry = true;
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesReserveInvoiceItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
@@ -1227,6 +1234,7 @@ namespace sales {
                 let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
                 cCriteria.propertyPath = bo.SalesReturn.PROPERTY_SALESRETURNITEMS_NAME;
                 cCriteria.onlyHasChilds = true;
+                cCriteria.entry = true;
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesReturnItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
@@ -1390,6 +1398,7 @@ namespace sales {
                 let cCriteria: ibas.IChildCriteria = criteria.childCriterias.create();
                 cCriteria.propertyPath = bo.SalesReturnRequest.PROPERTY_SALESRETURNREQUESTITEMS_NAME;
                 cCriteria.onlyHasChilds = true;
+                cCriteria.entry = true;
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesReturnRequestItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;

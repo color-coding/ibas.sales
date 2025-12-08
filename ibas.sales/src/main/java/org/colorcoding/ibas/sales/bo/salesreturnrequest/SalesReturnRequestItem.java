@@ -2754,7 +2754,7 @@ public class SalesReturnRequestItem extends BusinessObject<SalesReturnRequestIte
 	}
 
 	@Override
-	public void reset() {
+	protected void reset() {
 		super.reset();
 		this.setClosedAmount(Decimals.VALUE_ZERO);
 		this.setClosedQuantity(Decimals.VALUE_ZERO);
