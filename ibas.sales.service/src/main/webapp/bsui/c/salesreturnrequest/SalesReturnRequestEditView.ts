@@ -58,6 +58,8 @@ namespace sales {
                 measuringMaterialsEvent: Function;
                 /** 查看物料历史价格事件 */
                 viewHistoricalPricesEvent: Function;
+                /** 计算数量 */
+                calculateQuantityEvent: Function;
                 /** 计算毛利润 */
                 calculateGrossProfitEvent: Function;
                 /** 选择付款条款事件 */
@@ -788,6 +790,12 @@ namespace sales {
                                     new sap.extension.table.DataColumn("", {
                                         label: ibas.i18n.prop("bo_salesreturnrequestitem_quantity"),
                                         template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpOnly: false,
+                                            valueHelpIconSrc: "sap-icon://simulate",
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.calculateQuantityEvent, this.getBindingContext().getObject());
+                                            },
                                         }).bindProperty("bindingValue", {
                                             path: "quantity",
                                             type: new sap.extension.data.Quantity()

@@ -13240,6 +13240,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseDeliveryItemMaterialCatalog(caller: bo.PurchaseDeliveryItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseDeliveryItem): void;
+            protected calculateQuantity(caller: bo.PurchaseDeliveryItem): void;
             protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购收货 */
@@ -13300,6 +13301,8 @@ declare namespace purchase {
             measuringMaterialsEvent: Function;
             /** 查看物料历史价格事件 */
             viewHistoricalPricesEvent: Function;
+            /** 计算数量 */
+            calculateQuantityEvent: Function;
             /** 选择付款条款事件 */
             choosePaymentTermEvent: Function;
             /** 默认仓库 */
@@ -13555,6 +13558,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseOrderItemMaterialCatalog(caller: bo.PurchaseOrderItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseOrderItem): void;
+            protected calculateQuantity(caller: bo.PurchaseOrderItem): void;
             protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购订单 */
@@ -13621,6 +13625,8 @@ declare namespace purchase {
             measuringMaterialsEvent: Function;
             /** 查看物料历史价格事件 */
             viewHistoricalPricesEvent: Function;
+            /** 计算数量 */
+            calculateQuantityEvent: Function;
             /** 选择付款条款事件 */
             choosePaymentTermEvent: Function;
             /** 默认仓库 */
@@ -14030,6 +14036,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseReturnItemMaterialCatalog(caller: bo.PurchaseReturnItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseReturnItem): void;
+            protected calculateQuantity(caller: bo.PurchaseReturnItem): void;
             protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购退货 */
@@ -14084,6 +14091,8 @@ declare namespace purchase {
             measuringMaterialsEvent: Function;
             /** 查看物料历史价格事件 */
             viewHistoricalPricesEvent: Function;
+            /** 计算数量 */
+            calculateQuantityEvent: Function;
             /** 选择付款条款事件 */
             choosePaymentTermEvent: Function;
             /** 默认仓库 */
@@ -14318,6 +14327,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseQuoteItemMaterialCatalog(caller: bo.PurchaseQuoteItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseQuoteItem): void;
+            protected calculateQuantity(caller: bo.PurchaseQuoteItem): void;
             protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
             /** 转为预付款申请事件 */
             protected turnToDownPaymentRequest(): void;
@@ -14370,6 +14380,8 @@ declare namespace purchase {
             measuringMaterialsEvent: Function;
             /** 查看物料历史价格事件 */
             viewHistoricalPricesEvent: Function;
+            /** 计算数量 */
+            calculateQuantityEvent: Function;
             /** 选择付款条款事件 */
             choosePaymentTermEvent: Function;
             /** 默认税组 */
@@ -14769,6 +14781,7 @@ declare namespace purchase {
             private choosePurchaseRequestItemMaterialVersion;
             protected measuringMaterials(): void;
             protected viewHistoricalPrices(caller: bo.PurchaseRequestItem): void;
+            protected calculateQuantity(caller: bo.PurchaseRequestItem): void;
         }
         /** 视图-采购申请 */
         interface IPurchaseRequestEditView extends ibas.IBOEditView {
@@ -14810,6 +14823,8 @@ declare namespace purchase {
             measuringMaterialsEvent: Function;
             /** 查看物料历史价格事件 */
             viewHistoricalPricesEvent: Function;
+            /** 计算数量 */
+            calculateQuantityEvent: Function;
         }
         /** 采购申请编辑服务映射 */
         class PurchaseRequestEditServiceMapping extends ibas.BOEditServiceMapping {
@@ -15010,6 +15025,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseInvoiceItemMaterialCatalog(caller: bo.PurchaseInvoiceItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseInvoiceItem): void;
+            protected calculateQuantity(caller: bo.PurchaseInvoiceItem): void;
             protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购发票 */
@@ -15072,6 +15088,8 @@ declare namespace purchase {
             measuringMaterialsEvent: Function;
             /** 查看物料历史价格事件 */
             viewHistoricalPricesEvent: Function;
+            /** 计算数量 */
+            calculateQuantityEvent: Function;
             /** 选择付款条款事件 */
             choosePaymentTermEvent: Function;
             /** 默认仓库 */
@@ -15313,6 +15331,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseCreditNoteItemMaterialCatalog(caller: bo.PurchaseCreditNoteItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseCreditNoteItem): void;
+            protected calculateQuantity(caller: bo.PurchaseCreditNoteItem): void;
             protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购贷项 */
@@ -15363,6 +15382,8 @@ declare namespace purchase {
             measuringMaterialsEvent: Function;
             /** 查看物料历史价格事件 */
             viewHistoricalPricesEvent: Function;
+            /** 计算数量 */
+            calculateQuantityEvent: Function;
             /** 选择付款条款事件 */
             choosePaymentTermEvent: Function;
             /** 默认仓库 */
@@ -16020,6 +16041,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected chooseDownPaymentRequestItemMaterialCatalog(caller: bo.DownPaymentRequestItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.DownPaymentRequestItem): void;
+            protected calculateQuantity(caller: bo.DownPaymentRequestItem): void;
             protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-预付款申请 */
@@ -16068,6 +16090,8 @@ declare namespace purchase {
             measuringMaterialsEvent: Function;
             /** 查看物料历史价格事件 */
             viewHistoricalPricesEvent: Function;
+            /** 计算数量 */
+            calculateQuantityEvent: Function;
             /** 默认仓库 */
             defaultWarehouse: string;
             /** 默认税组 */
@@ -16197,6 +16221,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseReserveInvoiceItemMaterialCatalog(caller: bo.PurchaseReserveInvoiceItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseReserveInvoiceItem): void;
+            protected calculateQuantity(caller: bo.PurchaseReserveInvoiceItem): void;
             protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购预留发票 */
@@ -16251,6 +16276,8 @@ declare namespace purchase {
             measuringMaterialsEvent: Function;
             /** 查看物料历史价格事件 */
             viewHistoricalPricesEvent: Function;
+            /** 计算数量 */
+            calculateQuantityEvent: Function;
             /** 选择付款条款事件 */
             choosePaymentTermEvent: Function;
             /** 默认仓库 */
@@ -16490,6 +16517,7 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseReturnRequestItemMaterialCatalog(caller: bo.PurchaseReturnRequestItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseReturnRequestItem): void;
+            protected calculateQuantity(caller: bo.PurchaseReturnRequestItem): void;
             protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
         }
         /** 视图-采购退货请求 */
@@ -16542,6 +16570,8 @@ declare namespace purchase {
             measuringMaterialsEvent: Function;
             /** 查看物料历史价格事件 */
             viewHistoricalPricesEvent: Function;
+            /** 计算数量 */
+            calculateQuantityEvent: Function;
             /** 选择付款条款事件 */
             choosePaymentTermEvent: Function;
             /** 默认仓库 */

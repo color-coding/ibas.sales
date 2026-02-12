@@ -52,6 +52,8 @@ namespace sales {
                 measuringMaterialsEvent: Function;
                 /** 查看物料历史价格事件 */
                 viewHistoricalPricesEvent: Function;
+                /** 计算数量 */
+                calculateQuantityEvent: Function;
                 /** 计算毛利润 */
                 calculateGrossProfitEvent: Function;
                 /** 选择付款条款事件 */
