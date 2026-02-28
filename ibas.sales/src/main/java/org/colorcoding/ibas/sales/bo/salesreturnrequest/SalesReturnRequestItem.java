@@ -34,6 +34,7 @@ import org.colorcoding.ibas.materials.bo.materialbatch.MaterialBatchItems;
 import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItems;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItem;
 import org.colorcoding.ibas.materials.bo.materialserial.MaterialSerialItems;
+import org.colorcoding.ibas.materials.logic.IDocumentQuantityClosingContract;
 import org.colorcoding.ibas.materials.logic.IMaterialCatalogCheckContract;
 import org.colorcoding.ibas.materials.logic.IMaterialWarehouseCheckContract;
 import org.colorcoding.ibas.materials.rules.BusinessRuleCalculateInventoryQuantity;
@@ -2850,6 +2851,35 @@ public class SalesReturnRequestItem extends BusinessObject<SalesReturnRequestIte
 			public String getBusinessPartnerCode() {
 				return SalesReturnRequestItem.this.parent.getCustomerCode();
 			}
+		});
+		// 基于单据数量完成
+		contracts.add(new IDocumentQuantityClosingContract() {
+
+			@Override
+			public String getIdentifiers() {
+				return SalesReturnRequestItem.this.getIdentifiers();
+			}
+
+			@Override
+			public BigDecimal getQuantity() {
+				return SalesReturnRequestItem.this.getQuantity();
+			}
+
+			@Override
+			public String getBaseDocumentType() {
+				return SalesReturnRequestItem.this.getBaseDocumentType();
+			}
+
+			@Override
+			public Integer getBaseDocumentEntry() {
+				return SalesReturnRequestItem.this.getBaseDocumentEntry();
+			}
+
+			@Override
+			public Integer getBaseDocumentLineId() {
+				return SalesReturnRequestItem.this.getBaseDocumentLineId();
+			}
+
 		});
 		return contracts.toArray(new IBusinessLogicContract[] {});
 	}
