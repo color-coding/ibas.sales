@@ -14,11 +14,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.colorcoding.ibas.bobas.common.Criteria;
-import org.colorcoding.ibas.bobas.common.Files;
 import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
 import org.colorcoding.ibas.bobas.common.OperationResult;
-import org.colorcoding.ibas.bobas.data.FileItem;
+import org.colorcoding.ibas.bobas.file.FileItem;
 import org.colorcoding.ibas.bobas.repository.jersey.FileRepositoryService;
 import org.colorcoding.ibas.sales.MyConfiguration;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
@@ -28,8 +27,7 @@ public class FileService extends FileRepositoryService {
 
 	public FileService() {
 		// 设置工作目录
-		this.setRepositoryFolder(Files.valueOf(MyConfiguration.getConfigValue(
-				MyConfiguration.CONFIG_ITEM_DOCUMENT_FOLDER, MyConfiguration.getDataFolder()), "sales_files"));
+		this.setRepositoryFolder("sales_files");
 		// 设置是否分组存储文件
 		this.setGroupingFiles(
 				MyConfiguration.getConfigValue(MyConfiguration.CONFIG_ITEM_FILE_REPOSITORY_GROUPING_FILES, true));
