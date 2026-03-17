@@ -946,11 +946,23 @@ namespace sales {
                 condition.alias = bo.SalesOrderItem.PROPERTY_CANCELED_NAME;
                 condition.operation = ibas.emConditionOperation.EQUAL;
                 condition.value = ibas.emYesNo.NO.toString();
-                // 已清金额小于总计
+                // 已清金额小于总计或价格0时有未清数量
                 condition = cCriteria.conditions.create();
                 condition.alias = bo.SalesOrderItem.PROPERTY_CLOSEDAMOUNT_NAME;
                 condition.operation = ibas.emConditionOperation.LESS_THAN;
                 condition.comparedAlias = bo.SalesOrderItem.PROPERTY_LINETOTAL_NAME;
+                condition.bracketOpen = 1;
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesOrderItem.PROPERTY_PRICE_NAME;
+                condition.operation = ibas.emConditionOperation.EQUAL;
+                condition.value = "0";
+                condition.bracketOpen = 1;
+                condition.relationship = ibas.emConditionRelationship.OR;
+                condition = cCriteria.conditions.create();
+                condition.alias = bo.SalesOrderItem.PROPERTY_CLOSEDQUANTITY_NAME;
+                condition.operation = ibas.emConditionOperation.LESS_THAN;
+                condition.comparedAlias = bo.SalesOrderItem.PROPERTY_QUANTITY_NAME;
+                condition.bracketClose = 2;
                 // 调用选择服务
                 let that: this = this;
                 ibas.servicesManager.runChooseService<bo.SalesOrder>({
