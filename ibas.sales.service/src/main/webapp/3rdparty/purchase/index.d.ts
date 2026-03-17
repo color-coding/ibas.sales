@@ -1382,7 +1382,7 @@ declare namespace purchase {
             create(): IPurchaseRequestItem;
         }
         /** 采购申请-行 */
-        interface IPurchaseRequestItem extends ibas.IBODocumentLine, ibas.IBOUserFields {
+        interface IPurchaseRequestItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent, ibas.IBOUserFields {
             /** 编码 */
             docEntry: number;
             /** 行号 */
@@ -7585,6 +7585,18 @@ declare namespace purchase {
             get purchaseRequestItemExtras(): PurchaseRequestItemExtras;
             /** 设置-采购申请-行-额外信息集合 */
             set purchaseRequestItemExtras(value: PurchaseRequestItemExtras);
+            /** 映射的属性名称-物料批次集合 */
+            static PROPERTY_MATERIALBATCHES_NAME: string;
+            /** 获取-物料批次集合 */
+            get materialBatches(): materials.bo.MaterialBatchItems;
+            /** 设置-物料批次集合 */
+            set materialBatches(value: materials.bo.MaterialBatchItems);
+            /** 映射的属性名称-物料序列集合 */
+            static PROPERTY_MATERIALSERIALS_NAME: string;
+            /** 获取-物料序列集合 */
+            get materialSerials(): materials.bo.MaterialSerialItems;
+            /** 设置-物料序列集合 */
+            set materialSerials(value: materials.bo.MaterialSerialItems);
             /** 初始化数据 */
             protected init(): void;
             /** 赋值产品 */
@@ -14771,6 +14783,12 @@ declare namespace purchase {
             private choosePurchaseRequestItemMaterial;
             private showPurchaseRequestItemExtra;
             private choosePurchaseRequestItemUnit;
+            private batches;
+            /** 选择物料批次事件 */
+            private choosePurchaseRequestItemMaterialBatch;
+            private serials;
+            /** 选择物料序列事件 */
+            private choosePurchaseRequestItemMaterialSerial;
             /** 预留物料订购 */
             private reserveMaterialsOrdered;
             private chooseSupplierAgreements;
@@ -14811,6 +14829,10 @@ declare namespace purchase {
             choosePurchaseRequestItemDistributionRuleEvent: Function;
             /** 选择采购申请-行 物料版本 */
             choosePurchaseRequestItemMaterialVersionEvent: Function;
+            /** 选择采购申请-行 物料序列事件 */
+            choosePurchaseRequestItemMaterialSerialEvent: Function;
+            /** 选择采购申请-行 物料批次事件 */
+            choosePurchaseRequestItemMaterialBatchEvent: Function;
             /** 显示数据-采购申请-行 */
             showPurchaseRequestItems(datas: bo.PurchaseRequestItem[]): void;
             /** 预留物料订购 */

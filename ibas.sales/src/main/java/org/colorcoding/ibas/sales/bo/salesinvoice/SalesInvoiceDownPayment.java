@@ -840,7 +840,7 @@ public class SalesInvoiceDownPayment extends BusinessObject<SalesInvoiceDownPaym
 	/**
 	 * 基于类型 属性
 	 */
-	@DbField(name = "BaseType", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "BaseType", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_BASEDOCUMENTTYPE = registerProperty(
 			PROPERTY_BASEDOCUMENTTYPE_NAME, String.class, MY_CLASS);
 
@@ -871,7 +871,7 @@ public class SalesInvoiceDownPayment extends BusinessObject<SalesInvoiceDownPaym
 	/**
 	 * 基于标识 属性
 	 */
-	@DbField(name = "BaseEntry", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "BaseEntry", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_BASEDOCUMENTENTRY = registerProperty(
 			PROPERTY_BASEDOCUMENTENTRY_NAME, Integer.class, MY_CLASS);
 
@@ -902,7 +902,7 @@ public class SalesInvoiceDownPayment extends BusinessObject<SalesInvoiceDownPaym
 	/**
 	 * 基于行号 属性
 	 */
-	@DbField(name = "BaseLine", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "BaseLine", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_BASEDOCUMENTLINEID = registerProperty(
 			PROPERTY_BASEDOCUMENTLINEID_NAME, Integer.class, MY_CLASS);
 
@@ -933,7 +933,7 @@ public class SalesInvoiceDownPayment extends BusinessObject<SalesInvoiceDownPaym
 	/**
 	 * 原始类型 属性
 	 */
-	@DbField(name = "OrgnlType", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "OrgnlType", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<String> PROPERTY_ORIGINALDOCUMENTTYPE = registerProperty(
 			PROPERTY_ORIGINALDOCUMENTTYPE_NAME, String.class, MY_CLASS);
 
@@ -964,7 +964,7 @@ public class SalesInvoiceDownPayment extends BusinessObject<SalesInvoiceDownPaym
 	/**
 	 * 原始标识 属性
 	 */
-	@DbField(name = "OrgnlEntry", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "OrgnlEntry", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_ORIGINALDOCUMENTENTRY = registerProperty(
 			PROPERTY_ORIGINALDOCUMENTENTRY_NAME, Integer.class, MY_CLASS);
 
@@ -995,7 +995,7 @@ public class SalesInvoiceDownPayment extends BusinessObject<SalesInvoiceDownPaym
 	/**
 	 * 原始行号 属性
 	 */
-	@DbField(name = "OrgnlLine", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	@DbField(name = "OrgnlLine", type = DbFieldType.NUMERIC, table = DB_TABLE_NAME)
 	public static final IPropertyInfo<Integer> PROPERTY_ORIGINALDOCUMENTLINEID = registerProperty(
 			PROPERTY_ORIGINALDOCUMENTLINEID_NAME, Integer.class, MY_CLASS);
 
