@@ -1344,8 +1344,12 @@ namespace sales {
                         batchManagement: caller.batchManagement,
                         applyQuantity: (quantity, uom, warehouse) => {
                             caller.quantity = quantity;
-                            caller.uom = uom;
-                            caller.warehouse = warehouse;
+                            if (!ibas.objects.isNull(uom)) {
+                                caller.uom = uom;
+                            }
+                            if (!ibas.objects.isNull(warehouse)) {
+                                caller.warehouse = warehouse;
+                            }
                         }
                     })
                 });
