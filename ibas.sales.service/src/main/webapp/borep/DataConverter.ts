@@ -394,10 +394,18 @@ namespace sales {
             }
         }
         export function baseProduct(
-            target: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem | ISalesReturnItem | ISalesInvoiceItem
-                | ISalesCreditNoteItem | IDownPaymentRequestItem | ISalesReserveInvoiceItem | SalesReturnRequestItem,
+            target: SalesQuoteItem | SalesOrderItem | SalesDeliveryItem | SalesReturnItem | SalesInvoiceItem
+                | SalesCreditNoteItem | DownPaymentRequestItem | SalesReserveInvoiceItem | SalesReturnRequestItem,
             source: materials.bo.IProduct
         ): void {
+            // 改变物料，清除无效数据
+            if (!ibas.strings.equals(target.itemCode, source.code)) {
+                if (!(target instanceof DownPaymentRequestItem)
+                    && !(target instanceof SalesQuoteItem)) {
+                    target.materialSerials.clear();
+                    target.materialBatches.clear();
+                }
+            }
             target.itemCode = source.code;
             target.itemDescription = source.name;
             target.itemSign = source.sign;
@@ -456,13 +464,13 @@ namespace sales {
             source: bo.IProductSuitEx
         ): ISalesQuoteItem[] | ISalesOrderItem[] | ISalesDeliveryItem[] {
             let items: ibas.IList<any> = new ibas.ArrayList<any>();
-            let targetItem: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem = target.create();
+            let targetItem: any = target.create();
             // 父项标记
             targetItem.lineSign = ibas.uuids.random();
-            baseProduct(targetItem, source.extend);
+            baseProduct(<any>targetItem, source.extend);
             items.add(targetItem);
             for (let sItem of source.productSuitItems) {
-                let subTargetItem: ISalesQuoteItem | ISalesOrderItem | ISalesDeliveryItem = target.create();
+                let subTargetItem: any = target.create();
                 // 构建父项关系
                 subTargetItem.lineSign = ibas.uuids.random();
                 subTargetItem.parentLineSign = targetItem.lineSign;
