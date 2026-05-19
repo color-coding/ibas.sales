@@ -184,7 +184,7 @@ public class BusinessRuleDeductionPriceTaxTotal extends BusinessRuleCommon {
 							context.getOutputValues().put(this.getPreTotal(), preTotal);
 						} else if (Decimals.VALUE_ZERO.compareTo(taxTotal) != 0 && Decimals.VALUE_ZERO.compareTo(taxRate) != 0) {
 							preTotal = Decimals.divide(taxTotal, taxRate);
-							context.getOutputValues().put(this.getPreTotal(), total);
+							context.getOutputValues().put(this.getPreTotal(), preTotal);
 						}
 					}
 					if (Decimals.VALUE_ZERO.compareTo(preTotal) != 0) {
