@@ -97,6 +97,7 @@ namespace sales {
                                         that.fireViewEvents(that.chooseSalesReturnRequestCustomerEvent, this.itemConditions(selectedItem));
                                     }
                                 },
+                                criteria: businesspartner.app.conditions.customer.create(),
                                 editable: {
                                     parts: [
                                         {
