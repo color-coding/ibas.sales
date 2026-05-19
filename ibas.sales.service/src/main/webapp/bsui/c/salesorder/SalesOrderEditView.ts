@@ -110,6 +110,7 @@ namespace sales {
                                         that.fireViewEvents(that.chooseSalesOrderCustomerEvent, this.itemConditions(selectedItem));
                                     }
                                 },
+                                criteria: businesspartner.app.conditions.customer.create(),
                                 editable: {
                                     parts: [
                                         {

@@ -67,6 +67,7 @@ namespace sales {
                                         that.fireViewEvents(that.chooseBlanketAgreementCustomerEvent, this.itemConditions(selectedItem));
                                     }
                                 },
+                                criteria: businesspartner.app.conditions.customer.create(),
                                 editable: {
                                     parts: [
                                         {

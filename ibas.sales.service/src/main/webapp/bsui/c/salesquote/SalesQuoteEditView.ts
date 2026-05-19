@@ -99,6 +99,7 @@ namespace sales {
                                                 that.fireViewEvents(that.chooseSalesQuoteCustomerEvent, this.itemConditions(selectedItem));
                                             }
                                         },
+                                        criteria: businesspartner.app.conditions.customer.create(),
                                         editable: {
                                             parts: [
                                                 {
