@@ -156,13 +156,13 @@ namespace sales {
                             if (opRslt.resultObjects.length === 0) {
                                 // 删除成功，释放当前对象
                                 that.messages(ibas.emMessageType.SUCCESS,
-                                    ibas.i18n.prop("shell_data_delete") + ibas.i18n.prop("shell_sucessful"));
+                                    ibas.i18n.prop("shell_data_delete") + ibas.i18n.prop("shell_successful"));
                                 that.editData = undefined;
                             } else {
                                 // 替换编辑对象
                                 that.editData = opRslt.resultObjects.firstOrDefault();
                                 that.messages(ibas.emMessageType.SUCCESS,
-                                    ibas.i18n.prop("shell_data_save") + ibas.i18n.prop("shell_sucessful"));
+                                    ibas.i18n.prop("shell_data_save") + ibas.i18n.prop("shell_successful"));
                             }
                             // 刷新当前视图
                             that.viewShowed();
@@ -525,7 +525,7 @@ namespace sales {
                     condition = new ibas.Condition();
                     condition.alias = materials.bo.Product.PROPERTY_ONHAND_NAME;
                     condition.value = "0";
-                    condition.operation = ibas.emConditionOperation.GRATER_THAN;
+                    condition.operation = ibas.emConditionOperation.GREATER_THAN;
                     conditions.add(condition);
                 }
                 // 调用选择服务
@@ -983,7 +983,7 @@ namespace sales {
                 // 未过期的
                 condition = criteria.conditions.create();
                 condition.alias = bo.SalesQuote.PROPERTY_DELIVERYDATE_NAME;
-                condition.operation = ibas.emConditionOperation.GRATER_EQUAL;
+                condition.operation = ibas.emConditionOperation.GREATER_EQUAL;
                 condition.value = ibas.dates.toString(ibas.dates.today());
                 // 调用选择服务
                 let that: this = this;
@@ -1151,7 +1151,7 @@ namespace sales {
                                 || this.editData.canceled === ibas.emYesNo.YES
                                 || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
                             ) {
-                                throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                                throw new Error(ibas.i18n.prop("sales_invalid_status_not_support_turn_to_operation"));
                             }
                             let target: bo.SalesDelivery = new bo.SalesDelivery();
                             target.customerCode = this.editData.customerCode;
@@ -1290,7 +1290,7 @@ namespace sales {
                                 || this.editData.canceled === ibas.emYesNo.YES
                                 || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
                             ) {
-                                throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                                throw new Error(ibas.i18n.prop("sales_invalid_status_not_support_turn_to_operation"));
                             }
                             let target: bo.SalesReturn = new bo.SalesReturn();
                             target.customerCode = this.editData.customerCode;
@@ -1344,7 +1344,7 @@ namespace sales {
                                 || this.editData.canceled === ibas.emYesNo.YES
                                 || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
                             ) {
-                                throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                                throw new Error(ibas.i18n.prop("sales_invalid_status_not_support_turn_to_operation"));
                             }
                             let target: bo.SalesInvoice = new bo.SalesInvoice();
                             target.customerCode = this.editData.customerCode;
@@ -1507,7 +1507,7 @@ namespace sales {
                                 || this.editData.canceled === ibas.emYesNo.YES
                                 || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
                             ) {
-                                throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                                throw new Error(ibas.i18n.prop("sales_invalid_status_not_support_turn_to_operation"));
                             }
                             let target: bo.SalesReserveInvoice = new bo.SalesReserveInvoice();
                             target.customerCode = this.editData.customerCode;
@@ -1562,7 +1562,7 @@ namespace sales {
                                 || this.editData.canceled === ibas.emYesNo.YES
                                 || this.editData.documentStatus === ibas.emDocumentStatus.PLANNED
                             ) {
-                                throw new Error(ibas.i18n.prop("sales_invaild_status_not_support_turn_to_operation"));
+                                throw new Error(ibas.i18n.prop("sales_invalid_status_not_support_turn_to_operation"));
                             }
                             let target: bo.DownPaymentRequest = new bo.DownPaymentRequest();
                             target.customerCode = this.editData.customerCode;
@@ -1673,7 +1673,7 @@ namespace sales {
                 condition = criteria.conditions.create();
                 condition.bracketOpen = 1;
                 condition.alias = bo.BlanketAgreement.PROPERTY_ENDDATE_NAME;
-                condition.operation = ibas.emConditionOperation.GRATER_EQUAL;
+                condition.operation = ibas.emConditionOperation.GREATER_EQUAL;
                 condition.value = ibas.dates.toString(ibas.dates.today());
                 condition = criteria.conditions.create();
                 condition.bracketClose = 1;
@@ -1984,7 +1984,7 @@ namespace sales {
             }
             private chooseSalesOrderItemDistributionRule(type: accounting.app.emDimensionType, caller: bo.SalesOrderItem): void {
                 if (ibas.objects.isNull(type)) {
-                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("accounting_dimension_invaild", ""));
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("accounting_dimension_invalid", ""));
                     return;
                 }
                 ibas.servicesManager.runApplicationService<accounting.app.IDimensionDataServiceContract, String>({

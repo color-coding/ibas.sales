@@ -310,7 +310,7 @@ namespace sales {
                             }),
                             new sap.m.Label("", {
                                 visible: false,
-                                text: ibas.i18n.prop("o_salesreturn_postingdate"),
+                                text: ibas.i18n.prop("bo_salesreturn_postingdate"),
                             }),
                             new sap.extension.m.DatePicker("", {
                                 visible: false,

@@ -22,7 +22,7 @@ import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.db.DbField;
-import org.colorcoding.ibas.bobas.db.DbFieldType;
+import org.colorcoding.ibas.bobas.db.DataType;
 import org.colorcoding.ibas.bobas.logic.BusinessLogicException;
 import org.colorcoding.ibas.bobas.logic.IBusinessObjectGroup;
 import org.colorcoding.ibas.bobas.logic.LogicContract;
@@ -224,7 +224,7 @@ class MaterialInventoryReservationGroup extends BusinessObject<IMaterialInventor
 	/**
 	 * 目标单据类型 属性
 	 */
-	@DbField(name = "TargetType", type = DbFieldType.ALPHANUMERIC)
+	@DbField(name = "TargetType", type = DataType.ALPHANUMERIC)
 	public static final IPropertyInfo<String> PROPERTY_TARGETDOCUMENTTYPE = registerProperty(
 			PROPERTY_TARGETDOCUMENTTYPE_NAME, String.class, MY_CLASS);
 
@@ -255,7 +255,7 @@ class MaterialInventoryReservationGroup extends BusinessObject<IMaterialInventor
 	/**
 	 * 目标单据编号 属性
 	 */
-	@DbField(name = "TargetEntry", type = DbFieldType.NUMERIC)
+	@DbField(name = "TargetEntry", type = DataType.NUMERIC)
 	public static final IPropertyInfo<Integer> PROPERTY_TARGETDOCUMENTENTRY = registerProperty(
 			PROPERTY_TARGETDOCUMENTENTRY_NAME, Integer.class, MY_CLASS);
 
@@ -286,7 +286,7 @@ class MaterialInventoryReservationGroup extends BusinessObject<IMaterialInventor
 	/**
 	 * 目标单据行号 属性
 	 */
-	@DbField(name = "TargetLine", type = DbFieldType.NUMERIC)
+	@DbField(name = "TargetLine", type = DataType.NUMERIC)
 	public static final IPropertyInfo<Integer> PROPERTY_TARGETDOCUMENTLINEID = registerProperty(
 			PROPERTY_TARGETDOCUMENTLINEID_NAME, Integer.class, MY_CLASS);
 
