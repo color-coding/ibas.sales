@@ -20,8 +20,8 @@ import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.db.DbField;
 import org.colorcoding.ibas.bobas.db.DataType;
+import org.colorcoding.ibas.bobas.db.DbField;
 import org.colorcoding.ibas.bobas.db.EditType;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
@@ -2879,6 +2879,16 @@ public class SalesReturnRequestItem extends BusinessObject<SalesReturnRequestIte
 			@Override
 			public Integer getBaseDocumentLineId() {
 				return SalesReturnRequestItem.this.getBaseDocumentLineId();
+			}
+
+			@Override
+			public IMaterialBatchItems getMaterialBatches() {
+				return SalesReturnRequestItem.this.getMaterialBatches();
+			}
+
+			@Override
+			public IMaterialSerialItems getMaterialSerials() {
+				return SalesReturnRequestItem.this.getMaterialSerials();
 			}
 
 		});

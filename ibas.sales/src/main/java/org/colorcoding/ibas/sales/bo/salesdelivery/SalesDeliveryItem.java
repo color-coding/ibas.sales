@@ -22,8 +22,8 @@ import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.db.DbField;
 import org.colorcoding.ibas.bobas.db.DataType;
+import org.colorcoding.ibas.bobas.db.DbField;
 import org.colorcoding.ibas.bobas.db.EditType;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
@@ -3066,6 +3066,16 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 					@Override
 					public Integer getBaseDocumentLineId() {
 						return SalesDeliveryItem.this.getBaseDocumentLineId();
+					}
+
+					@Override
+					public IMaterialBatchItems getMaterialBatches() {
+						return SalesDeliveryItem.this.getMaterialBatches();
+					}
+
+					@Override
+					public IMaterialSerialItems getMaterialSerials() {
+						return SalesDeliveryItem.this.getMaterialSerials();
 					}
 
 				},

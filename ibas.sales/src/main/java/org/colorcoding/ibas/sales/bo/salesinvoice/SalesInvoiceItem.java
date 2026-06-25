@@ -23,8 +23,8 @@ import org.colorcoding.ibas.bobas.data.emApprovalStatus;
 import org.colorcoding.ibas.bobas.data.emBOStatus;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.db.DbField;
 import org.colorcoding.ibas.bobas.db.DataType;
+import org.colorcoding.ibas.bobas.db.DbField;
 import org.colorcoding.ibas.bobas.db.EditType;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicContract;
 import org.colorcoding.ibas.bobas.logic.IBusinessLogicsHost;
@@ -2910,6 +2910,15 @@ public class SalesInvoiceItem extends BusinessObject<SalesInvoiceItem> implement
 				return SalesInvoiceItem.this.getBaseDocumentLineId();
 			}
 
+			@Override
+			public IMaterialBatchItems getMaterialBatches() {
+				return SalesInvoiceItem.this.getMaterialBatches();
+			}
+
+			@Override
+			public IMaterialSerialItems getMaterialSerials() {
+				return SalesInvoiceItem.this.getMaterialSerials();
+			}
 		});
 		// 基于单据完成金额
 		contracts.add(new IDocumentAmountClosingContract() {
