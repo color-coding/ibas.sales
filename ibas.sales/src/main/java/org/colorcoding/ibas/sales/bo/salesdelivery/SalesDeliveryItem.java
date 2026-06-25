@@ -3094,7 +3094,8 @@ public class SalesDeliveryItem extends BusinessObject<SalesDeliveryItem> impleme
 
 					@Override
 					public BigDecimal getAmount() {
-						return SalesDeliveryItem.this.getLineTotal();
+						// 一揽子协议金额按不含税口径
+						return SalesDeliveryItem.this.getPreTaxLineTotal();
 					}
 
 					@Override

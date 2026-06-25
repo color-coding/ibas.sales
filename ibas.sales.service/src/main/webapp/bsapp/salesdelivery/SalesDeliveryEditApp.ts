@@ -1870,6 +1870,8 @@ namespace sales {
                         itemCode: caller.itemCode,
                         itemDescription: caller.itemDescription,
                         itemVersion: caller.itemVersion,
+                        uom: caller.uom,
+                        uomRate: caller.uomRate,
                         serialManagement: caller.serialManagement,
                         materialSerials: caller.materialSerials,
                         batchManagement: caller.batchManagement,
