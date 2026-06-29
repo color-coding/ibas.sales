@@ -2374,6 +2374,8 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 					}
 				}
 				// 单据折扣不是1
+				// 会计政策：销售单据折扣只影响收入与销项税，不影响成本侧
+				// （成本/已装载货物不参与折扣，保持历史移动平均成本）
 				if (!Decimals.VALUE_ONE.equals(SalesInvoice.this.getDiscount())) {
 					for (JournalEntryContent item : jeContents) {
 						// 行税前总计和行税 × 折扣
@@ -2403,8 +2405,11 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 					jeContents.add(jeContent);
 				}
 				// 预付款
+				// 风险提示：若预收款币种 ≠ 单据币种，需确保 drawnTotal * paymentRate
+				//          与 documentTotal * documentRate 在本币层面一致；
+				//          当前直接以预收款币种入账，多币种场景需端到端测试验证。
 				for (ISalesInvoiceDownPayment item : SalesInvoice.this.getSalesInvoiceDownPayments()) {
-					// 应付账款
+					// 应收账款（冲减预收）
 					jeContent = new JournalEntrySmartContent(SalesInvoice.this);
 					jeContent.setCategory(Category.Credit);
 					jeContent.setLedger(Ledgers.LEDGER_SALES_DOMESTIC_ACCOUNTS_RECEIVABLE);

@@ -3,17 +3,11 @@ package org.colorcoding.ibas.sales.logic.journalentry;
 import java.math.BigDecimal;
 
 import org.colorcoding.ibas.bobas.common.Criteria;
-import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.common.IChildCriteria;
 import org.colorcoding.ibas.bobas.common.ICondition;
 import org.colorcoding.ibas.bobas.common.IOperationResult;
-import org.colorcoding.ibas.bobas.common.Strings;
-import org.colorcoding.ibas.bobas.data.emDirection;
 import org.colorcoding.ibas.bobas.logic.BusinessLogicException;
-import org.colorcoding.ibas.materials.bo.materialinventory.IMaterialInventoryJournal;
-import org.colorcoding.ibas.materials.bo.materialinventory.MaterialInventoryJournal;
-import org.colorcoding.ibas.materials.logic.journalentry.MaterialsInventoryCost;
-import org.colorcoding.ibas.materials.repository.BORepositoryMaterials;
+import org.colorcoding.ibas.materials.logic.journalentry.BaseDocumentOutboundCost;
 import org.colorcoding.ibas.sales.bo.salesdelivery.ISalesDelivery;
 import org.colorcoding.ibas.sales.bo.salesdelivery.ISalesDeliveryItem;
 import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDelivery;
@@ -21,96 +15,53 @@ import org.colorcoding.ibas.sales.bo.salesdelivery.SalesDeliveryItem;
 import org.colorcoding.ibas.sales.bo.salesinvoice.ISalesInvoiceItem;
 import org.colorcoding.ibas.sales.repository.BORepositorySales;
 
-public class SalesInvoiceDeliveryMaterialsCost extends MaterialsInventoryCost {
+/**
+ * 销售发票（基于销售交货）的库存出库成本。
+ *
+ * <p>仅做基础单据存在性 guard，库存成本算法由父类统一实现；
+ * 非库存/服务物料由 {@link org.colorcoding.ibas.materials.logic.journalentry.MaterialsCost} 模板处理。</p>
+ */
+public class SalesInvoiceDeliveryMaterialsCost extends BaseDocumentOutboundCost {
 
-	public SalesInvoiceDeliveryMaterialsCost(Object sourceData, BigDecimal quantity) {
-		super(sourceData, quantity);
-		this.setNegate(false);
-	}
+    public SalesInvoiceDeliveryMaterialsCost(Object sourceData, BigDecimal quantity) {
+        super(sourceData, quantity, false);
+    }
 
-	@Override
-	protected boolean caculate(String itemCode, String warehouse) {
-		if (this.getSourceData() instanceof ISalesInvoiceItem) {
-			ISalesInvoiceItem item = (ISalesInvoiceItem) this.getSourceData();
-			if (!Strings.isNullOrEmpty(item.getBaseDocumentType()) && item.getBaseDocumentEntry() > 0
-					&& item.getBaseDocumentLineId() > 0) {
-				Criteria criteria = new Criteria();
-				ICondition condition = criteria.getConditions().create();
-				condition.setAlias(SalesDelivery.PROPERTY_DOCENTRY.getName());
-				condition.setValue(item.getBaseDocumentEntry());
-				IChildCriteria childCriteria = criteria.getChildCriterias().create();
-				childCriteria.setPropertyPath(SalesDelivery.PROPERTY_SALESDELIVERYITEMS.getName());
-				childCriteria.setOnlyHasChilds(true);
-				condition = childCriteria.getConditions().create();
-				condition.setAlias(SalesDeliveryItem.PROPERTY_LINEID.getName());
-				condition.setValue(item.getBaseDocumentLineId());
-				try (BORepositorySales boRepository = new BORepositorySales()) {
-					boRepository.setTransaction(this.getService().getTransaction());
-					IOperationResult<ISalesDelivery> operationResult = boRepository.fetchSalesDelivery(criteria);
-					if (operationResult.getError() != null) {
-						throw new BusinessLogicException(operationResult.getError());
-					}
-					for (ISalesDelivery baseDocument : operationResult.getResultObjects()) {
-						if (!item.getBaseDocumentType().equals(baseDocument.getObjectCode())) {
-							continue;
-						}
-						if (item.getBaseDocumentEntry().compareTo(baseDocument.getDocEntry()) != 0) {
-							continue;
-						}
-						for (ISalesDeliveryItem baseLine : baseDocument.getSalesDeliveryItems()) {
-							if (item.getBaseDocumentLineId().compareTo(baseLine.getLineId()) != 0) {
-								continue;
-							}
-							BigDecimal avaPrice = null;
-							if (item.isNew()) {
-								// 新建的取物料上的
-								avaPrice = this.getAvgPrice(item.getItemCode(), item.getWarehouse());
-							} else {
-								criteria = new Criteria();
-								condition = criteria.getConditions().create();
-								condition.setAlias(MaterialInventoryJournal.PROPERTY_DIRECTION.getName());
-								condition.setValue(emDirection.OUT);
-								condition = criteria.getConditions().create();
-								condition.setAlias(MaterialInventoryJournal.PROPERTY_BASEDOCUMENTTYPE.getName());
-								condition.setValue(item.getObjectCode());
-								condition = criteria.getConditions().create();
-								condition.setAlias(MaterialInventoryJournal.PROPERTY_BASEDOCUMENTTYPE.getName());
-								condition.setValue(item.getDocEntry());
-								condition = criteria.getConditions().create();
-								condition.setAlias(MaterialInventoryJournal.PROPERTY_BASEDOCUMENTLINEID.getName());
-								condition.setValue(item.getLineId());
-								try (BORepositoryMaterials boRepositoryMM = new BORepositoryMaterials()) {
-									boRepositoryMM.setTransaction(this.getService().getTransaction());
-									for (IMaterialInventoryJournal journal : boRepositoryMM
-											.fetchMaterialInventoryJournal(criteria).getResultObjects()) {
-										if (!journal.getItemCode().equals(itemCode)) {
-											continue;
-										}
-										if (!journal.getWarehouse().equals(warehouse)) {
-											continue;
-										}
-										avaPrice = journal.getCalculatedPrice();
-									}
-									if (avaPrice == null) {
-										// 库存记录没有
-										avaPrice = this.getAvgPrice(item.getItemCode(), item.getWarehouse());
-									}
-								}
-							}
-							if (avaPrice != null) {
-								this.setAmount(Decimals.multiply(item.getInventoryQuantity(), avaPrice));
-								// 设置未本币（物料成本均为本币）
-								this.setCurrency(org.colorcoding.ibas.accounting.MyConfiguration.getConfigValue(
-										org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY));
-								this.setRate(Decimals.VALUE_ONE);
-								return true;
-							}
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
-
+    @Override
+    protected Object findBaseLine() throws Exception {
+        if (!(this.getSourceData() instanceof ISalesInvoiceItem)) {
+            return null;
+        }
+        ISalesInvoiceItem item = (ISalesInvoiceItem) this.getSourceData();
+        if (item.getBaseDocumentType() == null || item.getBaseDocumentEntry() == null
+                || item.getBaseDocumentEntry() <= 0 || item.getBaseDocumentLineId() == null
+                || item.getBaseDocumentLineId() <= 0) {
+            return null;
+        }
+        Criteria criteria = new Criteria();
+        ICondition condition = criteria.getConditions().create();
+        condition.setAlias(SalesDelivery.PROPERTY_DOCENTRY.getName());
+        condition.setValue(item.getBaseDocumentEntry());
+        IChildCriteria childCriteria = criteria.getChildCriterias().create();
+        childCriteria.setPropertyPath(SalesDelivery.PROPERTY_SALESDELIVERYITEMS.getName());
+        childCriteria.setOnlyHasChilds(true);
+        condition = childCriteria.getConditions().create();
+        condition.setAlias(SalesDeliveryItem.PROPERTY_LINEID.getName());
+        condition.setValue(item.getBaseDocumentLineId());
+        try (BORepositorySales boRepository = new BORepositorySales()) {
+            boRepository.setTransaction(this.getTransaction());
+            IOperationResult<ISalesDelivery> operationResult = boRepository.fetchSalesDelivery(criteria);
+            if (operationResult.getError() != null) throw new BusinessLogicException(operationResult.getError());
+            for (ISalesDelivery baseDocument : operationResult.getResultObjects()) {
+                if (!item.getBaseDocumentType().equals(baseDocument.getObjectCode())) continue;
+                if (item.getBaseDocumentEntry().compareTo(baseDocument.getDocEntry()) != 0) continue;
+                for (ISalesDeliveryItem baseLine : baseDocument.getSalesDeliveryItems()) {
+                    if (item.getBaseDocumentLineId().compareTo(baseLine.getLineId()) == 0) {
+                        return baseLine;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

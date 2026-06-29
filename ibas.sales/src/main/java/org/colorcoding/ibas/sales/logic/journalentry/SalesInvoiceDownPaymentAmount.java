@@ -37,7 +37,7 @@ public class SalesInvoiceDownPaymentAmount extends JournalEntrySmartContent {
 				condition.setValue(JournalEntryService.DATASOURCE_SIGN_REGULAR_ENTRY);
 
 				try (BORepositoryAccounting boRepository = new BORepositoryAccounting()) {
-					boRepository.setTransaction(this.getService().getTransaction());
+					boRepository.setTransaction(this.getTransaction());
 					IOperationResult<IJournalEntry> operationResult = boRepository.fetchJournalEntry(criteria);
 					if (operationResult.getError() != null) {
 						throw operationResult.getError();

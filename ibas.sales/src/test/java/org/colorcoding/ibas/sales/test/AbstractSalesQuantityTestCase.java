@@ -2,7 +2,6 @@ package org.colorcoding.ibas.sales.test;
 
 import java.math.BigDecimal;
 
-import org.colorcoding.ibas.bobas.bo.BOFactory;
 import org.colorcoding.ibas.bobas.bo.BOUtilities;
 import org.colorcoding.ibas.bobas.common.Criteria;
 import org.colorcoding.ibas.bobas.common.DateTimes;
@@ -21,8 +20,6 @@ import org.colorcoding.ibas.materials.bo.material.IMaterial;
 import org.colorcoding.ibas.materials.bo.material.Material;
 import org.colorcoding.ibas.materials.bo.materialinventory.IMaterialInventory;
 import org.colorcoding.ibas.materials.bo.materialinventory.MaterialInventory;
-import org.colorcoding.ibas.materials.bo.materialpricelist.MaterialPriceItem;
-import org.colorcoding.ibas.materials.bo.materialpricelist.MaterialPriceList;
 import org.colorcoding.ibas.materials.bo.warehouse.IWarehouse;
 import org.colorcoding.ibas.materials.bo.warehouse.Warehouse;
 import org.colorcoding.ibas.materials.data.emItemType;
@@ -33,18 +30,21 @@ import junit.framework.TestCase;
 /**
  * 销售数量逻辑测试基类。
  *
- * <p>提供：物料类型矩阵物料工厂、仓库/客户工厂、三量快照与断言。</p>
+ * <p>
+ * 提供：物料类型矩阵物料工厂、仓库/客户工厂、三量快照与断言。
+ * </p>
  */
 public abstract class AbstractSalesQuantityTestCase extends TestCase {
 
 	static {
-		Configuration.addConfigValue(MyConfiguration.CONFIG_ITEM_ENABLE_MATERIAL_COST_PRICE_RECORDING, false);
-		BOFactory.propertyInfos(MaterialPriceItem.class);
-		BOFactory.propertyInfos(MaterialPriceList.class);
+		// 使用中文提示，测试中文字匹配
+		Configuration.addConfigValue(MyConfiguration.CONFIG_ITEM_LANGUAGE_CODE, "zh_CN");
 	}
 
 	/** 物料类型矩阵 */
-	protected enum MaterialKind { INVENTORY, SERVICE, BATCH, SERIAL }
+	protected enum MaterialKind {
+		INVENTORY, SERVICE, BATCH, SERIAL
+	}
 
 	/** 三量快照 */
 	protected static class QuantitySnapshot {
@@ -92,35 +92,34 @@ public abstract class AbstractSalesQuantityTestCase extends TestCase {
 
 	protected IMaterial prepareMaterial(BORepositoryMaterials repo, MaterialKind kind, String tag) throws Exception {
 		IMaterial m = new Material();
-		m.setCode(Strings.format("%s-%s-%s", kind.name().charAt(0), tag,
-				DateTimes.now().toString("yyyyMMddHHmmss")));
+		m.setCode(Strings.format("%s-%s-%s", kind.name().charAt(0), tag, DateTimes.now().toString("yyyyMMddHHmmss")));
 		m.setName(Strings.format("SL-Qty-%s-%s", kind, tag));
 		switch (kind) {
-			case SERVICE:
-				m.setItemType(emItemType.SERVICES);
-				m.setInventoryItem(emYesNo.NO);
-				m.setBatchManagement(emYesNo.NO);
-				m.setSerialManagement(emYesNo.NO);
-				break;
-			case BATCH:
-				m.setItemType(emItemType.ITEM);
-				m.setInventoryItem(emYesNo.YES);
-				m.setBatchManagement(emYesNo.YES);
-				m.setSerialManagement(emYesNo.NO);
-				break;
-			case SERIAL:
-				m.setItemType(emItemType.ITEM);
-				m.setInventoryItem(emYesNo.YES);
-				m.setBatchManagement(emYesNo.NO);
-				m.setSerialManagement(emYesNo.YES);
-				break;
-			case INVENTORY:
-			default:
-				m.setItemType(emItemType.ITEM);
-				m.setInventoryItem(emYesNo.YES);
-				m.setBatchManagement(emYesNo.NO);
-				m.setSerialManagement(emYesNo.NO);
-				break;
+		case SERVICE:
+			m.setItemType(emItemType.SERVICES);
+			m.setInventoryItem(emYesNo.NO);
+			m.setBatchManagement(emYesNo.NO);
+			m.setSerialManagement(emYesNo.NO);
+			break;
+		case BATCH:
+			m.setItemType(emItemType.ITEM);
+			m.setInventoryItem(emYesNo.YES);
+			m.setBatchManagement(emYesNo.YES);
+			m.setSerialManagement(emYesNo.NO);
+			break;
+		case SERIAL:
+			m.setItemType(emItemType.ITEM);
+			m.setInventoryItem(emYesNo.YES);
+			m.setBatchManagement(emYesNo.NO);
+			m.setSerialManagement(emYesNo.YES);
+			break;
+		case INVENTORY:
+		default:
+			m.setItemType(emItemType.ITEM);
+			m.setInventoryItem(emYesNo.YES);
+			m.setBatchManagement(emYesNo.NO);
+			m.setSerialManagement(emYesNo.NO);
+			break;
 		}
 		return BOUtilities.valueOf(repo.saveMaterial(m)).firstOrDefault();
 	}
