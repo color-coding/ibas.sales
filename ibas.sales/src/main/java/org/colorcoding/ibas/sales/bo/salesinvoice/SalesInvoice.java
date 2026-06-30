@@ -2392,7 +2392,7 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 				}
 				// 预付款
 				for (ISalesInvoiceDownPayment item : SalesInvoice.this.getSalesInvoiceDownPayments()) {
-					// 应付账款
+					// 应收账款（冲减预收）
 					jeContent = new JournalEntrySmartContent(SalesInvoice.this);
 					jeContent.setCategory(Category.Credit);
 					jeContent.setLedger(Ledgers.LEDGER_SALES_DOMESTIC_ACCOUNTS_RECEIVABLE);

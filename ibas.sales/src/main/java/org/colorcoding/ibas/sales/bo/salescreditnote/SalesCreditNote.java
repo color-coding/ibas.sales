@@ -2356,8 +2356,10 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote> implements 
 						if (!Decimal.ONE.equals(SalesCreditNote.this.getDiscount())) {
 							for (JournalEntryContent item : jeContents) {
 								// 行税前总计和行税 × 折扣
-								if (Ledgers.LEDGER_SALES_REVENUE_ACCOUNT.equals(item.getLedger())
-										|| Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT.equals(item.getLedger())) {
+								// 会计政策：贷项以"销售贷方"冲抵收入，与销项税同步打折；
+										//     成本侧（销售成本/销售退货/已装载货物）不参与折扣。
+										if (Ledgers.LEDGER_SALES_SALES_CREDIT_ACCOUNT.equals(item.getLedger())
+												|| Ledgers.LEDGER_COMMON_OUTPUT_TAX_ACCOUNT.equals(item.getLedger())) {
 									item.setAmount(
 											Decimal.multiply(item.getAmount(), SalesCreditNote.this.getDiscount()));
 								}

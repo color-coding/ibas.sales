@@ -2188,10 +2188,12 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 								jeContent.setCurrency(line.getCurrency());
 								jeContent.setRate(line.getRate());
 								jeContents.add(jeContent);
-								// 销售退货科目
+								// 库存科目（反向：恢复存货，对应原交货的贷方）
+								// 注：原代码错挂"销售退货"科目，导致存货账户无法回补，与子账长期不一致。
+								//     预开票场景下"销售退货"由 SalesCreditNote 处理，SalesReturn 仅做实物反向。
 								jeContent = new SalesReturnDeliveryMaterialsCost(line, line.getInventoryQuantity());
 								jeContent.setCategory(Category.Credit);
-								jeContent.setLedger(Ledgers.LEDGER_SALES_SALES_RETURNS_ACCOUNT);
+								jeContent.setLedger(Ledgers.LEDGER_INVENTORY_INVENTORY_ACCOUNT);
 								jeContent.setAmount(line.getPreTaxLineTotal());// 税前总计
 								jeContent.setCurrency(line.getCurrency());
 								jeContent.setRate(line.getRate());
