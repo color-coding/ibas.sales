@@ -34,9 +34,10 @@ public interface ISalesOrderOrderContract extends IBusinessLogicContract {
 	Integer getBaseDocumentLineId();
 
 	/**
-	 * 数量
+	 * 数量（库存单位）。
+	 * 采购、生产等来源回写销售订单时，调用方必须提供库存单位数量。
 	 * 
-	 * @return
+	 * @return 库存单位数量
 	 */
 	BigDecimal getQuantity();
 

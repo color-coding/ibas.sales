@@ -89,6 +89,7 @@ public class SalesOrderOrderService extends BusinessLogic<ISalesOrderOrderContra
 		if (orderedQuantity == null) {
 			orderedQuantity = Decimals.VALUE_ZERO;
 		}
+		// orderedQuantity 统一使用库存单位，契约数量也必须是库存单位。
 		orderedQuantity = orderedQuantity.add(contract.getQuantity());
 		orderItem.setOrderedQuantity(orderedQuantity);
 		if (orderItem.getClosedQuantity().compareTo(Decimals.VALUE_ZERO) > 0) {
@@ -108,6 +109,7 @@ public class SalesOrderOrderService extends BusinessLogic<ISalesOrderOrderContra
 		if (orderedQuantity == null) {
 			orderedQuantity = Decimals.VALUE_ZERO;
 		}
+		// orderedQuantity 统一使用库存单位，契约数量也必须是库存单位。
 		orderedQuantity = orderedQuantity.subtract(contract.getQuantity());
 		orderItem.setOrderedQuantity(orderedQuantity);
 		if (orderItem.getClosedQuantity().compareTo(Decimals.VALUE_ZERO) <= 0) {
