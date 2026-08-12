@@ -373,7 +373,7 @@ namespace sales {
             /** 合同 */
             agreements: string;
 
-            /** 已订购数量 */
+            /** 已订购数量（库存单位；可来自采购或生产） */
             orderedQuantity: number;
             /** 毛利基础 */
             grossBase: number;

@@ -105,6 +105,7 @@
     "sales_change_lead_to_customer_continue": "Automatically switch to corresponding customer?",
     "sales_not_found_lead's_customer": "Customer not found for [{0} - {1}], please create and retry",
     "sales_not_found_salesorder": "Sales order [{0}] not found",
+    "sales_no_pickinglistline_to_be_delivery": "No picklist lines available for {0}",
     "sales_salesquote_expired_date": "Quote date has expired",
     "sales_invalid_status_not_support_turn_to_operation": "Document status invalid, operation not supported",
     "sales_document_receipted": "Document receipted, number: {0}, amount: {1} {2}",

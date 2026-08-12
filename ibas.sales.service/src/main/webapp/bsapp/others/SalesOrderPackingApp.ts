@@ -123,7 +123,7 @@ namespace sales {
             }
             protected viewShowed(): void {
             }
-            protected toDeliveryOrder(pickLines: materials.bo.IPickListsLine[], onDelivered?: (targets: materials.bo.IPickListsLine[] | Error) => void): void {
+            protected toDeliveryOrder(pickLines: materials.bo.IPickingListLine[], onDelivered?: (targets: materials.bo.IPickingListLine[] | Error) => void): void {
                 let criteria: ibas.ICriteria = new ibas.Criteria();
                 for (let item of pickLines) {
                     if (!ibas.strings.equals(item.baseDocumentType, ibas.config.applyVariables(bo.BO_CODE_SALESORDER))) {
@@ -136,7 +136,7 @@ namespace sales {
                 }
                 if (criteria.conditions.length === 0) {
                     if (onDelivered instanceof Function) {
-                        onDelivered(new Error(ibas.i18n.prop("materials_no_picklistline_to_be_delivery", ibas.i18n.prop("bo_salesdelivery"))));
+                        onDelivered(new Error(ibas.i18n.prop("sales_no_pickinglistline_to_be_delivery", ibas.i18n.prop("bo_salesdelivery"))));
                     }
                     return;
                 }
@@ -173,19 +173,19 @@ namespace sales {
                                         && orderLine.lineId === pickLine.baseDocumentLineId) {
                                         let resultLine: bo.SalesDeliveryItem = result.salesDeliveryItems.create();
                                         bo.baseDocumentItem(resultLine, orderLine);
-                                        resultLine.quantity = pickLine.pickQuantity;
+                                        resultLine.quantity = pickLine.pickingQuantity;
                                         let uomRate: number = pickLine.uomRate > 0 ? pickLine.uomRate : 1;
-                                        resultLine.quantity = ibas.numbers.round(pickLine.pickQuantity / uomRate);
-                                        resultLine.inventoryQuantity = pickLine.pickQuantity;
-                                        for (let item of pickLine.pickListsNumbers) {
+                                        resultLine.quantity = ibas.numbers.round(pickLine.pickingQuantity / uomRate);
+                                        resultLine.inventoryQuantity = pickLine.pickingQuantity;
+                                        for (let item of pickLine.pickingListNumbers) {
                                             if (orderLine.batchManagement !== ibas.emYesNo.YES) {
                                                 continue;
                                             }
                                             let itemBatch: materials.bo.IMaterialBatchItem = resultLine.materialBatches.create();
                                             itemBatch.batchCode = item.batchCode;
-                                            itemBatch.quantity = item.pickQuantity;
+                                            itemBatch.quantity = item.pickingQuantity;
                                         }
-                                        for (let item of pickLine.pickListsNumbers) {
+                                        for (let item of pickLine.pickingListNumbers) {
                                             if (orderLine.serialManagement !== ibas.emYesNo.YES) {
                                                 continue;
                                             }
@@ -207,10 +207,10 @@ namespace sales {
                                     editData: item,
                                     when: "SAVED",
                                     onCompleted: async (result: bo.SalesDelivery) => {
-                                        let closedLines: ibas.ArrayList<materials.bo.IPickListsLine> = new ibas.ArrayList();
+                                        let closedLines: ibas.ArrayList<materials.bo.IPickingListLine> = new ibas.ArrayList();
                                         if (!ibas.objects.isNull(result)) {
                                             for (let item of result.salesDeliveryItems) {
-                                                let line: materials.bo.IPickListsLine = pickLines.find(c => ibas.strings.equals(c.baseDocumentType, item.baseDocumentType)
+                                                let line: materials.bo.IPickingListLine = pickLines.find(c => ibas.strings.equals(c.baseDocumentType, item.baseDocumentType)
                                                     && c.baseDocumentEntry === item.baseDocumentEntry && c.baseDocumentLineId === item.baseDocumentLineId
                                                 );
                                                 if (!ibas.objects.isNull(line)) {
@@ -231,8 +231,8 @@ namespace sales {
                     }
                 });
             }
-            protected onPicked(selecteds: ibas.IList<bo.SalesOrder>, onPicked?: (targets: materials.app.IPickListsTarget[]) => void): void {
-                let results: ibas.IList<materials.app.IPickListsTarget> = new ibas.ArrayList<materials.app.IPickListsTarget>();
+            protected onPicked(selecteds: ibas.IList<bo.SalesOrder>, onPicked?: (targets: materials.app.IPickingListTarget[]) => void): void {
+                let results: ibas.IList<materials.app.IPickingListTarget> = new ibas.ArrayList<materials.app.IPickingListTarget>();
                 for (let selected of selecteds) {
                     for (let item of selected.salesOrderItems) {
                         results.add({

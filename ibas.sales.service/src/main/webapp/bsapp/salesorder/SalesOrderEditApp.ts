@@ -2416,8 +2416,9 @@ namespace sales {
                 condition.alias = bo.SalesOrderItem.PROPERTY_ITEMCODE_NAME;
                 condition.value = contract.itemCode;
                 condition = cCrteria.conditions.create();
+                // orderedQuantity 与 inventoryQuantity 都使用库存单位。
                 condition.alias = bo.SalesOrderItem.PROPERTY_ORDEREDQUANTITY_NAME;
-                condition.comparedAlias = bo.SalesOrderItem.PROPERTY_QUANTITY_NAME;
+                condition.comparedAlias = bo.SalesOrderItem.PROPERTY_INVENTORYQUANTITY_NAME;
                 condition.operation = ibas.emConditionOperation.LESS_THAN;
                 // 调用选择服务
                 let that: this = this;
