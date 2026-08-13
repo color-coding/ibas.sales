@@ -3,7 +3,6 @@ package org.colorcoding.ibas.sales.test;
 import java.math.BigDecimal;
 
 import org.colorcoding.ibas.bobas.bo.BOUtilities;
-import org.colorcoding.ibas.bobas.common.DateTimes;
 import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
@@ -25,9 +24,14 @@ import org.colorcoding.ibas.sales.repository.BORepositorySales;
 /**
  * 销售交货 数量逻辑 测试（基于销售订单）。
  *
- * <p>覆盖：SL-C20 ~ SL-C29</p>
- * <p>核心 logic：MaterialInventoryService（OnHand-）、MaterialCommitedService（OnCommited-）、
- * DocumentQuantityClosingService（SO.closedQuantity / lineStatus 推进）</p>
+ * <p>
+ * 覆盖：SL-C20 ~ SL-C29
+ * </p>
+ * <p>
+ * 核心
+ * logic：MaterialInventoryService（OnHand-）、MaterialCommitedService（OnCommited-）、
+ * DocumentQuantityClosingService（SO.closedQuantity / lineStatus 推进）
+ * </p>
  */
 public class TestSalesDeliveryQuantity extends AbstractSalesQuantityTestCase {
 
@@ -42,12 +46,13 @@ public class TestSalesDeliveryQuantity extends AbstractSalesQuantityTestCase {
 
 	// ---------------- 构造 ----------------
 
-	/** 1. 准备先决条件：仓库 + 客户 + 物料 + 已收货保证 OnHand 足够。
-	 *  注意：批次/序列号 code 必须基于物料编码（确定性），后续 SD 才能复用 */
+	/**
+	 * 1. 准备先决条件：仓库 + 客户 + 物料 + 已收货保证 OnHand 足够。 注意：批次/序列号 code 必须基于物料编码（确定性），后续 SD
+	 * 才能复用
+	 */
 	private void seedInventory(BORepositoryMaterials mRepo, IMaterial mt, IWarehouse wh, BigDecimal qty,
 			MaterialKind kind) throws Exception {
-		org.colorcoding.ibas.materials.bo.goodsreceipt.GoodsReceipt gr =
-				new org.colorcoding.ibas.materials.bo.goodsreceipt.GoodsReceipt();
+		org.colorcoding.ibas.materials.bo.goodsreceipt.GoodsReceipt gr = new org.colorcoding.ibas.materials.bo.goodsreceipt.GoodsReceipt();
 		gr.setReference1("seed-" + kind.name());
 		org.colorcoding.ibas.materials.bo.goodsreceipt.IGoodsReceiptLine line = gr.getGoodsReceiptLines().create();
 		line.setItemCode(mt.getCode());
