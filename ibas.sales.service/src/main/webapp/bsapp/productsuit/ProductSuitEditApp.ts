@@ -8,7 +8,7 @@
 namespace sales {
     export namespace app {
         /** 编辑应用-产品套装 */
-        export class ProductSuitEditApp extends ibas.BOEditApplication<IProductSuitEditView, bo.ProductSuit> {
+        export class ProductSuitEditApp extends ibas.BOEditService<IProductSuitEditView, bo.ProductSuit> {
 
             /** 应用标识 */
             static APPLICATION_ID: string = "5b3a46ec-dbb5-4030-b021-28640d1a9e9e";
@@ -286,6 +286,21 @@ namespace sales {
             chooseProductSuitMaterialEvent: Function;
             /** 选择物料主数据事件 */
             chooseProductSuitItemMaterialEvent: Function;
+        }
+        /** ProductSuit编辑服务映射 */
+        export class ProductSuitEditServiceMapping extends ibas.BOEditServiceMapping {
+            /** 构造函数 */
+            constructor() {
+                super();
+                this.id = ProductSuitEditApp.APPLICATION_ID;
+                this.name = ProductSuitEditApp.APPLICATION_NAME;
+                this.boCode = ProductSuitEditApp.BUSINESS_OBJECT_CODE;
+                this.description = ibas.i18n.prop(this.name);
+            }
+            /** 创建服务实例 */
+            create(): ibas.IService<ibas.IBOEditServiceCaller<bo.ProductSuit>> {
+                return new ProductSuitEditApp();
+            }
         }
     }
 }

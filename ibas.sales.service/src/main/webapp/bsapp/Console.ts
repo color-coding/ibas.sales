@@ -48,6 +48,7 @@ namespace sales {
                 this.register(new DownPaymentRequestFunc());
                 this.register(new ProductSuitFunc());
                 // 注册服务应用
+                this.register(new ProductSuitEditServiceMapping());
                 this.register(new ProductSuitChooseServiceMapping());
                 this.register(new ProductSuitLinkServiceMapping());
                 this.register(new SalesDeliveryChooseServiceMapping());
