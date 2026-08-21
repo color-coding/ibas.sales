@@ -90,11 +90,11 @@ namespace sales {
                 super.run.apply(this, arguments);
             }
             /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria | string): void {
+            protected fetchData(criteria: ibas.ICriteria | string | number): void {
                 this.busy(true);
                 let that: this = this;
-                if (typeof criteria === "string") {
-                    let value: string = criteria;
+                if (typeof criteria === "string" || typeof criteria === "number") {
+                    let value: string | number = criteria;
                     criteria = new ibas.Criteria();
                     criteria.result = 1;
                     // 添加查询条件
