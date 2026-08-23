@@ -638,6 +638,16 @@ namespace sales {
                         }
                         let myItem: SalesOrderItem = this.salesOrderItems.create();
                         bo.baseDocumentItem(myItem, item);
+                        // 复制报价中的批次和序列
+                        for (let batch of item.materialBatches) {
+                            let myBatch: materials.bo.IMaterialBatchItem = myItem.materialBatches.create();
+                            myBatch.batchCode = batch.batchCode;
+                            myBatch.quantity = batch.quantity;
+                        }
+                        for (let serial of item.materialSerials) {
+                            let mySerial: materials.bo.IMaterialSerialItem = myItem.materialSerials.create();
+                            mySerial.serialCode = serial.serialCode;
+                        }
                         // 交货日期带报价的
                         myItem.deliveryDate = item.deliveryDate;
                         // 复制额外信息

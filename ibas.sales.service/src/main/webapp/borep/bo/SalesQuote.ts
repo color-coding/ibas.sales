@@ -1620,6 +1620,15 @@ namespace sales {
                 this.setProperty(SalesQuoteItem.PROPERTY_PRETAXPRICELC_NAME, value);
             }
 
+            /** 映射的属性名称-物料批次集合 */
+            static PROPERTY_MATERIALBATCHES_NAME: string = "MaterialBatches";
+            get materialBatches(): materials.bo.MaterialBatchItems { return this.getProperty<materials.bo.MaterialBatchItems>(SalesQuoteItem.PROPERTY_MATERIALBATCHES_NAME); }
+            set materialBatches(value: materials.bo.MaterialBatchItems) { this.setProperty(SalesQuoteItem.PROPERTY_MATERIALBATCHES_NAME, value); }
+            /** 映射的属性名称-物料序列集合 */
+            static PROPERTY_MATERIALSERIALS_NAME: string = "MaterialSerials";
+            get materialSerials(): materials.bo.MaterialSerialItems { return this.getProperty<materials.bo.MaterialSerialItems>(SalesQuoteItem.PROPERTY_MATERIALSERIALS_NAME); }
+            set materialSerials(value: materials.bo.MaterialSerialItems) { this.setProperty(SalesQuoteItem.PROPERTY_MATERIALSERIALS_NAME, value); }
+
             /** 映射的属性名称-销售报价-行-额外信息集合 */
             static PROPERTY_SALESQUOTEITEMEXTRAS_NAME: string = "SalesQuoteItemExtras";
             /** 获取-销售报价-行-额外信息集合 */
@@ -1634,6 +1643,8 @@ namespace sales {
             /** 初始化数据 */
             protected init(): void {
                 this.salesQuoteItemExtras = new SalesQuoteItemExtras(this);
+                this.materialBatches = new materials.bo.MaterialBatchItems(this);
+                this.materialSerials = new materials.bo.MaterialSerialItems(this);
                 this.currency = accounting.config.currency("LOCAL");
                 this.discount = 1;
                 this.inverseDiscount = 0;

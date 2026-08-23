@@ -333,6 +333,7 @@ namespace sales {
             target.itemVersion = source.itemVersion;
             target.batchManagement = source.batchManagement;
             target.serialManagement = source.serialManagement;
+            
             target.uom = source.uom;
             target.inventoryUOM = source.inventoryUOM;
             target.uomRate = source.uomRate;
