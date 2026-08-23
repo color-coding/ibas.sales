@@ -179,7 +179,7 @@ namespace sales {
         }
 
         /** 销售报价-行 */
-        export interface ISalesQuoteItem extends ibas.IBODocumentLine, ibas.IBOUserFields {
+        export interface ISalesQuoteItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent, ibas.IBOUserFields {
 
             /** 编码 */
             docEntry: number;

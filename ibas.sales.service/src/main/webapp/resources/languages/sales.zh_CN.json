@@ -60,6 +60,7 @@
     "sales_app_salesreturnrequest_view": "销售退货请求查看",
     "sales_app_salesreturnrequest_edit": "销售退货请求编辑",
     "sales_app_materialorderedreservation_salesorder": "销售订单",
+    "sales_app_materialorderedreservation_salesorder_finished_product": "销售订单（成品关联占用）",
     "sales_app_salesorderpacking": "销售订单,销售交货",
     "sales_title_general": "常规信息",
     "sales_title_status": "状态信息",
