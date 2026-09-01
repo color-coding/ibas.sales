@@ -1078,7 +1078,7 @@ declare namespace purchase {
             create(): IPurchaseQuoteItem;
         }
         /** 采购报价-行 */
-        interface IPurchaseQuoteItem extends ibas.IBODocumentLine, ibas.IBOUserFields {
+        interface IPurchaseQuoteItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent, ibas.IBOUserFields {
             /** 编码 */
             docEntry: number;
             /** 行号 */
@@ -6697,6 +6697,14 @@ declare namespace purchase {
             get preTaxPriceLC(): number;
             /** 设置-税前价格（本币） */
             set preTaxPriceLC(value: number);
+            /** 映射的属性名称-物料批次集合 */
+            static PROPERTY_MATERIALBATCHES_NAME: string;
+            get materialBatches(): materials.bo.MaterialBatchItems;
+            set materialBatches(value: materials.bo.MaterialBatchItems);
+            /** 映射的属性名称-物料序列集合 */
+            static PROPERTY_MATERIALSERIALS_NAME: string;
+            get materialSerials(): materials.bo.MaterialSerialItems;
+            set materialSerials(value: materials.bo.MaterialSerialItems);
             /** 映射的属性名称-采购报价-行-额外信息集合 */
             static PROPERTY_PURCHASEQUOTEITEMEXTRAS_NAME: string;
             /** 获取-采购报价-行-额外信息集合 */
@@ -13426,7 +13434,7 @@ declare namespace purchase {
             run(): void;
             run(data: bo.PurchaseDelivery): void;
             /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria | string): void;
+            protected fetchData(criteria: ibas.ICriteria | string | number): void;
         }
         /** 视图-采购收货 */
         interface IPurchaseDeliveryViewView extends ibas.IBOViewView {
@@ -13785,7 +13793,7 @@ declare namespace purchase {
             run(): void;
             run(data: bo.PurchaseOrder): void;
             /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria | string): void;
+            protected fetchData(criteria: ibas.ICriteria | string | number): void;
         }
         /** 视图-采购订单 */
         interface IPurchaseOrderViewView extends ibas.IBOViewView {
@@ -14214,7 +14222,7 @@ declare namespace purchase {
             run(): void;
             run(data: bo.PurchaseReturn): void;
             /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria | string): void;
+            protected fetchData(criteria: ibas.ICriteria | string | number): void;
         }
         /** 视图-采购退货 */
         interface IPurchaseReturnViewView extends ibas.IBOViewView {
@@ -14339,6 +14347,10 @@ declare namespace purchase {
             protected measuringMaterials(): void;
             protected choosePurchaseQuoteItemMaterialCatalog(caller: bo.PurchaseQuoteItem, filterConditions?: ibas.ICondition[]): void;
             protected viewHistoricalPrices(caller: bo.PurchaseQuoteItem): void;
+            private batches;
+            private choosePurchaseQuoteItemMaterialBatch;
+            private serials;
+            private choosePurchaseQuoteItemMaterialSerial;
             protected calculateQuantity(caller: bo.PurchaseQuoteItem): void;
             protected choosePaymentTerm(criteria?: ibas.ICriteria): void;
             /** 转为预付款申请事件 */
@@ -14368,6 +14380,10 @@ declare namespace purchase {
             choosePurchaseQuoteItemWarehouseEvent: Function;
             /** 选择采购报价-行 单位 */
             choosePurchaseQuoteItemUnitEvent: Function;
+            /** 选择采购报价-行物料批次事件 */
+            choosePurchaseQuoteItemMaterialBatchEvent: Function;
+            /** 选择采购报价-行物料序列事件 */
+            choosePurchaseQuoteItemMaterialSerialEvent: Function;
             /** 选择采购报价-一揽子协议事件 */
             choosePurchaseQuoteBlanketAgreementEvent: Function;
             /** 选择采购订单-行 成本中心事件 */
@@ -14506,7 +14522,7 @@ declare namespace purchase {
             run(): void;
             run(data: bo.PurchaseQuote): void;
             /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria | string): void;
+            protected fetchData(criteria: ibas.ICriteria | string | number): void;
         }
         /** 视图-采购订单 */
         interface IPurchaseQuoteViewView extends ibas.IBOViewView {
@@ -14723,7 +14739,7 @@ declare namespace purchase {
             run(): void;
             run(data: bo.PurchaseRequest): void;
             /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria | string): void;
+            protected fetchData(criteria: ibas.ICriteria | string | number): void;
         }
         /** 视图-采购申请 */
         interface IPurchaseRequestViewView extends ibas.IBOViewView {
@@ -15223,7 +15239,7 @@ declare namespace purchase {
             run(): void;
             run(data: bo.PurchaseInvoice): void;
             /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria | string): void;
+            protected fetchData(criteria: ibas.ICriteria | string | number): void;
         }
         /** 视图-采购发票 */
         interface IPurchaseInvoiceViewView extends ibas.IBOViewView {
@@ -15515,7 +15531,7 @@ declare namespace purchase {
             run(): void;
             run(data: bo.PurchaseCreditNote): void;
             /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria | string): void;
+            protected fetchData(criteria: ibas.ICriteria | string | number): void;
         }
         /** 视图-采购贷项 */
         interface IPurchaseCreditNoteViewView extends ibas.IBOViewView {
@@ -15738,7 +15754,7 @@ declare namespace purchase {
             run(): void;
             run(data: bo.BlanketAgreement): void;
             /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria | string): void;
+            protected fetchData(criteria: ibas.ICriteria | string | number): void;
         }
         /** 视图-一揽子协议 */
         interface IBlanketAgreementViewView extends ibas.IBOViewView {
@@ -15987,7 +16003,7 @@ declare namespace purchase {
             run(): void;
             run(data: bo.DownPaymentRequest): void;
             /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria | string): void;
+            protected fetchData(criteria: ibas.ICriteria | string | number): void;
         }
         /** 视图-预付款申请 */
         interface IDownPaymentRequestViewView extends ibas.IBOViewView {
@@ -16411,7 +16427,7 @@ declare namespace purchase {
             run(): void;
             run(data: bo.PurchaseReserveInvoice): void;
             /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria | string): void;
+            protected fetchData(criteria: ibas.ICriteria | string | number): void;
         }
         /** 视图-采购预留发票 */
         interface IPurchaseReserveInvoiceViewView extends ibas.IBOViewView {
@@ -16703,7 +16719,7 @@ declare namespace purchase {
             run(): void;
             run(data: bo.PurchaseReturnRequest): void;
             /** 查询数据 */
-            protected fetchData(criteria: ibas.ICriteria | string): void;
+            protected fetchData(criteria: ibas.ICriteria | string | number): void;
         }
         /** 视图-采购退货请求 */
         interface IPurchaseReturnRequestViewView extends ibas.IBOViewView {

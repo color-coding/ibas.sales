@@ -34,6 +34,10 @@ namespace sales {
                 chooseSalesQuoteItemWarehouseEvent: Function;
                 /** 选择销售报价单位事件 */
                 chooseSalesQuoteItemUnitEvent: Function;
+                /** 选择销售报价-行物料序列 */
+                chooseSalesQuoteItemMaterialSerialEvent: Function;
+                /** 选择销售报价-行物料批次 */
+                chooseSalesQuoteItemMaterialBatchEvent: Function;
                 /** 选择销售报价-行 物料版本 */
                 chooseSalesQuoteItemMaterialVersionEvent: Function;
                 /** 选择一业务伙伴目录事件 */
@@ -486,6 +490,15 @@ namespace sales {
                                             press: function (): void {
                                                 that.fireViewEvents(that.removeSalesQuoteItemEvent, that.tableSalesQuoteItem.getSelecteds());
                                             }
+                                        }),
+                                        new sap.m.ToolbarSeparator(""),
+                                        new sap.extension.m.MenuButton("", {
+                                            autoHide: true, icon: "sap-icon://tags",
+                                            text: ibas.strings.format("{0}/{1}", ibas.i18n.prop("sales_material_batch"), ibas.i18n.prop("sales_material_serial")),
+                                            menu: new sap.m.Menu("", { items: [
+                                                new sap.m.MenuItem("", { text: ibas.i18n.prop("sales_material_batch"), press: function (): void { that.fireViewEvents(that.chooseSalesQuoteItemMaterialBatchEvent); } }),
+                                                new sap.m.MenuItem("", { text: ibas.i18n.prop("sales_material_serial"), press: function (): void { that.fireViewEvents(that.chooseSalesQuoteItemMaterialSerialEvent); } })
+                                            ] })
                                         }),
                                         new sap.m.ToolbarSeparator(""),
                                         new sap.m.Button("", {

@@ -32,6 +32,8 @@ namespace sales {
                 chooseSalesQuoteItemWarehouseEvent: Function;
                 /** 选择销售报价单位事件 */
                 chooseSalesQuoteItemUnitEvent: Function;
+                chooseSalesQuoteItemMaterialSerialEvent: Function;
+                chooseSalesQuoteItemMaterialBatchEvent: Function;
                 /** 选择销售报价-行 物料版本 */
                 chooseSalesQuoteItemMaterialVersionEvent: Function;
                 /** 选择一业务伙伴目录事件 */
@@ -605,6 +607,20 @@ namespace sales {
                                                                         id: app.ELEMENT_SALES_QUOTE_EXTRA.id,
                                                                         name: app.ELEMENT_SALES_QUOTE_EXTRA.name,
                                                                     })
+                                                                }),
+                                                                new sap.m.SegmentedButtonItem("", {
+                                                                    width: "3rem",
+                                                                    icon: "sap-icon://tags",
+                                                                    press(oEvent: any): void {
+                                                                        that.fireViewEvents(that.chooseSalesQuoteItemMaterialBatchEvent);
+                                                                    }
+                                                                }),
+                                                                new sap.m.SegmentedButtonItem("", {
+                                                                    width: "3rem",
+                                                                    icon: "sap-icon://barcode",
+                                                                    press(oEvent: any): void {
+                                                                        that.fireViewEvents(that.chooseSalesQuoteItemMaterialSerialEvent);
+                                                                    }
                                                                 }),
                                                                 new sap.m.SegmentedButtonItem("", {
                                                                     width: "3rem",

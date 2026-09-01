@@ -37,6 +37,8 @@ namespace sales {
                 this.view.chooseSalesQuotePriceListEvent = this.chooseSalesQuotePriceList;
                 this.view.chooseSalesQuoteItemWarehouseEvent = this.chooseSalesQuoteItemWarehouse;
                 this.view.chooseSalesQuoteItemUnitEvent = this.chooseSalesQuoteItemUnit;
+                this.view.chooseSalesQuoteItemMaterialBatchEvent = this.chooseSalesQuoteItemMaterialBatch;
+                this.view.chooseSalesQuoteItemMaterialSerialEvent = this.chooseSalesQuoteItemMaterialSerial;
                 this.view.chooseSalesQuoteItemMaterialVersionEvent = this.chooseSalesQuoteItemMaterialVersion;
                 this.view.chooseSalesQuoteBlanketAgreementEvent = this.chooseSalesQuoteBlanketAgreement;
                 this.view.chooseSalesOrderItemDistributionRuleEvent = this.chooseSalesQuoteItemDistributionRule;
@@ -152,6 +154,10 @@ namespace sales {
                                 that.editData = opRslt.resultObjects.firstOrDefault();
                                 that.messages(ibas.emMessageType.SUCCESS,
                                     ibas.i18n.prop("shell_data_save") + ibas.i18n.prop("shell_successful"));
+                                if (!that.editData.isDeleted && that.editData.canceled !== ibas.emYesNo.YES) {
+                                    if (!ibas.objects.isNull(that.serials) && that.serials.save instanceof Function) { that.serials.save((error) => { if (error instanceof Error) that.messages(error); }); }
+                                    if (!ibas.objects.isNull(that.batches) && that.batches.save instanceof Function) { that.batches.save((error) => { if (error instanceof Error) that.messages(error); }); }
+                                }
                             }
                             // 刷新当前视图
                             that.viewShowed();
@@ -603,8 +609,10 @@ namespace sales {
                                 if (ibas.objects.isNull(item)) {
                                     item = that.editData.salesQuoteItems.create();
                                     created = true;
-                                }
-                                item.baseProduct(selected);
+                            }
+                            item.baseProduct(selected);
+                            item.materialBatches.clear();
+                            item.materialSerials.clear();
                                 if (!ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
                                     item.tax = that.view.defaultTaxGroup;
                                     if (!ibas.strings.isEmpty(item.tax)) {
@@ -1566,6 +1574,30 @@ namespace sales {
                     })
                 });
             }
+            private batches: materials.app.IServiceExtraBatches;
+            private chooseSalesQuoteItemMaterialBatch(): void {
+                let contracts: ibas.ArrayList<materials.app.IMaterialBatchContract> = new ibas.ArrayList<materials.app.IMaterialBatchContract>();
+                for (let item of this.editData.salesQuoteItems) {
+                    contracts.add({ batchManagement: item.batchManagement, itemCode: item.itemCode, itemDescription: item.itemDescription,
+                        itemVersion: item.itemVersion, warehouse: item.warehouse, quantity: item.inventoryQuantity, uom: item.inventoryUOM,
+                        materialBatches: item.materialBatches, agreements: item.agreements });
+                }
+                ibas.servicesManager.runApplicationService<materials.app.IMaterialBatchContract[], materials.app.IServiceExtraBatches>({
+                    proxy: new materials.app.MaterialBatchIssueServiceProxy(contracts), onCompleted: (results) => { this.batches = results; }
+                });
+            }
+            private serials: materials.app.IServiceExtraSerials;
+            private chooseSalesQuoteItemMaterialSerial(): void {
+                let contracts: ibas.ArrayList<materials.app.IMaterialSerialContract> = new ibas.ArrayList<materials.app.IMaterialSerialContract>();
+                for (let item of this.editData.salesQuoteItems) {
+                    contracts.add({ serialManagement: item.serialManagement, itemCode: item.itemCode, itemDescription: item.itemDescription,
+                        itemVersion: item.itemVersion, warehouse: item.warehouse, quantity: item.inventoryQuantity, uom: item.inventoryUOM,
+                        materialSerials: item.materialSerials });
+                }
+                ibas.servicesManager.runApplicationService<materials.app.IMaterialSerialContract[], materials.app.IServiceExtraSerials>({
+                    proxy: new materials.app.MaterialSerialIssueServiceProxy(contracts), onCompleted: (results) => { this.serials = results; }
+                });
+            }
             protected calculateQuantity(caller: bo.SalesQuoteItem): void {
                 if (ibas.objects.isNull(caller)) {
                     this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
@@ -1737,6 +1769,10 @@ namespace sales {
             chooseSalesQuoteItemMaterialCatalogEvent: Function;
             /** 选择销售报价单位事件 */
             chooseSalesQuoteItemUnitEvent: Function;
+            /** 选择销售报价-行物料批次事件 */
+            chooseSalesQuoteItemMaterialBatchEvent: Function;
+            /** 选择销售报价-行物料序列事件 */
+            chooseSalesQuoteItemMaterialSerialEvent: Function;
             /** 选择客户合同 */
             chooseCustomerAgreementsEvent: Function;
             /** 显示销售报价额外信息事件 */
