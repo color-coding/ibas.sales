@@ -55,6 +55,7 @@
     "sales_app_salesreserveinvoice_view": "View Sales Reserve Invoice",
     "sales_app_salesreserveinvoice_edit": "Edit Sales Reserve Invoice",
     "sales_app_materialorderedreservation_salesorder": "Sales Order",
+    "sales_app_materialorderedreservation_salesorder_finished_product": "Sales Order (Finished Product Related Reservation)",
     "sales_app_salesorderpacking": "Sales Order, Sales Delivery",
     "sales_func_salesreturnrequest": "Sales Return Request",
     "sales_app_salesreturnrequest_list": "Sales Return Request List",

@@ -609,10 +609,10 @@ namespace sales {
                                 if (ibas.objects.isNull(item)) {
                                     item = that.editData.salesQuoteItems.create();
                                     created = true;
-                            }
-                            item.baseProduct(selected);
-                            item.materialBatches.clear();
-                            item.materialSerials.clear();
+                                }
+                                item.baseProduct(selected);
+                                item.materialBatches.clear();
+                                item.materialSerials.clear();
                                 if (!ibas.strings.isEmpty(that.view.defaultTaxGroup)) {
                                     item.tax = that.view.defaultTaxGroup;
                                     if (!ibas.strings.isEmpty(item.tax)) {
@@ -1578,9 +1578,11 @@ namespace sales {
             private chooseSalesQuoteItemMaterialBatch(): void {
                 let contracts: ibas.ArrayList<materials.app.IMaterialBatchContract> = new ibas.ArrayList<materials.app.IMaterialBatchContract>();
                 for (let item of this.editData.salesQuoteItems) {
-                    contracts.add({ batchManagement: item.batchManagement, itemCode: item.itemCode, itemDescription: item.itemDescription,
+                    contracts.add({
+                        batchManagement: item.batchManagement, itemCode: item.itemCode, itemDescription: item.itemDescription,
                         itemVersion: item.itemVersion, warehouse: item.warehouse, quantity: item.inventoryQuantity, uom: item.inventoryUOM,
-                        materialBatches: item.materialBatches, agreements: item.agreements });
+                        materialBatches: item.materialBatches, agreements: item.agreements
+                    });
                 }
                 ibas.servicesManager.runApplicationService<materials.app.IMaterialBatchContract[], materials.app.IServiceExtraBatches>({
                     proxy: new materials.app.MaterialBatchIssueServiceProxy(contracts), onCompleted: (results) => { this.batches = results; }
@@ -1590,9 +1592,11 @@ namespace sales {
             private chooseSalesQuoteItemMaterialSerial(): void {
                 let contracts: ibas.ArrayList<materials.app.IMaterialSerialContract> = new ibas.ArrayList<materials.app.IMaterialSerialContract>();
                 for (let item of this.editData.salesQuoteItems) {
-                    contracts.add({ serialManagement: item.serialManagement, itemCode: item.itemCode, itemDescription: item.itemDescription,
+                    contracts.add({
+                        serialManagement: item.serialManagement, itemCode: item.itemCode, itemDescription: item.itemDescription,
                         itemVersion: item.itemVersion, warehouse: item.warehouse, quantity: item.inventoryQuantity, uom: item.inventoryUOM,
-                        materialSerials: item.materialSerials });
+                        materialSerials: item.materialSerials
+                    });
                 }
                 ibas.servicesManager.runApplicationService<materials.app.IMaterialSerialContract[], materials.app.IServiceExtraSerials>({
                     proxy: new materials.app.MaterialSerialIssueServiceProxy(contracts), onCompleted: (results) => { this.serials = results; }
@@ -1630,7 +1634,9 @@ namespace sales {
                         uom: caller.uom,
                         uomRate: caller.uomRate,
                         serialManagement: caller.serialManagement,
+                        materialSerials: caller.materialSerials,
                         batchManagement: caller.batchManagement,
+                        materialBatches: caller.materialBatches,
                         applyQuantity: (quantity, uom, warehouse) => {
                             caller.quantity = quantity;
                             if (!ibas.objects.isNull(uom)) {

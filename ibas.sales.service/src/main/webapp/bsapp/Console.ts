@@ -82,6 +82,7 @@ namespace sales {
                 this.register(new SalesReserveInvoiceLinkServiceMapping());
                 this.register(new SalesReserveInvoiceEditServiceMapping());
                 this.register(new MaterialOrderedReservationTargetSalesOrderServiceMapping());
+                this.register(new MaterialOrderedReservationTargetSalesOrderFinishedProductServiceMapping());
                 this.register(new SalesOrderPackingServiceMapping());
                 // 注册常驻应用
                 // 收付款服务
