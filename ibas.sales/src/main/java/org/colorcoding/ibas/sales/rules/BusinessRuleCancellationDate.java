@@ -4,13 +4,11 @@ import org.colorcoding.ibas.bobas.common.DateTimes;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleCommon;
 
 public class BusinessRuleCancellationDate extends BusinessRuleCommon {
 
 	public BusinessRuleCancellationDate(IPropertyInfo<emYesNo> canceled, IPropertyInfo<DateTime> cancellationDate) {
-		this.setName(I18N.prop("msg_sl_business_rule_cancellation_date"));
 		this.canceled = canceled;
 		this.cancellationDate = cancellationDate;
 		this.getInputProperties().add(canceled);
