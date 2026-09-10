@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.common.Decimals;
-import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.rule.BusinessRuleCommon;
 
 public class BusinessRuleDeductionCurrencyAmount extends BusinessRuleCommon {
@@ -12,7 +11,6 @@ public class BusinessRuleDeductionCurrencyAmount extends BusinessRuleCommon {
 	private final static BigDecimal PRICE_DIFF = new BigDecimal("0.01");
 
 	protected BusinessRuleDeductionCurrencyAmount() {
-		this.setName(I18N.prop("msg_sl_business_rule_deduction_currency_amount"));
 	}
 
 	/**
