@@ -12798,7 +12798,7 @@ declare namespace purchase {
          * @param target 目标
          * @param source 源
          */
-        function baseDocumentItem(target: PurchaseOrderItem | PurchaseDeliveryItem | PurchaseReturnItem | DownPaymentRequestItem | PurchaseReserveInvoiceItem | PurchaseInvoiceItem | PurchaseReturnRequestItem | PurchaseCreditNoteItem, source: IPurchaseQuoteItem | IPurchaseOrderItem | IPurchaseDeliveryItem | IPurchaseReserveInvoiceItem | IPurchaseInvoiceItem | IPurchaseReturnRequestItem): void;
+        function baseDocumentItem(target: IPurchaseOrderItem | PurchaseOrderItem | PurchaseDeliveryItem | PurchaseReturnItem | DownPaymentRequestItem | PurchaseReserveInvoiceItem | PurchaseInvoiceItem | PurchaseReturnRequestItem | PurchaseCreditNoteItem, source: IPurchaseQuoteItem | IPurchaseRequestItem | IPurchaseOrderItem | IPurchaseDeliveryItem | IPurchaseReserveInvoiceItem | IPurchaseInvoiceItem | IPurchaseReturnRequestItem): void;
         function baseProduct(target: PurchaseQuoteItem | PurchaseOrderItem | PurchaseDeliveryItem | PurchaseReturnItem | PurchaseRequestItem | PurchaseCreditNoteItem | PurchaseInvoiceItem | DownPaymentRequestItem | PurchaseReserveInvoiceItem | PurchaseReturnRequestItem, source: materials.bo.IProduct): void;
         /**
          * 设置单据类型
@@ -14863,6 +14863,8 @@ declare namespace purchase {
             viewHistoricalPricesEvent: Function;
             /** 计算数量 */
             calculateQuantityEvent: Function;
+            /** 默认仓库 */
+            defaultWarehouse: string;
         }
         /** 采购申请编辑服务映射 */
         class PurchaseRequestEditServiceMapping extends ibas.BOEditServiceMapping {
