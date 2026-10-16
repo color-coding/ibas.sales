@@ -2184,6 +2184,9 @@ public class SalesDelivery extends BusinessObject<SalesDelivery>
 						String SalesReserveInvoiceCode = MyConfiguration
 								.applyVariables(SalesReserveInvoice.BUSINESS_OBJECT_CODE);
 						for (ISalesDeliveryItem line : SalesDelivery.this.getSalesDeliveryItems()) {
+							if (line.isDeleted()) {
+								continue;
+							}
 							if (line.getDeleted() == emYesNo.YES) {
 								continue;
 							}
