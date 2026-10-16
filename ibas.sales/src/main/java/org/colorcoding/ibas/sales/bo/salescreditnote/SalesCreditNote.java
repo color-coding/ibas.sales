@@ -2215,6 +2215,9 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote> implements 
 						String SalesReturnCode = MyConfiguration.applyVariables(SalesReturn.BUSINESS_OBJECT_CODE),
 								SalesInvoiceCode = MyConfiguration.applyVariables(SalesInvoice.BUSINESS_OBJECT_CODE);
 						for (ISalesCreditNoteItem line : SalesCreditNote.this.getSalesCreditNoteItems()) {
+							if (line.isDeleted()) {
+								continue;
+							}
 							if (line.getDeleted() == emYesNo.YES) {
 								continue;
 							}
@@ -2367,6 +2370,9 @@ public class SalesCreditNote extends BusinessObject<SalesCreditNote> implements 
 						}
 						// 送货地址-运费
 						for (IShippingAddress line : SalesCreditNote.this.getShippingAddresss()) {
+							if (line.isDeleted()) {
+								continue;
+							}
 							// 运费科目
 							jeContent = new JournalEntrySmartContent(line);
 							jeContent.setCategory(Category.Credit);

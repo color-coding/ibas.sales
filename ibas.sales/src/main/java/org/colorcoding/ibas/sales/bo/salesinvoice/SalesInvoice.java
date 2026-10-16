@@ -2282,6 +2282,9 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 				List<JournalEntryContent> jeContents = new ArrayList<>();
 				String SalesDeliveryCode = MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE);
 				for (ISalesInvoiceItem line : SalesInvoice.this.getSalesInvoiceItems()) {
+					if (line.isDeleted()) {
+						continue;
+					}
 					if (line.getDeleted() == emYesNo.YES) {
 						continue;
 					}
@@ -2373,6 +2376,9 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 				}
 				// 送货地址-运费
 				for (IShippingAddress line : SalesInvoice.this.getShippingAddresss()) {
+					if (line.isDeleted()) {
+						continue;
+					}
 					// 运费科目
 					jeContent = new JournalEntrySmartContent(line);
 					jeContent.setCategory(Category.Credit);
@@ -2392,6 +2398,9 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 				}
 				// 预付款
 				for (ISalesInvoiceDownPayment item : SalesInvoice.this.getSalesInvoiceDownPayments()) {
+					if (item.isDeleted()) {
+						continue;
+					}
 					// 应收账款（冲减预收）
 					jeContent = new JournalEntrySmartContent(SalesInvoice.this);
 					jeContent.setCategory(Category.Credit);
@@ -2481,6 +2490,9 @@ public class SalesInvoice extends BusinessObject<SalesInvoice> implements ISales
 
 					});
 					for (ISalesInvoiceDownPayment item : SalesInvoice.this.getSalesInvoiceDownPayments()) {
+						if (item.isDeleted()) {
+							continue;
+						}
 						contents.add(new IDocumentReconciliationContent() {
 
 							@Override

@@ -2205,6 +2205,9 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice>
 						JournalEntryContent jeContent;
 						List<JournalEntryContent> jeContents = new ArrayList<>();
 						for (ISalesReserveInvoiceItem line : SalesReserveInvoice.this.getSalesReserveInvoiceItems()) {
+							if (line.isDeleted()) {
+								continue;
+							}
 							if (line.getDeleted() == emYesNo.YES) {
 								continue;
 							}
@@ -2244,6 +2247,9 @@ public class SalesReserveInvoice extends BusinessObject<SalesReserveInvoice>
 						}
 						// 送货地址-运费（运费不折扣）
 						for (IShippingAddress line : SalesReserveInvoice.this.getShippingAddresss()) {
+							if (line.isDeleted()) {
+								continue;
+							}
 							// 运费科目
 							jeContent = new JournalEntrySmartContent(line);
 							jeContent.setCategory(Category.Credit);
