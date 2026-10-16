@@ -14380,7 +14380,9 @@ declare namespace purchase {
             choosePurchaseQuoteItemWarehouseEvent: Function;
             /** 选择采购报价-行 单位 */
             choosePurchaseQuoteItemUnitEvent: Function;
+            /** 选择采购报价-行物料批次事件 */
             choosePurchaseQuoteItemMaterialBatchEvent: Function;
+            /** 选择采购报价-行物料序列事件 */
             choosePurchaseQuoteItemMaterialSerialEvent: Function;
             /** 选择采购报价-一揽子协议事件 */
             choosePurchaseQuoteBlanketAgreementEvent: Function;
@@ -14861,6 +14863,8 @@ declare namespace purchase {
             viewHistoricalPricesEvent: Function;
             /** 计算数量 */
             calculateQuantityEvent: Function;
+            /** 默认仓库 */
+            defaultWarehouse: string;
         }
         /** 采购申请编辑服务映射 */
         class PurchaseRequestEditServiceMapping extends ibas.BOEditServiceMapping {

@@ -140,7 +140,6 @@ namespace sales {
             create(): ISalesInvoiceDownPayment;
         }
 
-
         /** 销售发票-行 */
         export interface ISalesInvoiceItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent, ibas.IBOUserFields {
             /** 编码 */
@@ -219,7 +218,7 @@ namespace sales {
             inventoryUOM: string;
             /** 单位换算率 */
             uomRate: number;
-            /** 库存数量 */
+            /** 库存单位数量 */
             inventoryQuantity: number;
             /** 仓库 */
             warehouse: string;

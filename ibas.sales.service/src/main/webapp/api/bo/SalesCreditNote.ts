@@ -211,7 +211,7 @@ namespace sales {
             inventoryUOM: string;
             /** 单位换算率 */
             uomRate: number;
-            /** 库存数量 */
+            /** 库存单位数量 */
             inventoryQuantity: number;
             /** 仓库 */
             warehouse: string;
@@ -280,7 +280,5 @@ namespace sales {
             /** 赋值产品 */
             baseProduct(source: materials.bo.IProduct): void;
         }
-
-
     }
 }
