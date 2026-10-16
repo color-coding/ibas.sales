@@ -2180,6 +2180,9 @@ public class SalesReturn extends BusinessObject<SalesReturn> implements ISalesRe
 						List<JournalEntryContent> jeContents = new ArrayList<>();
 						String SalesDeliveryCode = MyConfiguration.applyVariables(SalesDelivery.BUSINESS_OBJECT_CODE);
 						for (ISalesReturnItem line : SalesReturn.this.getSalesReturnItems()) {
+							if (line.isDeleted()) {
+								continue;
+							}
 							if (line.getDeleted() == emYesNo.YES) {
 								continue;
 							}
