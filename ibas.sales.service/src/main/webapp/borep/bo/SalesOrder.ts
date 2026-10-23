@@ -586,7 +586,6 @@ namespace sales {
                 this.setProperty(SalesOrder.PROPERTY_INVERSEDISCOUNT_NAME, value);
             }
 
-
             /** 映射的属性名称-销售订单-行集合 */
             static PROPERTY_SALESORDERITEMS_NAME: string = "SalesOrderItems";
             /** 获取-销售订单-行集合 */
@@ -630,10 +629,11 @@ namespace sales {
                         if (item.lineStatus !== ibas.emDocumentStatus.RELEASED) {
                             continue;
                         }
-                        if (this.salesOrderItems.firstOrDefault(
-                            c => c.baseDocumentType === item.objectCode
-                                && c.baseDocumentEntry === item.docEntry
-                                && c.baseDocumentLineId === item.lineId) !== null) {
+                        if (
+                            this.salesOrderItems.firstOrDefault(
+                                (c) => c.baseDocumentType === item.objectCode && c.baseDocumentEntry === item.docEntry && c.baseDocumentLineId === item.lineId
+                            ) !== null
+                        ) {
                             continue;
                         }
                         let myItem: SalesOrderItem = this.salesOrderItems.create();
@@ -659,7 +659,6 @@ namespace sales {
                             myExtra.quantity = extra.quantity;
                         }
                     }
-
                 }
             }
             /** 基于地址 */
@@ -747,7 +746,9 @@ namespace sales {
                     new BusinessRuleRoundingAmount(SalesOrder.PROPERTY_ROUNDING_NAME, SalesOrder.PROPERTY_DIFFAMOUNT_NAME),
                     // 计算行-总计（含税）
                     new ibas.BusinessRuleSumElements(
-                        SalesOrder.PROPERTY_ITEMSLINETOTAL_NAME, SalesOrder.PROPERTY_SALESORDERITEMS_NAME, SalesOrderItem.PROPERTY_LINETOTAL_NAME,
+                        SalesOrder.PROPERTY_ITEMSLINETOTAL_NAME,
+                        SalesOrder.PROPERTY_SALESORDERITEMS_NAME,
+                        SalesOrderItem.PROPERTY_LINETOTAL_NAME,
                         // 不计产品套装子项的金额
                         (data: SalesOrderItem): boolean => {
                             if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
@@ -757,10 +758,13 @@ namespace sales {
                                 return false;
                             }
                             return true;
-                        }),
+                        }
+                    ),
                     // 计算行-税总计
                     new ibas.BusinessRuleSumElements(
-                        SalesOrder.PROPERTY_ITEMSTAXTOTAL_NAME, SalesOrder.PROPERTY_SALESORDERITEMS_NAME, SalesOrderItem.PROPERTY_TAXTOTAL_NAME,
+                        SalesOrder.PROPERTY_ITEMSTAXTOTAL_NAME,
+                        SalesOrder.PROPERTY_SALESORDERITEMS_NAME,
+                        SalesOrderItem.PROPERTY_TAXTOTAL_NAME,
                         // 不计产品套装子项的金额
                         (data: SalesOrderItem): boolean => {
                             if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
@@ -770,10 +774,13 @@ namespace sales {
                                 return false;
                             }
                             return true;
-                        }),
+                        }
+                    ),
                     // 计算行-税前总计
                     new ibas.BusinessRuleSumElements(
-                        SalesOrder.PROPERTY_ITEMSPRETAXTOTAL_NAME, SalesOrder.PROPERTY_SALESORDERITEMS_NAME, SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME,
+                        SalesOrder.PROPERTY_ITEMSPRETAXTOTAL_NAME,
+                        SalesOrder.PROPERTY_SALESORDERITEMS_NAME,
+                        SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME,
                         // 不计产品套装子项的金额
                         (data: SalesOrderItem): boolean => {
                             if (config.isStatisticsTagDeleted() === false && data.deleted === ibas.emYesNo.YES) {
@@ -783,24 +790,27 @@ namespace sales {
                                 return false;
                             }
                             return true;
-                        }),
+                        }
+                    ),
                     // 计算运输-总计（含税）
                     new ibas.BusinessRuleSumElements(
-                        SalesOrder.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME, SalesOrder.PROPERTY_SHIPPINGADDRESSS_NAME, ShippingAddress.PROPERTY_EXPENSE_NAME),
+                        SalesOrder.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME,
+                        SalesOrder.PROPERTY_SHIPPINGADDRESSS_NAME,
+                        ShippingAddress.PROPERTY_EXPENSE_NAME
+                    ),
                     // 计算运输-税总计
-                    new ibas.BusinessRuleSumElements(
-                        SalesOrder.PROPERTY_SHIPPINGSTAXTOTAL_NAME, SalesOrder.PROPERTY_SHIPPINGADDRESSS_NAME, ShippingAddress.PROPERTY_TAXTOTAL_NAME),
+                    new ibas.BusinessRuleSumElements(SalesOrder.PROPERTY_SHIPPINGSTAXTOTAL_NAME, SalesOrder.PROPERTY_SHIPPINGADDRESSS_NAME, ShippingAddress.PROPERTY_TAXTOTAL_NAME),
                     // 折扣后总计（含税） = 行-总计（含税）* 折扣
-                    new BusinessRuleDeductionDiscountTotal(
-                        SalesOrder.PROPERTY_DISCOUNTTOTAL_NAME, SalesOrder.PROPERTY_ITEMSLINETOTAL_NAME, SalesOrder.PROPERTY_DISCOUNT_NAME),
+                    new BusinessRuleDeductionDiscountTotal(SalesOrder.PROPERTY_DISCOUNTTOTAL_NAME, SalesOrder.PROPERTY_ITEMSLINETOTAL_NAME, SalesOrder.PROPERTY_DISCOUNT_NAME),
                     // 单据总计 = 折扣后总计（含税）+ 运输-总计（含税） +  舍入
-                    new BusinessRuleDeductionDocumentTotal(SalesOrder.PROPERTY_DOCUMENTTOTAL_NAME,
-                        SalesOrder.PROPERTY_DISCOUNTTOTAL_NAME, SalesOrder.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME, SalesOrder.PROPERTY_DIFFAMOUNT_NAME
+                    new BusinessRuleDeductionDocumentTotal(
+                        SalesOrder.PROPERTY_DOCUMENTTOTAL_NAME,
+                        SalesOrder.PROPERTY_DISCOUNTTOTAL_NAME,
+                        SalesOrder.PROPERTY_SHIPPINGSEXPENSETOTAL_NAME,
+                        SalesOrder.PROPERTY_DIFFAMOUNT_NAME
                     ),
                     // 计算正反折扣
-                    new BusinessRuleNegativeDiscount(
-                        SalesOrder.PROPERTY_DISCOUNT_NAME, SalesOrder.PROPERTY_INVERSEDISCOUNT_NAME
-                    ),
+                    new BusinessRuleNegativeDiscount(SalesOrder.PROPERTY_DISCOUNT_NAME, SalesOrder.PROPERTY_INVERSEDISCOUNT_NAME)
                 ];
             }
             /** 重置 */
@@ -808,11 +818,11 @@ namespace sales {
                 super.reset();
                 this.paidTotal = 0;
                 this.documentStatus = ibas.emDocumentStatus.RELEASED;
-                this.salesOrderItems.forEach(c => c.lineStatus = ibas.emDocumentStatus.RELEASED);
-                this.salesOrderItems.forEach(c => c.orderedQuantity = 0);
+                this.salesOrderItems.forEach((c) => (c.lineStatus = ibas.emDocumentStatus.RELEASED));
+                this.salesOrderItems.forEach((c) => (c.orderedQuantity = 0));
             }
             /** 转换之前 */
-            beforeConvert(): void { }
+            beforeConvert(): void {}
             /** 数据解析后 */
             afterParsing(): void {
                 // 计算部分业务逻辑
@@ -863,8 +873,7 @@ namespace sales {
                     }
                 }
                 // 标记删除触发集合行变化
-                if (ibas.strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_DELETED_NAME)
-                    || ibas.strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_CANCELED_NAME)) {
+                if (ibas.strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_DELETED_NAME) || ibas.strings.equalsIgnoreCase(name, SalesOrderItem.PROPERTY_CANCELED_NAME)) {
                     this.firePropertyChanged("length");
                 }
             }
@@ -879,8 +888,7 @@ namespace sales {
                     if (item.isNew && ibas.objects.isNull(item.deliveryDate)) {
                         item.deliveryDate = this.parent.deliveryDate;
                     }
-                    if (ibas.strings.isEmpty(this.parent.documentCurrency)
-                        && !ibas.strings.isEmpty(item.currency)) {
+                    if (ibas.strings.isEmpty(this.parent.documentCurrency) && !ibas.strings.isEmpty(item.currency)) {
                         this.parent.documentCurrency = item.currency;
                     }
                 }
@@ -929,7 +937,6 @@ namespace sales {
 
         /** 销售订单-行 */
         export class SalesOrderItem extends ibas.BODocumentLine<SalesOrderItem> implements ISalesOrderItem {
-
             /** 构造函数 */
             constructor() {
                 super();
@@ -1353,13 +1360,13 @@ namespace sales {
                 this.setProperty(SalesOrderItem.PROPERTY_UOMRATE_NAME, value);
             }
 
-            /** 映射的属性名称-库存数量 */
+            /** 映射的属性名称-库存单位数量 */
             static PROPERTY_INVENTORYQUANTITY_NAME: string = "InventoryQuantity";
-            /** 获取-库存数量 */
+            /** 获取-库存单位数量 */
             get inventoryQuantity(): number {
                 return this.getProperty<number>(SalesOrderItem.PROPERTY_INVENTORYQUANTITY_NAME);
             }
-            /** 设置-库存数量 */
+            /** 设置-库存单位数量 */
             set inventoryQuantity(value: number) {
                 this.setProperty(SalesOrderItem.PROPERTY_INVENTORYQUANTITY_NAME, value);
             }
@@ -1550,7 +1557,6 @@ namespace sales {
             set taxTotal(value: number) {
                 this.setProperty(SalesOrderItem.PROPERTY_TAXTOTAL_NAME, value);
             }
-
 
             /** 映射的属性名称-税前价格 */
             static PROPERTY_PRETAXPRICE_NAME: string = "PreTaxPrice";
@@ -1769,41 +1775,48 @@ namespace sales {
             protected registerRules(): ibas.IBusinessRule[] {
                 return [
                     // 计算本币价格
+                    new BusinessRuleDeductionCurrencyAmount(SalesOrderItem.PROPERTY_UNITPRICELC_NAME, SalesOrderItem.PROPERTY_UNITPRICE_NAME, SalesOrderItem.PROPERTY_RATE_NAME),
                     new BusinessRuleDeductionCurrencyAmount(
-                        SalesOrderItem.PROPERTY_UNITPRICELC_NAME, SalesOrderItem.PROPERTY_UNITPRICE_NAME, SalesOrderItem.PROPERTY_RATE_NAME
+                        SalesOrderItem.PROPERTY_PRETAXPRICELC_NAME,
+                        SalesOrderItem.PROPERTY_PRETAXPRICE_NAME,
+                        SalesOrderItem.PROPERTY_RATE_NAME
                     ),
-                    new BusinessRuleDeductionCurrencyAmount(
-                        SalesOrderItem.PROPERTY_PRETAXPRICELC_NAME, SalesOrderItem.PROPERTY_PRETAXPRICE_NAME, SalesOrderItem.PROPERTY_RATE_NAME
-                    ),
-                    new BusinessRuleDeductionCurrencyAmount(
-                        SalesOrderItem.PROPERTY_PRICELC_NAME, SalesOrderItem.PROPERTY_PRICE_NAME, SalesOrderItem.PROPERTY_RATE_NAME
-                    ),
-                    // 计算库存数量 = 数量 * 换算率
+                    new BusinessRuleDeductionCurrencyAmount(SalesOrderItem.PROPERTY_PRICELC_NAME, SalesOrderItem.PROPERTY_PRICE_NAME, SalesOrderItem.PROPERTY_RATE_NAME),
+                    // 计算库存单位数量 = 数量 * 换算率
                     new BusinessRuleCalculateInventoryQuantity(
-                        SalesOrderItem.PROPERTY_INVENTORYQUANTITY_NAME, SalesOrderItem.PROPERTY_QUANTITY_NAME, SalesOrderItem.PROPERTY_UOMRATE_NAME),
+                        SalesOrderItem.PROPERTY_INVENTORYQUANTITY_NAME,
+                        SalesOrderItem.PROPERTY_QUANTITY_NAME,
+                        SalesOrderItem.PROPERTY_UOMRATE_NAME
+                    ),
                     // 计算折扣前总计 = 数量 * 折扣前价格
                     new BusinessRuleDeductionPriceQtyTotal(
-                        SalesOrderItem.PROPERTY_UNITLINETOTAL_NAME, SalesOrderItem.PROPERTY_UNITPRICE_NAME,
+                        SalesOrderItem.PROPERTY_UNITLINETOTAL_NAME,
+                        SalesOrderItem.PROPERTY_UNITPRICE_NAME,
                         config.isInventoryUnitLinePrice() ? SalesOrderItem.PROPERTY_INVENTORYQUANTITY_NAME : SalesOrderItem.PROPERTY_QUANTITY_NAME
                     ),
                     // 计算 行总计 = 税前总计（折扣后） + 税总计；行总计 = 价格（税后） * 数量；税总计 = 税前总计（折扣后） * 税率
-                    new BusinessRuleDeductionPriceTaxTotal(SalesOrderItem.PROPERTY_LINETOTAL_NAME, SalesOrderItem.PROPERTY_PRICE_NAME,
+                    new BusinessRuleDeductionPriceTaxTotal(
+                        SalesOrderItem.PROPERTY_LINETOTAL_NAME,
+                        SalesOrderItem.PROPERTY_PRICE_NAME,
                         config.isInventoryUnitLinePrice() ? SalesOrderItem.PROPERTY_INVENTORYQUANTITY_NAME : SalesOrderItem.PROPERTY_QUANTITY_NAME,
-                        SalesOrderItem.PROPERTY_TAXRATE_NAME, SalesOrderItem.PROPERTY_TAXTOTAL_NAME, SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME
+                        SalesOrderItem.PROPERTY_TAXRATE_NAME,
+                        SalesOrderItem.PROPERTY_TAXTOTAL_NAME,
+                        SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME
                     ),
                     // 计算折扣后总计（税前） = 数量 * 折扣后价格（税前）
                     new BusinessRuleDeductionPriceQtyTotal(
-                        SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME, SalesOrderItem.PROPERTY_PRETAXPRICE_NAME,
+                        SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME,
+                        SalesOrderItem.PROPERTY_PRETAXPRICE_NAME,
                         config.isInventoryUnitLinePrice() ? SalesOrderItem.PROPERTY_INVENTORYQUANTITY_NAME : SalesOrderItem.PROPERTY_QUANTITY_NAME
                     ),
                     // 计算折扣后总计 = 折扣前总计 * 折扣
                     new BusinessRuleDeductionDiscount(
-                        SalesOrderItem.PROPERTY_DISCOUNT_NAME, SalesOrderItem.PROPERTY_UNITLINETOTAL_NAME, SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME
+                        SalesOrderItem.PROPERTY_DISCOUNT_NAME,
+                        SalesOrderItem.PROPERTY_UNITLINETOTAL_NAME,
+                        SalesOrderItem.PROPERTY_PRETAXLINETOTAL_NAME
                     ),
                     // 计算正反折扣
-                    new BusinessRuleNegativeDiscount(
-                        SalesOrderItem.PROPERTY_DISCOUNT_NAME, SalesOrderItem.PROPERTY_INVERSEDISCOUNT_NAME
-                    ),
+                    new BusinessRuleNegativeDiscount(SalesOrderItem.PROPERTY_DISCOUNT_NAME, SalesOrderItem.PROPERTY_INVERSEDISCOUNT_NAME)
                 ];
             }
             /** 重置 */
@@ -2094,10 +2107,8 @@ namespace sales {
                 this.setProperty(SalesOrderItemExtra.PROPERTY_NOTE_NAME, value);
             }
 
-
             /** 初始化数据 */
-            protected init(): void {
-            }
+            protected init(): void {}
         }
     }
 }

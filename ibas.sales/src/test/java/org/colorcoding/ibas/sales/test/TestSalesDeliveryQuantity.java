@@ -6,8 +6,11 @@ import org.colorcoding.ibas.bobas.bo.BOUtilities;
 import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
+import org.colorcoding.ibas.bobas.i18n.I18N;
+import org.colorcoding.ibas.bobas.logic.BusinessLogicException;
 import org.colorcoding.ibas.businesspartner.bo.customer.ICustomer;
 import org.colorcoding.ibas.businesspartner.repository.BORepositoryBusinessPartner;
+import org.colorcoding.ibas.materials.MyConfiguration;
 import org.colorcoding.ibas.materials.bo.material.IMaterial;
 import org.colorcoding.ibas.materials.bo.materialbatch.IMaterialBatchItem;
 import org.colorcoding.ibas.materials.bo.materialserial.IMaterialSerialItem;
@@ -38,12 +41,6 @@ public class TestSalesDeliveryQuantity extends AbstractSalesQuantityTestCase {
 	private static final BigDecimal QTY = Decimals.valueOf(10);
 	private static final BigDecimal PRICE = Decimals.valueOf(50);
 
-	private BORepositorySales createSalesRepository() throws Exception {
-		BORepositorySales repo = new BORepositorySales();
-		repo.setUserToken(org.colorcoding.ibas.bobas.organization.OrganizationFactory.SYSTEM_USER);
-		return repo;
-	}
-
 	// ---------------- 构造 ----------------
 
 	/**
@@ -58,6 +55,9 @@ public class TestSalesDeliveryQuantity extends AbstractSalesQuantityTestCase {
 		line.setItemCode(mt.getCode());
 		line.setQuantity(qty);
 		line.setPrice(Decimals.valueOf(20));
+		line.setCurrency(org.colorcoding.ibas.accounting.MyConfiguration
+				.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY));
+		line.setRate(Decimals.VALUE_ONE);
 		line.setWarehouse(wh.getCode());
 		line.setBatchManagement(mt.getBatchManagement());
 		line.setSerialManagement(mt.getSerialManagement());
@@ -222,16 +222,32 @@ public class TestSalesDeliveryQuantity extends AbstractSalesQuantityTestCase {
 	}
 
 	// ==================================================================
-	// SL-C22: SD 头删除 -> 与 C21 同
+	// SL-C22: SD 头删除 -> 未启用成本时回滚，已计算成本时拒绝并保持原数量
 	// ==================================================================
 
 	public void testSL_C22_DeliveryDelete_Inventory() throws Exception {
+		runSL_C22_DeliveryDelete(false);
+	}
+
+	public void testSL_C22_DeliveryDelete_WithMaterialCosts() throws Exception {
+		runSL_C22_DeliveryDelete(true);
+	}
+
+	private void runSL_C22_DeliveryDelete(boolean materialCostsEnabled) throws Exception {
+		// 删除回滚测试独立验证成本限制，关闭会计分录对单据状态的限制。
+		boolean previousJournalEntry = org.colorcoding.ibas.accounting.MyConfiguration.getConfigValue(
+				org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_ENABLE_JOURNAL_ENTRY_SERVICE, false);
+		org.colorcoding.ibas.accounting.MyConfiguration.create().addConfigValue(
+				org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_ENABLE_JOURNAL_ENTRY_SERVICE, "false");
+		boolean previous = MyConfiguration.getConfigValue(MyConfiguration.CONFIG_ITEM_ENABLE_MATERIAL_COSTS, false);
+		MyConfiguration.create().addConfigValue(MyConfiguration.CONFIG_ITEM_ENABLE_MATERIAL_COSTS,
+				String.valueOf(materialCostsEnabled));
 		try (BORepositoryMaterials mRepo = createMaterialsRepository();
 				BORepositoryBusinessPartner bRepo = createBPRepository();
 				BORepositorySales sRepo = createSalesRepository()) {
 			IWarehouse wh = prepareWarehouse(mRepo);
 			ICustomer cu = prepareCustomer(bRepo);
-			IMaterial mt = prepareMaterial(mRepo, MaterialKind.INVENTORY, "C22I");
+			IMaterial mt = prepareMaterial(mRepo, MaterialKind.INVENTORY, materialCostsEnabled ? "C22IC" : "C22I");
 
 			seedInventory(mRepo, mt, wh, QTY, MaterialKind.INVENTORY);
 			ISalesOrder so = createOrder(sRepo, cu, mt, wh, QTY);
@@ -240,6 +256,21 @@ public class TestSalesDeliveryQuantity extends AbstractSalesQuantityTestCase {
 			sd = BOUtilities.valueOf(sRepo.saveSalesDelivery(sd)).firstOrDefault();
 
 			sd.delete();
+			if (materialCostsEnabled) {
+				try {
+					BOUtilities.valueOf(sRepo.saveSalesDelivery(sd));
+					fail("Costed document must reject deletion.");
+				} catch (BusinessLogicException e) {
+					assertEquals(I18N.prop("msg_mm_document_completed_material_cost_calculation_not_support_operation",
+							sd.getSalesDeliveryItems().firstOrDefault().toString()), e.getMessage());
+				}
+				assertNotNull(BOUtilities.valueOf(sRepo.fetchSalesDelivery(sd.getCriteria())).firstOrDefault());
+				assertQuantities(mRepo, mt, wh.getCode(), Decimals.VALUE_ZERO, Decimals.VALUE_ZERO, Decimals.VALUE_ZERO);
+				ISalesOrder orderReload = BOUtilities.valueOf(sRepo.fetchSalesOrder(so.getCriteria())).firstOrDefault();
+				assertEqualsBD("Order.closedQuantity must remain unchanged.", QTY,
+						orderReload.getSalesOrderItems().sum(c -> c.getClosedQuantity()));
+				return;
+			}
 			sd = BOUtilities.valueOf(sRepo.saveSalesDelivery(sd)).firstOrDefault();
 
 			assertQuantities(mRepo, mt, wh.getCode(), QTY, QTY, Decimals.VALUE_ZERO);
@@ -248,6 +279,12 @@ public class TestSalesDeliveryQuantity extends AbstractSalesQuantityTestCase {
 			ISalesOrderItem soiReload = soReload.getSalesOrderItems().firstOrDefault();
 			assertEqualsBD("SO.closedQuantity should rollback to 0.", Decimals.VALUE_ZERO,
 					soiReload.getClosedQuantity());
+		} finally {
+			org.colorcoding.ibas.accounting.MyConfiguration.create().addConfigValue(
+					org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_ENABLE_JOURNAL_ENTRY_SERVICE,
+					String.valueOf(previousJournalEntry));
+			MyConfiguration.create().addConfigValue(MyConfiguration.CONFIG_ITEM_ENABLE_MATERIAL_COSTS,
+					String.valueOf(previous));
 		}
 	}
 

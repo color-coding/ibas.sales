@@ -42,19 +42,21 @@ public class TestSalesOrderQuantity extends AbstractSalesQuantityTestCase {
 		return so;
 	}
 
-	private BORepositorySales createSalesRepository() throws Exception {
-		BORepositorySales repo = new BORepositorySales();
-		repo.setUserToken(org.colorcoding.ibas.bobas.organization.OrganizationFactory.SYSTEM_USER);
-		return repo;
-	}
-
 	// ==================================================================
 	// SL-C01: 新建 SO -> OnCommited+Q, OnHand/OnOrdered 不变
 	// ==================================================================
 
-	public void testSL_C01_Create_Inventory() throws Exception { runCreate(MaterialKind.INVENTORY, "C01I"); }
-	public void testSL_C01_Create_Batch()     throws Exception { runCreate(MaterialKind.BATCH,     "C01B"); }
-	public void testSL_C01_Create_Serial()    throws Exception { runCreate(MaterialKind.SERIAL,    "C01N"); }
+	public void testSL_C01_Create_Inventory() throws Exception {
+		runCreate(MaterialKind.INVENTORY, "C01I");
+	}
+
+	public void testSL_C01_Create_Batch() throws Exception {
+		runCreate(MaterialKind.BATCH, "C01B");
+	}
+
+	public void testSL_C01_Create_Serial() throws Exception {
+		runCreate(MaterialKind.SERIAL, "C01N");
+	}
 
 	private void runCreate(MaterialKind kind, String tag) throws Exception {
 		try (BORepositoryMaterials mRepo = createMaterialsRepository();
@@ -77,9 +79,17 @@ public class TestSalesOrderQuantity extends AbstractSalesQuantityTestCase {
 	// SL-C02: 头取消 -> OnCommited 回滚
 	// ==================================================================
 
-	public void testSL_C02_HeaderCancel_Inventory() throws Exception { runHeaderCancel(MaterialKind.INVENTORY, "C02I"); }
-	public void testSL_C02_HeaderCancel_Batch()     throws Exception { runHeaderCancel(MaterialKind.BATCH,     "C02B"); }
-	public void testSL_C02_HeaderCancel_Serial()    throws Exception { runHeaderCancel(MaterialKind.SERIAL,    "C02N"); }
+	public void testSL_C02_HeaderCancel_Inventory() throws Exception {
+		runHeaderCancel(MaterialKind.INVENTORY, "C02I");
+	}
+
+	public void testSL_C02_HeaderCancel_Batch() throws Exception {
+		runHeaderCancel(MaterialKind.BATCH, "C02B");
+	}
+
+	public void testSL_C02_HeaderCancel_Serial() throws Exception {
+		runHeaderCancel(MaterialKind.SERIAL, "C02N");
+	}
 
 	private void runHeaderCancel(MaterialKind kind, String tag) throws Exception {
 		try (BORepositoryMaterials mRepo = createMaterialsRepository();
@@ -162,6 +172,7 @@ public class TestSalesOrderQuantity extends AbstractSalesQuantityTestCase {
 	//        若要回滚 OnCommited，应使用 canceled=YES 或 documentStatus=PLANNED
 	// ==================================================================
 
+	/** SL-C05：未被引用的已下达订单；仅关闭 BO 状态；确认状态落库，承诺/订购量保持不变。 */
 	public void testSL_C05_StatusClosed_Inventory() throws Exception {
 		try (BORepositoryMaterials mRepo = createMaterialsRepository();
 				BORepositoryBusinessPartner bRepo = createBPRepository();
@@ -176,6 +187,9 @@ public class TestSalesOrderQuantity extends AbstractSalesQuantityTestCase {
 
 			so.setStatus(emBOStatus.CLOSED);
 			so = BOUtilities.valueOf(sRepo.saveSalesOrder(so)).firstOrDefault();
+			so = BOUtilities.valueOf(sRepo.fetchSalesOrder(so.getCriteria())).firstOrDefault();
+			assertEquals("BO status must actually persist.", emBOStatus.CLOSED, so.getStatus());
+			assertEquals("BO close must not imply document settlement.", emDocumentStatus.RELEASED, so.getDocumentStatus());
 			// CLOSED 不主动回滚，OnCommited 仍 = QTY
 			assertQuantities(mRepo, mt, wh.getCode(), Decimals.VALUE_ZERO, QTY, Decimals.VALUE_ZERO);
 		}
@@ -256,4 +270,53 @@ public class TestSalesOrderQuantity extends AbstractSalesQuantityTestCase {
 			assertQuantities(mRepo, mt, wh.getCode(), Decimals.VALUE_ZERO, QTY, Decimals.VALUE_ZERO);
 		}
 	}
+
+	/** 重复保存和重复取消不得重复记账，恢复后仅重新生效一次。 */
+	public void testSL_C51_OrderRepeatedSaveCancelAndRestore() throws Exception {
+		try (BORepositoryMaterials mRepo = createMaterialsRepository();
+				BORepositoryBusinessPartner bRepo = createBPRepository();
+				BORepositorySales repo = createSalesRepository()) {
+			IWarehouse wh = prepareWarehouse(mRepo);
+			ICustomer partner = prepareCustomer(bRepo);
+			IMaterial material = prepareMaterial(mRepo, MaterialKind.INVENTORY, "IDEMSL");
+			BigDecimal quantity = Decimals.valueOf(10);
+			ISalesOrder order = buildOrder(partner, material, wh, quantity);
+			order = BOUtilities.valueOf(repo.saveSalesOrder(order)).firstOrDefault();
+			order = BOUtilities.valueOf(repo.saveSalesOrder(order)).firstOrDefault();
+			assertQuantities(mRepo, material, wh.getCode(), Decimals.VALUE_ZERO, quantity, Decimals.VALUE_ZERO);
+			order.setCanceled(emYesNo.YES);
+			order = BOUtilities.valueOf(repo.saveSalesOrder(order)).firstOrDefault();
+			order = BOUtilities.valueOf(repo.saveSalesOrder(order)).firstOrDefault();
+			assertQuantities(mRepo, material, wh.getCode(), Decimals.VALUE_ZERO, Decimals.VALUE_ZERO, Decimals.VALUE_ZERO);
+			order.setCanceled(emYesNo.NO);
+			order = BOUtilities.valueOf(repo.saveSalesOrder(order)).firstOrDefault();
+			BOUtilities.valueOf(repo.saveSalesOrder(order));
+			assertQuantities(mRepo, material, wh.getCode(), Decimals.VALUE_ZERO, quantity, Decimals.VALUE_ZERO);
+		}
+	}
+
+	public void testSL_C52_WarehouseChangeMovesOnlyWarehouseBalance() throws Exception {
+		try (BORepositoryMaterials mRepo = createMaterialsRepository();
+				BORepositoryBusinessPartner bRepo = createBPRepository();
+				BORepositorySales repo = createSalesRepository()) {
+			IWarehouse original = prepareWarehouse(mRepo);
+			org.colorcoding.ibas.materials.bo.warehouse.Warehouse next = new org.colorcoding.ibas.materials.bo.warehouse.Warehouse();
+			next.setCode("WHS-SA2");
+			next.setName("Quantity warehouse change");
+			IWarehouse target = BOUtilities.valueOf(mRepo.fetchWarehouse(next.getCriteria())).firstOrDefault();
+			if (target == null) {
+				target = BOUtilities.valueOf(mRepo.saveWarehouse(next)).firstOrDefault();
+			}
+			IMaterial material = prepareMaterial(mRepo, MaterialKind.INVENTORY, "SaMOVE");
+			ICustomer partner = prepareCustomer(bRepo);
+			ISalesOrder order = buildOrder(partner, material, original, Decimals.valueOf(8));
+			order = BOUtilities.valueOf(repo.saveSalesOrder(order)).firstOrDefault();
+			order.getSalesOrderItems().firstOrDefault().setWarehouse(target.getCode());
+			BOUtilities.valueOf(repo.saveSalesOrder(order));
+			QuantitySnapshot oldBalance = snapshotWarehouse(mRepo, material.getCode(), original.getCode());
+			assertEqualsBD("Old warehouse balance must be released.", Decimals.VALUE_ZERO, oldBalance.onCommited);
+			assertQuantities(mRepo, material, target.getCode(), Decimals.VALUE_ZERO, Decimals.valueOf(8), Decimals.VALUE_ZERO);
+		}
+	}
+
 }

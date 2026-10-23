@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 
 import org.colorcoding.ibas.bobas.bo.BOUtilities;
 import org.colorcoding.ibas.bobas.common.Decimals;
+import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 import org.colorcoding.ibas.businesspartner.bo.customer.ICustomer;
 import org.colorcoding.ibas.businesspartner.repository.BORepositoryBusinessPartner;
 import org.colorcoding.ibas.materials.bo.material.IMaterial;
@@ -23,19 +23,13 @@ import org.colorcoding.ibas.sales.bo.salesorder.SalesOrder;
 import org.colorcoding.ibas.sales.repository.BORepositorySales;
 
 /**
- * 销售发票 数量逻辑 测试（基于交货 / 基于订单）。
+ * 销售发票真实保存链路：基于交货开票不重复出库；基于订单开票关闭源数量；取消后回退源数量。
  *
  * <p>覆盖：SL-C30 / C31 / C32</p>
  */
 public class TestSalesInvoiceQuantity extends AbstractSalesQuantityTestCase {
 
 	private static final BigDecimal QTY = Decimals.valueOf(10);
-
-	private BORepositorySales createSalesRepository() throws Exception {
-		BORepositorySales repo = new BORepositorySales();
-		repo.setUserToken(OrganizationFactory.SYSTEM_USER);
-		return repo;
-	}
 
 	private void seedInventory(BORepositoryMaterials mRepo, IMaterial mt, IWarehouse wh, BigDecimal qty)
 			throws Exception {
@@ -45,6 +39,9 @@ public class TestSalesInvoiceQuantity extends AbstractSalesQuantityTestCase {
 		line.setItemCode(mt.getCode());
 		line.setQuantity(qty);
 		line.setPrice(Decimals.valueOf(20));
+		line.setCurrency(org.colorcoding.ibas.accounting.MyConfiguration
+				.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY));
+		line.setRate(Decimals.VALUE_ONE);
 		line.setWarehouse(wh.getCode());
 		line.setBatchManagement(mt.getBatchManagement());
 		line.setSerialManagement(mt.getSerialManagement());
@@ -163,15 +160,17 @@ public class TestSalesInvoiceQuantity extends AbstractSalesQuantityTestCase {
 
 			// OnHand-Q, OnCommited-Q
 			assertQuantities(mRepo, mt, wh.getCode(), Decimals.VALUE_ZERO, Decimals.VALUE_ZERO, Decimals.VALUE_ZERO);
+			so = BOUtilities.valueOf(sRepo.fetchSalesOrder(so.getCriteria())).firstOrDefault();
+			assertEqualsBD("Direct invoice must close the source order quantity.", QTY,
+					so.getSalesOrderItems().firstOrDefault().getClosedQuantity());
+			assertEquals("Direct invoice must finish the source order.", emDocumentStatus.FINISHED, so.getDocumentStatus());
+			assertEquals("Direct invoice must mark the source line as referenced.", emYesNo.YES,
+					so.getSalesOrderItems().firstOrDefault().getReferenced());
 		}
 	}
 
 	// ==================================================================
-	// SL-C32: SI 取消 -> 反向回退 SD.closedQuantity / OnHand
-	//   注：SI 头部实现 IDocumentReconciliationContract，cancel 时会触发对账
-	//      链路（CC_BP_INTRECON），在缺少 receiptpayment 模块对账数据的纯单元
-	//      测试环境下无法完成。本用例改为容错验证，确认行为符合预期
-	// ==================================================================
+	// SL-C32：取消发票必须回退交货单关闭数量，任何保存异常均使测试失败。
 
 	public void testSL_C32_InvoiceCancel_FromDelivery() throws Exception {
 		try (BORepositoryMaterials mRepo = createMaterialsRepository();
@@ -204,19 +203,16 @@ public class TestSalesInvoiceQuantity extends AbstractSalesQuantityTestCase {
 			assertEqualsBD("SD.closedQuantity = QTY after SI created.", QTY,
 					sdAfterSI.getSalesDeliveryItems().sum(c -> c.getClosedQuantity()));
 
-			// 尝试取消 SI；若对账链路不可用则跳过断言
-			try {
-				si.setCanceled(emYesNo.YES);
-				si = BOUtilities.valueOf(sRepo.saveSalesInvoice(si)).firstOrDefault();
-				ISalesDelivery sdReload = BOUtilities.valueOf(sRepo.fetchSalesDelivery(sd.getCriteria()))
-						.firstOrDefault();
-				assertEqualsBD("SD.closedQuantity rollback after SI cancel.", Decimals.VALUE_ZERO,
-						sdReload.getSalesDeliveryItems().sum(c -> c.getClosedQuantity()));
-			} catch (Exception ex) {
-				// 对账数据缺失，SI cancel 触发 InternalReconciliation 链路失败，环境问题非测试问题
-				System.out.println("[SKIP] SL-C32 SI cancel skipped due to reconciliation dependency: "
-						+ ex.getMessage());
-			}
+			si.setCanceled(emYesNo.YES);
+			si = BOUtilities.valueOf(sRepo.saveSalesInvoice(si)).firstOrDefault();
+			ISalesDelivery sdReload = BOUtilities.valueOf(sRepo.fetchSalesDelivery(sd.getCriteria()))
+					.firstOrDefault();
+			assertEqualsBD("SD.closedQuantity rollback after SI cancel.", Decimals.VALUE_ZERO,
+					sdReload.getSalesDeliveryItems().sum(c -> c.getClosedQuantity()));
+			assertEquals("Invoice cancellation must persist.", emYesNo.YES,
+					BOUtilities.valueOf(sRepo.fetchSalesInvoice(si.getCriteria())).firstOrDefault().getCanceled());
+			assertQuantities(mRepo, mt, wh.getCode(), Decimals.VALUE_ZERO, Decimals.VALUE_ZERO, Decimals.VALUE_ZERO);
+
 		}
 	}
 }

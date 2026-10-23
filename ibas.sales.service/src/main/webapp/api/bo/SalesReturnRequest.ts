@@ -9,7 +9,6 @@ namespace sales {
     export namespace bo {
         /** 销售退货请求 */
         export interface ISalesReturnRequest extends ibas.IBODocument, ibas.IBOUserFields {
-
             /** 凭证编号 */
             docEntry: number;
 
@@ -174,19 +173,16 @@ namespace sales {
 
             /** 基于销售交货 */
             baseDocument(document: ISalesDelivery): void;
-
         }
 
         /** 销售退货请求-行 集合 */
         export interface ISalesReturnRequestItems extends ibas.IBusinessObjects<ISalesReturnRequestItem> {
-
             /** 创建并添加子项 */
             create(): ISalesReturnRequestItem;
         }
 
         /** 销售退货请求-行 */
         export interface ISalesReturnRequestItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent, ibas.IBOUserFields {
-
             /** 编码 */
             docEntry: number;
 
@@ -298,7 +294,7 @@ namespace sales {
             inventoryUOM: string;
             /** 单位换算率 */
             uomRate: number;
-            /** 库存数量 */
+            /** 库存单位数量 */
             inventoryQuantity: number;
 
             /** 仓库 */
@@ -395,4 +391,3 @@ namespace sales {
         }
     }
 }
-

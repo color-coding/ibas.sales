@@ -9,7 +9,6 @@ namespace sales {
     export namespace bo {
         /** 销售报价 */
         export interface ISalesQuote extends ibas.IBODocument, ibas.IBOUserFields {
-
             /** 凭证编号 */
             docEntry: number;
 
@@ -168,19 +167,16 @@ namespace sales {
 
             /** 销售报价-行集合 */
             salesQuoteItems: ISalesQuoteItems;
-
         }
 
         /** 销售报价-行 集合 */
         export interface ISalesQuoteItems extends ibas.IBusinessObjects<ISalesQuoteItem> {
-
             /** 创建并添加子项 */
             create(): ISalesQuoteItem;
         }
 
         /** 销售报价-行 */
         export interface ISalesQuoteItem extends ibas.IBODocumentLine, materials.bo.IMaterialBatchItemParent, materials.bo.IMaterialSerialItemParent, ibas.IBOUserFields {
-
             /** 编码 */
             docEntry: number;
 
@@ -292,7 +288,7 @@ namespace sales {
             inventoryUOM: string;
             /** 单位换算率 */
             uomRate: number;
-            /** 库存数量 */
+            /** 库存单位数量 */
             inventoryQuantity: number;
 
             /** 仓库 */
@@ -444,9 +440,6 @@ namespace sales {
             quantity: number;
             /** 备注 */
             note: string;
-
         }
-
     }
 }
-

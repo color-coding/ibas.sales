@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import org.colorcoding.ibas.bobas.bo.BOUtilities;
 import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 import org.colorcoding.ibas.businesspartner.bo.customer.ICustomer;
 import org.colorcoding.ibas.businesspartner.repository.BORepositoryBusinessPartner;
 import org.colorcoding.ibas.materials.bo.material.IMaterial;
@@ -27,12 +26,6 @@ import org.colorcoding.ibas.sales.repository.BORepositorySales;
 public class TestSalesQuoteToOrder extends AbstractSalesQuantityTestCase {
 
 	private static final BigDecimal QTY = Decimals.valueOf(10);
-
-	private BORepositorySales createSalesRepository() throws Exception {
-		BORepositorySales repo = new BORepositorySales();
-		repo.setUserToken(OrganizationFactory.SYSTEM_USER);
-		return repo;
-	}
 
 	private ISalesQuote createSQ(BORepositorySales sRepo, ICustomer cu, IMaterial mt, IWarehouse wh, BigDecimal qty)
 			throws Exception {
