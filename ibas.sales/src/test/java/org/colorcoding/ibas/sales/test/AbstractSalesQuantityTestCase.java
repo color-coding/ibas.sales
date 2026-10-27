@@ -24,8 +24,7 @@ import org.colorcoding.ibas.materials.bo.warehouse.IWarehouse;
 import org.colorcoding.ibas.materials.bo.warehouse.Warehouse;
 import org.colorcoding.ibas.materials.data.emItemType;
 import org.colorcoding.ibas.materials.repository.BORepositoryMaterials;
-
-import junit.framework.TestCase;
+import org.colorcoding.ibas.sales.repository.BORepositorySales;
 
 /**
  * 销售数量逻辑测试基类。
@@ -34,7 +33,7 @@ import junit.framework.TestCase;
  * 提供：物料类型矩阵物料工厂、仓库/客户工厂、三量快照与断言。
  * </p>
  */
-public abstract class AbstractSalesQuantityTestCase extends TestCase {
+public abstract class AbstractSalesQuantityTestCase extends AbstractBusinessTestCase {
 
 	static {
 		// 使用中文提示，测试中文字匹配
@@ -52,10 +51,13 @@ public abstract class AbstractSalesQuantityTestCase extends TestCase {
 		public final BigDecimal onCommited;
 		public final BigDecimal onOrdered;
 
-		public QuantitySnapshot(BigDecimal a, BigDecimal b, BigDecimal c) {
-			this.onHand = a == null ? Decimals.VALUE_ZERO : a;
-			this.onCommited = b == null ? Decimals.VALUE_ZERO : b;
-			this.onOrdered = c == null ? Decimals.VALUE_ZERO : c;
+		public QuantitySnapshot(BigDecimal onHand, BigDecimal onCommited, BigDecimal onOrdered) {
+			assertNotNull("onHand must not be null.", onHand);
+			this.onHand = onHand;
+			assertNotNull("onCommited must not be null.", onCommited);
+			this.onCommited = onCommited;
+			assertNotNull("onOrdered must not be null.", onOrdered);
+			this.onOrdered = onOrdered;
 		}
 
 		@Override
@@ -132,9 +134,7 @@ public abstract class AbstractSalesQuantityTestCase extends TestCase {
 
 	protected QuantitySnapshot snapshotMaterial(BORepositoryMaterials repo, IMaterial m) throws Exception {
 		IMaterial x = reload(repo, m);
-		if (x == null) {
-			return new QuantitySnapshot(Decimals.VALUE_ZERO, Decimals.VALUE_ZERO, Decimals.VALUE_ZERO);
-		}
+		assertNotNull("Material must exist before checking quantities.", x);
 		return new QuantitySnapshot(x.getOnHand(), x.getOnCommited(), x.getOnOrdered());
 	}
 
@@ -170,12 +170,6 @@ public abstract class AbstractSalesQuantityTestCase extends TestCase {
 		assertEqualsBD("[Warehouse] OnOrdered mismatch.", expOnOrdered, w.onOrdered);
 	}
 
-	protected void assertEqualsBD(String msg, BigDecimal expected, BigDecimal actual) {
-		BigDecimal e = expected == null ? Decimals.VALUE_ZERO : expected;
-		BigDecimal a = actual == null ? Decimals.VALUE_ZERO : actual;
-		assertEquals(msg + " expected=" + e + ", actual=" + a, 0, e.compareTo(a));
-	}
-
 	// ====================== Repository 工厂 ======================
 
 	protected BORepositoryMaterials createMaterialsRepository() throws Exception {
@@ -186,6 +180,12 @@ public abstract class AbstractSalesQuantityTestCase extends TestCase {
 
 	protected BORepositoryBusinessPartner createBPRepository() throws Exception {
 		BORepositoryBusinessPartner repo = new BORepositoryBusinessPartner();
+		repo.setUserToken(OrganizationFactory.SYSTEM_USER);
+		return repo;
+	}
+
+	protected BORepositorySales createSalesRepository() throws Exception {
+		BORepositorySales repo = new BORepositorySales();
 		repo.setUserToken(OrganizationFactory.SYSTEM_USER);
 		return repo;
 	}

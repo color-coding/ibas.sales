@@ -6,7 +6,6 @@ import org.colorcoding.ibas.bobas.bo.BOUtilities;
 import org.colorcoding.ibas.bobas.common.Decimals;
 import org.colorcoding.ibas.bobas.data.emDocumentStatus;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 import org.colorcoding.ibas.businesspartner.bo.customer.ICustomer;
 import org.colorcoding.ibas.businesspartner.repository.BORepositoryBusinessPartner;
 import org.colorcoding.ibas.materials.bo.material.IMaterial;
@@ -42,12 +41,6 @@ import org.colorcoding.ibas.sales.repository.BORepositorySales;
  */
 public class TestMultiLineQuantityMerge extends AbstractSalesQuantityTestCase {
 
-	private BORepositorySales createSalesRepository() throws Exception {
-		BORepositorySales repo = new BORepositorySales();
-		repo.setUserToken(OrganizationFactory.SYSTEM_USER);
-		return repo;
-	}
-
 	private void seedInventory(BORepositoryMaterials mRepo, IMaterial mt, IWarehouse wh, BigDecimal qty)
 			throws Exception {
 		org.colorcoding.ibas.materials.bo.goodsreceipt.GoodsReceipt gr =
@@ -56,6 +49,9 @@ public class TestMultiLineQuantityMerge extends AbstractSalesQuantityTestCase {
 		line.setItemCode(mt.getCode());
 		line.setQuantity(qty);
 		line.setPrice(Decimals.valueOf(20));
+		line.setCurrency(org.colorcoding.ibas.accounting.MyConfiguration
+				.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY));
+		line.setRate(Decimals.VALUE_ONE);
 		line.setWarehouse(wh.getCode());
 		line.setBatchManagement(mt.getBatchManagement());
 		line.setSerialManagement(mt.getSerialManagement());
@@ -102,34 +98,7 @@ public class TestMultiLineQuantityMerge extends AbstractSalesQuantityTestCase {
 		return BOUtilities.valueOf(sRepo.fetchSalesOrder(so.getCriteria())).firstOrDefault();
 	}
 
-	// ==================================================================
-	// SL-M01：SO 两行同物料 (5 + 3) → OnCommited = 8
-	//   推导依据：每行创建独立 MaterialEstimateJournal (按 baseDocumentLineId)，
-	//   但 impact 到同一 Material.OnCommited 上累加
-	// ==================================================================
-
-	public void testSL_M01_TwoLinesSameMaterial_OnCommitedMerged() throws Exception {
-		try (BORepositoryMaterials mRepo = createMaterialsRepository();
-				BORepositoryBusinessPartner bRepo = createBPRepository();
-				BORepositorySales sRepo = createSalesRepository()) {
-			IWarehouse wh = prepareWarehouse(mRepo);
-			ICustomer cu = prepareCustomer(bRepo);
-			IMaterial mt = prepareMaterial(mRepo, MaterialKind.INVENTORY, "M01I");
-
-			ISalesOrder so = buildOrderTwoLines(cu, mt, wh, Decimals.valueOf(5), Decimals.valueOf(3));
-			so = BOUtilities.valueOf(sRepo.saveSalesOrder(so)).firstOrDefault();
-
-			// OnCommited 应为 5 + 3 = 8
-			assertQuantities(mRepo, mt, wh.getCode(), Decimals.VALUE_ZERO, Decimals.valueOf(8),
-					Decimals.VALUE_ZERO);
-		}
-	}
-
-	// ==================================================================
-	// SL-M02：SO 两行同物料 (5 + 3)，取消行 2 → OnCommited = 5
-	//   推导依据：取消行 2 触发 revoke，仅减去行 2 的 3
-	// ==================================================================
-
+	// SL-M02：同物料两行累计 8，取消第二行后只保留第一行的 5；包含原 SL-M01 的累计场景。
 	public void testSL_M02_TwoLines_CancelOneLine() throws Exception {
 		try (BORepositoryMaterials mRepo = createMaterialsRepository();
 				BORepositoryBusinessPartner bRepo = createBPRepository();

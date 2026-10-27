@@ -36,12 +36,6 @@ public class TestSalesReturnQuantity extends AbstractSalesQuantityTestCase {
 	private static final BigDecimal QTY = Decimals.valueOf(10);
 	private static final BigDecimal PRICE = Decimals.valueOf(50);
 
-	private BORepositorySales createSalesRepository() throws Exception {
-		BORepositorySales repo = new BORepositorySales();
-		repo.setUserToken(org.colorcoding.ibas.bobas.organization.OrganizationFactory.SYSTEM_USER);
-		return repo;
-	}
-
 	// ---------------- 通用 ----------------
 
 	private void seedInventory(BORepositoryMaterials mRepo, IMaterial mt, IWarehouse wh, BigDecimal qty,
@@ -52,6 +46,9 @@ public class TestSalesReturnQuantity extends AbstractSalesQuantityTestCase {
 		line.setItemCode(mt.getCode());
 		line.setQuantity(qty);
 		line.setPrice(Decimals.valueOf(20));
+		line.setCurrency(org.colorcoding.ibas.accounting.MyConfiguration
+				.getConfigValue(org.colorcoding.ibas.accounting.MyConfiguration.CONFIG_ITEM_LOCAL_CURRENCY));
+		line.setRate(Decimals.VALUE_ONE);
 		line.setWarehouse(wh.getCode());
 		line.setBatchManagement(mt.getBatchManagement());
 		line.setSerialManagement(mt.getSerialManagement());
@@ -212,7 +209,7 @@ public class TestSalesReturnQuantity extends AbstractSalesQuantityTestCase {
 	}
 
 	// ==================================================================
-	// SL-C42: SR 取消/删除 -> 反向 (OnHand-Q, closedQuantity 推回)
+	// SL-C42: SR 取消 -> 反向 (OnHand-Q, closedQuantity 推回)
 	// ==================================================================
 
 	public void testSL_C42_ReturnCancel_Inventory() throws Exception {
